@@ -1,0 +1,9 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/theoprigent/OneDrive/Ecole/04_INSA/3EII/S6/MCL/logiciel-kine2
+CMake Error at CMakeLists.txt:17 (target_link_libraries):
+  Cannot specify link libraries for target "main.c" which is not built by
+  this project.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/Users/theoprigent/OneDrive/Ecole/04_INSA/3EII/S6/MCL/logiciel-kine2/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "/Users/theoprigent/OneDrive/Ecole/04_INSA/3EII/S6/MCL/logiciel-kine2/cmake-build-debug/CMakeFiles/CMakeError.log".
