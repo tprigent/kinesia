@@ -52,7 +52,7 @@ void createFolderInfoWindow(GtkWidget *box){
 
     /* MARGINS */
     gtk_widget_set_margin_top(vbox_folder, 10);
-    gtk_widget_set_margin_bottom(vbox_folder, 20);
+    gtk_widget_set_margin_bottom(vbox_folder, 40);
 
     /* LABEL */
     GtkWidget *folder_title = NULL;
@@ -142,6 +142,34 @@ void createFolderInfoWindow(GtkWidget *box){
     gtk_box_pack_start(GTK_BOX(vbox_infos_content), folder_infos_content, FALSE, FALSE, 0);
 
     /* ****************************************************************************** */
+
+    /* ****************************************************************************** */
+
+    /* See attachments ************************************************************** */
+    /* BOX */
+    GtkWidget *hbox_attachments = NULL;
+    hbox_attachments = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_folder), hbox_attachments, hbox_pathology, GTK_POS_BOTTOM,1,2);
+
+    /* CONSTRAINTS */
+    gtk_widget_set_hexpand(hbox_attachments, FALSE);
+    gtk_widget_set_vexpand(hbox_attachments, FALSE);
+    gtk_widget_set_halign(hbox_attachments, GTK_ALIGN_START);
+
+    /* MARGINS */
+    gtk_widget_set_margin_top(hbox_attachments, 20);
+
+    /* LABEL */
+    GtkWidget *attachments_label = NULL;
+    attachments_label = gtk_label_new("Pièces jointes:    ");
+    gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_label, FALSE, FALSE, 0);
+
+    /* BUTTON */
+    GtkWidget *attachments_button = NULL;
+    attachments_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
+    gtk_widget_set_hexpand(attachments_button, FALSE);
+    gtk_widget_set_vexpand(attachments_button, FALSE);
+    gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
 
     /* ****************************************************************************** */
 
