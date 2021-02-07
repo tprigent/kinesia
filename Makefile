@@ -20,3 +20,8 @@ clean:
 	rm -f %.o
 	rm -f main
 	rm -f main_UI
+
+process:
+	make clean
+	make
+	./main
