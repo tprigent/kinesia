@@ -131,17 +131,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named logiciel_kine2
+# Target rules for targets named main.c
 
 # Build rule for target.
-logiciel_kine2: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 logiciel_kine2
-.PHONY : logiciel_kine2
+main.c: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main.c
+.PHONY : main.c
 
 # fast build rule for target.
-logiciel_kine2/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/logiciel_kine2.dir/build.make CMakeFiles/logiciel_kine2.dir/build
-.PHONY : logiciel_kine2/fast
+main.c/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/build
+.PHONY : main.c/fast
+
+gtk_functions.o: gtk_functions.c.o
+
+.PHONY : gtk_functions.o
+
+# target to build an object file
+gtk_functions.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/gtk_functions.c.o
+.PHONY : gtk_functions.c.o
+
+gtk_functions.i: gtk_functions.c.i
+
+.PHONY : gtk_functions.i
+
+# target to preprocess a source file
+gtk_functions.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/gtk_functions.c.i
+.PHONY : gtk_functions.c.i
+
+gtk_functions.s: gtk_functions.c.s
+
+.PHONY : gtk_functions.s
+
+# target to generate assembly for a file
+gtk_functions.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/gtk_functions.c.s
+.PHONY : gtk_functions.c.s
 
 main.o: main.c.o
 
@@ -149,7 +176,7 @@ main.o: main.c.o
 
 # target to build an object file
 main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/logiciel_kine2.dir/build.make CMakeFiles/logiciel_kine2.dir/main.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/main.c.o
 .PHONY : main.c.o
 
 main.i: main.c.i
@@ -158,7 +185,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/logiciel_kine2.dir/build.make CMakeFiles/logiciel_kine2.dir/main.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -167,8 +194,35 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/logiciel_kine2.dir/build.make CMakeFiles/logiciel_kine2.dir/main.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/main.c.s
 .PHONY : main.c.s
+
+main_UI.o: main_UI.c.o
+
+.PHONY : main_UI.o
+
+# target to build an object file
+main_UI.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/main_UI.c.o
+.PHONY : main_UI.c.o
+
+main_UI.i: main_UI.c.i
+
+.PHONY : main_UI.i
+
+# target to preprocess a source file
+main_UI.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/main_UI.c.i
+.PHONY : main_UI.c.i
+
+main_UI.s: main_UI.c.s
+
+.PHONY : main_UI.s
+
+# target to generate assembly for a file
+main_UI.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.c.dir/build.make CMakeFiles/main.c.dir/main_UI.c.s
+.PHONY : main_UI.c.s
 
 # Help Target
 help:
@@ -178,10 +232,16 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... logiciel_kine2"
+	@echo "... main.c"
+	@echo "... gtk_functions.o"
+	@echo "... gtk_functions.i"
+	@echo "... gtk_functions.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... main_UI.o"
+	@echo "... main_UI.i"
+	@echo "... main_UI.s"
 .PHONY : help
 
 
