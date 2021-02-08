@@ -1,2 +1,2 @@
-# Empty dependencies file for logiciel_kine2.
+# Empty dependencies file for main.c.
 # This may be replaced when dependencies are built.

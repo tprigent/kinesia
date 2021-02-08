@@ -13,5 +13,5 @@ set(CMAKE_C_STANDARD 90)
 
 set(SOURCE_FILES main.c main_UI.c gtk_functions.c main_UI.h)
 
-add_executable(main_UI.c ${SOURCE_FILES})
+add_executable(main.c ${SOURCE_FILES})
 target_link_libraries(main.c ${GTK3_LIBRARIES} pthread)
