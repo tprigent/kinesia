@@ -30,12 +30,12 @@ int main_UI(int argc, char **argv) {
     gtk_widget_set_vexpand(boxPart[0], TRUE);
 
     boxPart[1] = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[1],boxPart[0], GTK_POS_RIGHT, 4, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[1],boxPart[0], GTK_POS_RIGHT, 4, 5);
     gtk_widget_set_hexpand(boxPart[1], TRUE);
     gtk_widget_set_vexpand(boxPart[1], TRUE);
 
     boxPart[2] = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[2],boxPart[1], GTK_POS_BOTTOM, 4, 5);
+    gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[2],boxPart[1], GTK_POS_BOTTOM, 4, 1);
     gtk_widget_set_hexpand(boxPart[2], TRUE);
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 

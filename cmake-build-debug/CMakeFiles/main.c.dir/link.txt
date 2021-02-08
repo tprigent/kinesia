@@ -1,1 +1,0 @@
-/usr/bin/gcc -g   CMakeFiles/main.c.dir/main.c.o CMakeFiles/main.c.dir/main_UI.c.o CMakeFiles/main.c.dir/gtk_functions.c.o  -o main.c  -lpthread 
