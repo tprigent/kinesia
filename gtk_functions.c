@@ -161,12 +161,15 @@ void createFolderInfoWindow(GtkWidget *box){
 
     /* LABEL */
     GtkWidget *attachments_label = NULL;
+    GtkWidget *attachments_count = NULL;
     attachments_label = gtk_label_new("Pièces jointes:    ");
+    attachments_count = gtk_label_new("   (0)");                     //TODO: make this indicator dynamic
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_label, FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(hbox_attachments), attachments_count, FALSE, FALSE, 0);
 
     /* BUTTON */
     GtkWidget *attachments_button = NULL;
-    attachments_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
+    attachments_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
@@ -188,7 +191,6 @@ void createFolderInfoWindow(GtkWidget *box){
     /* BUTTON */
     GtkWidget *edit_folder_button = NULL;
     edit_folder_button = gtk_button_new_from_icon_name("document-open", GTK_ICON_SIZE_MENU);
-    //edit_folder_button = gtk_button_new_with_label("Éditer");
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
