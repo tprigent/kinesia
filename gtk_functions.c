@@ -190,7 +190,7 @@ void createFolderInfoWindow(GtkWidget *box){
 
     /* BUTTON */
     GtkWidget *edit_folder_button = NULL;
-    edit_folder_button = gtk_button_new_from_icon_name("document-open", GTK_ICON_SIZE_MENU);
+    edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
