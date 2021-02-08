@@ -454,7 +454,6 @@ void createSessionInfoWindow(GtkWidget *box){
     gtk_widget_set_hexpand(session1, TRUE);
     gtk_widget_set_vexpand(session1, FALSE);
     gtk_widget_set_halign(session1, GTK_ALIGN_FILL);
-
     /* ****************************************************************************** */
 
 }
