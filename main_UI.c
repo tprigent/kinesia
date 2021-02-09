@@ -42,7 +42,7 @@ int main_UI(int argc, char **argv) {
 
     /* Call the functions which create the different parts of the window */
     createPatientInfoWindow(boxPart[0]);
-    createFolderInfoWindow(boxPart[1]);
+    createFolderInfoWindow(boxPart[1], window);
     createSessionInfoWindow(boxPart[2]);
 
     /* Display the window and begin the loop */
