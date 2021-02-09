@@ -1,0 +1,8 @@
+//
+// Created by julien on 09/02/2021.
+//
+
+#ifndef LOGICIEL_KINE_CONNECT_STRUCT_UI_H
+#define LOGICIEL_KINE_CONNECT_STRUCT_UI_H
+
+#endif //LOGICIEL_KINE_CONNECT_STRUCT_UI_H

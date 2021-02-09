@@ -460,4 +460,5 @@ void createSessionInfoWindow(GtkWidget *box){
 
 void setStartMargin(GtkWidget *widget){
     gtk_widget_set_margin_start(widget, 5);
+
 }
