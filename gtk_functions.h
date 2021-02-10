@@ -14,5 +14,6 @@ void createFolderInfoWindow(GtkWidget *box);
 void createSessionInfoWindow(GtkWidget *box);
 
 void setStartMargin(GtkWidget *widget);
+void setTopMargin(GtkWidget *widget);
 
 #endif //TEST_GTK_GTK_FUNCTIONS_H

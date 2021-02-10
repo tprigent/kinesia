@@ -52,7 +52,7 @@ void createPatientInfoWindow(GtkWidget *box){
 
     /* Creation of a button to change information *********/
     GtkWidget *but_edit = NULL;
-    but_edit = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_LARGE_TOOLBAR);
+    but_edit = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
     gtk_grid_attach(GTK_GRID(grid_info), but_edit, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(but_edit, TRUE);
     gtk_widget_set_vexpand(but_edit, FALSE);
@@ -153,7 +153,7 @@ void createPatientInfoWindow(GtkWidget *box){
     gtk_widget_set_vexpand(frame_important_info, FALSE);
 
     GtkWidget *label_imp_info = NULL;
-    label_imp_info = gtk_label_new("Informations médicales particulières \nPar exemple maladie cardiaue/diabète...");
+    label_imp_info = gtk_label_new("Informations médicales particulières \nPar exemple maladie cardiaque/diabète...");
     gtk_container_add(GTK_CONTAINER(frame_important_info), label_imp_info);
     /* ************************************************** */
 
@@ -196,6 +196,7 @@ void createFolderInfoWindow(GtkWidget *box){
     /* Create a frame for the folder zone ******************************************* */
     GtkWidget *cadre_folder = NULL;
     cadre_folder = gtk_frame_new("Dossier");
+    gtk_frame_set_label_align(GTK_FRAME(cadre_folder), 0.5, 0.5);
     gtk_grid_attach(GTK_GRID(grid_part2), cadre_folder, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(cadre_folder, TRUE);
     gtk_widget_set_vexpand(cadre_folder, TRUE);
@@ -462,5 +463,8 @@ void createSessionInfoWindow(GtkWidget *box){
 
 void setStartMargin(GtkWidget *widget){
     gtk_widget_set_margin_start(widget, 5);
+}
 
+void setTopMargin(GtkWidget *widget){
+    gtk_widget_set_margin_top(widget, 5);
 }
