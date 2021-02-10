@@ -7,7 +7,6 @@ int main_UI(int argc, char **argv) {
     gtk_init(&argc, &argv);
 
     GtkWidget *window = NULL;
-    //GtkWidget *table = NULL;
     GtkWidget *grid = NULL;
 
     /* create a new window, and set its attributes */
@@ -16,8 +15,6 @@ int main_UI(int argc, char **argv) {
     setMainWindow(window);
 
     /* Create a new table a place it in the window*/
-    //table = gtk_table_new(4, 4, TRUE);
-    //gtk_container_add(GTK_CONTAINER(window), table);
     grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(window), grid);
 
