@@ -5,6 +5,7 @@
 #ifndef LOGICIEL_KINE_CONTROLLER_H
 #define LOGICIEL_KINE_CONTROLLER_H
 
-void launchFolderEditor(gpointer *parent);
+void launchFolderEditor();
+void launchPatientEditor();
 
 #endif //LOGICIEL_KINE_CONTROLLER_H

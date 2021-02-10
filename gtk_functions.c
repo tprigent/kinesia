@@ -53,6 +53,7 @@ void createPatientInfoWindow(GtkWidget *box){
     /* Creation of a button to change information *********/
     GtkWidget *but_edit = NULL;
     but_edit = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+    g_signal_connect(GTK_BUTTON(but_edit), "clicked", G_CALLBACK(launchPatientEditor), NULL);
     gtk_grid_attach(GTK_GRID(grid_info), but_edit, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(but_edit, TRUE);
     gtk_widget_set_vexpand(but_edit, FALSE);
@@ -467,4 +468,8 @@ void setStartMargin(GtkWidget *widget){
 
 void setTopMargin(GtkWidget *widget){
     gtk_widget_set_margin_top(widget, 5);
+}
+
+void setBottomMargin(GtkWidget *widget){
+    gtk_widget_set_margin_bottom(widget, 5);
 }
