@@ -14,28 +14,56 @@ typedef struct{
     int year;
 }Date;
 
+/*enum pour genre d'une personne*/
+typedef enum {HOMME, FEMME, AUTRE}Genre;
+
+
+/*Structure adresse*/
+typedef struct {
+    char * numMaison; //la personne doit ajouter bis ou ter si maison bis ou ter (à préciser dans l'interface)
+    char * rue; //Rue ou avenue ou autre
+    int codePostal; //code postal
+    char * ville;
+    char * infoComp; //numéro batiment, num appartement...
+}Adresse;
+
 typedef struct{
     /* Etat civil */
-    char name[LG_MAX_INFO];
-    char forename[LG_MAX_INFO];
+    char * name;
+    char * forename;
     Date birthdate;
-    char place_birth[LG_MAX_INFO];
-    char sexe[LG_MAX_INFO];       // Structure pour sexe HOMME/FEMME ?
-    char address[LG_MAX_INFO];
+    char * place_birth;
+    Genre genre;       // Enum HOMME, FEMME, AUTRE
+    Adresse address;
     int phone_number;
-    char mail_address[LG_MAX_INFO];
-    char num_secu[LG_MAX_INFO];     // Num de secu trop grand meme pour un long int
+    char * mail_address;
+    char * num_secu;     // Num de secu trop grand meme pour un long int
 
     /* Informations médicales */
     int weight;
     int height;
-    char groupe_sanguin[LG_MAX_INFO];          // Vraiment utile pour un kiné ?
+    char * groupe_sanguin;          // Vraiment utile pour un kiné ?
     Date first_consultation;
-    char global_pathologies[LG_MAX_OTHERS];
+    char * global_pathologies;
 
     /* Autre */
     unsigned int id;
 
 }Patient;
+
+
+typedef struct{
+    /*Informations relatives à la séance*/
+    char * nomSeance; //Titre de la séance
+    Date dateSeance; //Date de la séance actuelle
+    Date dateSeanceSuiv; //Date de la prochaine séance
+    char * observations; //observations faites lors de la séance
+
+    /*id Séance (je sais pas si ce sera utile mais il paraît qu'il faut toujours faire ça*/
+    unsigned int idSeance;
+
+    /*lien à un dossier*/
+    unsigned int idDossier;
+}Seance;
 
 #endif //LOGICIEL_KINE_STRUCTURES_H
