@@ -17,7 +17,7 @@ main_UI: main_UI.o gtk_functions.o controller.o
 
 
 clean:
-	rm -f %.o
+	rm -f *.o
 	rm -f main
 	rm -f main_UI
 
