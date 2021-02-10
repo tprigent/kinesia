@@ -186,7 +186,7 @@ void createPatientInfoWindow(GtkWidget *box){
     /* ****************************************************************************** */
 }
 
-void createFolderInfoWindow(GtkWidget *box, GtkWidget *currentWindow){
+void createFolderInfoWindow(GtkWidget *box){
     /* Create a grid which contains the different elements of the folder ************ */
     GtkWidget *grid_part2 = NULL;
     grid_part2 = gtk_grid_new();
@@ -358,7 +358,7 @@ void createFolderInfoWindow(GtkWidget *box, GtkWidget *currentWindow){
     /* BUTTON */
     GtkWidget *edit_folder_button = NULL;
     edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), (gpointer *)currentWindow);
+    g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), NULL);
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);

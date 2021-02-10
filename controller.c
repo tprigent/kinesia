@@ -5,7 +5,7 @@
 #include <gtk/gtk.h>
 #include "controller.h"
 
-void launchFolderEditor(gpointer *parent){
+void launchFolderEditor(){
 
     /* DECLARE VARIABLES */
     GtkWidget *dialog;
@@ -20,7 +20,7 @@ void launchFolderEditor(gpointer *parent){
     GtkWidget *content_area;
 
     /* CREATE THE DIALOG BOX */
-    dialog = gtk_dialog_new_with_buttons ("Édition du dossier",GTK_WINDOW(parent),GTK_DIALOG_MODAL,
+    dialog = gtk_dialog_new_with_buttons ("Édition du dossier",NULL,GTK_DIALOG_MODAL,
                                           "Annuler",GTK_RESPONSE_REJECT,
                                           "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
 
@@ -66,6 +66,8 @@ void launchFolderEditor(gpointer *parent){
         default:
             break;
     }
-    gtk_widget_destroy (dialog);
+
+    /* DESTROY DIALOG BOX */
+    gtk_widget_destroy(dialog);
 
 }

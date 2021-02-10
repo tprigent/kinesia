@@ -10,7 +10,7 @@
 void setMainWindow(GtkWidget *window);
 
 void createPatientInfoWindow(GtkWidget *box);
-void createFolderInfoWindow(GtkWidget *box, GtkWidget *currentWindow);
+void createFolderInfoWindow(GtkWidget *box);
 void createSessionInfoWindow(GtkWidget *box);
 
 void setStartMargin(GtkWidget *widget);
