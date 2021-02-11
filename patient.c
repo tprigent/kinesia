@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "Structures.h"
 
+//Modification d'un patient
 int modifyPatient(Patient *gen){
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -14,8 +15,10 @@ int modifyPatient(Patient *gen){
     char *sql;
     sqlite3_stmt *stmt;
 
+    //Ouverture de la bdd
     rc = sqlite3_open("/BaseDeDonnee/Bdd.db", &db);
 
+    //Test de l'ouverture
     if( rc ) {
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
         return 0;
@@ -23,6 +26,7 @@ int modifyPatient(Patient *gen){
         fprintf("Opened database successfully\n");
     }
 
+    //Creation de la requête
     sql = "UPDATE patient SET name=?,forename=?,birthdate_year=?,birthdate_month=?,"
           "birthdate_day=?,place_birth=?,"
           "genre=?,adress=?,phone_number=?,mail_adress=?,num_secu=?,weight=?,"
@@ -30,6 +34,7 @@ int modifyPatient(Patient *gen){
           "first_consultation_month=?,first_consultation_day=?,"
           "numMaison=?,rue=?,codePostal=?,ville=?,infocomp=?,job=? WHERE id=?";
 
+    //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     if( rc != SQLITE_OK ){
         fprintf(stderr, "Prepare error: %s\n", zErrMsg);
@@ -37,6 +42,7 @@ int modifyPatient(Patient *gen){
         return 0;
     }
 
+    //Ajout des valeurs dans la requête
     sqlite3_bind_text(stmt,1,gen->name,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,2,gen->forename,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,3,gen->birthdate.year,-1,SQLITE_TRANSIENT);
@@ -64,6 +70,7 @@ int modifyPatient(Patient *gen){
 
     sqlite3_bind_int(stmt,25,gen->id,-1,SQLITE_TRANSIENT);
 
+    //Execution de la requête
     rc = sqlite3_step(stmt);
     if( rc != SQLITE_DONE ){
         fprintf(stderr, "Step error: %s\n", zErrMsg);
@@ -72,6 +79,7 @@ int modifyPatient(Patient *gen){
     }
     sqlite3_finalize(stmt);
 
+    //Fermeture de la bdd
     sqlite3_close(db);
     return 1;
 }
@@ -85,8 +93,10 @@ int addPatient(Patient *gen){
     char *sql;
     sqlite3_stmt *stmt;
 
+    //Ouverture de la bdd
     rc = sqlite3_open("/BaseDeDonnee/Bdd.db", &db);
 
+    //Test de l'ouverture
     if( rc ) {
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
         return 0;
@@ -94,6 +104,7 @@ int addPatient(Patient *gen){
         fprintf("Opened database successfully\n");
     }
 
+    //Creation de la requête
     sql = "INSERT INTO patient (name,forename,birthdate_year,birthdate_month"
           ",birthdate_day,place_birth"
           ",genre,adress,phone_number,mail_adress,num_secu,weight,"
@@ -102,6 +113,7 @@ int addPatient(Patient *gen){
           "numMaison,rue,codePostal,ville,infocomp,job) VALUES (?,?,?,?,?,"
           "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
+    //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     if( rc != SQLITE_OK ){
         fprintf(stderr, "Prepare error: %s\n", zErrMsg);
@@ -109,6 +121,7 @@ int addPatient(Patient *gen){
         return 0;
     }
 
+    //Ajout des valeurs dans la requête
     sqlite3_bind_text(stmt,1,gen->name,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,2,gen->forename,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,3,gen->birthdate.year,-1,SQLITE_TRANSIENT);
@@ -134,6 +147,7 @@ int addPatient(Patient *gen){
     sqlite3_bind_text(stmt,23,gen->infoComp,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,24,gen->job,-1,SQLITE_TRANSIENT);
 
+    //Execution de la requête
     rc = sqlite3_step(stmt);
     if( rc != SQLITE_DONE ){
         fprintf(stderr, "Step error: %s\n", zErrMsg);
@@ -142,6 +156,7 @@ int addPatient(Patient *gen){
     }
     sqlite3_finalize(stmt);
 
+    //Fermeture de la bdd
     sqlite3_close(db);
     return 1;
 }
