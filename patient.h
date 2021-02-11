@@ -9,8 +9,9 @@
 #include "Structures.h"
 #include "sqlite3.h"
 
-int addPatient(Patient gen);
-int modifyPatient(modifiable_item item);
-int addSeance(Patient gen, Seance seance);
+//Modification d'un patient
+int addPatient(Patient *gen);
+//Ajout d'un patient dans la table patient à partir d'une instance de la struct Patient
+int modifyPatient(Patient *gen);
 
 #endif //LOGICIEL_KINE_PATIENT_H
