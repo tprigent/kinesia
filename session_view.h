@@ -6,7 +6,7 @@
 #define TEST_GTK_GTK_FUNCTIONS_H
 
 #include <gtk/gtk.h>
-#include "Structures.h"
+#include "structures.h"
 
 GtkWidget *setSessionWindow();
 void setSessionEnvironment(GtkWidget *window);

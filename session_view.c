@@ -4,6 +4,7 @@
 
 #include "session_view.h"
 #include "session_controller.h"
+#include "connect_struct_UI.h"
 #include <gtk/gtk.h>
 
 
@@ -21,6 +22,32 @@ GtkWidget *setSessionWindow(){
 }
 
 void setSessionEnvironment(GtkWidget *window){
+
+    /* Création patient pour tests sur la lecture de structure ********/
+    Patient *patient = (Patient*) malloc(sizeof(Patient));
+    //Name
+    patient->name = (char*) malloc(10*sizeof(char));
+    strcpy(patient->name, "François");
+    patient->forename = (char*) malloc(10*sizeof(char));
+    strcpy(patient->forename, "Claude");
+    //Birthdate
+    patient->birthdate.day = 1;
+    patient->birthdate.month = 2;
+    patient->birthdate.year = 1939;
+    //Job
+    patient->job = (char*) malloc(10*sizeof(char));
+    strcpy(patient->job, "Chanteur");
+    //Height Weight
+    patient->height = 170;
+    patient->weight = 59;
+    //Global pathologies
+    patient->global_pathologies = (char*) malloc(100*sizeof(char));
+    strcpy(patient->global_pathologies, "Souffre d'une maladie cardiaque\nEst diabétique...");
+    //First consultation
+    patient->first_consultation.day = 7;
+    patient->first_consultation.month = 1;
+    patient->first_consultation.year = 1960;
+    /* ****************************************************************/
 
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();
@@ -49,12 +76,12 @@ void setSessionEnvironment(GtkWidget *window){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    createPatientInfoWindow(boxPart[0]);
+    createPatientInfoWindow(boxPart[0], patient);
     createFolderInfoWindow(boxPart[1]);
     createSessionInfoWindow(boxPart[2]);
 }
 
-void createPatientInfoWindow(GtkWidget *box){
+void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     /* Create a grid to organize the information section **************************** */
     GtkWidget *grid_part1 = NULL;
     grid_part1 = gtk_grid_new();
@@ -126,7 +153,9 @@ void createPatientInfoWindow(GtkWidget *box){
     /* Section which fills the identity informations ******/
     // Name
     GtkWidget *nom = NULL;
-    nom = gtk_label_new("Claude François");
+    char * name = get_name_UI(patient);
+    nom = gtk_label_new(name);
+    free_name_UI(name);
     gtk_grid_attach(GTK_GRID(grid_etat_civil), nom, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(nom, TRUE);
     gtk_widget_set_vexpand(nom, FALSE);
@@ -134,7 +163,9 @@ void createPatientInfoWindow(GtkWidget *box){
 
     // Birthdate
     GtkWidget *dateN = NULL;
-    dateN = gtk_label_new("1 février 1939");
+    char *birth = get_birthdate_UI(patient);
+    dateN = gtk_label_new(birth);
+    free_birthdate_UI(birth);
     gtk_label_set_use_markup(GTK_LABEL(dateN), TRUE);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), dateN, nom, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(dateN, TRUE);
@@ -143,7 +174,8 @@ void createPatientInfoWindow(GtkWidget *box){
 
     // Profession
     GtkWidget *profession = NULL;
-    profession = gtk_label_new("Chanteur");
+    char * job = get_job_UI(patient);
+    profession = gtk_label_new(job);
     gtk_label_set_use_markup(GTK_LABEL(profession), TRUE);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), profession, dateN, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(profession, TRUE);
@@ -167,20 +199,24 @@ void createPatientInfoWindow(GtkWidget *box){
     /* Section which fills the identity informations ******/
     // Weight and height
     GtkWidget *poids_taille = NULL;
-    poids_taille = gtk_label_new("59 kg    ;   1.70m");
+    char *height_weight = get_height_weight_UI(patient);
+    poids_taille = gtk_label_new(height_weight);
+    free_height_weight_UI(height_weight);
     gtk_grid_attach(GTK_GRID(grid_medical_info), poids_taille, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(poids_taille, TRUE);
     gtk_widget_set_vexpand(poids_taille, FALSE);
     gtk_widget_set_halign(poids_taille, GTK_ALIGN_CENTER);
 
-    // num de secu
-    GtkWidget *num_secu = NULL;
-    num_secu = gtk_label_new("N° de sécurité sociale");
-    gtk_label_set_use_markup(GTK_LABEL(num_secu), TRUE);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), num_secu, poids_taille, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(num_secu, TRUE);
-    gtk_widget_set_vexpand(num_secu, FALSE);
-    gtk_widget_set_halign(num_secu, GTK_ALIGN_CENTER);
+    // First consultation
+    GtkWidget *first_consultation = NULL;
+    char * first_consultation_char = get_first_consultation_UI(patient);
+    first_consultation = gtk_label_new(first_consultation_char);
+    free_first_consultation_UI(first_consultation_char);
+    gtk_label_set_use_markup(GTK_LABEL(first_consultation), TRUE);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consultation, poids_taille, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(first_consultation, TRUE);
+    gtk_widget_set_vexpand(first_consultation, FALSE);
+    gtk_widget_set_halign(first_consultation, GTK_ALIGN_CENTER);
     /* ************************************************** */
 
     /* Frame which contains important informations ********/
@@ -192,7 +228,8 @@ void createPatientInfoWindow(GtkWidget *box){
     gtk_widget_set_vexpand(frame_important_info, FALSE);
 
     GtkWidget *label_imp_info = NULL;
-    label_imp_info = gtk_label_new("Informations médicales particulières \nPar exemple maladie cardiaque/diabète...");
+    char * global_pathologies = get_global_pathologies_UI(patient);
+    label_imp_info = gtk_label_new(global_pathologies);
     gtk_container_add(GTK_CONTAINER(frame_important_info), label_imp_info);
     /* ************************************************** */
 

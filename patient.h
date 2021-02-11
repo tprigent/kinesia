@@ -6,7 +6,7 @@
 #define LOGICIEL_KINE_PATIENT_H
 
 #include <stdio.h>
-#include "Structures.h"
+#include "structures.h"
 
 
 #endif //LOGICIEL_KINE_PATIENT_H

@@ -5,7 +5,7 @@
 #ifndef LOGICIEL_KINE_CONNECT_STRUCT_UI_H
 #define LOGICIEL_KINE_CONNECT_STRUCT_UI_H
 
-#include "Structures.h"
+#include "structures.h"
 #include <string.h>
 
 char *get_name_UI(Patient *patient);
