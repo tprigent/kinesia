@@ -3,7 +3,7 @@ set(CMAKE_C_COMPILER "gcc")
 project(Logiciel_Kine C)
 
 include(FindPkgConfig)
-pkg_check_modules(GTK REQUIRED "gtk+-3.0")
+pkg_check_modules(GTK3 REQUIRED "gtk+-3.0")
 
 include_directories(${GTK_INCLUDE_DIRS})
 link_directories(${GTK3_LIBRARY_DIRS})

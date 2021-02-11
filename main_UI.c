@@ -1,9 +1,21 @@
 #include <gtk/gtk.h>
 #include "main_UI.h"
+#include "Structures.h"
 #include "gtk_functions.h"
 
 
-int main_UI(int argc, char **argv) {
+
+int main_UI(int argc, char **argv){
+
+    /* Test sur la lecture de structure ********/
+    Patient patient;
+    strcpy(patient.name, "François");
+    strcpy(patient.forename, "Claude");
+    patient.birthdate.day = 1;
+    patient.birthdate.month = 2;
+    patient.birthdate.year = 1939;
+    /* *****************************************/
+
     gtk_init(&argc, &argv);
 
     GtkWidget *window = NULL;
@@ -41,7 +53,7 @@ int main_UI(int argc, char **argv) {
 
 
     /* Call the functions which create the different parts of the window */
-    createPatientInfoWindow(boxPart[0]);
+    createPatientInfoWindow(boxPart[0], &patient);
     createFolderInfoWindow(boxPart[1]);
     createSessionInfoWindow(boxPart[2]);
 

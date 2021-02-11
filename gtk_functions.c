@@ -3,9 +3,10 @@
 //
 
 #include <stdlib.h>
-#include "gtk_functions.h"
 #include <gtk/gtk.h>
-
+#include "gtk_functions.h"
+#include "connect_struct_UI.h"
+//#include "connect_struct_UI.c"        //A ajouter si compilation avec CMake
 
 void setMainWindow(GtkWidget *window){
     gtk_window_set_title(GTK_WINDOW(window), "Kinesia");
@@ -15,7 +16,7 @@ void setMainWindow(GtkWidget *window){
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 }
 
-void createPatientInfoWindow(GtkWidget *box){
+void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     /* Create a grid to organize the information section **************************** */
     GtkWidget *grid_part1 = NULL;
     grid_part1 = gtk_grid_new();
@@ -62,7 +63,7 @@ void createPatientInfoWindow(GtkWidget *box){
     GtkWidget *photo = NULL;
     GdkPixbuf *photo2 = NULL;
     photo2 = gdk_pixbuf_new_from_file("./photo_patients/claude.jpeg", NULL);
-    photo2 = gdk_pixbuf_scale_simple(photo2, 170, 250, GDK_INTERP_BILINEAR);
+    //photo2 = gdk_pixbuf_scale_simple(photo2, 170, 250, GDK_INTERP_BILINEAR);
     photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(photo2));
     gtk_grid_attach_next_to(GTK_GRID(grid_info), photo, but_edit, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(photo, FALSE);
@@ -86,7 +87,9 @@ void createPatientInfoWindow(GtkWidget *box){
     /* Section which fills the identity informations ******/
     // Name
     GtkWidget *nom = NULL;
-    nom = gtk_label_new("Claude François");
+    char *name = get_name_UI(patient);
+    nom = gtk_label_new(name);
+    free_name_UI(name);
     gtk_grid_attach(GTK_GRID(grid_etat_civil), nom, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(nom, TRUE);
     gtk_widget_set_vexpand(nom, FALSE);
@@ -94,7 +97,8 @@ void createPatientInfoWindow(GtkWidget *box){
 
     // Birthdate
     GtkWidget *dateN = NULL;
-    dateN = gtk_label_new("1 février 1939");
+    char *birth = get_birthdate_UI(patient);
+    dateN = gtk_label_new(birth);
     gtk_label_set_use_markup(GTK_LABEL(dateN), TRUE);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), dateN, nom, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(dateN, TRUE);
