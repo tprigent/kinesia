@@ -2,18 +2,56 @@
 // Created by julien on 02/02/2021.
 //
 
-#include <stdlib.h>
-#include "gtk_functions.h"
-#include "controller.h"
+#include "main_view.h"
+#include "main_controller.h"
 #include <gtk/gtk.h>
 
 
-void setMainWindow(GtkWidget *window){
+GtkWidget *setMainWindow(){
+    GtkWidget *window = NULL;
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+    gtk_window_activate_focus(GTK_WINDOW(window));
     gtk_window_set_title(GTK_WINDOW(window), "Kinesia");
-    gtk_window_set_default_size(GTK_WINDOW(window), 1000, 600);
+    gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
     gtk_window_maximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    return window;
+}
+
+void setMainEnvironment(GtkWidget *window){
+
+    GtkWidget *grid = NULL;
+    grid = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(window), grid);
+
+
+    /* Set the 3 main spaces of the window */
+    GtkWidget *boxPart[3];
+
+    boxPart[0] = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_grid_attach(GTK_GRID(grid), boxPart[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 6);
+    gtk_widget_set_hexpand(boxPart[0], TRUE);
+    gtk_widget_set_vexpand(boxPart[0], TRUE);
+
+    boxPart[1] = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    setStartMargin(boxPart[1]);
+    gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[1],boxPart[0], GTK_POS_RIGHT, 4, 5);
+    gtk_widget_set_hexpand(boxPart[1], TRUE);
+    gtk_widget_set_vexpand(boxPart[1], TRUE);
+
+    boxPart[2] = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    setStartMargin(boxPart[2]);
+    setTopMargin(boxPart[2]);
+    gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[2],boxPart[1], GTK_POS_BOTTOM, 4, 1);
+    gtk_widget_set_hexpand(boxPart[2], TRUE);
+    gtk_widget_set_vexpand(boxPart[2], TRUE);
+
+    /* Fill in the 3 spaces */
+    createPatientInfoWindow(boxPart[0]);
+    createFolderInfoWindow(boxPart[1]);
+    createSessionInfoWindow(boxPart[2]);
 }
 
 void createPatientInfoWindow(GtkWidget *box){
@@ -461,6 +499,9 @@ void createSessionInfoWindow(GtkWidget *box){
     /* ****************************************************************************** */
 
 }
+
+
+/* HELPERS */
 
 void setStartMargin(GtkWidget *widget){
     gtk_widget_set_margin_start(widget, 5);

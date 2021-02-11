@@ -3,8 +3,8 @@
 //
 
 #include <gtk/gtk.h>
-#include "controller.h"
-#include "gtk_functions.h"
+#include "main_controller.h"
+#include "main_view.h"
 
 void launchFolderEditor(){
 
