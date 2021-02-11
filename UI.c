@@ -1,18 +1,18 @@
 #include <gtk/gtk.h>
 #include "UI.h"
-#include "main_view.h"
+#include "session_view.h"
 
 
 int main_UI(int argc, char **argv) {
     gtk_init(&argc, &argv);
 
-    /* Create the main window */
-    GtkWidget *mainWindow = NULL;
-    mainWindow = setMainWindow();
+    /* Create the session window */
+    GtkWidget *sessionWindow = NULL;
+    sessionWindow = setSessionWindow();
     /* Fill the main view */
-    setMainEnvironment(mainWindow);
-    /* Display the main view */
-    gtk_widget_show_all(mainWindow);
+    setSessionEnvironment(sessionWindow);
+    /* Display the session view */
+    gtk_widget_show_all(sessionWindow);
     gtk_main();
 
     return EXIT_SUCCESS;

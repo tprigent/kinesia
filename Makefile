@@ -6,7 +6,7 @@ CFLAGS+=`pkg-config --cflags gtk+-3.0`
 
 all: main
 
-main: main.o UI.o main_controller.o main_view.o
+main: main.o UI.o session_controller.o session_view.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c

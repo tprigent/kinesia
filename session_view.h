@@ -7,8 +7,8 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget *setMainWindow();
-void setMainEnvironment(GtkWidget *window);
+GtkWidget *setSessionWindow();
+void setSessionEnvironment(GtkWidget *window);
 
 void createPatientInfoWindow(GtkWidget *box);
 void createFolderInfoWindow(GtkWidget *box);

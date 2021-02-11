@@ -2,12 +2,12 @@
 // Created by julien on 02/02/2021.
 //
 
-#include "main_view.h"
-#include "main_controller.h"
+#include "session_view.h"
+#include "session_controller.h"
 #include <gtk/gtk.h>
 
 
-GtkWidget *setMainWindow(){
+GtkWidget *setSessionWindow(){
     GtkWidget *window = NULL;
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
@@ -20,7 +20,7 @@ GtkWidget *setMainWindow(){
     return window;
 }
 
-void setMainEnvironment(GtkWidget *window){
+void setSessionEnvironment(GtkWidget *window){
 
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();
