@@ -15,7 +15,6 @@ set(SOURCE_FILES main.c main_UI.c gtk_functions.c main_UI.h patient.c patient.h)
 
 add_executable(main.c ${SOURCE_FILES} sqlite3.c)
 target_link_libraries(main.c ${GTK3_LIBRARIES} pthread)
-
-set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-target_link_libraries(test PRIVATE ${CMAKE_DL_LIBS} Threads::Threads)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+target_link_libraries(Logiciel_Kine PRIVATE ${CMAKE_DL_LIBS} Threads::Threads)
