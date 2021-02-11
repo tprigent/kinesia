@@ -39,9 +39,9 @@ void free_name_UI(char *name){
 
 char *get_birthdate_UI(Patient *patient){
     char *birthdate = (char*) malloc(11*sizeof(char));
-    char *day = (char*) malloc(2*sizeof(char));
-    char *month = (char*) malloc(2*sizeof(char));
-    char *year = (char*) malloc(4*sizeof(char));
+    char day[3];
+    char month[3];
+    char year[5];
     tostring(day, patient->birthdate.day);
     tostring(month, patient->birthdate.month);
     tostring(year, patient->birthdate.year);
@@ -53,10 +53,6 @@ char *get_birthdate_UI(Patient *patient){
     strcat(birthdate, year);
     strcat(birthdate, "\0");
 
-    free(day);
-    free(month);
-    free(year);
-
     return birthdate;
 }
 
@@ -64,3 +60,61 @@ void free_birthdate_UI(char *birthdate){
     free(birthdate);
 }
 
+char *get_job_UI(Patient *patient){
+    return patient->job;
+}
+
+char *get_height_weight_UI(Patient *patient){
+    char *height_weight = (char*) malloc(40*sizeof(char));
+    char height_m[2];
+    char height_cm[3];
+    char weight[4];
+    int int_height_m = (int) patient->height/100;
+    int int_height_cm = patient->height - int_height_m*100;
+
+    tostring(height_m, int_height_m);
+    tostring(height_cm, int_height_cm);
+    tostring(weight, patient->weight);
+
+    strcpy(height_weight, weight);
+    strcat(height_weight, "kg   ;   ");
+    strcat(height_weight, height_m);
+    strcat(height_weight, ".");
+    strcat(height_weight, height_cm);
+    strcat(height_weight, "m");
+    strcat(height_weight, "\0");
+
+    return height_weight;
+}
+
+void free_height_weight_UI(char *height_weight){
+    free(height_weight);
+}
+
+char *get_global_pathologies_UI(Patient *patient){
+    return patient->global_pathologies;
+}
+
+char *get_first_consultation_UI(Patient *patient){
+    char *first_consultation = (char*) malloc(35*sizeof(char));
+    char day[3];
+    char month[3];
+    char year[5];
+    tostring(day, patient->first_consultation.day);
+    tostring(month, patient->first_consultation.month);
+    tostring(year, patient->first_consultation.year);
+
+    strcpy(first_consultation, "Première consultation : ");
+    strcat(first_consultation, day);
+    strcat(first_consultation, "/");
+    strcat(first_consultation, month);
+    strcat(first_consultation, "/");
+    strcat(first_consultation, year);
+    strcat(first_consultation, "\0");
+
+    return first_consultation;
+}
+
+void free_first_consultation_UI(char *first_consultation){
+    free(first_consultation);
+}

@@ -7,14 +7,31 @@
 
 int main_UI(int argc, char **argv){
 
-    /* Test sur la lecture de structure ********/
-    Patient patient;
-    strcpy(patient.name, "François");
-    strcpy(patient.forename, "Claude");
-    patient.birthdate.day = 1;
-    patient.birthdate.month = 2;
-    patient.birthdate.year = 1939;
-    /* *****************************************/
+    /* Création patient pour tests sur la lecture de structure ********/
+    Patient *patient = (Patient*) malloc(sizeof(Patient));
+    //Name
+    patient->name = (char*) malloc(10*sizeof(char));
+    strcpy(patient->name, "François");
+    patient->forename = (char*) malloc(10*sizeof(char));
+    strcpy(patient->forename, "Claude");
+    //Birthdate
+    patient->birthdate.day = 1;
+    patient->birthdate.month = 2;
+    patient->birthdate.year = 1939;
+    //Job
+    patient->job = (char*) malloc(10*sizeof(char));
+    strcpy(patient->job, "Chanteur");
+    //Height Weight
+    patient->height = 170;
+    patient->weight = 59;
+    //Global pathologies
+    patient->global_pathologies = (char*) malloc(100*sizeof(char));
+    strcpy(patient->global_pathologies, "Souffre d'une maladie cardiaque\nEst diabétique...");
+    //First consultation
+    patient->first_consultation.day = 7;
+    patient->first_consultation.month = 1;
+    patient->first_consultation.year = 1960;
+    /* ****************************************************************/
 
     gtk_init(&argc, &argv);
 
@@ -53,7 +70,7 @@ int main_UI(int argc, char **argv){
 
 
     /* Call the functions which create the different parts of the window */
-    createPatientInfoWindow(boxPart[0], &patient);
+    createPatientInfoWindow(boxPart[0], patient);
     createFolderInfoWindow(boxPart[1]);
     createSessionInfoWindow(boxPart[2]);
 

@@ -107,7 +107,8 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
 
     // Profession
     GtkWidget *profession = NULL;
-    profession = gtk_label_new("Chanteur");
+    char *job = get_job_UI(patient);
+    profession = gtk_label_new(job);
     gtk_label_set_use_markup(GTK_LABEL(profession), TRUE);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), profession, dateN, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(profession, TRUE);
@@ -131,20 +132,24 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     /* Section which fills the identity informations ******/
     // Weight and height
     GtkWidget *poids_taille = NULL;
-    poids_taille = gtk_label_new("59 kg    ;   1.70m");
+    char *height_weight = get_height_weight_UI(patient);
+    poids_taille = gtk_label_new(height_weight);
+    free_height_weight_UI(height_weight);
     gtk_grid_attach(GTK_GRID(grid_medical_info), poids_taille, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(poids_taille, TRUE);
     gtk_widget_set_vexpand(poids_taille, FALSE);
     gtk_widget_set_halign(poids_taille, GTK_ALIGN_CENTER);
 
-    // num de secu
-    GtkWidget *num_secu = NULL;
-    num_secu = gtk_label_new("N° de sécurité sociale");
-    gtk_label_set_use_markup(GTK_LABEL(num_secu), TRUE);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), num_secu, poids_taille, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(num_secu, TRUE);
-    gtk_widget_set_vexpand(num_secu, FALSE);
-    gtk_widget_set_halign(num_secu, GTK_ALIGN_CENTER);
+    // Date first consultation
+    GtkWidget *first_consultation = NULL;
+    char * first_consultation_char = get_first_consultation_UI(patient);
+    first_consultation = gtk_label_new(first_consultation_char);
+    free(first_consultation_char);
+    gtk_label_set_use_markup(GTK_LABEL(first_consultation), TRUE);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consultation, poids_taille, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(first_consultation, TRUE);
+    gtk_widget_set_vexpand(first_consultation, FALSE);
+    gtk_widget_set_halign(first_consultation, GTK_ALIGN_CENTER);
     /* ************************************************** */
 
     /* Frame which contains important informations ********/
@@ -156,7 +161,8 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     gtk_widget_set_vexpand(frame_important_info, FALSE);
 
     GtkWidget *label_imp_info = NULL;
-    label_imp_info = gtk_label_new("Informations médicales particulières \nPar exemple maladie cardiaue/diabète...");
+    char *global_pathologies = get_global_pathologies_UI(patient);
+    label_imp_info = gtk_label_new(global_pathologies);
     gtk_container_add(GTK_CONTAINER(frame_important_info), label_imp_info);
     /* ************************************************** */
 
