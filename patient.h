@@ -9,8 +9,7 @@
 #include "Structures.h"
 #include "sqlite3.h"
 
-int addPatient(Patient gen);
-int modifyPatient(modifiable_item item);
-int addSeance(Patient gen, Seance seance);
+int addPatient(Patient *gen);
+int modifyPatient(Patient *gen);
 
 #endif //LOGICIEL_KINE_PATIENT_H
