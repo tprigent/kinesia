@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Structures.h"
+#include "sqlite3.h"
 
 //Modification d'un patient
 int modifyPatient(Patient *gen){
