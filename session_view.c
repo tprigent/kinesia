@@ -118,7 +118,7 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     /* Creation of a button to change information *********/
     GtkWidget *but_edit = NULL;
     but_edit = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    g_signal_connect(GTK_BUTTON(but_edit), "clicked", G_CALLBACK(launchPatientEditor), NULL);
+    g_signal_connect(GTK_BUTTON(but_edit), "clicked", G_CALLBACK(launchPatientEditor), patient);
     gtk_grid_attach(GTK_GRID(grid_info), but_edit, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(but_edit, TRUE);
     gtk_widget_set_vexpand(but_edit, FALSE);
@@ -417,7 +417,6 @@ void createFolderInfoWindow(GtkWidget *box){
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
-
     /* ****************************************************************************** */
 
     /* Edit button ****************************************************************** */
