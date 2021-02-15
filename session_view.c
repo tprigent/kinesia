@@ -128,7 +128,7 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     /* Include the picture of the patient *****************/
     GtkWidget *photo = NULL;
     GdkPixbuf *photo2 = NULL;
-    photo2 = gdk_pixbuf_new_from_file("./photo_patients/claude.jpeg", NULL);
+    photo2 = gdk_pixbuf_new_from_file("../photo_patients/claude.jpeg", NULL);
     photo2 = gdk_pixbuf_scale_simple(photo2, 170, 250, GDK_INTERP_BILINEAR);
     photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(photo2));
     gtk_grid_attach_next_to(GTK_GRID(grid_info), photo, but_edit, GTK_POS_BOTTOM, 1, 1);
