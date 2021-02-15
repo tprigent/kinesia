@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "Structures.h"
+
 
 
 /*allocation d'une chaîne de caractère de longueur lg*/

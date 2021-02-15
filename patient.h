@@ -6,7 +6,7 @@
 #define LOGICIEL_KINE_PATIENT_H
 
 #include <stdio.h>
-#include "Structures.h"
+#include "structures.h"
 
 /*A changer : faire une fonction d'allocation int allocate(Patient * p) où la structure et les attributs dans la structure sont alloués, et des fonctions de remplissage ensuite*/
 

@@ -6,10 +6,7 @@ CFLAGS+=`pkg-config --cflags gtk+-3.0`
 
 all: main
 
-main: main.o main_UI.o gtk_functions.o
-	$(CC) $^ $(LDFLAGS) -o $@
-
-main_UI: main_UI.o gtk_functions.o
+main: main.o UI.o session_controller.o session_view.o connect_struct_UI.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
@@ -17,7 +14,7 @@ main_UI: main_UI.o gtk_functions.o
 
 
 clean:
-	rm -f %.o
+	rm -f *.o
 	rm -f main
 	rm -f main_UI
 
