@@ -6,8 +6,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-<<<<<<< HEAD
-
 
 
 /*allocation d'une chaîne de caractère de longueur lg*/
@@ -116,7 +114,7 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     idPatient++;
 
     return 0;
-=======
+
 #include "Structures.h"
 #include "sqlite3.h"
 
@@ -272,5 +270,4 @@ int addPatient(Patient *gen){
     //Fermeture de la bdd
     sqlite3_close(db);
     return 1;
->>>>>>> 26133fe21b63012188e5072afc34ac39c9ed5c11
 }
