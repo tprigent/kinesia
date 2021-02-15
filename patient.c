@@ -38,7 +38,7 @@ int allocatePatient(Patient ** p) {
     || (allocateAdresse(&((*p)->address)) !=0)
     || (allocateStringPatient(&((*p)->global_pathologies), LG_MAX_OTHERS) !=0)
     || (allocateStringPatient(&((*p)->mail_address), LG_MAX_INFO) !=0)
-    || (allocateStringPatient(&((*p)->metier), LG_MAX_INFO) !=0)
+    || (allocateStringPatient(&((*p)->job), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->num_secu), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->place_birth), LG_MAX_INFO) !=0)) return -1;
 
@@ -74,7 +74,7 @@ int setDate(Date * d, int j, int m, int a) {
 }
 
 /*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Adresse ad, int pn, char * ma, char* metier, char * ns, int w, int h, Date fc, char * gp) {
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Adresse ad, int pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp) {
 
     static int idPatient = 0;
 
@@ -83,7 +83,7 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     /*copie des chaînes de caractères en paramètres dans les attributs de l'instance p)*/
     strncpy(p->place_birth, placeBirth, LG_MAX_INFO);
     strncpy(p->num_secu, ns, LG_MAX_INFO);
-    strncpy(p->metier, metier, LG_MAX_INFO);
+    strncpy(p->job, job, LG_MAX_INFO);
     strncpy(p->mail_address, ma, LG_MAX_INFO);
     strncpy(p->global_pathologies, gp, LG_MAX_OTHERS);
     strncpy(p->forename, fn, LG_MAX_INFO);
@@ -92,7 +92,7 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     /*ajout de 0 terminaux par sécurité*/
     p->place_birth[strlen(placeBirth)] = '\0';
     p->num_secu[strlen(ns)] = '\0';
-    p->metier[strlen(metier)] = '\0';
+    p->job[strlen(job)] = '\0';
     p->mail_address[strlen(ma)] = '\0';
     p->global_pathologies[strlen(gp)] = '\0';
     p->forename[strlen(fn)] = '\0';

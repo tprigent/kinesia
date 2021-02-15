@@ -38,7 +38,7 @@ typedef struct{
     Adresse address;
     int phone_number;
     char * mail_address;
-    char * metier;
+    char * job;
     char * num_secu;     // Num de secu trop grand meme pour un long int
 
     /* Informations médicales */
