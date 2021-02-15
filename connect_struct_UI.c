@@ -37,7 +37,8 @@ void free_name_UI(char *name){
 
 
 char *get_date_UI(Date *date){
-    char *stringDate = (char*) malloc(11*sizeof(char));
+    int length = (int) strlen("00/00/0000");
+    char *stringDate = (char*) malloc(length*sizeof(char));
     char day[3];
     char month[3];
     char year[5];
@@ -95,7 +96,8 @@ char *get_global_pathologies_UI(Patient *patient){
 }
 
 char *get_first_consultation_UI(Patient *patient){
-    char *first_consultation = (char*) malloc(35*sizeof(char));
+    int length = (int) strlen("00/00/0000");
+    char *first_consultation = (char*) malloc(length*sizeof(char));
     char day[3];
     char month[3];
     char year[5];
@@ -119,10 +121,15 @@ void free_first_consultation_UI(char *first_consultation){
 }
 
 char *get_formatted_folder_title_UI(Folder *folder){
-    char *formattedTitle = (char*) malloc(200*sizeof(char)+20* sizeof(char));
-    strcpy(formattedTitle, "<big><b>         ");
+    char *start = "<big><b>         ";
+    char *end = "</b></big>";
+    int length = (int) strlen(folder->folderName);
+    length += (int) strlen(start);
+    length += (int) strlen(end);
+    char *formattedTitle = (char*) malloc(length*sizeof(char));
+    strcpy(formattedTitle, start);
     strcat(formattedTitle, folder->folderName);
-    strcat(formattedTitle, "</b></big>");
+    strcat(formattedTitle, end);
     return formattedTitle;
 }
 
