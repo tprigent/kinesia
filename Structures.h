@@ -5,6 +5,7 @@
 #ifndef LOGICIEL_KINE_STRUCTURES_H
 #define LOGICIEL_KINE_STRUCTURES_H
 
+#define LG_MAX_NOM 20
 #define LG_MAX_INFO 100
 #define LG_MAX_OTHERS 300
 
@@ -24,7 +25,7 @@ typedef struct {
     char * rue; //Rue ou avenue ou autre
     int codePostal; //code postal
     char * ville;
-    char * infoComp; //numéro batiment, num appartement...
+    char * infoComp; //num batiment, num appartement...
 }Adresse;
 
 typedef struct{
@@ -37,12 +38,12 @@ typedef struct{
     Adresse address;
     int phone_number;
     char * mail_address;
+    char * metier;
     char * num_secu;     // Num de secu trop grand meme pour un long int
 
     /* Informations médicales */
     int weight;
     int height;
-    char * groupe_sanguin;          // Vraiment utile pour un kiné ?
     Date first_consultation;
     char * global_pathologies;
 
