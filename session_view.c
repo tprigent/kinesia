@@ -6,6 +6,7 @@
 #include "session_controller.h"
 #include "connect_struct_UI.h"
 #include <gtk/gtk.h>
+#include <gtk/gtklabel.h>
 
 
 GtkWidget *setSessionWindow(){
@@ -180,9 +181,9 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
 
     // Birthdate
     GtkWidget *dateN = NULL;
-    char *birth = get_birthdate_UI(patient);
+    char *birth = get_date_UI(&patient->birthdate);
     dateN = gtk_label_new(birth);
-    free_birthdate_UI(birth);
+    free_date_UI(birth);
     gtk_label_set_use_markup(GTK_LABEL(dateN), TRUE);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), dateN, nom, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(dateN, TRUE);
@@ -227,9 +228,11 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     // First consultation
     GtkWidget *first_consultation = NULL;
     char * first_consultation_char = get_first_consultation_UI(patient);
+    printf("%s\n", first_consultation_char);
     first_consultation = gtk_label_new(first_consultation_char);
-    free_first_consultation_UI(first_consultation_char);
+
     gtk_label_set_use_markup(GTK_LABEL(first_consultation), TRUE);
+    free_first_consultation_UI(first_consultation_char);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consultation, poids_taille, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(first_consultation, TRUE);
     gtk_widget_set_vexpand(first_consultation, FALSE);
@@ -280,6 +283,19 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
 }
 
 void createFolderInfoWindow(GtkWidget *box){
+
+    /* Create sample folder for debug *********************************************** */
+    Folder *folder = (Folder*) malloc(sizeof(Folder));
+    folder->folderName = "Entorse de la cheville";
+    folder->startOfTreatment.year = 2021;
+    folder->startOfTreatment.month = 03;
+    folder->startOfTreatment.day = 05;
+    folder->pathology = "Entorse";
+    folder->details = "Informations supplémentaires (retour à la ligne à gérer)";
+    folder->numberOfFiles = 5;
+    folder->idFolder = 111;
+    /* ****************************************************************************** */
+
     /* Create a grid which contains the different elements of the folder ************ */
     GtkWidget *grid_part2 = NULL;
     grid_part2 = gtk_grid_new();
@@ -319,7 +335,9 @@ void createFolderInfoWindow(GtkWidget *box){
 
     /* LABEL */
     GtkWidget *folder_title = NULL;
-    folder_title = gtk_label_new("<big><b>** CURRENT FOLDER **</b></big>");   //TODO: make this text dynamic
+    char *formatted_folder_title_UI = get_formatted_folder_title_UI(folder);
+    folder_title = gtk_label_new(formatted_folder_title_UI);
+    free_formatted_folder_title_UI(formatted_folder_title_UI);
     gtk_label_set_use_markup(GTK_LABEL(folder_title), TRUE);
     gtk_widget_set_halign(folder_title, GTK_ALIGN_CENTER);
     gtk_box_pack_start(GTK_BOX(hbox_folder), folder_title, FALSE, FALSE, 0);
@@ -343,8 +361,10 @@ void createFolderInfoWindow(GtkWidget *box){
     /* LABEL */
     GtkWidget *folder_start_treatment = NULL;
     GtkWidget *folder_date = NULL;
+    char *start_of_treatment = get_date_UI(&folder->startOfTreatment);
     folder_start_treatment = gtk_label_new("Début de traitement: ");
-    folder_date = gtk_label_new("xx/xx/xxxx");              //TODO: make this text dynamic
+    folder_date = gtk_label_new(start_of_treatment);
+    free_date_UI(start_of_treatment);
     gtk_box_pack_start(GTK_BOX(hbox_treatment), folder_start_treatment, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_treatment), folder_date, FALSE, FALSE, 0);
 
@@ -365,7 +385,7 @@ void createFolderInfoWindow(GtkWidget *box){
     GtkWidget *folder_pathology = NULL;
     GtkWidget *folder_pathology_name = NULL;
     folder_pathology = gtk_label_new("Pathologie: ");
-    folder_pathology_name = gtk_label_new("pathology name"); //TODO: make this text dynamic
+    folder_pathology_name = gtk_label_new(folder->pathology);
     gtk_box_pack_start(GTK_BOX(hbox_pathology), folder_pathology, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_pathology), folder_pathology_name, FALSE, FALSE, 0);
 
@@ -398,9 +418,11 @@ void createFolderInfoWindow(GtkWidget *box){
     /* LABELS */
     GtkWidget *folder_infos = NULL;
     GtkWidget *folder_infos_content = NULL;
+    char *formatted_infos = get_formatted_folder_infos_UI(folder);
     folder_infos = gtk_label_new("<u>Autres informations</u> : ");
     gtk_label_set_use_markup(GTK_LABEL(folder_infos), TRUE);
-    folder_infos_content = gtk_label_new("Suivi de type blablabla\nProtocole appliqué blablabla");
+    folder_infos_content = gtk_label_new(formatted_infos);
+    //free_folder_infos_UI(formatted_infos);
     gtk_box_pack_start(GTK_BOX(vbox_infos), folder_infos, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox_infos_content), folder_infos_content, FALSE, FALSE, 0);
 
@@ -423,8 +445,10 @@ void createFolderInfoWindow(GtkWidget *box){
     /* LABEL */
     GtkWidget *attachments_label = NULL;
     GtkWidget *attachments_count = NULL;
+    char *indicator = get_indicator_files_UI(folder);
     attachments_label = gtk_label_new("Pièces jointes:    ");
-    attachments_count = gtk_label_new("   (0)");                     //TODO: make this indicator dynamic
+    attachments_count = gtk_label_new(indicator);
+    free_indicator_files_UI(indicator);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_label, FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(hbox_attachments), attachments_count, FALSE, FALSE, 0);
 

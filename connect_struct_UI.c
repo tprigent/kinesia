@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "connect_struct_UI.h"
 
 /* Create a function that change int to string */
@@ -37,27 +36,28 @@ void free_name_UI(char *name){
 }
 
 
-char *get_birthdate_UI(Patient *patient){
-    char *birthdate = (char*) malloc(11*sizeof(char));
+char *get_date_UI(Date *date){
+    int length = (int) strlen("00/00/0000");
+    char *stringDate = (char*) malloc(length*sizeof(char));
     char day[3];
     char month[3];
     char year[5];
-    tostring(day, patient->birthdate.day);
-    tostring(month, patient->birthdate.month);
-    tostring(year, patient->birthdate.year);
+    tostring(day, date->day);
+    tostring(month, date->month);
+    tostring(year, date->year);
 
-    strcpy(birthdate, day);
-    strcat(birthdate, "/");
-    strcat(birthdate, month);
-    strcat(birthdate, "/");
-    strcat(birthdate, year);
-    strcat(birthdate, "\0");
+    strcpy(stringDate, day);
+    strcat(stringDate, "/");
+    strcat(stringDate, month);
+    strcat(stringDate, "/");
+    strcat(stringDate, year);
+    strcat(stringDate, "\0");
 
-    return birthdate;
+    return stringDate;
 }
 
-void free_birthdate_UI(char *birthdate){
-    free(birthdate);
+void free_date_UI(char *date){
+    free(date);
 }
 
 char *get_job_UI(Patient *patient){
@@ -134,7 +134,8 @@ char *get_global_pathologies_UI(Patient *patient){
 }
 
 char *get_first_consultation_UI(Patient *patient){
-    char *first_consultation = (char*) malloc(35*sizeof(char));
+
+    char *first_consultation = (char*) malloc(40*sizeof(char));
     char day[3];
     char month[3];
     char year[5];
@@ -172,4 +173,56 @@ char *get_adress_UI(Patient *patient){
 
 void free_info_UI(char *info){
     free(info);
+}
+
+char *get_formatted_folder_title_UI(Folder *folder){
+    char *start = "<big><b>         ";
+    char *end = "</b></big>";
+    int length = (int) strlen(folder->folderName);
+    length += (int) strlen(start);
+    length += (int) strlen(end);
+    char *formattedTitle = (char*) malloc(length*sizeof(char));
+    strcpy(formattedTitle, start);
+    strcat(formattedTitle, folder->folderName);
+    strcat(formattedTitle, end);
+    return formattedTitle;
+}
+
+void free_formatted_folder_title_UI(char *folder_title){
+    free(folder_title);
+}
+
+char *get_formatted_folder_infos_UI(Folder *folder){    //TODO: insert breakline every n char
+    /*int length = (int) strlen(folder->details);
+    int i = 0;
+    int c = 0;
+    char *formattedInfos = (char*) malloc(600*sizeof(char));
+    while(c < length){
+        strcat(&formattedInfos[c+i], &folder->details[c]);
+        if(length % 50 == 0){
+            strcat(formattedInfos, "\n");
+            i+=3;
+        }
+        c++;
+    }
+    return formattedInfos;*/
+    return folder->details;
+}
+
+void free_folder_infos_UI(char *infos){
+    free(infos);
+}
+
+char *get_indicator_files_UI(Folder *folder){
+    char *indicator = (char*) malloc(20*sizeof(char));
+    char *buffer = (char*) malloc(5*sizeof(char));
+    sprintf(buffer, "%d", folder->numberOfFiles);
+    strcpy(indicator, "   (");
+    strcat(indicator, buffer);
+    strcat(indicator, ")");
+    return indicator;
+}
+
+void free_indicator_files_UI(char *indicator){
+    free(indicator);
 }
