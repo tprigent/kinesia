@@ -12,11 +12,11 @@
 
 /* fonctions d'allocation des structures*/
 int allocatePatient(Patient ** p);
-int allocateAdresse(Adresse * a);
+int allocateAddress(Address * a);
 
 /*fonction de remplissage/modification des attributs des structures*/
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Adresse ad, int pn, char * ma, char* metier, char * ns, int w, int h, Date fc, char * gp);
-int setAdresse(Adresse * adr, char * numM, char * r, int cp, char * v, char * iC);
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, int pn, char * ma, char* metier, char * ns, int w, int h, Date fc, char * gp);
+int setAddress(Address * adr, char * numM, char * r, char * cp, char * v, char * iC);
 int setDate(Date * d, int j, int m, int a);
 
 #include "sqlite3.h"

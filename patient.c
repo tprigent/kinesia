@@ -17,13 +17,13 @@ static int allocateStringPatient(char ** string, int lg) {
 }
 
 /*allocation mémoire des attributs d'une structure Adresse*/
-int allocateAdresse(Adresse * a) {
+int allocateAddress(Address * a) {
 
     /*allocation mémoire des chaînes de caractères de la structure Adresse*/
-    if (allocateStringPatient(&(a->numMaison), LG_MAX_INFO) !=0) return -1;
-    if (allocateStringPatient(&(a->rue), LG_MAX_INFO) !=0) return -1;
-    if (allocateStringPatient(&(a->ville), LG_MAX_INFO) !=0) return -1;
-    if (allocateStringPatient(&(a->infoComp), LG_MAX_OTHERS) !=0) return -1;
+    if (allocateStringPatient(&(a->number), LG_MAX_INFO) !=0) return -1;
+    if (allocateStringPatient(&(a->street), LG_MAX_INFO) !=0) return -1;
+    if (allocateStringPatient(&(a->city), LG_MAX_INFO) !=0) return -1;
+    if (allocateStringPatient(&(a->other_info), LG_MAX_OTHERS) !=0) return -1;
     return 0;
 }
 
@@ -34,33 +34,34 @@ int allocatePatient(Patient ** p) {
 
     /*test des allocations de chaque attribut de la structure patient qui ont besoin d'être alloués*/
     if((p == NULL) || (allocateStringPatient(&((*p)->name), LG_MAX_INFO) !=0)
-    || (allocateStringPatient(&((*p)->forename), LG_MAX_INFO) !=0)
-    || (allocateAdresse(&((*p)->address)) !=0)
+    || (allocateStringPatient(&((*p)->firstname), LG_MAX_INFO) !=0)
+    || (allocateAddress(&((*p)->address)) !=0)
     || (allocateStringPatient(&((*p)->global_pathologies), LG_MAX_OTHERS) !=0)
     || (allocateStringPatient(&((*p)->mail_address), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->job), LG_MAX_INFO) !=0)
-    || (allocateStringPatient(&((*p)->num_secu), LG_MAX_INFO) !=0)
+    || (allocateStringPatient(&((*p)->ssn), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->place_birth), LG_MAX_INFO) !=0)) return -1;
 
     return 0;
 }
 
 /*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
-int setAdresse(Adresse * a, char * numM, char * r, int cp, char * v, char * iC) {
+int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * iC) {
 
     if(a == NULL) return -1;
     /*attribution des paramètres aux attributs de a*/
-    strncpy(a->numMaison, numM, LG_MAX_INFO);
-    strncpy(a->rue, r, LG_MAX_INFO);
-    strncpy(a->ville, v, LG_MAX_INFO);
-    strncpy(a->infoComp, iC, LG_MAX_OTHERS);
-    a->codePostal = cp;
+    strncpy(a->number, numM, LG_MAX_INFO);
+    strncpy(a->street, r, LG_MAX_INFO);
+    strncpy(a->city, v, LG_MAX_INFO);
+    strncpy(a->other_info, iC, LG_MAX_OTHERS);
+    strncpy(a->postCode, cp, LG_MAX_INFO);
 
     /*ajout des 0 terminaux aux chaînes précédemment copiées par sécurité*/
-    a->numMaison[strlen(numM)] = '\0';
-    a->rue[strlen(r)] = '\0';
-    a->ville[strlen(v)] = '\0';
-    a->infoComp[strlen(iC)] = '\0';
+    a->number[strlen(numM)] = '\0';
+    a->street[strlen(r)] = '\0';
+    a->city[strlen(v)] = '\0';
+    a->other_info[strlen(iC)] = '\0';
+    a->postCode[strlen(cp)] = '\0';
     return 0;
 }
 
@@ -74,7 +75,7 @@ int setDate(Date * d, int j, int m, int a) {
 }
 
 /*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Adresse ad, int pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp) {
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, int pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp) {
 
     static int idPatient = 0;
 
@@ -82,20 +83,20 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
 
     /*copie des chaînes de caractères en paramètres dans les attributs de l'instance p)*/
     strncpy(p->place_birth, placeBirth, LG_MAX_INFO);
-    strncpy(p->num_secu, ns, LG_MAX_INFO);
+    strncpy(p->ssn, ns, LG_MAX_INFO);
     strncpy(p->job, job, LG_MAX_INFO);
     strncpy(p->mail_address, ma, LG_MAX_INFO);
     strncpy(p->global_pathologies, gp, LG_MAX_OTHERS);
-    strncpy(p->forename, fn, LG_MAX_INFO);
+    strncpy(p->firstname, fn, LG_MAX_INFO);
     strncpy(p->name, name, LG_MAX_INFO);
 
     /*ajout de 0 terminaux par sécurité*/
     p->place_birth[strlen(placeBirth)] = '\0';
-    p->num_secu[strlen(ns)] = '\0';
+    p->ssn[strlen(ns)] = '\0';
     p->job[strlen(job)] = '\0';
     p->mail_address[strlen(ma)] = '\0';
     p->global_pathologies[strlen(gp)] = '\0';
-    p->forename[strlen(fn)] = '\0';
+    p->firstname[strlen(fn)] = '\0';
     p->name[strlen(name)] = '\0';
 
     /*attribution des autres attributs*/
@@ -107,7 +108,7 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     p->weight = w;
 
     if (g > 2 || g < 0) return -1;
-    p->genre = g;
+    p->gender = g;
 
     /*attribution d'un id unique par patient*/
     p->id = idPatient;
