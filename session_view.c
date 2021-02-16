@@ -6,6 +6,7 @@
 #include "session_controller.h"
 #include "connect_struct_UI.h"
 #include <gtk/gtk.h>
+#include <gtk/gtklabel.h>
 
 
 GtkWidget *setSessionWindow(){
@@ -211,8 +212,9 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     GtkWidget *first_consultation = NULL;
     char * first_consultation_char = get_first_consultation_UI(patient);
     first_consultation = gtk_label_new(first_consultation_char);
-    free_first_consultation_UI(first_consultation_char);
+
     gtk_label_set_use_markup(GTK_LABEL(first_consultation), TRUE);
+    free_first_consultation_UI(first_consultation_char);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consultation, poids_taille, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(first_consultation, TRUE);
     gtk_widget_set_vexpand(first_consultation, FALSE);
