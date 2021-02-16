@@ -47,6 +47,23 @@ void setSessionEnvironment(GtkWidget *window){
     patient->first_consultation.day = 7;
     patient->first_consultation.month = 1;
     patient->first_consultation.year = 1960;
+    //Phone number
+    patient->phone_number = (char*) malloc(11*sizeof(char));
+    strcpy(patient->phone_number, "0610472037");
+    //email
+    patient->mail_address = (char*) malloc(26*sizeof(char));
+    strcpy(patient->mail_address, "claude.francois@gmail.com");
+    //adress
+    patient->address.numMaison = (char*) malloc(3*sizeof(char));
+    strcpy(patient->address.numMaison, "46");
+    patient->address.rue = (char*) malloc(30*sizeof(char));
+    strcpy(patient->address.rue, "boulevard Exelmans");
+    //postcode
+    patient->address.codePostal = (char*) malloc(5*sizeof(char));
+    strcpy(patient->address.codePostal, "75116");
+    //city
+    patient->address.ville = (char*) malloc(15*sizeof(char));
+    strcpy(patient->address.ville, "Paris");
     /* ****************************************************************/
 
     GtkWidget *grid = NULL;

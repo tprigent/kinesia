@@ -22,7 +22,7 @@ typedef enum {HOMME, FEMME, AUTRE}Genre;
 typedef struct {
     char * numMaison; //la personne doit ajouter bis ou ter si maison bis ou ter (à préciser dans l'interface)
     char * rue; //Rue ou avenue ou autre
-    int codePostal; //code postal
+    char * codePostal; //code postal
     char * ville;
     char * infoComp; //numéro batiment, num appartement...
 }Adresse;
@@ -35,7 +35,7 @@ typedef struct{
     char * place_birth;
     Genre genre;       // Enum HOMME, FEMME, AUTRE
     Adresse address;
-    int phone_number;
+    char * phone_number;
     char * mail_address;
     char * job;
     char * num_secu;     // Num de secu trop grand meme pour un long int

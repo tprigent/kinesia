@@ -64,6 +64,44 @@ char *get_job_UI(Patient *patient){
     return patient->job;
 }
 
+char *get_height_UI(Patient *patient){
+    char *height = (char*) malloc(7*sizeof(char));
+    char height_m[2];
+    char height_cm[3];
+    int int_height_m = (int) patient->height/100;
+    int int_height_cm = patient->height - int_height_m*100;
+    tostring(height_m, int_height_m);
+    tostring(height_cm, int_height_cm);
+
+    strcpy(height, height_m);
+    strcat(height, ".");
+    strcat(height, height_cm);
+    strcat(height, "m");
+    strcat(height, "\0");
+
+    return height;
+}
+
+void free_height_UI(char *height){
+    free(height);
+}
+
+char *get_weight_UI(Patient *patient){
+    char *weight = (char*) malloc(6*sizeof(char));
+    char weight_char[4];
+    tostring(weight_char, patient->weight);
+
+    strcpy(weight, weight_char);
+    strcat(weight, "kg");
+
+    return weight;
+}
+
+void free_weight_UI(char *weight){
+    free(weight);
+}
+
+/* a simplifier avec les deux fonctions précédentes */
 char *get_height_weight_UI(Patient *patient){
     char *height_weight = (char*) malloc(40*sizeof(char));
     char height_m[2];
@@ -117,4 +155,21 @@ char *get_first_consultation_UI(Patient *patient){
 
 void free_first_consultation_UI(char *first_consultation){
     free(first_consultation);
+}
+
+char *get_adress_UI(Patient *patient){
+    char *adress = (char*) malloc(50*sizeof(char));
+    /*char number[4];
+    char street[strlen(patient->address.rue)+1];*/
+
+    strcpy(adress, patient->address.numMaison);
+    strcat(adress, " ");
+    strcat(adress, patient->address.rue);
+    strcat(adress, "\0");
+
+    return adress;
+}
+
+void free_info_UI(char *info){
+    free(info);
 }

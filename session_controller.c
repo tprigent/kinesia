@@ -93,12 +93,28 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     GtkWidget *patient_job = NULL;      //job
     GtkWidget *job = NULL;
     GtkWidget *job_box = NULL;
-    GtkWidget *patient_adress = NULL;
-    GtkWidget *patient_number = NULL;
-    GtkWidget *patient_email = NULL;
-    GtkWidget *patient_ssn = NULL;
-    GtkWidget *patient_weight = NULL;
-    GtkWidget *patient_height = NULL;
+    GtkWidget *patient_adress = NULL;   //adress
+    GtkWidget *adress = NULL;
+    GtkWidget *adress_box = NULL;
+    GtkWidget *patient_postcode = NULL; //postcode
+    GtkWidget *postcode = NULL;
+    GtkWidget *postcode_box = NULL;
+    GtkWidget *patient_city = NULL;     //city
+    GtkWidget *city = NULL;
+    GtkWidget *city_box = NULL;
+    GtkWidget *patient_number = NULL;   //number
+    GtkWidget *number = NULL;
+    GtkWidget *number_box = NULL;
+    GtkWidget *patient_email = NULL;    //email
+    GtkWidget *email = NULL;
+    GtkWidget *email_box = NULL;
+    GtkWidget *patient_ssn = NULL;      //ssn
+    GtkWidget *patient_weight = NULL;   //weight
+    GtkWidget *weight = NULL;
+    GtkWidget *weight_box = NULL;
+    GtkWidget *patient_height = NULL;   //height
+    GtkWidget *height = NULL;
+    GtkWidget *height_box = NULL;
     GtkWidget *patient_info = NULL;
     GtkWidget *name_entry = NULL;
     GtkWidget *surname_entry = NULL;
@@ -106,6 +122,8 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     GtkWidget *birth_entry = NULL;
     GtkWidget *job_entry = NULL;
     GtkWidget *adress_entry = NULL;
+    GtkWidget *postcode_entry = NULL;
+    GtkWidget *city_entry = NULL;
     GtkWidget *number_entry = NULL;
     GtkWidget *email_entry = NULL;
     GtkWidget *ssn_entry = NULL;
@@ -133,13 +151,43 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     patient_job = gtk_label_new(patient->job);
     job_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
-    patient_adress = gtk_label_new("Adresse : ");
-    patient_number = gtk_label_new("N° de téléphone : ");
-    patient_email = gtk_label_new("email : ");
+    adress = gtk_label_new("Adresse : ");
+    char *patient_adress_char = get_adress_UI(patient);
+    patient_adress = gtk_label_new(patient_adress_char);
+    free_info_UI(patient_adress_char);
+    adress_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
+    postcode = gtk_label_new("Code postal : ");
+    patient_postcode = gtk_label_new(patient->address.codePostal);
+    postcode_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
+    city = gtk_label_new("Ville : ");
+    patient_city = gtk_label_new(patient->address.ville);
+    city_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
+    number = gtk_label_new("N° de téléphone : ");
+    patient_number = gtk_label_new(patient->phone_number);
+    number_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
+    email = gtk_label_new("email : ");
+    patient_email = gtk_label_new(patient->mail_address);
+    email_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
     patient_ssn = gtk_label_new("N° de sécurité sociale : ");
-    patient_weight = gtk_label_new("Poids : ");
-    patient_height = gtk_label_new("Taille : ");
-    patient_info = gtk_label_new("Informations importantes : ");
+
+    weight = gtk_label_new("Poids : ");
+    char *patient_weight_char = get_weight_UI(patient);
+    patient_weight = gtk_label_new(patient_weight_char);
+    free_weight_UI(patient_weight_char);
+    weight_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
+    height = gtk_label_new("Taille : ");
+    char *patient_height_char = get_height_UI(patient);
+    patient_height = gtk_label_new(patient_height_char);
+    free_height_UI(patient_height_char);
+    height_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
+    patient_info = gtk_label_new("Antécédents médicaux : ");
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
     name_entry = gtk_entry_new();
@@ -147,6 +195,8 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     birth_entry = gtk_entry_new();
     job_entry = gtk_entry_new();
     adress_entry = gtk_entry_new();
+    postcode_entry = gtk_entry_new();
+    city_entry = gtk_entry_new();
     number_entry = gtk_entry_new();
     email_entry = gtk_entry_new();
     ssn_entry = gtk_entry_new();
@@ -247,28 +297,39 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     gtk_grid_set_column_spacing(GTK_GRID(grid_contact), 5);
 
 
-    /* FILL THE IDENTITY INFORMATION */
+    /* FILL THE CONTACT INFORMATION */
     // Phone number
-    gtk_grid_attach(GTK_GRID(grid_contact), patient_number, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(patient_number, TRUE);
-    gtk_widget_set_vexpand(patient_number, FALSE);
-    gtk_widget_set_halign(patient_number, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_contact), number_entry, patient_number, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid_contact), number_box, GTK_ALIGN_START, GTK_ALIGN_START, 2, 1);
+    gtk_widget_set_hexpand(number_box, TRUE);
+    gtk_widget_set_vexpand(number_box, FALSE);
+    gtk_widget_set_halign(number_box, GTK_ALIGN_START);
+    gtk_box_pack_start(GTK_BOX(number_box), number, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(number_box), patient_number, FALSE, FALSE, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), number_entry, number_box, GTK_POS_BOTTOM, 2, 1);
 
     // email adress
-    gtk_grid_attach_next_to(GTK_GRID(grid_contact), patient_email, number_entry, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(patient_email, TRUE);
-    gtk_widget_set_vexpand(patient_email, FALSE);
-    gtk_widget_set_halign(patient_email, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_contact), email_entry, patient_email, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), email_box, number_entry, GTK_POS_BOTTOM, 2, 1);
+    gtk_box_pack_start(GTK_BOX(email_box), email, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(email_box), patient_email, FALSE, FALSE, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), email_entry, email_box, GTK_POS_BOTTOM, 2, 1);
 
     // Adress
-    gtk_grid_attach_next_to(GTK_GRID(grid_contact), patient_adress, email_entry, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(patient_adress, TRUE);
-    gtk_widget_set_vexpand(patient_adress, FALSE);
-    gtk_widget_set_halign(patient_adress, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_contact), adress_entry, patient_adress, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), adress_box, email_entry, GTK_POS_BOTTOM, 2, 1);
+    gtk_box_pack_start(GTK_BOX(adress_box), adress, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(adress_box), patient_adress, FALSE, FALSE, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), adress_entry, adress_box, GTK_POS_BOTTOM, 2, 1);
 
+    // Postcode
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), postcode_box, adress_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_box_pack_start(GTK_BOX(postcode_box), postcode, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(postcode_box), patient_postcode, FALSE, FALSE, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), postcode_entry, postcode_box, GTK_POS_BOTTOM, 1, 1);
+
+    // City
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), city_box, postcode_box, GTK_POS_RIGHT, 1, 1);
+    gtk_box_pack_start(GTK_BOX(city_box), city, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(city_box), patient_city, FALSE, FALSE, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), city_entry, city_box, GTK_POS_BOTTOM, 1, 1);
 
 
     /* FRAME WHICH CONTAINS MEDICAL INFORMATION */
@@ -288,25 +349,29 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
 
     /* FILL THE MEDICAL INFORMATION */
     // Height
-    gtk_grid_attach(GTK_GRID(grid_medical_info), patient_height, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(patient_height, TRUE);
-    gtk_widget_set_vexpand(patient_height, FALSE);
-    gtk_widget_set_halign(patient_height, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), height_entry, patient_height, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid_medical_info), height_box, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(height_box, FALSE);
+    gtk_widget_set_vexpand(height_box, FALSE);
+    gtk_widget_set_halign(height_box, GTK_ALIGN_START);
+    gtk_box_pack_start(GTK_BOX(height_box), height, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(height_box), patient_height, FALSE, FALSE, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), height_entry, height_box, GTK_POS_BOTTOM, 1, 1);
 
     // Weight
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_weight, patient_height, GTK_POS_RIGHT, 1, 1);
-    gtk_widget_set_hexpand(patient_weight, TRUE);
-    gtk_widget_set_vexpand(patient_weight, FALSE);
-    gtk_widget_set_halign(patient_weight, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight_entry, patient_weight, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight_box, height_box, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(weight_box, FALSE);
+    gtk_widget_set_vexpand(weight_box, FALSE);
+    gtk_widget_set_halign(weight_box, GTK_ALIGN_START);
+    gtk_box_pack_start(GTK_BOX(weight_box), weight, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(weight_box), patient_weight, FALSE, FALSE, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight_entry, weight_box, GTK_POS_BOTTOM, 1, 1);
 
     // SSn
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_ssn, height_entry, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(patient_ssn, TRUE);
     gtk_widget_set_vexpand(patient_ssn, FALSE);
     gtk_widget_set_halign(patient_ssn, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), ssn_entry, patient_ssn, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), ssn_entry, patient_ssn, GTK_POS_BOTTOM, 2, 1);
 
     // Important informations
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_info, ssn_entry, GTK_POS_BOTTOM, 2, 1);
