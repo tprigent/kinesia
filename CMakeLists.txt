@@ -12,14 +12,12 @@ link_directories(${GTK3_LIBRARY_DIRS})
 add_definitions(${GTK3_CFLAGS_OTHER})
 set(CMAKE_C_STANDARD 90)
 
-set(SOURCE_FILES main.c UI.c connect_struct_UI.c session_controller.c session_view.c patient.c patient.h structures.h)
+set(SOURCE_FILES main.c UI.c connect_struct_UI.c session_controller.c session_view.c patient.c patient.h structures.h sqlite3.c sqlite3.h)
 
 
 add_executable(main.c ${SOURCE_FILES})
 target_link_libraries(main.c ${GTK3_LIBRARIES} pthread)
 
-add_executable(main.c ${SOURCE_FILES} sqlite3.c)
-target_link_libraries(main.c ${GTK3_LIBRARIES} pthread)
 find_package(Threads REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-target_link_libraries(Logiciel_Kine PRIVATE ${CMAKE_DL_LIBS} Threads::Threads)
+target_link_libraries(main.c ${GTK3_LIBRARIES} pthread ${CMAKE_DL_LIBS} Threads::Threads)
