@@ -93,9 +93,9 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     GtkWidget *patient_job = NULL;      //job
     GtkWidget *job = NULL;
     GtkWidget *job_box = NULL;
-    GtkWidget *patient_adress = NULL;   //adress
-    GtkWidget *adress = NULL;
-    GtkWidget *adress_box = NULL;
+    GtkWidget *patient_address = NULL;   //adress
+    GtkWidget *address = NULL;
+    GtkWidget *address_box = NULL;
     GtkWidget *patient_postcode = NULL; //postcode
     GtkWidget *postcode = NULL;
     GtkWidget *postcode_box = NULL;
@@ -121,7 +121,7 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     GtkWidget *photo_button = NULL;
     GtkWidget *birth_entry = NULL;
     GtkWidget *job_entry = NULL;
-    GtkWidget *adress_entry = NULL;
+    GtkWidget *address_entry = NULL;
     GtkWidget *postcode_entry = NULL;
     GtkWidget *city_entry = NULL;
     GtkWidget *number_entry = NULL;
@@ -137,7 +137,7 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     patient_name = gtk_label_new(patient->name);
     name_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     surname = gtk_label_new("Nom : ");
-    patient_surname = gtk_label_new(patient->forename);
+    patient_surname = gtk_label_new(patient->firstname);
     surname_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     patient_photo = gtk_label_new("Photo : ");
 
@@ -151,18 +151,18 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     patient_job = gtk_label_new(patient->job);
     job_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
-    adress = gtk_label_new("Adresse : ");
+    address = gtk_label_new("Adresse : ");
     char *patient_adress_char = get_adress_UI(patient);
-    patient_adress = gtk_label_new(patient_adress_char);
+    patient_address = gtk_label_new(patient_adress_char);
     free_info_UI(patient_adress_char);
-    adress_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    address_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     postcode = gtk_label_new("Code postal : ");
-    patient_postcode = gtk_label_new(patient->address.codePostal);
+    patient_postcode = gtk_label_new(patient->address.postCode);
     postcode_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     city = gtk_label_new("Ville : ");
-    patient_city = gtk_label_new(patient->address.ville);
+    patient_city = gtk_label_new(patient->address.city);
     city_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     number = gtk_label_new("N° de téléphone : ");
@@ -194,7 +194,7 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     surname_entry = gtk_entry_new();
     birth_entry = gtk_entry_new();
     job_entry = gtk_entry_new();
-    adress_entry = gtk_entry_new();
+    address_entry = gtk_entry_new();
     postcode_entry = gtk_entry_new();
     city_entry = gtk_entry_new();
     number_entry = gtk_entry_new();
@@ -314,13 +314,13 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     gtk_grid_attach_next_to(GTK_GRID(grid_contact), email_entry, email_box, GTK_POS_BOTTOM, 2, 1);
 
     // Adress
-    gtk_grid_attach_next_to(GTK_GRID(grid_contact), adress_box, email_entry, GTK_POS_BOTTOM, 2, 1);
-    gtk_box_pack_start(GTK_BOX(adress_box), adress, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(adress_box), patient_adress, FALSE, FALSE, 0);
-    gtk_grid_attach_next_to(GTK_GRID(grid_contact), adress_entry, adress_box, GTK_POS_BOTTOM, 2, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), address_box, email_entry, GTK_POS_BOTTOM, 2, 1);
+    gtk_box_pack_start(GTK_BOX(address_box), address, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(address_box), patient_address, FALSE, FALSE, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), address_entry, address_box, GTK_POS_BOTTOM, 2, 1);
 
     // Postcode
-    gtk_grid_attach_next_to(GTK_GRID(grid_contact), postcode_box, adress_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_contact), postcode_box, address_entry, GTK_POS_BOTTOM, 1, 1);
     gtk_box_pack_start(GTK_BOX(postcode_box), postcode, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(postcode_box), patient_postcode, FALSE, FALSE, 0);
     gtk_grid_attach_next_to(GTK_GRID(grid_contact), postcode_entry, postcode_box, GTK_POS_BOTTOM, 1, 1);

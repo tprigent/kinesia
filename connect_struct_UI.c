@@ -23,8 +23,8 @@ void tostring(char str[], int num){
 }
 
 char *get_name_UI(Patient *patient){
-    char *name = (char*) malloc(sizeof(patient->name)+sizeof(patient->forename)+sizeof(char));
-    strcpy(name, patient->forename);
+    char *name = (char*) malloc(sizeof(patient->name)+sizeof(patient->firstname)+sizeof(char));
+    strcpy(name, patient->firstname);
     strcat(name, " ");
     strcat(name, patient->name);
 
@@ -163,9 +163,9 @@ char *get_adress_UI(Patient *patient){
     /*char number[4];
     char street[strlen(patient->address.rue)+1];*/
 
-    strcpy(adress, patient->address.numMaison);
+    strcpy(adress, patient->address.number);
     strcat(adress, " ");
-    strcat(adress, patient->address.rue);
+    strcat(adress, patient->address.street);
     strcat(adress, "\0");
 
     return adress;

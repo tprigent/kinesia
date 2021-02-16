@@ -29,8 +29,8 @@ void setSessionEnvironment(GtkWidget *window){
     //Name
     patient->name = (char*) malloc(10*sizeof(char));
     strcpy(patient->name, "Claude");
-    patient->forename = (char*) malloc(10*sizeof(char));
-    strcpy(patient->forename, "François");
+    patient->firstname = (char*) malloc(10*sizeof(char));
+    strcpy(patient->firstname, "François");
     //Birthdate
     patient->birthdate.day = 1;
     patient->birthdate.month = 2;
@@ -55,16 +55,16 @@ void setSessionEnvironment(GtkWidget *window){
     patient->mail_address = (char*) malloc(26*sizeof(char));
     strcpy(patient->mail_address, "claude.francois@gmail.com");
     //adress
-    patient->address.numMaison = (char*) malloc(3*sizeof(char));
-    strcpy(patient->address.numMaison, "46");
-    patient->address.rue = (char*) malloc(30*sizeof(char));
-    strcpy(patient->address.rue, "boulevard Exelmans");
+    patient->address.number = (char*) malloc(3*sizeof(char));
+    strcpy(patient->address.number, "46");
+    patient->address.street = (char*) malloc(30*sizeof(char));
+    strcpy(patient->address.street, "boulevard Exelmans");
     //postcode
-    patient->address.codePostal = (char*) malloc(5*sizeof(char));
-    strcpy(patient->address.codePostal, "75116");
+    patient->address.postCode = (char*) malloc(5*sizeof(char));
+    strcpy(patient->address.postCode, "75116");
     //city
-    patient->address.ville = (char*) malloc(15*sizeof(char));
-    strcpy(patient->address.ville, "Paris");
+    patient->address.city = (char*) malloc(15*sizeof(char));
+    strcpy(patient->address.city, "Paris");
     /* ****************************************************************/
 
     GtkWidget *grid = NULL;
