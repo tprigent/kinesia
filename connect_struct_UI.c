@@ -96,8 +96,8 @@ char *get_global_pathologies_UI(Patient *patient){
 }
 
 char *get_first_consultation_UI(Patient *patient){
-    int length = (int) strlen("00/00/0000");
-    char *first_consultation = (char*) malloc(length*sizeof(char));
+
+    char *first_consultation = (char*) malloc(40*sizeof(char));
     char day[3];
     char month[3];
     char year[5];
