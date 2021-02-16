@@ -16,30 +16,30 @@ typedef struct{
 }Date;
 
 /*enum pour genre d'une personne*/
-typedef enum {HOMME, FEMME, AUTRE}Genre;
+typedef enum {MAN, WOMAN, OTHER}Genre;
 
 
 /*Structure adresse*/
 typedef struct {
-    char * numMaison; //la personne doit ajouter bis ou ter si maison bis ou ter (à préciser dans l'interface)
-    char * rue; //Rue ou avenue ou autre
-    char * codePostal; //code postal
-    char * ville;
-    char * infoComp; //num batiment, num appartement...
-}Adresse;
+    char * number; //la personne doit ajouter bis ou ter si maison bis ou ter (à préciser dans l'interface)
+    char * street; //Rue ou avenue ou autre
+    char * postCode; //code postal
+    char * city;
+    char * other_info; //num batiment, num appartement...
+}Address;
 
 typedef struct{
     /* Etat civil */
     char * name;
-    char * forename;
+    char * firstname;
     Date birthdate;
     char * place_birth;
-    Genre genre;       // Enum HOMME, FEMME, AUTRE
-    Adresse address;
+    Genre gender;       // Enum HOMME, FEMME, AUTRE
+    Address address;
     char * phone_number;
     char * mail_address;
     char * job;
-    char * num_secu;     // Num de secu trop grand meme pour un long int
+    char * ssn;     // Num de secu trop grand meme pour un long int
 
     /* Informations médicales */
     int weight;
@@ -55,17 +55,17 @@ typedef struct{
 
 typedef struct{
     /*Informations relatives à la séance*/
-    char * nomSeance; //Titre de la séance
-    Date dateSeance; //Date de la séance actuelle
-    Date dateSeanceSuiv; //Date de la prochaine séance
+    char * sessionName; //Titre de la séance
+    Date sessionDate; //Date de la séance actuelle
+    Date nextSessionDate; //Date de la prochaine séance
     char * observations; //observations faites lors de la séance
 
     /*id Séance (je sais pas si ce sera utile mais il paraît qu'il faut toujours faire ça*/
-    unsigned int idSeance;
+    unsigned int idSession;
 
     /*lien à un dossier*/
-    unsigned int idDossier;
-}Seance;
+    unsigned int idFolder;
+}Session;
 
 typedef struct{
     char *folderName;           //Name of the folder
