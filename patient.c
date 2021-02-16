@@ -140,12 +140,12 @@ int modifyPatient(Patient *gen){
     }
 
     //Creation de la requête
-    sql = "UPDATE patient SET name=?,forename=?,birthdate_year=?,birthdate_month=?,"
+    sql = "UPDATE patient SET name=?,firstname=?,birthdate_year=?,birthdate_month=?,"
           "birthdate_day=?,place_birth=?,"
-          "genre=?,adress=?,phone_number=?,mail_adress=?,num_secu=?,weight=?,"
-          "height=?,groupe_sanguin=?,first_consultation_year=?,global_pathologies,"
-          "first_consultation_month=?,first_consultation_day=?,"
-          "numMaison=?,rue=?,codePostal=?,ville=?,infocomp=?,job=? WHERE id=?";
+          "gender=?,phone_number=?,mail_adress=?,ssn=?,weight=?,"
+          "height=?,first_consultation_year=?,"
+          "first_consultation_month=?,first_consultation_day=?,global_pathologies=?,"
+          "number=?,street=?,postCode=?,city=?,other_info=?,job=? WHERE id=?";
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
@@ -159,26 +159,26 @@ int modifyPatient(Patient *gen){
     int i;
     i=0;
     sqlite3_bind_text(stmt,i++,gen->name,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->forename,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->firstname,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->birthdate.year);
     sqlite3_bind_int(stmt,i++,gen->birthdate.month);
     sqlite3_bind_int(stmt,i++,gen->birthdate.day);
     sqlite3_bind_text(stmt,i++,gen->place_birth,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,i++,gen->genre);
-    sqlite3_bind_int(stmt,i++,gen->phone_number);
+    sqlite3_bind_int(stmt,i++,gen->gender);
+    sqlite3_bind_text(stmt,i++,gen->phone_number,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->mail_address,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->num_secu,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->ssn,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->weight);
     sqlite3_bind_int(stmt,i++,gen->height);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.year);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.month);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.day);
     sqlite3_bind_text(stmt,i++,gen->global_pathologies,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->address.numMaison,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->address.rue,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,i++,gen->address.codePostal);
-    sqlite3_bind_text(stmt,i++,gen->address.ville,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->address.infoComp,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.number,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.street,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.postCode,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.city,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.other_info,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->job,-1,SQLITE_TRANSIENT);
 
     sqlite3_bind_int(stmt,25,(int)gen->id);
@@ -218,13 +218,13 @@ int addPatient(Patient *gen){
     }
 
     //Creation de la requête
-    sql = "INSERT INTO patient (name,forename,birthdate_year,birthdate_month"
+    sql = "INSERT INTO patient (name,firstname,birthdate_year,birthdate_month"
           ",birthdate_day,place_birth"
-          ",genre,adress,phone_number,mail_adress,num_secu,weight,"
+          ",gender,phone_number,mail_adress,ssn,weight,"
           "height,first_consultation_year,first_consultation_month,"
           "first_consultation_day,global_pathologies,"
-          "numMaison,rue,codePostal,ville,infocomp,job) VALUES (?,?,?,?,?,"
-          "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          "number,street,postCode,city,other_info,job) VALUES (?,?,?,?,?,"
+          "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
@@ -238,26 +238,26 @@ int addPatient(Patient *gen){
     int i;
     i=0;
     sqlite3_bind_text(stmt,i++,gen->name,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->forename,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->firstname,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->birthdate.year);
     sqlite3_bind_int(stmt,i++,gen->birthdate.month);
     sqlite3_bind_int(stmt,i++,gen->birthdate.day);
     sqlite3_bind_text(stmt,i++,gen->place_birth,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,i++,gen->genre);
-    sqlite3_bind_int(stmt,i++,gen->phone_number);
+    sqlite3_bind_int(stmt,i++,gen->gender);
+    sqlite3_bind_text(stmt,i++,gen->phone_number,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->mail_address,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->num_secu,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->ssn,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->weight);
     sqlite3_bind_int(stmt,i++,gen->height);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.year);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.month);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.day);
     sqlite3_bind_text(stmt,i++,gen->global_pathologies,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->address.numMaison,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->address.rue,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,i++,gen->address.codePostal);
-    sqlite3_bind_text(stmt,i++,gen->address.ville,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,gen->address.infoComp,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.number,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.street,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.postCode,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.city,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->address.other_info,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->job,-1,SQLITE_TRANSIENT);
 
     //Execution de la requête
