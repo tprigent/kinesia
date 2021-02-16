@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//Ajoute une seance dans seance à partir de la struct seance et du patient associé
+//Ajout d'une seance avec un instance de struct seance
 int addSeance(Seance *seance){
 
     sqlite3 *db;
@@ -25,7 +25,7 @@ int addSeance(Seance *seance){
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
         return 0;
     } else {
-        fprintf("Opened database successfully\n");
+        fprintf(stderr,"Opened database successfully\n");
     }
 
     //Creation de la requête
@@ -43,13 +43,13 @@ int addSeance(Seance *seance){
     }
 
     //Ajout des valeurs dans la requête
-    sqlite3_bind_int(stmt,1,seance->idDossier,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,2,seance->dateSeance.year,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,3,seance->dateSeance.month,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,4,seance->dateSeance.day,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,5,seance->dateSeanceSuiv.year,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,6,seance->dateSeanceSuiv.month,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,7,seance->dateSeanceSuiv.day,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,1,seance->idDossier);
+    sqlite3_bind_int(stmt,2,seance->dateSeance.year);
+    sqlite3_bind_int(stmt,3,seance->dateSeance.month);
+    sqlite3_bind_int(stmt,4,seance->dateSeance.day);
+    sqlite3_bind_int(stmt,5,seance->dateSeanceSuiv.year);
+    sqlite3_bind_int(stmt,6,seance->dateSeanceSuiv.month);
+    sqlite3_bind_int(stmt,7,seance->dateSeanceSuiv.day);
     sqlite3_bind_text(stmt,8,seance->observations,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,9,seance->nomSeance,-1,SQLITE_TRANSIENT);
 
@@ -65,4 +65,48 @@ int addSeance(Seance *seance){
     //Fermeture de la bdd
     sqlite3_close(db);
     return 1;
+
+}
+
+//Recupération d'une séance
+Seance* getSeance(int idSeance){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+    Seance *seance;
+
+    //Ouverture de la bdd
+    rc = sqlite3_open("/BaseDeDonnee/Bdd.db", &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return NULL;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT * FROM seance WHERE idSeance=?";
+
+    sqlite3_bind_int(stmt,-1,idSeance);
+
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+
+    }
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return seance;
+
 }

@@ -11,5 +11,7 @@
 
 //Ajout d'une seance avec un instance de struct seance
 int addSeance(Seance *seance);
+//Recupération d'une séance
+Seance* getSeance(int idSeance);
 
 #endif //LOGICIEL_KINE_SEANCE_H
