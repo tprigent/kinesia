@@ -6,6 +6,7 @@
 #include "session_controller.h"
 #include "connect_struct_UI.h"
 #include <gtk/gtk.h>
+#include <gtk/gtklabel.h>
 
 
 GtkWidget *setSessionWindow(){
@@ -27,9 +28,9 @@ void setSessionEnvironment(GtkWidget *window){
     Patient *patient = (Patient*) malloc(sizeof(Patient));
     //Name
     patient->name = (char*) malloc(10*sizeof(char));
-    strcpy(patient->name, "François");
+    strcpy(patient->name, "Claude");
     patient->forename = (char*) malloc(10*sizeof(char));
-    strcpy(patient->forename, "Claude");
+    strcpy(patient->forename, "François");
     //Birthdate
     patient->birthdate.day = 1;
     patient->birthdate.month = 2;
@@ -47,6 +48,23 @@ void setSessionEnvironment(GtkWidget *window){
     patient->first_consultation.day = 7;
     patient->first_consultation.month = 1;
     patient->first_consultation.year = 1960;
+    //Phone number
+    patient->phone_number = (char*) malloc(11*sizeof(char));
+    strcpy(patient->phone_number, "0610472037");
+    //email
+    patient->mail_address = (char*) malloc(26*sizeof(char));
+    strcpy(patient->mail_address, "claude.francois@gmail.com");
+    //adress
+    patient->address.numMaison = (char*) malloc(3*sizeof(char));
+    strcpy(patient->address.numMaison, "46");
+    patient->address.rue = (char*) malloc(30*sizeof(char));
+    strcpy(patient->address.rue, "boulevard Exelmans");
+    //postcode
+    patient->address.codePostal = (char*) malloc(5*sizeof(char));
+    strcpy(patient->address.codePostal, "75116");
+    //city
+    patient->address.ville = (char*) malloc(15*sizeof(char));
+    strcpy(patient->address.ville, "Paris");
     /* ****************************************************************/
 
     GtkWidget *grid = NULL;
@@ -118,7 +136,7 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     /* Creation of a button to change information *********/
     GtkWidget *but_edit = NULL;
     but_edit = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    g_signal_connect(GTK_BUTTON(but_edit), "clicked", G_CALLBACK(launchPatientEditor), NULL);
+    g_signal_connect(GTK_BUTTON(but_edit), "clicked", G_CALLBACK(launchPatientEditor), patient);
     gtk_grid_attach(GTK_GRID(grid_info), but_edit, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(but_edit, TRUE);
     gtk_widget_set_vexpand(but_edit, FALSE);
@@ -128,7 +146,7 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     /* Include the picture of the patient *****************/
     GtkWidget *photo = NULL;
     GdkPixbuf *photo2 = NULL;
-    photo2 = gdk_pixbuf_new_from_file("../photo_patients/claude.jpeg", NULL);
+    photo2 = gdk_pixbuf_new_from_file("./photo_patients/claude.jpeg", NULL);
     photo2 = gdk_pixbuf_scale_simple(photo2, 170, 250, GDK_INTERP_BILINEAR);
     photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(photo2));
     gtk_grid_attach_next_to(GTK_GRID(grid_info), photo, but_edit, GTK_POS_BOTTOM, 1, 1);
@@ -211,8 +229,8 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     GtkWidget *first_consultation = NULL;
     char * first_consultation_char = get_first_consultation_UI(patient);
     first_consultation = gtk_label_new(first_consultation_char);
-    free_first_consultation_UI(first_consultation_char);
     gtk_label_set_use_markup(GTK_LABEL(first_consultation), TRUE);
+    free_first_consultation_UI(first_consultation_char);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consultation, poids_taille, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(first_consultation, TRUE);
     gtk_widget_set_vexpand(first_consultation, FALSE);
@@ -438,7 +456,6 @@ void createFolderInfoWindow(GtkWidget *box){
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
-
     /* ****************************************************************************** */
 
     /* Edit button ****************************************************************** */

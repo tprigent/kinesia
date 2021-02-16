@@ -16,7 +16,7 @@ main: main.o UI.o session_controller.o session_view.o connect_struct_UI.o
 clean:
 	rm -f *.o
 	rm -f main
-	rm -f main_UI
+
 
 process:
 	make clean
