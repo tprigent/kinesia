@@ -228,9 +228,7 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     // First consultation
     GtkWidget *first_consultation = NULL;
     char * first_consultation_char = get_first_consultation_UI(patient);
-    printf("%s\n", first_consultation_char);
     first_consultation = gtk_label_new(first_consultation_char);
-
     gtk_label_set_use_markup(GTK_LABEL(first_consultation), TRUE);
     free_first_consultation_UI(first_consultation_char);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consultation, poids_taille, GTK_POS_BOTTOM, 1, 1);

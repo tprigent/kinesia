@@ -142,9 +142,9 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     patient_photo = gtk_label_new("Photo : ");
 
     birth = gtk_label_new("Date de naissance : ");
-    char *patient_birth_char = get_birthdate_UI(patient);
+    char *patient_birth_char = get_date_UI(&patient->birthdate);
     patient_birth = gtk_label_new(patient_birth_char);
-    free_birthdate_UI(patient_birth_char);
+    free_date_UI(patient_birth_char);
     birth_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     job = gtk_label_new("Profession : ");
