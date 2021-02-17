@@ -31,11 +31,6 @@ char *get_name_UI(Patient *patient){
     return name;
 }
 
-void free_name_UI(char *name){
-    free(name);
-}
-
-
 char *get_date_UI(Date *date){
     int length = (int) strlen("00/00/0000");
     char *stringDate = (char*) malloc(length*sizeof(char));
@@ -56,14 +51,6 @@ char *get_date_UI(Date *date){
     return stringDate;
 }
 
-void free_date_UI(char *date){
-    free(date);
-}
-
-char *get_job_UI(Patient *patient){
-    return patient->job;
-}
-
 char *get_height_UI(Patient *patient){
     char *height = (char*) malloc(7*sizeof(char));
     char height_m[2];
@@ -82,10 +69,6 @@ char *get_height_UI(Patient *patient){
     return height;
 }
 
-void free_height_UI(char *height){
-    free(height);
-}
-
 char *get_weight_UI(Patient *patient){
     char *weight = (char*) malloc(6*sizeof(char));
     char weight_char[4];
@@ -95,10 +78,6 @@ char *get_weight_UI(Patient *patient){
     strcat(weight, "kg");
 
     return weight;
-}
-
-void free_weight_UI(char *weight){
-    free(weight);
 }
 
 /* a simplifier avec les deux fonctions précédentes */
@@ -125,14 +104,6 @@ char *get_height_weight_UI(Patient *patient){
     return height_weight;
 }
 
-void free_height_weight_UI(char *height_weight){
-    free(height_weight);
-}
-
-char *get_global_pathologies_UI(Patient *patient){
-    return patient->global_pathologies;
-}
-
 char *get_first_consultation_UI(Patient *patient){
 
     char *first_consultation = (char*) malloc(40*sizeof(char));
@@ -154,10 +125,6 @@ char *get_first_consultation_UI(Patient *patient){
     return first_consultation;
 }
 
-void free_first_consultation_UI(char *first_consultation){
-    free(first_consultation);
-}
-
 char *get_adress_UI(Patient *patient){
     char *adress = (char*) malloc(50*sizeof(char));
     /*char number[4];
@@ -171,10 +138,6 @@ char *get_adress_UI(Patient *patient){
     return adress;
 }
 
-void free_info_UI(char *info){
-    free(info);
-}
-
 char *get_formatted_folder_title_UI(Folder *folder){
     char *start = "<big><b>         ";
     char *end = "</b></big>";
@@ -186,10 +149,6 @@ char *get_formatted_folder_title_UI(Folder *folder){
     strcat(formattedTitle, folder->folderName);
     strcat(formattedTitle, end);
     return formattedTitle;
-}
-
-void free_formatted_folder_title_UI(char *folder_title){
-    free(folder_title);
 }
 
 char *get_formatted_folder_infos_UI(Folder *folder){    //TODO: insert breakline every n char
@@ -209,10 +168,6 @@ char *get_formatted_folder_infos_UI(Folder *folder){    //TODO: insert breakline
     return folder->details;
 }
 
-void free_folder_infos_UI(char *infos){
-    free(infos);
-}
-
 char *get_indicator_files_UI(Folder *folder){
     char *indicator = (char*) malloc(20*sizeof(char));
     char *buffer = (char*) malloc(5*sizeof(char));
@@ -223,6 +178,6 @@ char *get_indicator_files_UI(Folder *folder){
     return indicator;
 }
 
-void free_indicator_files_UI(char *indicator){
-    free(indicator);
+void free_info_UI(char *info){
+    free(info);
 }

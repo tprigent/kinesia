@@ -144,11 +144,11 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     patient_photo_pixbuf = gdk_pixbuf_new_from_file("../photo_patients/claude.jpeg", NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 170, 250, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
-    patient_name = gtk_label_new(patient_name_char);    free_name_UI(patient_name_char);
-    patient_birth = gtk_label_new(patient_birth_char);  free_date_UI(patient_birth_char);
+    patient_name = gtk_label_new(patient_name_char);    free_info_UI(patient_name_char);
+    patient_birth = gtk_label_new(patient_birth_char);  free_info_UI(patient_birth_char);
     patient_job = gtk_label_new(patient->job);
-    patient_height_weight = gtk_label_new(patient_height_weight_char);  free_height_weight_UI(patient_height_weight_char);
-    patient_first_consultation = gtk_label_new(patient_first_consultation_char);    free_first_consultation_UI(patient_first_consultation_char);
+    patient_height_weight = gtk_label_new(patient_height_weight_char);  free_info_UI(patient_height_weight_char);
+    patient_first_consultation = gtk_label_new(patient_first_consultation_char);    free_info_UI(patient_first_consultation_char);
     patient_other_info = gtk_label_new(patient->global_pathologies);
 
 
@@ -328,7 +328,7 @@ void createFolderInfoWindow(GtkWidget *box){
     GtkWidget *folder_title = NULL;
     char *formatted_folder_title_UI = get_formatted_folder_title_UI(folder);
     folder_title = gtk_label_new(formatted_folder_title_UI);
-    free_formatted_folder_title_UI(formatted_folder_title_UI);
+    free_info_UI(formatted_folder_title_UI);
     gtk_label_set_use_markup(GTK_LABEL(folder_title), TRUE);
     gtk_widget_set_halign(folder_title, GTK_ALIGN_CENTER);
     gtk_box_pack_start(GTK_BOX(hbox_folder), folder_title, FALSE, FALSE, 0);
@@ -355,7 +355,7 @@ void createFolderInfoWindow(GtkWidget *box){
     char *start_of_treatment = get_date_UI(&folder->startOfTreatment);
     folder_start_treatment = gtk_label_new("Début de traitement: ");
     folder_date = gtk_label_new(start_of_treatment);
-    free_date_UI(start_of_treatment);
+    free_info_UI(start_of_treatment);
     gtk_box_pack_start(GTK_BOX(hbox_treatment), folder_start_treatment, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_treatment), folder_date, FALSE, FALSE, 0);
 
@@ -439,7 +439,7 @@ void createFolderInfoWindow(GtkWidget *box){
     char *indicator = get_indicator_files_UI(folder);
     attachments_label = gtk_label_new("Pièces jointes:    ");
     attachments_count = gtk_label_new(indicator);
-    free_indicator_files_UI(indicator);
+    free_info_UI(indicator);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_label, FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(hbox_attachments), attachments_count, FALSE, FALSE, 0);
 

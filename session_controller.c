@@ -4,7 +4,6 @@
 
 #include <gtk/gtk.h>
 #include "session_controller.h"
-#include "session_view.h"
 #include "connect_struct_UI.h"
 
 void launchFolderEditor(){
@@ -144,7 +143,7 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     birth = gtk_label_new("Date de naissance : ");
     char *patient_birth_char = get_date_UI(&patient->birthdate);
     patient_birth = gtk_label_new(patient_birth_char);
-    free_date_UI(patient_birth_char);
+    free_info_UI(patient_birth_char);
     birth_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     job = gtk_label_new("Profession : ");
@@ -178,13 +177,13 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     weight = gtk_label_new("Poids : ");
     char *patient_weight_char = get_weight_UI(patient);
     patient_weight = gtk_label_new(patient_weight_char);
-    free_weight_UI(patient_weight_char);
+    free_info_UI(patient_weight_char);
     weight_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     height = gtk_label_new("Taille : ");
     char *patient_height_char = get_height_UI(patient);
     patient_height = gtk_label_new(patient_height_char);
-    free_height_UI(patient_height_char);
+    free_info_UI(patient_height_char);
     height_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     patient_info = gtk_label_new("Antécédents médicaux : ");
