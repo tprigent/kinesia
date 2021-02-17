@@ -14,18 +14,19 @@ void launchFolderEditor(){
     GtkWidget *start_treatment_label;
     GtkWidget *pathology_label;
     GtkWidget *other_infos_label;
+
     GtkWidget *folder_name_entry;
     GtkWidget *start_treatment_entry;
     GtkWidget *pathology_entry;
     GtkWidget *other_infos_entry;
+
     GtkWidget *content_area;
 
-    /* CREATE THE DIALOG BOX */
-    dialog = gtk_dialog_new_with_buttons ("Édition du dossier",NULL,GTK_DIALOG_MODAL,
-                                          "Annuler",GTK_RESPONSE_REJECT,
-                                          "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
+    GtkWidget *name_box;
+    GtkWidget *treatment_box;
+    GtkWidget *pathology_box;
+    GtkWidget *infos_box;
 
-    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
     /* DECLARE ELEMENTS OF THE DIALOG BOX */
     folder_name_label = gtk_label_new ("Nom du dossier");
@@ -38,23 +39,93 @@ void launchFolderEditor(){
     pathology_entry = gtk_entry_new();
     other_infos_entry = gtk_entry_new();
 
+    name_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    treatment_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    pathology_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    infos_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
+
+
+    /* CREATE THE DIALOG BOX */
+    dialog = gtk_dialog_new_with_buttons ("Édition du dossier",NULL,GTK_DIALOG_MODAL,
+                                          "Annuler",GTK_RESPONSE_REJECT,
+                                          "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
+
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    /* CREATE A GRID IN THE DIALOG BOX */
+    GtkWidget *grid_dialog = NULL;
+    grid_dialog = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_dialog), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
+
+    /* FRAME WHICH CONTAINS IDENTITY INFORMATION */
+    GtkWidget *frame_folder = NULL;
+    frame_folder = gtk_frame_new("Dossier en cours");
+    gtk_frame_set_label_align(GTK_FRAME(frame_folder), 0, 0.5);
+    gtk_grid_attach(GTK_GRID(grid_dialog), frame_folder, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(frame_folder, TRUE);
+    gtk_widget_set_vexpand(frame_folder, TRUE);
+
+    GtkWidget *grid_folder = NULL;
+    grid_folder = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(frame_folder), grid_folder);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_folder), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid_folder), 15);
+    gtk_widget_set_hexpand(grid_folder, TRUE);
+    gtk_widget_set_vexpand(grid_folder, TRUE);
+
     /* FILL THE DIALOG BOX */
-    gtk_container_add(GTK_CONTAINER(content_area), folder_name_label);
-    gtk_container_add(GTK_CONTAINER(content_area), folder_name_entry);
-    gtk_widget_set_margin_bottom(folder_name_entry, 5);
-    gtk_container_add(GTK_CONTAINER(content_area), start_treatment_label);
-    gtk_container_add(GTK_CONTAINER(content_area), start_treatment_entry);
-    gtk_widget_set_margin_bottom(start_treatment_entry, 5);
-    gtk_container_add(GTK_CONTAINER(content_area), pathology_label);
-    gtk_container_add(GTK_CONTAINER(content_area), pathology_entry);
-    gtk_widget_set_margin_bottom(pathology_entry, 5);
-    gtk_container_add(GTK_CONTAINER(content_area), other_infos_label);
-    gtk_container_add(GTK_CONTAINER(content_area), other_infos_entry);
-    gtk_widget_set_margin_bottom(other_infos_entry, 10);
+    /* Name */
+    gtk_box_pack_start(GTK_BOX(name_box), folder_name_label, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(name_box), folder_name_entry, FALSE, FALSE, 0);
+    gtk_widget_set_halign(folder_name_label, GTK_ALIGN_START);
+    gtk_grid_attach(GTK_GRID(grid_folder), name_box, GTK_ALIGN_START, GTK_ALIGN_START, 3, 1);
+    gtk_widget_set_margin_bottom(name_box, 5);
+    gtk_widget_set_hexpand(name_box, FALSE);
+    gtk_widget_set_vexpand(name_box, TRUE);
+
+
+    /* Start treatment date */
+    gtk_box_pack_start(GTK_BOX(treatment_box), start_treatment_label, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(treatment_box), start_treatment_entry, FALSE, FALSE, 0);
+    gtk_widget_set_halign(start_treatment_label, GTK_ALIGN_START);
+    gtk_grid_attach_next_to(GTK_GRID(grid_folder), treatment_box, name_box, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_margin_bottom(treatment_box, 5);
+    gtk_widget_set_hexpand(treatment_box, FALSE);
+    gtk_widget_set_vexpand(treatment_box, TRUE);
+
+
+    /* Pathology name */
+    gtk_box_pack_start(GTK_BOX(pathology_box), pathology_label, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(pathology_box), pathology_entry, FALSE, FALSE, 0);
+    gtk_widget_set_halign(pathology_label, GTK_ALIGN_START);
+    gtk_grid_attach_next_to(GTK_GRID(grid_folder), pathology_box, treatment_box, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_margin_bottom(pathology_box, 10);
+    gtk_widget_set_hexpand(pathology_box, FALSE);
+    gtk_widget_set_vexpand(pathology_box, FALSE);
+
+    /* Other infos */
+    gtk_box_pack_start(GTK_BOX(infos_box), other_infos_label, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(infos_box), other_infos_entry, TRUE, TRUE, 0);
+    gtk_widget_set_vexpand(other_infos_entry, TRUE);
+    gtk_widget_set_hexpand(other_infos_entry, TRUE);
+    gtk_widget_set_size_request(infos_box, 350,1);
+    gtk_widget_set_halign(other_infos_label, GTK_ALIGN_START);
+    gtk_grid_attach_next_to(GTK_GRID(grid_folder), infos_box, treatment_box, GTK_POS_RIGHT, 2, 2);
+    gtk_widget_set_margin_bottom(infos_box, 10);
+    gtk_widget_set_hexpand(infos_box, TRUE);
+    gtk_widget_set_vexpand(infos_box, TRUE);
+
+
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
     gtk_widget_show_all(dialog);
 
     /* MANAGE THE USER ACTION */
@@ -222,7 +293,7 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
 
     /* FRAME WHICH CONTAINS IDENTITY INFORMATION */
     GtkWidget *frame_etat_civil = NULL;
-    frame_etat_civil = gtk_frame_new("Etat civil");
+    frame_etat_civil = gtk_frame_new("État civil");
     gtk_frame_set_label_align(GTK_FRAME(frame_etat_civil), 0, 0.5);
     gtk_grid_attach(GTK_GRID(grid_dialog), frame_etat_civil, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(frame_etat_civil, TRUE);
