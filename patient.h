@@ -15,7 +15,7 @@ int allocatePatient(Patient ** p);
 int allocateAddress(Address * a);
 
 /*fonction de remplissage/modification des attributs des structures*/
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, int pn, char * ma, char* metier, char * ns, int w, int h, Date fc, char * gp);
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* metier, char * ns, int w, int h, Date fc, char * gp);
 int setAddress(Address * adr, char * numM, char * r, char * cp, char * v, char * iC);
 int setDate(Date * d, int j, int m, int a);
 
@@ -25,5 +25,7 @@ int setDate(Date * d, int j, int m, int a);
 int addPatient(Patient *gen);
 //Ajout d'un patient dans la table patient à partir d'une instance de la struct Patient
 int modifyPatient(Patient *gen);
+//Recuperation d'un patient
+Patient* getPatient(int id);
 
 #endif //LOGICIEL_KINE_PATIENT_H

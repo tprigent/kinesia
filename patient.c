@@ -6,8 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-
+#include "structures.h"
 
 /*allocation d'une chaîne de caractère de longueur lg*/
 static int allocateStringPatient(char ** string, int lg) {
@@ -75,7 +74,7 @@ int setDate(Date * d, int j, int m, int a) {
 }
 
 /*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, int pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp) {
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp) {
 
     static int idPatient = 0;
 
@@ -273,4 +272,79 @@ int addPatient(Patient *gen){
     //Fermeture de la bdd
     sqlite3_close(db);
     return 1;
+}
+
+
+Patient* getPatient(int id){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+    Patient *patient;
+    Address *adresse;
+    Date *birthDate;
+    Date *firstRdDdate;
+
+    if(allocatePatient(&patient) == -1 || allocateAddress(adresse) == -1 ){
+        fprintf(stderr,"Erreur d'allocation\n");
+    }
+    printf("ICI\n");
+    //Ouverture de la bdd
+    rc = sqlite3_open("/BaseDeDonnee/Bdd.db", &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return NULL;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT * FROM patient WHERE id=?";
+
+    sqlite3_bind_int(stmt,-1,id);
+
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+
+        if(setDate(birthDate,
+                sqlite3_column_int(stmt,5),
+                sqlite3_column_int(stmt,4),
+                sqlite3_column_int(stmt,3)) == -1 ){
+            fprintf(stderr,"Erreur setDate birthdate\n");
+        }
+        if(setDate(firstRdDdate,
+                   sqlite3_column_int(stmt,15),
+                   sqlite3_column_int(stmt,14),
+                   sqlite3_column_int(stmt,13)) == -1 ){
+            fprintf(stderr,"Erreur setDate first RDV\n");
+        }
+        if(setAddress(adresse,(char*)sqlite3_column_text(stmt,17),
+                      (char*)sqlite3_column_text(stmt,18),(char*)sqlite3_column_text(stmt,19),
+                      (char*)sqlite3_column_text(stmt,20),(char*)sqlite3_column_text(stmt,21)) == -1 ){
+            fprintf(stderr,"Erreur set address\n");
+        }
+
+        if(setPatient(patient,(char*)sqlite3_column_text(stmt,1),(char*)sqlite3_column_text(stmt,2),*birthDate,
+                      (char*)sqlite3_column_text(stmt,6),sqlite3_column_int(stmt,7),
+                      *adresse,(char*)sqlite3_column_text(stmt,8),
+                      (char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,22),
+                      (char*)sqlite3_column_text(stmt,10),sqlite3_column_int(stmt,11),
+                      sqlite3_column_int(stmt,12),*firstRdDdate,(char*)sqlite3_column_text(stmt,16)) != 0)
+            fprintf(stderr,"Erreur setPatient");
+    }
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return patient;
+
 }
