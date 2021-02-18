@@ -76,9 +76,7 @@ int setDate(Date * d, int j, int m, int a) {
 }
 
 /*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp) {
-
-    static int idPatient = 0;
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp,unsigned int idPatient) {
 
     if (p == NULL) return -1; //si l'instance de patient à remplir est vide, erreur
 
@@ -160,7 +158,7 @@ int modifyPatient(Patient *gen){
 
     //Ajout des valeurs dans la requête
     int i;
-    i=0;
+    i=1;
     sqlite3_bind_text(stmt,i++,gen->name,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->firstname,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->birthdate.year);
@@ -239,7 +237,7 @@ int addPatient(Patient *gen){
 
     //Ajout des valeurs dans la requête
     int i;
-    i=0;
+    i=1;
     sqlite3_bind_text(stmt,i++,gen->name,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->firstname,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->birthdate.year);
@@ -344,7 +342,7 @@ Patient* getPatient(int id){
                       adresse,(char*)sqlite3_column_text(stmt,8),
                       (char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,22),
                       (char*)sqlite3_column_text(stmt,10),sqlite3_column_int(stmt,11),
-                      sqlite3_column_int(stmt,12),firstRdDdate,(char*)sqlite3_column_text(stmt,16)) != 0)
+                      sqlite3_column_int(stmt,12),firstRdDdate,(char*)sqlite3_column_text(stmt,16),(unsigned int)id) != 0)
         fprintf(stderr,"Erreur setPatient");
 
     sqlite3_finalize(stmt);
