@@ -244,56 +244,57 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     gtk_text_buffer_get_end_iter(info_buffer, &end);
 
     name = gtk_label_new("Prénom : ");
-    patient_name = gtk_label_new(patient->name);
+    gtk_entry_set_text(GTK_ENTRY(name_entry), patient->name);
     name_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     surname = gtk_label_new("Nom : ");
-    patient_surname = gtk_label_new(patient->firstname);
+    gtk_entry_set_text(GTK_ENTRY(surname_entry), patient->firstname);
     surname_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     patient_photo = gtk_label_new("Photo : ");
 
     birth = gtk_label_new("Date de naissance : ");
     char *patient_birth_char = get_date_UI(&patient->birthdate);
-    patient_birth = gtk_label_new(patient_birth_char);
+    gtk_entry_set_text(GTK_ENTRY(birth_entry), patient_birth_char);
     free_info_UI(patient_birth_char);
     birth_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     job = gtk_label_new("Profession : ");
-    patient_job = gtk_label_new(patient->job);
+    gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
     job_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     address = gtk_label_new("Adresse : ");
     char *patient_adress_char = get_adress_UI(patient);
-    patient_address = gtk_label_new(patient_adress_char);
+    gtk_entry_set_text(GTK_ENTRY(address_entry), patient_adress_char);
     free_info_UI(patient_adress_char);
     address_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     postcode = gtk_label_new("Code postal : ");
-    patient_postcode = gtk_label_new(patient->address.postCode);
+    gtk_entry_set_text(GTK_ENTRY(postcode_entry), patient->address.postCode);
     postcode_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     city = gtk_label_new("Ville : ");
-    patient_city = gtk_label_new(patient->address.city);
+    gtk_entry_set_text(GTK_ENTRY(city_entry), patient->address.city);
     city_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     number = gtk_label_new("N° de téléphone : ");
-    patient_number = gtk_label_new(patient->phone_number);
+    gtk_entry_set_text(GTK_ENTRY(number_entry), patient->phone_number);
     number_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     email = gtk_label_new("email : ");
-    patient_email = gtk_label_new(patient->mail_address);
+    gtk_entry_set_text(GTK_ENTRY(email_entry), patient->mail_address);
     email_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     patient_ssn = gtk_label_new("N° de sécurité sociale : ");
+    gtk_entry_set_text(GTK_ENTRY(ssn_entry), patient->ssn);
 
     weight = gtk_label_new("Poids : ");
     char *patient_weight_char = get_weight_UI(patient);
-    patient_weight = gtk_label_new(patient_weight_char);
+    gtk_entry_set_text(GTK_ENTRY(weight_entry), patient_weight_char);
     free_info_UI(patient_weight_char);
     weight_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     height = gtk_label_new("Taille : ");
     char *patient_height_char = get_height_UI(patient);
-    patient_height = gtk_label_new(patient_height_char);
+    gtk_entry_set_text(GTK_ENTRY(height_entry), patient_height_char);
     free_info_UI(patient_height_char);
     height_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
