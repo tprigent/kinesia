@@ -18,7 +18,10 @@ void launchFolderEditor(){
     GtkWidget *folder_name_entry;
     GtkWidget *start_treatment_entry;
     GtkWidget *pathology_entry;
-    GtkWidget *other_infos_entry;
+    GtkWidget *other_infos_text;
+
+    GtkTextIter end;
+    GtkTextBuffer *other_infos_buffer;
 
     GtkWidget *content_area;
 
@@ -37,14 +40,21 @@ void launchFolderEditor(){
     folder_name_entry = gtk_entry_new();
     start_treatment_entry = gtk_entry_new();
     pathology_entry = gtk_entry_new();
-    other_infos_entry = gtk_entry_new();
+    other_infos_text = gtk_text_view_new();
+    other_infos_buffer= gtk_text_view_get_buffer(GTK_TEXT_VIEW(other_infos_text));
+    gtk_text_view_set_left_margin(GTK_TEXT_VIEW(other_infos_text), 5);
+    gtk_text_view_set_top_margin(GTK_TEXT_VIEW(other_infos_text), 5);
+
+
 
     /* FILL THE ENTRIES */ //TODO: active it when getFolder is done
     /*
     gtk_entry_set_text(GTK_ENTRY(folder_name_entry), folder->folderName);
     gtk_entry_set_text(GTK_ENTRY(start_treatment_entry), get_date_UI(&folder->startOfTreatment));
     gtk_entry_set_text(GTK_ENTRY(pathology_label), folder->pathology);
-    gtk_entry_set_text(GTK_ENTRY(other_infos_entry), folder->details);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+    gtk_text_buffer_insert(buffer, &end, folder->details, -1);
+    gtk_text_view_set_buffer(GTK_TEXT_VIEW(other_infos_text), buffer);
      */
 
     name_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -118,9 +128,9 @@ void launchFolderEditor(){
 
     /* Other infos */
     gtk_box_pack_start(GTK_BOX(infos_box), other_infos_label, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(infos_box), other_infos_entry, TRUE, TRUE, 0);
-    gtk_widget_set_vexpand(other_infos_entry, TRUE);
-    gtk_widget_set_hexpand(other_infos_entry, TRUE);
+    gtk_box_pack_start(GTK_BOX(infos_box), other_infos_text, TRUE, TRUE, 0);
+    gtk_widget_set_vexpand(other_infos_text, TRUE);
+    gtk_widget_set_hexpand(other_infos_text, TRUE);
     gtk_widget_set_size_request(infos_box, 350,1);
     gtk_widget_set_halign(other_infos_label, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_folder), infos_box, treatment_box, GTK_POS_RIGHT, 2, 2);
