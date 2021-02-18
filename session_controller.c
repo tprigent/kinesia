@@ -217,10 +217,32 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     GtkWidget *ssn_entry = NULL;
     GtkWidget *weight_entry = NULL;
     GtkWidget *height_entry = NULL;
-    GtkWidget *info_entry = NULL;
+    GtkWidget *info_text = NULL;
+    GtkTextBuffer *info_buffer = NULL;
+    GtkTextIter end;
 
 
     /* DECLARE ELEMENTS OF THE DIALOG BOX */
+
+    name_entry = gtk_entry_new();
+    surname_entry = gtk_entry_new();
+    birth_entry = gtk_entry_new();
+    job_entry = gtk_entry_new();
+    address_entry = gtk_entry_new();
+    postcode_entry = gtk_entry_new();
+    city_entry = gtk_entry_new();
+    number_entry = gtk_entry_new();
+    email_entry = gtk_entry_new();
+    ssn_entry = gtk_entry_new();
+    weight_entry = gtk_entry_new();
+    height_entry = gtk_entry_new();
+    info_text = gtk_text_view_new();
+
+    info_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text));
+    gtk_text_view_set_left_margin(GTK_TEXT_VIEW(info_text), 5);
+    gtk_text_view_set_top_margin(GTK_TEXT_VIEW(info_text), 5);
+    gtk_text_buffer_get_end_iter(info_buffer, &end);
+
     name = gtk_label_new("Prénom : ");
     patient_name = gtk_label_new(patient->name);
     name_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
@@ -276,21 +298,11 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     height_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     patient_info = gtk_label_new("Antécédents médicaux : ");
-    photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
+    gtk_text_buffer_insert(info_buffer, &end, patient->global_pathologies, -1);
+    gtk_text_view_set_buffer(GTK_TEXT_VIEW(info_text), info_buffer);
 
-    name_entry = gtk_entry_new();
-    surname_entry = gtk_entry_new();
-    birth_entry = gtk_entry_new();
-    job_entry = gtk_entry_new();
-    address_entry = gtk_entry_new();
-    postcode_entry = gtk_entry_new();
-    city_entry = gtk_entry_new();
-    number_entry = gtk_entry_new();
-    email_entry = gtk_entry_new();
-    ssn_entry = gtk_entry_new();
-    weight_entry = gtk_entry_new();
-    height_entry = gtk_entry_new();
-    info_entry = gtk_entry_new();
+
+    photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
 
     /* CREATE THE DIALOG BOX */
@@ -466,8 +478,8 @@ void launchPatientEditor(GtkWidget *but_edit, gpointer data){
     gtk_widget_set_hexpand(patient_info, TRUE);
     gtk_widget_set_vexpand(patient_info, FALSE);
     gtk_widget_set_halign(patient_info, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), info_entry, patient_info, GTK_POS_BOTTOM, 2, 1);
-    gtk_widget_set_vexpand(info_entry, TRUE);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), info_text, patient_info, GTK_POS_BOTTOM, 2, 1);
+    gtk_widget_set_vexpand(info_text, TRUE);
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
