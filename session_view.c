@@ -18,7 +18,7 @@ GtkWidget *setSessionWindow(){
     gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
     gtk_window_maximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
-    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     return window;
 }
 
@@ -100,184 +100,177 @@ void setSessionEnvironment(GtkWidget *window){
 }
 
 void createPatientInfoWindow(GtkWidget *box, Patient *patient){
-    /* Create a grid to organize the information section **************************** */
-    GtkWidget *grid_part1 = NULL;
-    grid_part1 = gtk_grid_new();
-    gtk_grid_set_row_spacing(GTK_GRID(grid_part1), 5);
-    gtk_box_pack_start(GTK_BOX(box), grid_part1, TRUE, TRUE, 0);
-    /* ****************************************************************************** */
 
-    /* first part : button "revenir liste patient" ********************************** */
-    GtkWidget *but_back = NULL;
-    but_back = gtk_button_new_with_label("< Revenir à la liste");
-    gtk_grid_attach(GTK_GRID(grid_part1), but_back, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(but_back, FALSE);
-    gtk_widget_set_vexpand(but_back, FALSE);
-    gtk_widget_set_halign(but_back, GTK_ALIGN_START);
-    /* ****************************************************************************** */
-
-
-    /* Second part : section which contains patient informations ******************** */
-    /* Creation of the frame */
-    GtkWidget *cadre_info = NULL;
-    cadre_info = gtk_frame_new("Informations patient");
-    gtk_frame_set_label_align(GTK_FRAME(cadre_info), 0.5, 0.5);
-    gtk_grid_attach_next_to(GTK_GRID(grid_part1), cadre_info, but_back, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(cadre_info, TRUE);
-    gtk_widget_set_vexpand(cadre_info, TRUE);
-
-    /* Creation of a grid to fill the frame ****************/
-    GtkWidget *grid_info = NULL;
-    grid_info = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(cadre_info), grid_info);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_info), 5);
-    /* ************************************************** */
-
-    /* Creation of a button to change information *********/
-    GtkWidget *but_edit = NULL;
-    but_edit = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    g_signal_connect(GTK_BUTTON(but_edit), "clicked", G_CALLBACK(launchPatientEditor), patient);
-    gtk_grid_attach(GTK_GRID(grid_info), but_edit, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(but_edit, TRUE);
-    gtk_widget_set_vexpand(but_edit, FALSE);
-    gtk_widget_set_halign(but_edit, GTK_ALIGN_END);
-    /* ************************************************** */
-
-    /* Include the picture of the patient *****************/
-    GtkWidget *photo = NULL;
-    GdkPixbuf *photo2 = NULL;
-    photo2 = gdk_pixbuf_new_from_file("../photo_patients/claude.jpeg", NULL);
-    photo2 = gdk_pixbuf_scale_simple(photo2, 170, 250, GDK_INTERP_BILINEAR);
-    photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(photo2));
-    gtk_grid_attach_next_to(GTK_GRID(grid_info), photo, but_edit, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(photo, FALSE);
-    gtk_widget_set_vexpand(photo, FALSE);
-    gtk_widget_set_halign(photo, GTK_ALIGN_CENTER);
-    /* ************************************************** */
-
-    /* Frame which contains identity informations *********/
+    /* DECLARE VARIABLES */
+    GtkWidget *frame_info = NULL;
     GtkWidget *frame_etat_civil = NULL;
+    GtkWidget *frame_medical_info = NULL;
+    GtkWidget *frame_other_info = NULL;
+
+    GtkWidget *grid_left_section = NULL;
+    GtkWidget *grid_info = NULL;
+    GtkWidget *grid_etat_civil = NULL;
+    GtkWidget *grid_medical_info = NULL;
+
+    GtkWidget *back_button = NULL;
+    GtkWidget *edit_button = NULL;
+    GtkWidget *patient_photo = NULL;
+    GdkPixbuf *patient_photo_pixbuf = NULL;
+    GtkWidget *patient_name = NULL;
+    GtkWidget *patient_birth = NULL;
+    GtkWidget *patient_job = NULL;
+    GtkWidget *patient_height_weight = NULL;
+    GtkWidget *patient_first_consultation = NULL;
+    GtkWidget *patient_other_info = NULL;
+
+    char * patient_name_char = get_name_UI(patient);
+    char *patient_birth_char = get_date_UI(&patient->birthdate);
+    char *patient_height_weight_char = get_height_weight_UI(patient);
+    char * patient_first_consultation_char = get_first_consultation_UI(patient);
+
+    /* ASSIGN VARIABLES */
+    frame_info = gtk_frame_new("Informations patient");
     frame_etat_civil = gtk_frame_new("Etat civil");
+    frame_medical_info = gtk_frame_new("Informations médicales");
+    frame_other_info = gtk_frame_new("Informations importantes");
+
+    grid_left_section = gtk_grid_new();
+    grid_info = gtk_grid_new();
+    grid_etat_civil = gtk_grid_new();
+    grid_medical_info = gtk_grid_new();
+
+    back_button = gtk_button_new_with_label("< Revenir à la liste");
+    edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../photo_patients/claude.jpeg", NULL);
+    patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 170, 250, GDK_INTERP_BILINEAR);
+    patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
+    patient_name = gtk_label_new(patient_name_char);    free_info_UI(patient_name_char);
+    patient_birth = gtk_label_new(patient_birth_char);  free_info_UI(patient_birth_char);
+    patient_job = gtk_label_new(patient->job);
+    patient_height_weight = gtk_label_new(patient_height_weight_char);  free_info_UI(patient_height_weight_char);
+    patient_first_consultation = gtk_label_new(patient_first_consultation_char);    free_info_UI(patient_first_consultation_char);
+    patient_other_info = gtk_label_new(patient->global_pathologies);
+
+
+    /* MANAGE THE GRID WHICH ORGANIZES THE LEFT SECTION */
+    gtk_grid_set_row_spacing(GTK_GRID(grid_left_section), 5);
+    gtk_box_pack_start(GTK_BOX(box), grid_left_section, TRUE, TRUE, 0);
+
+
+    /******************************** FIRST PART : BUTTON "REVENIR A LA LISTE PATIENT" ********************************/
+    gtk_grid_attach(GTK_GRID(grid_left_section), back_button, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(back_button, FALSE);
+    gtk_widget_set_vexpand(back_button, FALSE);
+    gtk_widget_set_halign(back_button, GTK_ALIGN_START);
+
+
+    /*************************** SECOND PART : SECTION WHICH CONTAINS PATIENT INFORMATION *****************************/
+    /* Manage the frame global and its grid */
+    gtk_frame_set_label_align(GTK_FRAME(frame_info), 0.5, 0.5);
+    gtk_grid_attach_next_to(GTK_GRID(grid_left_section), frame_info, back_button, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(frame_info, TRUE);
+    gtk_widget_set_vexpand(frame_info, TRUE);
+
+    gtk_container_add(GTK_CONTAINER(frame_info), grid_info);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_info), 5);
+
+    /* Button to edit information */
+    g_signal_connect(GTK_BUTTON(edit_button), "clicked", G_CALLBACK(launchPatientEditor), patient);
+    gtk_grid_attach(GTK_GRID(grid_info), edit_button, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(edit_button, TRUE);
+    gtk_widget_set_vexpand(edit_button, FALSE);
+    gtk_widget_set_halign(edit_button, GTK_ALIGN_END);
+
+    /* Include the picture of the patient */
+    gtk_grid_attach_next_to(GTK_GRID(grid_info), patient_photo, edit_button, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(patient_photo, FALSE);
+    gtk_widget_set_vexpand(patient_photo, FALSE);
+    gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER);
+
+    /* Manage the frame which contains identity informations and its grid */
     gtk_frame_set_label_align(GTK_FRAME(frame_etat_civil), 0, 0.5);
-    gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_etat_civil, photo, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_etat_civil, patient_photo, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_etat_civil, TRUE);
     gtk_widget_set_vexpand(frame_etat_civil, FALSE);
 
-    GtkWidget *grid_etat_civil = NULL;
-    grid_etat_civil = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(frame_etat_civil), grid_etat_civil);
-    /* ************************************************** */
 
-    /* Section which fills the identity informations ******/
+
+    /* Section which fills the information grid */
     // Name
-    GtkWidget *nom = NULL;
-    char * name = get_name_UI(patient);
-    nom = gtk_label_new(name);
-    free_name_UI(name);
-    gtk_grid_attach(GTK_GRID(grid_etat_civil), nom, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(nom, TRUE);
-    gtk_widget_set_vexpand(nom, FALSE);
-    gtk_widget_set_halign(nom, GTK_ALIGN_CENTER);
+    gtk_grid_attach(GTK_GRID(grid_etat_civil), patient_name, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(patient_name, TRUE);
+    gtk_widget_set_vexpand(patient_name, FALSE);
+    gtk_widget_set_halign(patient_name, GTK_ALIGN_CENTER);
 
     // Birthdate
-    GtkWidget *dateN = NULL;
-    char *birth = get_date_UI(&patient->birthdate);
-    dateN = gtk_label_new(birth);
-    free_date_UI(birth);
-    gtk_label_set_use_markup(GTK_LABEL(dateN), TRUE);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), dateN, nom, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(dateN, TRUE);
-    gtk_widget_set_vexpand(dateN, FALSE);
-    gtk_widget_set_halign(dateN, GTK_ALIGN_CENTER);
+    gtk_label_set_use_markup(GTK_LABEL(patient_birth), TRUE);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_birth, patient_name, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(patient_birth, TRUE);
+    gtk_widget_set_vexpand(patient_birth, FALSE);
+    gtk_widget_set_halign(patient_birth, GTK_ALIGN_CENTER);
 
-    // Profession
-    GtkWidget *profession = NULL;
-    char * job = get_job_UI(patient);
-    profession = gtk_label_new(job);
-    gtk_label_set_use_markup(GTK_LABEL(profession), TRUE);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), profession, dateN, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(profession, TRUE);
-    gtk_widget_set_vexpand(profession, FALSE);
-    gtk_widget_set_halign(profession, GTK_ALIGN_CENTER);
-    /* ************************************************** */
+    // Job
+    gtk_label_set_use_markup(GTK_LABEL(patient_job), TRUE);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_job, patient_birth, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(patient_job, TRUE);
+    gtk_widget_set_vexpand(patient_job, FALSE);
+    gtk_widget_set_halign(patient_job, GTK_ALIGN_CENTER);
 
-    /* Frame which contains medical informations *********/
-    GtkWidget *frame_medical_info = NULL;
-    frame_medical_info = gtk_frame_new("Informations médicales");
+    /* Manage the frame which contains medical informations and its grid */
     gtk_frame_set_label_align(GTK_FRAME(frame_medical_info), 0, 0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_medical_info, frame_etat_civil, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_medical_info, TRUE);
     gtk_widget_set_vexpand(frame_medical_info, FALSE);
 
-    GtkWidget *grid_medical_info = NULL;
-    grid_medical_info = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(frame_medical_info), grid_medical_info);
-    /* ************************************************** */
 
-    /* Section which fills the identity informations ******/
-    // Weight and height
-    GtkWidget *poids_taille = NULL;
-    char *height_weight = get_height_weight_UI(patient);
-    poids_taille = gtk_label_new(height_weight);
-    free_height_weight_UI(height_weight);
-    gtk_grid_attach(GTK_GRID(grid_medical_info), poids_taille, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(poids_taille, TRUE);
-    gtk_widget_set_vexpand(poids_taille, FALSE);
-    gtk_widget_set_halign(poids_taille, GTK_ALIGN_CENTER);
+    /* Section which fills the medical grid */
+    // Height and weight
+    gtk_grid_attach(GTK_GRID(grid_medical_info), patient_height_weight, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(patient_height_weight, TRUE);
+    gtk_widget_set_vexpand(patient_height_weight, FALSE);
+    gtk_widget_set_halign(patient_height_weight, GTK_ALIGN_CENTER);
 
     // First consultation
-    GtkWidget *first_consultation = NULL;
-    char * first_consultation_char = get_first_consultation_UI(patient);
-    first_consultation = gtk_label_new(first_consultation_char);
-    gtk_label_set_use_markup(GTK_LABEL(first_consultation), TRUE);
-    free_first_consultation_UI(first_consultation_char);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consultation, poids_taille, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(first_consultation, TRUE);
-    gtk_widget_set_vexpand(first_consultation, FALSE);
-    gtk_widget_set_halign(first_consultation, GTK_ALIGN_CENTER);
-    /* ************************************************** */
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_first_consultation, patient_height_weight, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(patient_first_consultation, TRUE);
+    gtk_widget_set_vexpand(patient_first_consultation, FALSE);
+    gtk_widget_set_halign(patient_first_consultation, GTK_ALIGN_CENTER);
 
-    /* Frame which contains important informations ********/
-    GtkWidget *frame_important_info = NULL;
-    frame_important_info = gtk_frame_new("Informations importantes");
-    gtk_frame_set_label_align(GTK_FRAME(frame_important_info), 0, 0.5);
-    gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_important_info, frame_medical_info, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(frame_important_info, TRUE);
-    gtk_widget_set_vexpand(frame_important_info, FALSE);
+    /* Manage the frame which contains other informations */
+    gtk_frame_set_label_align(GTK_FRAME(frame_other_info), 0, 0.5);
+    gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_other_info, frame_medical_info, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(frame_other_info, TRUE);
+    gtk_widget_set_vexpand(frame_other_info, FALSE);
 
-    GtkWidget *label_imp_info = NULL;
-    char * global_pathologies = get_global_pathologies_UI(patient);
-    label_imp_info = gtk_label_new(global_pathologies);
-    gtk_container_add(GTK_CONTAINER(frame_important_info), label_imp_info);
-    /* ************************************************** */
-
-    /* ****************************************************************************** */
+    /* Section which fills other information */
+    gtk_container_add(GTK_CONTAINER(frame_other_info), patient_other_info);
 
 
-    /* Third part : section which contains the folders ***************************** */
-    GtkWidget *vbox_folder = NULL;
-    vbox_folder = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_grid_attach_next_to(GTK_GRID(grid_part1), vbox_folder, cadre_info, GTK_POS_BOTTOM, 3, 1);
-    gtk_widget_set_hexpand(vbox_folder, TRUE);
-    gtk_widget_set_vexpand(vbox_folder, FALSE);
+    /******************************** THIRD PART : SECTION WHICH CONTAINS THE FOLDERS *********************************/
+    GtkWidget *folder_box = NULL;
+    folder_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_grid_attach_next_to(GTK_GRID(grid_left_section), folder_box, frame_info, GTK_POS_BOTTOM, 3, 1);
+    gtk_widget_set_hexpand(folder_box, TRUE);
+    gtk_widget_set_vexpand(folder_box, FALSE);
 
     int nb_folders = 3; // sere récupéré par une fonction
     int i = 0;
-    GtkWidget *button_folder[nb_folders];
+    GtkWidget *folder_button[nb_folders];
     char *name_folder[nb_folders];
-    char name_folder1[] = "#Dossier1"; // sera récupéré parne fonction
+    char name_folder1[] = "#Dossier1"; // sera récupéré par une fonction
     char name_folder2[] = "#Dossier2";
     char name_folder3[] = "#Dossier3";
     name_folder[0] = name_folder1;
     name_folder[1] = name_folder2;
     name_folder[2] = name_folder3;
 
-
     for(i =0; i < nb_folders; i++){
-        button_folder[i] = gtk_button_new_with_label(name_folder[i]);
-        gtk_box_pack_start(GTK_BOX(vbox_folder), button_folder[i], FALSE, FALSE, 0);
+        folder_button[i] = gtk_button_new_with_label(name_folder[i]);
+        gtk_box_pack_start(GTK_BOX(folder_box), folder_button[i], FALSE, FALSE, 0);
     }
-    /* ****************************************************************************** */
+
 }
 
 void createFolderInfoWindow(GtkWidget *box){
@@ -335,7 +328,7 @@ void createFolderInfoWindow(GtkWidget *box){
     GtkWidget *folder_title = NULL;
     char *formatted_folder_title_UI = get_formatted_folder_title_UI(folder);
     folder_title = gtk_label_new(formatted_folder_title_UI);
-    free_formatted_folder_title_UI(formatted_folder_title_UI);
+    free_info_UI(formatted_folder_title_UI);
     gtk_label_set_use_markup(GTK_LABEL(folder_title), TRUE);
     gtk_widget_set_halign(folder_title, GTK_ALIGN_CENTER);
     gtk_box_pack_start(GTK_BOX(hbox_folder), folder_title, FALSE, FALSE, 0);
@@ -362,7 +355,7 @@ void createFolderInfoWindow(GtkWidget *box){
     char *start_of_treatment = get_date_UI(&folder->startOfTreatment);
     folder_start_treatment = gtk_label_new("Début de traitement: ");
     folder_date = gtk_label_new(start_of_treatment);
-    free_date_UI(start_of_treatment);
+    free_info_UI(start_of_treatment);
     gtk_box_pack_start(GTK_BOX(hbox_treatment), folder_start_treatment, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_treatment), folder_date, FALSE, FALSE, 0);
 
@@ -446,7 +439,7 @@ void createFolderInfoWindow(GtkWidget *box){
     char *indicator = get_indicator_files_UI(folder);
     attachments_label = gtk_label_new("Pièces jointes:    ");
     attachments_count = gtk_label_new(indicator);
-    free_indicator_files_UI(indicator);
+    free_info_UI(indicator);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_label, FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(hbox_attachments), attachments_count, FALSE, FALSE, 0);
 
@@ -483,83 +476,92 @@ void createFolderInfoWindow(GtkWidget *box){
 }
 
 void createSessionInfoWindow(GtkWidget *box){
-    /* Create a grid to organize the session section ******************************** */
-    GtkWidget *grid_part3 = NULL;
-    grid_part3 = gtk_grid_new();
-    gtk_grid_set_row_spacing(GTK_GRID(grid_part3), 10);
-    gtk_box_pack_start(GTK_BOX(box), grid_part3, TRUE, TRUE, 0);
-    /* ****************************************************************************** */
 
-    /* First part : section to add a new session *********************************** */
-    /* Creation of the frame to add a session */
-    GtkWidget *add_session = NULL;
-    add_session = gtk_frame_new("Séance en cours");
-    gtk_frame_set_label_align(GTK_FRAME(add_session), 0.5, 0.5);
-    gtk_grid_attach(GTK_GRID(grid_part3), add_session, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
-    gtk_widget_set_hexpand(add_session, TRUE);
-    gtk_widget_set_vexpand(add_session, TRUE);
-    gtk_widget_set_halign(add_session, GTK_ALIGN_FILL);
+    /* DECLARE VARIABLES */
+    GtkWidget *grid_session_section = NULL;
+    GtkWidget *grid_add_session = NULL;
 
-    /* Creation of a grid to fill the add_session frame */
-    GtkWidget *add_session_grid = NULL;
-    add_session_grid = gtk_grid_new();
-    gtk_container_set_border_width(GTK_CONTAINER(add_session_grid), 5);
-    gtk_grid_set_row_spacing(GTK_GRID(add_session_grid), 5);
-    gtk_grid_set_column_spacing(GTK_GRID(add_session_grid), 5);
-    gtk_container_add(GTK_CONTAINER(add_session), add_session_grid);
+    GtkWidget *frame_add_session = NULL;
+    GtkWidget *frame_session_note = NULL;
 
-    /* Creation of an entry for the title */
-    GtkWidget *title_label = NULL;
-    title_label = gtk_label_new("Titre :");
-    gtk_grid_attach(GTK_GRID(add_session_grid), title_label, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(title_label, FALSE);
-    gtk_widget_set_vexpand(title_label, FALSE);
-    gtk_widget_set_halign(title_label, GTK_ALIGN_START);
+    GtkWidget *session_title_new = NULL;
+    GtkWidget *entry_title_new = NULL;
+    GtkWidget *session_next_meeting = NULL;
+    GtkWidget *session_attach_button = NULL;
+    GtkWidget *entry_session_note = NULL;
 
-    GtkWidget *title_entry = NULL;
-    title_entry = gtk_entry_new();
-    gtk_grid_attach_next_to(GTK_GRID(add_session_grid), title_entry, title_label, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(title_entry, FALSE);
-    gtk_widget_set_vexpand(title_entry, FALSE);
-    gtk_widget_set_halign(title_entry, GTK_ALIGN_START);
+    /* ASSIGN VARIABLES */
+    grid_session_section = gtk_grid_new();
+    grid_add_session = gtk_grid_new();
 
-    /* Creation of label to display the next appointment */
-    GtkWidget *next_session_label = NULL;
-    next_session_label = gtk_label_new("Prochain rendez-vous : 13/02/2020");
-    gtk_grid_attach_next_to(GTK_GRID(add_session_grid), next_session_label, title_entry, GTK_POS_RIGHT, 1, 1);
-    gtk_widget_set_hexpand(next_session_label, FALSE);
-    gtk_widget_set_vexpand(next_session_label, FALSE);
-    gtk_widget_set_halign(next_session_label, GTK_ALIGN_END);
+    frame_add_session = gtk_frame_new("Séance en cours");
+    frame_session_note = gtk_frame_new("Observations");
 
-    /* Creation of a button to attach items */
-    GtkWidget *attach_button = NULL;
-    attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
-    gtk_grid_attach_next_to(GTK_GRID(add_session_grid), attach_button, title_entry, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(attach_button, FALSE);
-    gtk_widget_set_vexpand(attach_button, FALSE);
-    gtk_widget_set_halign(title_entry, GTK_ALIGN_START);
-
-    /* Creation of a frame to add informations about the session */
-    GtkWidget *session_note_frame = NULL;
-    session_note_frame = gtk_frame_new("Observations");
-    gtk_frame_set_label_align(GTK_FRAME(session_note_frame), 0, 0.5);
-    gtk_grid_attach_next_to(GTK_GRID(add_session_grid), session_note_frame, attach_button, GTK_POS_RIGHT, 1, 4);
-    gtk_widget_set_hexpand(session_note_frame, TRUE);
-    gtk_widget_set_vexpand(session_note_frame, TRUE);
-
-    GtkWidget *session_note_entry = NULL;
-    session_note_entry = gtk_entry_new();
-    gtk_container_add(GTK_CONTAINER(session_note_frame), session_note_entry);
-    gtk_widget_set_hexpand(session_note_entry, TRUE);
-    gtk_widget_set_vexpand(session_note_entry, TRUE);
-    /* ****************************************************************************** */
+    session_title_new = gtk_label_new("Titre :");
+    entry_title_new = gtk_entry_new();
+    session_next_meeting = gtk_label_new("Prochain rendez-vous : 13/02/2020");
+    session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
+    entry_session_note = gtk_entry_new();
 
 
-    /* Second part : section to search old sessions ********************************* */
+    /* MANAGE GRID WHICH ORGANIZES THE SESSION SECTION */
+    gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 10);
+    gtk_box_pack_start(GTK_BOX(box), grid_session_section, TRUE, TRUE, 0);
+
+
+    /********************************* FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
+    /* Manage the frame and its grid to add a session */
+    gtk_frame_set_label_align(GTK_FRAME(frame_add_session), 0.5, 0.5);
+    gtk_grid_attach(GTK_GRID(grid_session_section), frame_add_session, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
+    gtk_widget_set_hexpand(frame_add_session, TRUE);
+    gtk_widget_set_vexpand(frame_add_session, TRUE);
+    gtk_widget_set_halign(frame_add_session, GTK_ALIGN_FILL);
+
+    gtk_container_set_border_width(GTK_CONTAINER(grid_add_session), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_add_session), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid_add_session), 5);
+    gtk_container_add(GTK_CONTAINER(frame_add_session), grid_add_session);
+
+    /* Manage the entry to add a title */
+    gtk_grid_attach(GTK_GRID(grid_add_session), session_title_new, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(session_title_new, FALSE);
+    gtk_widget_set_vexpand(session_title_new, FALSE);
+    gtk_widget_set_halign(session_title_new, GTK_ALIGN_START);
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), entry_title_new, session_title_new, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(entry_title_new, FALSE);
+    gtk_widget_set_vexpand(entry_title_new, FALSE);
+    gtk_widget_set_halign(entry_title_new, GTK_ALIGN_START);
+
+    /* Manage to display the next appointment */
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_title_new, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(session_next_meeting, FALSE);
+    gtk_widget_set_vexpand(session_next_meeting, FALSE);
+    gtk_widget_set_halign(session_next_meeting, GTK_ALIGN_END);
+
+    /* Manage the button to attach items */
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, entry_title_new, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(session_attach_button, FALSE);
+    gtk_widget_set_vexpand(session_attach_button, FALSE);
+    gtk_widget_set_halign(entry_title_new, GTK_ALIGN_START);
+
+    /* Manage the frame and its entry to add informations about the session */
+    gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, 0.5);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 1, 4);
+    gtk_widget_set_hexpand(frame_session_note, TRUE);
+    gtk_widget_set_vexpand(frame_session_note, TRUE);
+
+    gtk_container_add(GTK_CONTAINER(frame_session_note), entry_session_note);
+    gtk_widget_set_hexpand(entry_session_note, TRUE);
+    gtk_widget_set_vexpand(entry_session_note, TRUE);
+
+
+    /******************************** SECOND PART : SECTION TO DISPLAY OLD SESSIONS ************************************/
+    /* Cette section n'estpas encore terminée */
     // 2ème séance
     GtkWidget *session2 = NULL; //Pour l'instant modélisé par bouton avant d'apprend a faire des menus déroulant
     session2 = gtk_button_new_with_label("Séance du 27/01/2021");
-    gtk_grid_attach_next_to(GTK_GRID(grid_part3), session2, add_session, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session2, frame_add_session, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session2, TRUE);
     gtk_widget_set_vexpand(session2, FALSE);
     gtk_widget_set_halign(session2, GTK_ALIGN_FILL);
@@ -567,7 +569,7 @@ void createSessionInfoWindow(GtkWidget *box){
     // 1ère séance
     GtkWidget *session1 = NULL; //Pour l'instant modélisé par bouton avant d'apprend a faire des menus déroulant
     session1 = gtk_button_new_with_label("Séance du 12/01/2021");
-    gtk_grid_attach_next_to(GTK_GRID(grid_part3), session1, session2, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session1, session2, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session1, TRUE);
     gtk_widget_set_vexpand(session1, FALSE);
     gtk_widget_set_halign(session1, GTK_ALIGN_FILL);
