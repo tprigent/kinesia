@@ -41,7 +41,7 @@ void launchFolderEditor(){
     start_treatment_entry = gtk_entry_new();
     pathology_entry = gtk_entry_new();
     other_infos_text = gtk_text_view_new();
-    other_infos_buffer= gtk_text_view_get_buffer(GTK_TEXT_VIEW(other_infos_text));
+    other_infos_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(other_infos_text));
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(other_infos_text), 5);
     gtk_text_view_set_top_margin(GTK_TEXT_VIEW(other_infos_text), 5);
 

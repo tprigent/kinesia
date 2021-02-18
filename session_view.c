@@ -488,7 +488,7 @@ void createSessionInfoWindow(GtkWidget *box){
     GtkWidget *entry_title_new = NULL;
     GtkWidget *session_next_meeting = NULL;
     GtkWidget *session_attach_button = NULL;
-    GtkWidget *entry_session_note = NULL;
+    GtkWidget *text_session_note = NULL;
 
     /* ASSIGN VARIABLES */
     grid_session_section = gtk_grid_new();
@@ -501,7 +501,11 @@ void createSessionInfoWindow(GtkWidget *box){
     entry_title_new = gtk_entry_new();
     session_next_meeting = gtk_label_new("Prochain rendez-vous : 13/02/2020");
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
-    entry_session_note = gtk_entry_new();
+    text_session_note = gtk_text_view_new();
+    gtk_text_view_set_left_margin(GTK_TEXT_VIEW(text_session_note), 5);
+    gtk_text_view_set_right_margin(GTK_TEXT_VIEW(text_session_note), 5);
+    gtk_text_view_set_top_margin(GTK_TEXT_VIEW(text_session_note), 5);
+    gtk_text_view_set_bottom_margin(GTK_TEXT_VIEW(text_session_note), 5);
 
 
     /* MANAGE GRID WHICH ORGANIZES THE SESSION SECTION */
@@ -551,13 +555,13 @@ void createSessionInfoWindow(GtkWidget *box){
     gtk_widget_set_hexpand(frame_session_note, TRUE);
     gtk_widget_set_vexpand(frame_session_note, TRUE);
 
-    gtk_container_add(GTK_CONTAINER(frame_session_note), entry_session_note);
-    gtk_widget_set_hexpand(entry_session_note, TRUE);
-    gtk_widget_set_vexpand(entry_session_note, TRUE);
+    gtk_container_add(GTK_CONTAINER(frame_session_note), text_session_note);
+    gtk_widget_set_hexpand(text_session_note, TRUE);
+    gtk_widget_set_vexpand(text_session_note, TRUE);
 
 
     /******************************** SECOND PART : SECTION TO DISPLAY OLD SESSIONS ************************************/
-    /* Cette section n'estpas encore terminée */
+    /* Cette section n'est pas encore terminée */
     // 2ème séance
     GtkWidget *session2 = NULL; //Pour l'instant modélisé par bouton avant d'apprend a faire des menus déroulant
     session2 = gtk_button_new_with_label("Séance du 27/01/2021");
