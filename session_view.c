@@ -5,6 +5,7 @@
 #include "session_view.h"
 #include "session_controller.h"
 #include "connect_struct_UI.h"
+#include "patient.h"
 #include <gtk/gtk.h>
 #include <gtk/gtklabel.h>
 
@@ -67,6 +68,8 @@ void setSessionEnvironment(GtkWidget *window){
     strcpy(patient->address.city, "Paris");
     /* ****************************************************************/
 
+    Patient *patient2 = getPatient(1);
+
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(window), grid);
@@ -94,7 +97,7 @@ void setSessionEnvironment(GtkWidget *window){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    createPatientInfoWindow(boxPart[0], patient);
+    createPatientInfoWindow(boxPart[0], patient2);
     createFolderInfoWindow(boxPart[1]);
     createSessionInfoWindow(boxPart[2]);
 }

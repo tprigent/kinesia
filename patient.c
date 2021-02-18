@@ -293,7 +293,7 @@ Patient* getPatient(int id){
     }
 
     //Ouverture de la bdd
-    rc = sqlite3_open("/home/paul/Pj_C/BaseDeDonnee/Bdd.db", &db);
+    rc = sqlite3_open("../BaseDeDonnee/Bdd.db", &db);
 
     //Test de l'ouverture
     if( rc ) {
