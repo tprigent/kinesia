@@ -39,6 +39,14 @@ void launchFolderEditor(){
     pathology_entry = gtk_entry_new();
     other_infos_entry = gtk_entry_new();
 
+    /* FILL THE ENTRIES */ //TODO: active it when getFolder is done
+    /*
+    gtk_entry_set_text(GTK_ENTRY(folder_name_entry), folder->folderName);
+    gtk_entry_set_text(GTK_ENTRY(start_treatment_entry), get_date_UI(&folder->startOfTreatment));
+    gtk_entry_set_text(GTK_ENTRY(pathology_label), folder->pathology);
+    gtk_entry_set_text(GTK_ENTRY(other_infos_entry), folder->details);
+     */
+
     name_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     treatment_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     pathology_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
