@@ -40,6 +40,7 @@ int allocatePatient(Patient ** p) {
     || (allocateStringPatient(&((*p)->mail_address), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->job), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->ssn), LG_MAX_INFO) !=0)
+    || (allocateStringPatient(&((*p)->phone_number), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->place_birth), LG_MAX_INFO) !=0)) return -1;
 
     return 0;
@@ -89,6 +90,7 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     strncpy(p->global_pathologies, gp, LG_MAX_OTHERS);
     strncpy(p->firstname, fn, LG_MAX_INFO);
     strncpy(p->name, name, LG_MAX_INFO);
+    strncpy(p->phone_number,pn,LG_MAX_INFO);
 
     /*ajout de 0 terminaux par sécurité*/
     p->place_birth[strlen(placeBirth)] = '\0';
@@ -98,13 +100,13 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     p->global_pathologies[strlen(gp)] = '\0';
     p->firstname[strlen(fn)] = '\0';
     p->name[strlen(name)] = '\0';
+    p->phone_number[strlen(pn)] = '\0';
 
     /*attribution des autres attributs*/
     p->address = ad;
     p->first_consultation = fc;
     p->birthdate = bd;
     p->height = h;
-    p->phone_number = pn;
     p->weight = w;
 
     if (g > 2 || g < 0) return -1;
@@ -130,7 +132,7 @@ int modifyPatient(Patient *gen){
     sqlite3_stmt *stmt;
 
     //Ouverture de la bdd
-    rc = sqlite3_open("/BaseDeDonnee/Bdd.db", &db);
+    rc = sqlite3_open("../BaseDeDonnee/Bdd.db", &db);
 
     //Test de l'ouverture
     if( rc ) {
@@ -182,7 +184,7 @@ int modifyPatient(Patient *gen){
     sqlite3_bind_text(stmt,i++,gen->address.other_info,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->job,-1,SQLITE_TRANSIENT);
 
-    sqlite3_bind_int(stmt,25,(int)gen->id);
+    sqlite3_bind_int(stmt,i++,(int)gen->id);
 
     //Execution de la requête
     rc = sqlite3_step(stmt);
@@ -208,7 +210,7 @@ int addPatient(Patient *gen){
     sqlite3_stmt *stmt;
 
     //Ouverture de la bdd
-    rc = sqlite3_open("/BaseDeDonnee/Bdd.db", &db);
+    rc = sqlite3_open("../BaseDeDonnee/Bdd.db", &db);
 
     //Test de l'ouverture
     if( rc ) {
@@ -293,7 +295,7 @@ Patient* getPatient(int id){
     }
 
     //Ouverture de la bdd
-    rc = sqlite3_open("/home/paul/Pj_C/BaseDeDonnee/Bdd.db", &db);
+    rc = sqlite3_open("../BaseDeDonnee/Bdd.db", &db);
 
     //Test de l'ouverture
     if( rc ) {
