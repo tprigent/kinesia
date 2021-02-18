@@ -5,6 +5,7 @@
 #include "session_view.h"
 #include "session_controller.h"
 #include "connect_struct_UI.h"
+#include "patient.h"
 #include <gtk/gtk.h>
 #include <gtk/gtklabel.h>
 
@@ -24,48 +25,8 @@ GtkWidget *setSessionWindow(){
 
 void setSessionEnvironment(GtkWidget *window){
 
-    /* Création patient pour tests sur la lecture de structure ********/
-    Patient *patient = (Patient*) malloc(sizeof(Patient));
-    //Name
-    patient->name = (char*) malloc(10*sizeof(char));
-    strcpy(patient->name, "Claude");
-    patient->firstname = (char*) malloc(10*sizeof(char));
-    strcpy(patient->firstname, "François");
-    //Birthdate
-    patient->birthdate.day = 1;
-    patient->birthdate.month = 2;
-    patient->birthdate.year = 1939;
-    //Job
-    patient->job = (char*) malloc(10*sizeof(char));
-    strcpy(patient->job, "Chanteur");
-    //Height Weight
-    patient->height = 170;
-    patient->weight = 59;
-    //Global pathologies
-    patient->global_pathologies = (char*) malloc(100*sizeof(char));
-    strcpy(patient->global_pathologies, "Souffre d'une maladie cardiaque\nEst diabétique...");
-    //First consultation
-    patient->first_consultation.day = 7;
-    patient->first_consultation.month = 1;
-    patient->first_consultation.year = 1960;
-    //Phone number
-    patient->phone_number = (char*) malloc(11*sizeof(char));
-    strcpy(patient->phone_number, "0610472037");
-    //email
-    patient->mail_address = (char*) malloc(26*sizeof(char));
-    strcpy(patient->mail_address, "claude.francois@gmail.com");
-    //adress
-    patient->address.number = (char*) malloc(3*sizeof(char));
-    strcpy(patient->address.number, "46");
-    patient->address.street = (char*) malloc(30*sizeof(char));
-    strcpy(patient->address.street, "boulevard Exelmans");
-    //postcode
-    patient->address.postCode = (char*) malloc(5*sizeof(char));
-    strcpy(patient->address.postCode, "75116");
-    //city
-    patient->address.city = (char*) malloc(15*sizeof(char));
-    strcpy(patient->address.city, "Paris");
-    /* ****************************************************************/
+    /* GET PATIENT STRUCTURE FROM BDD ********/
+    Patient *patient = getPatient(1);
 
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();

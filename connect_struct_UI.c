@@ -71,7 +71,7 @@ char *get_height_UI(Patient *patient){
 
 char *get_weight_UI(Patient *patient){
     char *weight = (char*) malloc(6*sizeof(char));
-    char weight_char[4];
+    char weight_char[6];
     tostring(weight_char, patient->weight);
 
     strcpy(weight, weight_char);
@@ -85,7 +85,7 @@ char *get_height_weight_UI(Patient *patient){
     char *height_weight = (char*) malloc(40*sizeof(char));
     char height_m[2];
     char height_cm[3];
-    char weight[4];
+    char weight[6];
     int int_height_m = (int) patient->height/100;
     int int_height_cm = patient->height - int_height_m*100;
 
