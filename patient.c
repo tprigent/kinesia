@@ -2,11 +2,14 @@
 // Created by salome on 10/02/2021.
 //
 
-#include "patient.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "structures.h"
+#include "sqlite3.h"
+#include "patient.h"
+
 
 /*allocation d'une chaîne de caractère de longueur lg*/
 static int allocateStringPatient(char ** string, int lg) {
@@ -44,6 +47,29 @@ int allocatePatient(Patient ** p) {
     || (allocateStringPatient(&((*p)->place_birth), LG_MAX_INFO) !=0)) return -1;
 
     return 0;
+}
+
+/*désallocation d'une instance d'Address*/
+void freeAddress(Address * a) {
+    free((void *) a->number);
+    free((void *) a->street);
+    free((void *) a->postCode);
+    free((void *) a->city);
+    free((void *) a->other_info);
+}
+
+/*désallocation d'une instance de Patient*/
+void freePatient(Patient ** p) {
+    free((void *) (*p)->phone_number);
+    free((void *) (*p)->firstname);
+    free((void *) (*p)->global_pathologies);
+    free((void *) (*p)->place_birth);
+    free((void *) (*p)->name);
+    free((void *) (*p)->mail_address);
+    free((void *) (*p)->job);
+    free((void *) (*p)->ssn);
+    freeAddress(&((*p)->address));
+    free((void *) *p);
 }
 
 /*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
@@ -113,13 +139,8 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     /*attribution d'un id unique par patient*/
     p->id = idPatient;
 
-    idPatient++;
-
     return 0;
 }
-
-#include "structures.h"
-#include "sqlite3.h"
 
 //Modification d'un patient
 int modifyPatient(Patient *gen){
