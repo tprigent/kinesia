@@ -1,11 +1,11 @@
-//
-// Created by julien on 09/02/2021.
-//
+/*!
+* \file structures.h
+* \brief File with custom structures declaration
+*/
 
 #ifndef LOGICIEL_KINE_STRUCTURES_H
 #define LOGICIEL_KINE_STRUCTURES_H
 
-#define LG_MAX_NOM 20
 #define LG_MAX_INFO 100
 #define LG_MAX_OTHERS 300
 

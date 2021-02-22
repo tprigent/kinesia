@@ -1,6 +1,7 @@
-//
-// Created by Théo Prigent on 07/02/2021.
-//
+/*!
+* \file UI.h
+* \brief File with function to launch the User Interface
+*/
 
 #ifndef LOGICIEL_KINE_MAIN_UI_H
 #define LOGICIEL_KINE_MAIN_UI_H

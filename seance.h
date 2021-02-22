@@ -1,6 +1,7 @@
-//
-// Created by paul on 12/02/2021.
-//
+/*!
+* \file seance.c
+* \brief File with functions to allocate, fill from database requests, and free Session structure
+*/
 
 #ifndef LOGICIEL_KINE_SEANCE_H
 #define LOGICIEL_KINE_SEANCE_H

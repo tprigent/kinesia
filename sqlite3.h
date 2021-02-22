@@ -1,3 +1,8 @@
+/*!
+* \file sqlite3.h
+* \brief File with database management functions
+*/
+
 /*
 ** 2001-09-15
 **

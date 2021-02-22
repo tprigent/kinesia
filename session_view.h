@@ -1,6 +1,7 @@
-//
-// Created by julien on 02/02/2021.
-//
+/*!
+* \file session_view.h
+* \brief File with functions to initiate the session view
+*/
 
 #ifndef TEST_GTK_GTK_FUNCTIONS_H
 #define TEST_GTK_GTK_FUNCTIONS_H

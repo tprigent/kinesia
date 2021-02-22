@@ -1,6 +1,7 @@
-//
-// Created by julien on 09/02/2021.
-//
+/*!
+* \file connect_struct_UI.c
+* \brief File with functions used to parse data from database to be displayed on UI
+*/
 
 #ifndef LOGICIEL_KINE_CONNECT_STRUCT_UI_H
 #define LOGICIEL_KINE_CONNECT_STRUCT_UI_H

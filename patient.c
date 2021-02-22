@@ -1,6 +1,7 @@
-//
-// Created by salome on 10/02/2021.
-//
+/*!
+* \file patient.c
+* \brief File with functions to allocate, fill from database requests, and free Patient structure
+*/
 
 
 #include <stdio.h>

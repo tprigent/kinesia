@@ -1,6 +1,7 @@
-//
-// Created by julien on 02/02/2021.
-//
+/*!
+* \file session_view.c
+* \brief File with functions to initiate the session view
+*/
 
 #include "session_view.h"
 #include "session_controller.h"

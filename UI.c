@@ -1,3 +1,8 @@
+/*!
+* \file UI.c
+* \brief File with function to launch the User Interface
+*/
+
 #include <gtk/gtk.h>
 #include "UI.h"
 #include "session_view.h"

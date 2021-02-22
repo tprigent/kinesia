@@ -1,6 +1,8 @@
-//
-// Created by Théo Prigent on 08/02/2021.
-//
+/*!
+* \file seance.c
+* \brief File with callback functions of the session view
+*/
+
 
 #include <gtk/gtk.h>
 #include "session_controller.h"

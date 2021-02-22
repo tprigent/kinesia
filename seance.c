@@ -1,6 +1,7 @@
-//
-// Created by paul on 13/02/2021.
-//
+/*!
+* \file seance.c
+* \brief File with functions to allocate, fill from database requests, and free Session structure
+*/
 
 #include "seance.h"
 #include "Structures.h"

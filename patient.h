@@ -1,6 +1,7 @@
-//
-// Created by salome on 10/02/2021.
-//
+/*!
+* \file patient.h
+* \brief File with functions to allocate, fill from database requests, and free Patient structure
+*/
 
 #ifndef LOGICIEL_KINE_PATIENT_H
 #define LOGICIEL_KINE_PATIENT_H
