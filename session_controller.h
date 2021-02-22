@@ -1,5 +1,5 @@
 /*!
-* \file seance.c
+* \file session_controller.h
 * \brief File with callback functions of the session view
 */
 

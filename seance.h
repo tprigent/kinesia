@@ -1,5 +1,5 @@
 /*!
-* \file seance.c
+* \file seance.h
 * \brief File with functions to allocate, fill from database requests, and free Session structure
 */
 
