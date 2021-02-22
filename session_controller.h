@@ -10,6 +10,6 @@
 
 
 void launchFolderEditor();
-void launchPatientEditor(GtkWidget *but_edit, gpointer data);
+void launchPatientEditor(GtkWidget *but_edit, Patient *patient);
 
 #endif

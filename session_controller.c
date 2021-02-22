@@ -164,8 +164,7 @@ void launchFolderEditor(){
 
 }
 
-void launchPatientEditor(GtkWidget *but_edit, gpointer data){
-    Patient *patient = data;
+void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     /* DECLARE VARIABLES */
     GtkWidget *dialog = NULL;
