@@ -1,6 +1,6 @@
 /*!
-* \file session_view.c
-* \brief File with functions to initiate the session view
+ * \file session_view.c
+ * \brief File with functions to initiate the session view
 */
 
 #include "session_view.h"
@@ -10,7 +10,12 @@
 #include <gtk/gtk.h>
 #include <gtk/gtklabel.h>
 
-
+/*!
+* \brief Initiate session window with some default parameters
+ *
+ * Focus, position, size, title and destroy callback are set.
+ * \todo change the name of the window once the software name found
+*/
 GtkWidget *setSessionWindow(){
     GtkWidget *window = NULL;
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -24,6 +29,19 @@ GtkWidget *setSessionWindow(){
     return window;
 }
 
+/*!
+* \brief Split the main window in three spaces and fill them
+ *
+ * The three spaces are:
+ * on the left side the patient,
+ * at the top right the current folder,
+ * and at the bottom right the list of all the sessions.
+ *
+ * The three boxes are filled by external functions.
+ *
+ * \param[in] session window to split
+ * \todo check if the getPatient should be called here instead of being a parameter
+*/
 void setSessionEnvironment(GtkWidget *window){
 
     /* GET PATIENT STRUCTURE FROM BDD ********/
@@ -61,6 +79,19 @@ void setSessionEnvironment(GtkWidget *window){
     createSessionInfoWindow(boxPart[2]);
 }
 
+
+/*!
+* \brief Fill the Patient box
+ *
+ * The box is made up of the main infos (anamnesis) and a photo from the Patient.
+ *
+ * At the top a button to go back to the patient view is set up.
+ *
+ * At the bottom a folder chooser is displayed.
+ *
+ * \param[in] Existing patient box
+ * \param[in] Current Patient
+*/
 void createPatientInfoWindow(GtkWidget *box, Patient *patient){
 
     /* DECLARE VARIABLES */
@@ -119,14 +150,14 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     gtk_box_pack_start(GTK_BOX(box), grid_left_section, TRUE, TRUE, 0);
 
 
-    /******************************** FIRST PART : BUTTON "REVENIR A LA LISTE PATIENT" ********************************/
+    /* ******************************* FIRST PART : BUTTON "REVENIR A LA LISTE PATIENT" ******************************* */
     gtk_grid_attach(GTK_GRID(grid_left_section), back_button, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(back_button, FALSE);
     gtk_widget_set_vexpand(back_button, FALSE);
     gtk_widget_set_halign(back_button, GTK_ALIGN_START);
 
 
-    /*************************** SECOND PART : SECTION WHICH CONTAINS PATIENT INFORMATION *****************************/
+    /* ************************** SECOND PART : SECTION WHICH CONTAINS PATIENT INFORMATION **************************** */
     /* Manage the frame global and its grid */
     gtk_frame_set_label_align(GTK_FRAME(frame_info), 0.5, 0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_left_section), frame_info, back_button, GTK_POS_BOTTOM, 1, 1);
@@ -210,7 +241,7 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     gtk_container_add(GTK_CONTAINER(frame_other_info), patient_other_info);
 
 
-    /******************************** THIRD PART : SECTION WHICH CONTAINS THE FOLDERS *********************************/
+    /* ******************************* THIRD PART : SECTION WHICH CONTAINS THE FOLDERS ******************************** */
     GtkWidget *folder_box = NULL;
     folder_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_grid_attach_next_to(GTK_GRID(grid_left_section), folder_box, frame_info, GTK_POS_BOTTOM, 3, 1);
@@ -235,6 +266,18 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
 
 }
 
+
+/*!
+* \brief Fill the Folder box
+ *
+ * The box is made up of the current Folder infos.
+ *
+ * A button is displayed to see the attached media related to this Folder.
+ *
+ * \param[in] Existing Folder box
+ * \todo read data from database (from a Patient) instead of the sample Folder (lines to uncomment)
+ * \todo create the associated media view onButtonClicked
+*/
 void createFolderInfoWindow(GtkWidget *box){
 
     /* Create sample folder for debug *********************************************** */
@@ -437,6 +480,21 @@ void createFolderInfoWindow(GtkWidget *box){
 
 }
 
+
+/*!
+* \brief Fill the Session box
+ *
+ * The box is made up of a list of the passed Sessions
+ * and the current related to the current Folder.
+ *
+ * This box allows the user to edit data.
+ *
+ * The button to attach files is set up.
+ *
+ * \param[in] Existing Session box
+ * \todo establish communication with the database
+ * \todo create the scrolling view
+*/
 void createSessionInfoWindow(GtkWidget *box){
 
     /* DECLARE VARIABLES */
@@ -475,7 +533,7 @@ void createSessionInfoWindow(GtkWidget *box){
     gtk_box_pack_start(GTK_BOX(box), grid_session_section, TRUE, TRUE, 0);
 
 
-    /********************************* FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
+    /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
     /* Manage the frame and its grid to add a session */
     gtk_frame_set_label_align(GTK_FRAME(frame_add_session), 0.5, 0.5);
     gtk_grid_attach(GTK_GRID(grid_session_section), frame_add_session, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
@@ -522,7 +580,7 @@ void createSessionInfoWindow(GtkWidget *box){
     gtk_widget_set_vexpand(text_session_note, TRUE);
 
 
-    /******************************** SECOND PART : SECTION TO DISPLAY OLD SESSIONS ************************************/
+    /* ******************************* SECOND PART : SECTION TO DISPLAY OLD SESSIONS *********************************** */
     /* Cette section n'est pas encore terminée */
     // 2ème séance
     GtkWidget *session2 = NULL; //Pour l'instant modélisé par bouton avant d'apprend a faire des menus déroulant
@@ -546,14 +604,26 @@ void createSessionInfoWindow(GtkWidget *box){
 
 /* HELPERS */
 
+/*!
+ * \brief Set right default margin
+ * \param[in] Widget concerned
+*/
 void setStartMargin(GtkWidget *widget){
     gtk_widget_set_margin_start(widget, 5);
 }
 
+/*!
+ * \brief Set top default margin
+ * \param[in] Widget concerned
+*/
 void setTopMargin(GtkWidget *widget){
     gtk_widget_set_margin_top(widget, 5);
 }
 
+/*!
+ * \brief Set bottom default margin
+ * \param[in] Widget concerned
+*/
 void setBottomMargin(GtkWidget *widget){
     gtk_widget_set_margin_bottom(widget, 5);
 }
