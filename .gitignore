@@ -1,5 +1,6 @@
 *.o
 main
 main_UI
+.DS_Store
 cmake-build-debug/
 doc/
