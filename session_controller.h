@@ -12,4 +12,4 @@
 void launchFolderEditor();
 void launchPatientEditor(GtkWidget *but_edit, gpointer data);
 
-#endif SESSION_CONTROLLER_H
+#endif
