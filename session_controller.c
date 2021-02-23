@@ -8,6 +8,18 @@
 #include "session_controller.h"
 #include "connect_struct_UI.h"
 
+
+/*!
+ * \brief Set up the edit Folder dialog box
+ *
+ * Bi-choice dialog box: "Annuler" that does nothing and "Enregistrer" that saves data to Folder structure.
+ *
+ * This function sets the dialog box attributes (size, position, name)
+ * and displays entries to edit or fill Folder structure.
+ *
+ * \todo active dynamic data once getFolder is done (lines to uncomment)
+ * \todo do a setFolder if "Enregistrer" button is clicked
+*/
 void launchFolderEditor(){
 
     /* DECLARE VARIABLES */
@@ -49,7 +61,7 @@ void launchFolderEditor(){
 
 
 
-    /* FILL THE ENTRIES */ //TODO: active it when getFolder is done
+    /* FILL THE ENTRIES */
     /*
     gtk_entry_set_text(GTK_ENTRY(folder_name_entry), folder->folderName);
     gtk_entry_set_text(GTK_ENTRY(start_treatment_entry), get_date_UI(&folder->startOfTreatment));
@@ -164,6 +176,19 @@ void launchFolderEditor(){
 
 }
 
+
+/*!
+ * \brief Set up the edit Patient dialog box
+ *
+ * Bi-choice dialog box: "Annuler" that does nothing and "Enregistrer" that saves data to Patient structure.
+ *
+ * This function sets the dialog box attributes (size, position, name)
+ * and displays entries to edit or fill Patient structure.
+ *
+ * More data is displayed than in the session view (all Patient anamnesis).
+ *
+ * \todo do a setPatient if "Enregistrer" button is clicked
+*/
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     /* DECLARE VARIABLES */
