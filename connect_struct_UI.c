@@ -7,8 +7,13 @@
 #include <stdlib.h>
 #include "connect_struct_UI.h"
 
-/* Create a function that change int to string */
-void tostring(char str[], int num){
+/*!
+ * \brief Write an integer into a given char
+ *
+ * \param[in] destination char pointer
+ * \param[in] source integer
+*/
+void tostring(char *str, int num){
     int i, rem, len = 0, n;
     n = num;
     while(n!=0){
@@ -23,6 +28,12 @@ void tostring(char str[], int num){
     str[len] = '\0';
 }
 
+/*!
+ * \brief Concatenate firstname and surname in one char
+ *
+ * \param[in] Concerned Patient
+ * \param[out] Char pointer combining at "Firstname Surname" format
+*/
 char *get_name_UI(Patient *patient){
     char *name = (char*) malloc(sizeof(patient->name)+sizeof(patient->firstname)+sizeof(char));
     strcpy(name, patient->firstname);
@@ -32,6 +43,12 @@ char *get_name_UI(Patient *patient){
     return name;
 }
 
+/*!
+ * \brief Parse Date instance to char
+ *
+ * \param[in] Involved Date
+ * \param[out] Char pointer containing the date
+*/
 char *get_date_UI(Date *date){
     int length = (int) strlen("00/00/0000");
     char *stringDate = (char*) malloc(length*sizeof(char));
@@ -52,6 +69,12 @@ char *get_date_UI(Date *date){
     return stringDate;
 }
 
+/*!
+ * \brief Convert Patient height from cm to m
+ *
+ * \param[in] Concerned Patient
+ * \param[out] Char pointer containing the Patient height in m (with unit)
+*/
 char *get_height_UI(Patient *patient){
     char *height = (char*) malloc(7*sizeof(char));
     char height_m[2];
@@ -70,6 +93,13 @@ char *get_height_UI(Patient *patient){
     return height;
 }
 
+/*!
+ * \brief Convert Patient height from cm to m
+ *
+ * \param[in] Concerned Patient
+ * \param[out] Char pointer containing the Patient height in m (with unit)
+ * \todo see if necessary
+*/
 char *get_weight_UI(Patient *patient){
     char *weight = (char*) malloc(6*sizeof(char));
     char weight_char[6];
@@ -81,6 +111,12 @@ char *get_weight_UI(Patient *patient){
     return weight;
 }
 
+/*!
+ * \brief Concatenate Patient height and weight in a single char for display
+ *
+ * \param[in] Concerned Patient
+ * \param[out] Char pointer containing the Patient height and weight
+*/
 /* a simplifier avec les deux fonctions précédentes */
 char *get_height_weight_UI(Patient *patient){
     char *height_weight = (char*) malloc(40*sizeof(char));
@@ -97,7 +133,7 @@ char *get_height_weight_UI(Patient *patient){
     strcpy(height_weight, weight);
     strcat(height_weight, "kg   ;   ");
     strcat(height_weight, height_m);
-    strcat(height_weight, ".");
+    strcat(height_weight, ",");
     strcat(height_weight, height_cm);
     strcat(height_weight, "m");
     strcat(height_weight, "\0");
@@ -105,6 +141,13 @@ char *get_height_weight_UI(Patient *patient){
     return height_weight;
 }
 
+/*!
+ * \brief Parse first consultation date from Date structure to char
+ *
+ * \param[in] Concerned Patient
+ * \param[out] Char pointer containing the first consultation date
+ * \todo simplify with get_date_UI ???
+*/
 char *get_first_consultation_UI(Patient *patient){
 
     char *first_consultation = (char*) malloc(40*sizeof(char));
@@ -126,10 +169,14 @@ char *get_first_consultation_UI(Patient *patient){
     return first_consultation;
 }
 
+/*!
+ * \brief Parse Address structure to single char pointer
+ *
+ * \param[in] Concerned Patient
+ * \param[out] Char pointer containing the address
+*/
 char *get_adress_UI(Patient *patient){
     char *adress = (char*) malloc(50*sizeof(char));
-    /*char number[4];
-    char street[strlen(patient->address.rue)+1];*/
 
     strcpy(adress, patient->address.number);
     strcat(adress, " ");
@@ -139,6 +186,12 @@ char *get_adress_UI(Patient *patient){
     return adress;
 }
 
+/*!
+ * \brief Format Folder title
+ *
+ * \param[in] Concerned Folder
+ * \param[out] Char pointer containing the formatted  title
+*/
 char *get_formatted_folder_title_UI(Folder *folder){
     char *start = "<big><b>         ";
     char *end = "</b></big>";
@@ -152,7 +205,16 @@ char *get_formatted_folder_title_UI(Folder *folder){
     return formattedTitle;
 }
 
-char *get_formatted_folder_infos_UI(Folder *folder){    //TODO: insert breakline every n char
+/*!
+ * \brief Format Folder information
+ *
+ * Put breaklines every n word for long texts
+ *
+ * \param[in] Concerned Folder
+ * \param[out] Char pointer containing the formatted information
+ * \todo insert breakline every n char OR find a way to impose width in gtk
+*/
+char *get_formatted_folder_infos_UI(Folder *folder){
     /*int length = (int) strlen(folder->details);
     int i = 0;
     int c = 0;
@@ -169,6 +231,13 @@ char *get_formatted_folder_infos_UI(Folder *folder){    //TODO: insert breakline
     return folder->details;
 }
 
+
+/*!
+ * \brief Format Folder attachment counter display
+ *
+ * \param[in] Concerned Folder
+ * \param[out] Char pointer containing the formatted counter
+*/
 char *get_indicator_files_UI(Folder *folder){
     char *indicator = (char*) malloc(20*sizeof(char));
     char *buffer = (char*) malloc(5*sizeof(char));
@@ -179,6 +248,11 @@ char *get_indicator_files_UI(Folder *folder){
     return indicator;
 }
 
+/*!
+ * \brief Free allocated char pointers
+ *
+ * \param[in] Char to be freed
+*/
 void free_info_UI(char *info){
     free(info);
 }
