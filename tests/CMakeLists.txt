@@ -2,14 +2,6 @@ cmake_minimum_required(VERSION 3.16.3)
 set(CMAKE_C_COMPILER "gcc")
 project(Logiciel_Kine C)
 
-#include(FindPkgConfig)
-
-#pkg_check_modules(GTK3 REQUIRED "gtk+-3.0")
-
-#include_directories(${GTK_INCLUDE_DIRS})
-#link_directories(${GTK3_LIBRARY_DIRS})
-
-#add_definitions(${GTK3_CFLAGS_OTHER})
 set(CMAKE_C_STANDARD 90)
 
 
@@ -25,5 +17,4 @@ add_test(NAME CMockaExample COMMAND CMockaExample)
 
 find_package(Threads REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-#target_link_libraries(${CMAKE_DL_LIBS} Threads::Threads)
-target_link_libraries(CMockaExample ${GTK3_LIBRARIES} pthread)
+target_link_libraries(CMockaExample ${CMAKE_DL_LIBS} Threads::Threads)
