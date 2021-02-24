@@ -12,7 +12,7 @@ link_directories(${GTK3_LIBRARY_DIRS})
 add_definitions(${GTK3_CFLAGS_OTHER})
 set(CMAKE_C_STANDARD 90)
 
-set(SOURCE_FILES main.c UI.c connect_struct_UI.c session_controller.c session_view.c patient.c sqlite3.c)
+set(SOURCE_FILES src/main.c src/UI.c src/connect_struct_UI.c src/session_controller.c src/session_view.c src/patient.c src/sqlite3.c)
 
 add_executable(main.c ${SOURCE_FILES})
 
