@@ -315,7 +315,7 @@ Patient* getPatient(int id){
     }
 
     //Ouverture de la bdd
-    rc = sqlite3_open("../src/BaseDeDonnee/Bdd.db", &db);
+    rc = sqlite3_open(DB_PATH, &db);
 
     //Test de l'ouverture
     if( rc ) {

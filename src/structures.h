@@ -9,8 +9,8 @@
 #define LG_MAX_INFO 100
 #define LG_MAX_OTHERS 300
 
-#define DB_PATH "../src/BaseDeDonnee/Bdd.db"
-#define PHOTO_PATH "../src/photo_patients/"
+#define DB_PATH "../src/database/Bdd.db"
+#define PHOTO_PATH "../src/media/"
 
 /**
  * \brief Structure to represent a Date
