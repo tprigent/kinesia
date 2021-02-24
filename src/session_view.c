@@ -134,7 +134,7 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../photo_patients/claude.jpeg", NULL);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../src/photo_patients/claude.jpeg", NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 170, 250, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
     patient_name = gtk_label_new(patient_name_char);    free_info_UI(patient_name_char);
