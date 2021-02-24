@@ -1,0 +1,21 @@
+#!/bin/bash
+today=$(date +"%Y-%m-%d-%H-%M-%S")
+wd=$(pwd)
+
+while true; do
+    read -p "Do you want to run test in ${wd}? (y/n) " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+mkdir cmocka && cd cmocka
+cmake ..
+cmake --build . --config
+ctest -C "Release"
+#cd ../
+#mv cmocka/Testing/Temporary/LastTest.log report-${today}.log
+#cd cmocka/
+#rm -rf tests Testing _deps *.cmake CMakeFiles CMakeCache.txt CMakeDoxyfile.in CMockaExample *.json Makefile
