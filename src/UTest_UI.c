@@ -13,7 +13,6 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
-/*Add tests here*/
 static int setup_patient(void **state){
     Patient *patient = getPatient(1);
     if(patient == NULL) return -1;
@@ -64,10 +63,10 @@ static int teardown(void **state){
     return 0;
 }
 
-int main(void)
+int main_UI(void)
 {
 
-    const struct CMUnitTest tests_counter[]=
+    const struct CMUnitTest tests_UI[]=
     {
             cmocka_unit_test_setup_teardown(test_get_name_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_date_UI, setup_patient, teardown),
@@ -77,5 +76,5 @@ int main(void)
             cmocka_unit_test_setup_teardown(test_get_first_consultation_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_adress_UI, setup_patient, teardown),
     };
-    return cmocka_run_group_tests_name("Test counter module",tests_counter,NULL,NULL);
+    return cmocka_run_group_tests_name("Test UI module",tests_UI,NULL,NULL);
 }

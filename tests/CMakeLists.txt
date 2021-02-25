@@ -6,13 +6,13 @@ set(CMAKE_C_STANDARD 90)
 
 
 include(${PROJECT_SOURCE_DIR}/cmake/FetchCMocka.cmake)
-set(SOURCE_FILES ../src/UTest_UI.c ../src/connect_struct_UI.c ../src/patient.c ../src/sqlite3.c)
-add_executable(CMockaExample ../src/UTest_UI.c ${SOURCE_FILES})
+set(SOURCE_FILES ../src/UTest.c ../src/UTest_UI.c ../src/connect_struct_UI.c ../src/patient.c ../src/sqlite3.c)
+add_executable(CMockaExample ../src/UTest.c ${SOURCE_FILES})
 
 #define the path to open database in test mode
 target_compile_definitions(CMockaExample PRIVATE DB_PATH="../../src/database/Bdd.db")
 
-target_compile_features(CMockaExample PRIVATE c_std_99)
+target_compile_features(CMockaExample PRIVATE c_std_90)
 target_link_libraries(CMockaExample cmocka-static)
 
 enable_testing()
