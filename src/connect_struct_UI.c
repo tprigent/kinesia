@@ -133,7 +133,7 @@ char *get_height_weight_UI(Patient *patient){
     strcpy(height_weight, weight);
     strcat(height_weight, "kg   ;   ");
     strcat(height_weight, height_m);
-    strcat(height_weight, ",");
+    strcat(height_weight, ".");
     strcat(height_weight, height_cm);
     strcat(height_weight, "m");
     strcat(height_weight, "\0");
