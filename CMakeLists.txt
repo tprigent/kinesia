@@ -16,6 +16,12 @@ set(SOURCE_FILES src/main.c src/UI.c src/connect_struct_UI.c src/session_control
 
 add_executable(main.c ${SOURCE_FILES})
 
+#define the path to open database
+target_compile_definitions(main.c PRIVATE DB_PATH="../src/database/Bdd.db")
+
 find_package(Threads REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 target_link_libraries(main.c ${GTK3_LIBRARIES} pthread ${CMAKE_DL_LIBS} Threads::Threads)
+
+#add_compile_definitions(DB_PATH2=../src/database/Bdd.db)
+#add_definitions(-DB_PATH=../src/database/Bdd.db)

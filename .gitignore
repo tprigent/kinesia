@@ -5,3 +5,4 @@ main_UI
 .idea/
 cmake-build-debug/
 doc/
+tests/*.log
