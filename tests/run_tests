@@ -2,6 +2,7 @@
 today=$(date +"%Y-%m-%d-%H-%M-%S")
 wd=$(pwd)
 
+# request user authorization
 while true; do
     read -p "Do you want to run test in ${wd}? (y/n) " yn
     case $yn in
@@ -11,10 +12,33 @@ while true; do
     esac
 done
 
-mkdir cmocka && cd cmocka
-cmake ..
-cmake --build . --config
-ctest -C "Release"
-cd ../
-mv cmocka/Testing/Temporary/LastTest.log report-${today}.log
-rm -rf cmocka
+# ask for kind of test
+while true; do
+    read -p "What test do you want to process? (unit_test u / coverage c) " uc
+    case $uc in
+        [Uu]* )
+          echo "*** Unit tests selected ***"
+          mkdir cmocka && cd cmocka
+          cmake ..
+          cmake --build . --config
+          ctest -C "Release"
+          cd ../
+          mv cmocka/Testing/Temporary/LastTest.log report-${today}.log
+          rm -rf cmocka
+          echo "*** Unit tests done ***"
+          break;;
+        [Cc]* )
+          echo "*** Coverage tests selected ***"
+          cd ../src
+          make
+          make run_test
+          make clean
+          mv out ../tests/coverage
+          rm -rf out
+          echo "*** Coverage tests done ***"
+          exit;;
+        * ) echo "Please answer u or c.";;
+    esac
+done
+
+
