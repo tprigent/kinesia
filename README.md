@@ -18,8 +18,8 @@ It allows them to easily manage patient information and consultation notes.
 
 To build and run the project you will need to install several tools.
 
-###Installation
-####For Linux
+### Installation
+#### For Linux
 
 Make sure that you're up to date:
 ```bash
@@ -35,7 +35,7 @@ sudo apt-get install lcov                   #for coverage test reports
 sudo apt-get install valgrind               #for memory tests
 ```
 
-####For macOS
+#### For macOS
 
 Install ```homebrew``` if necessary:
 ```bash
