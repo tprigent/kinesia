@@ -3,7 +3,14 @@
 Kinesia is a free and open-source software for physiotherapists.
 It allows them to easily manage patient information and consultation notes.
 
-## Installation
+## Table of Contents
+1. [For users](#for-users)
+2. [Join the project](#join-the-project)
+    1. [Installation](#installation)
+    2. [Testing](#testing)
+3. [Credits](#credits)
+
+## For users
 
 // To be written
 
@@ -11,7 +18,8 @@ It allows them to easily manage patient information and consultation notes.
 
 To build and run the project you will need to install several tools.
 
-<b>For Linux</b>
+###Installation
+####For Linux
 
 Make sure that you're up to date:
 ```bash
@@ -27,7 +35,7 @@ sudo apt-get install lcov                   #for coverage test reports
 sudo apt-get install valgrind               #for memory tests
 ```
 
-<b>For macOS</b>
+####For macOS
 
 Install ```homebrew``` if necessary:
 ```bash
@@ -41,3 +49,8 @@ brew install gtk+3                      #for UI
 brew install lcov                       #for coverage test reports
 ```
 Valgrind is unfortunately not available for macOS. If you want to execute memory tests please use a Linux VM.
+
+### Testing
+See this specific [```README```](https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine/-/blob/cov_integration/tests/README.md).
+
+## Credits
