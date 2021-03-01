@@ -29,7 +29,7 @@ sudo apt-get upgrade
 ```
 Then install the following packages:
 ```bash
-sudo apt-get cmake                          #for compilation
+sudo apt-get install cmake                  #for compilation
 sudo apt-get install sqlite3 libsqlite3-dev #for database
 sudo apt-get install libgtk-3-dev           #for UI
 sudo apt-get install lcov                   #for coverage test reports
