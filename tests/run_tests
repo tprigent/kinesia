@@ -34,8 +34,6 @@ while true; do
           make
           make run_test
           make clean
-          mv out ../tests/coverage
-          rm -rf out
           echo "*** Coverage tests done ***"
           exit;;
         * ) echo "Please answer u or c.";;

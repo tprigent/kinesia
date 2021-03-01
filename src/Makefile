@@ -14,7 +14,7 @@ main: connect_struct_UI.o UTest.o UTest_UI.o patient.o sqlite3.o
 run_test: main
 	./main ; \
     lcov --capture --directory . --output-file coverage.info ; \
-    genhtml coverage.info --output-directory out ; \
+    genhtml coverage.info --output-directory ../tests/coverage ; \
     valgrind ./$<
 
 
