@@ -21,11 +21,3 @@ add_test(NAME CMockaExample COMMAND CMockaExample)
 find_package(Threads REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 target_link_libraries(CMockaExample ${CMAKE_DL_LIBS} Threads::Threads)
-
-include(cmake/CodeCoverage.cmake)
-APPEND_COVERAGE_COMPILER_FLAGS()
-SETUP_TARGET_FOR_COVERAGE_LCOV(
-        NAME coverage
-        EXECUTABLE ctest -j ${n_cores} # Executable in PROJECT_BINARY_DIR
-        DEPENDENCIES
-        CMockaExample)

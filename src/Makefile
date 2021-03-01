@@ -1,20 +1,30 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -g
-LDFLAGS=`pkg-config --libs gtk+-3.0`
-CFLAGS+= -DMY_USE_LIST
-CFLAGS+=`pkg-config --cflags gtk+-3.0`
+CFLAGS= -Wall -MMD -coverage
+LDFLAGS= -lcmocka -coverage
+
 
 all: main
 
-main: main.o UI.o session_controller.o session_view.o connect_struct_UI.o
+main: connect_struct_UI.o UTest.o UTest_UI.o patient.o sqlite3.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $< $^
 
+run_test: main
+	./main ; \
+    lcov --capture --directory . --output-file coverage.info ; \
+    genhtml coverage.info --output-directory out ; \
+    valgrind ./$<
+
 
 clean:
 	rm -f *.o
+	rm -f *.gcno
+	rm -f *.gcov
+	rm -f *.gcda
+	rm -f *.d
+	rm -f coverage.info
 	rm -f main
 
 
