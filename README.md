@@ -19,6 +19,7 @@ It allows them to easily manage patient information and consultation notes.
 To build and run the project you will need to install several tools.
 
 ### Installation
+***
 #### For Linux
 
 Make sure that you're up to date:
@@ -51,6 +52,7 @@ brew install lcov                       #for coverage test reports
 Valgrind is unfortunately not available for macOS. If you want to execute memory tests please use a Linux VM.
 
 ### Testing
+***
 See this specific [```README```](https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine/-/blob/cov_integration/tests/README.md).
 
 ## Credits
