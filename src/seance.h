@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include "Structures.h"
-#include "sqlite3.h"
+#include <sqlite3.h>
 
 //Ajout d'une seance avec un instance de struct seance
 int addSeance(Seance *seance);

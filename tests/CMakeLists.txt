@@ -3,10 +3,11 @@ set(CMAKE_C_COMPILER "gcc")
 project(Logiciel_Kine C)
 
 set(CMAKE_C_STANDARD 90)
+find_package(SQLite3)
 
 
 include(${PROJECT_SOURCE_DIR}/cmake/FetchCMocka.cmake)
-set(SOURCE_FILES ../src/UTest.c ../src/UTest_UI.c ../src/connect_struct_UI.c ../src/patient.c ../src/sqlite3.c)
+set(SOURCE_FILES ../src/UTest.c ../src/UTest_UI.c ../src/connect_struct_UI.c ../src/patient.c)
 add_executable(CMockaExample ../src/UTest.c ${SOURCE_FILES})
 
 #define the path to open database in test mode
@@ -18,6 +19,7 @@ target_link_libraries(CMockaExample cmocka-static)
 enable_testing()
 add_test(NAME CMockaExample COMMAND CMockaExample)
 
+target_link_libraries(CMockaExample sqlite3)
 find_package(Threads REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 target_link_libraries(CMockaExample ${CMAKE_DL_LIBS} Threads::Threads)

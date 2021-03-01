@@ -3,6 +3,7 @@ set(CMAKE_C_COMPILER "gcc")
 project(Logiciel_Kine C)
 
 include(FindPkgConfig)
+find_package(SQLite3)
 
 pkg_check_modules(GTK3 REQUIRED "gtk+-3.0")
 
@@ -12,12 +13,14 @@ link_directories(${GTK3_LIBRARY_DIRS})
 add_definitions(${GTK3_CFLAGS_OTHER})
 set(CMAKE_C_STANDARD 90)
 
-set(SOURCE_FILES src/main.c src/UI.c src/connect_struct_UI.c src/session_controller.c src/session_view.c src/patient.c src/sqlite3.c)
+set(SOURCE_FILES src/main.c src/UI.c src/connect_struct_UI.c src/session_controller.c src/session_view.c src/patient.c)
 
 add_executable(main.c ${SOURCE_FILES})
 
 #define the path to open database
 target_compile_definitions(main.c PRIVATE DB_PATH="../src/database/Bdd.db")
+
+target_link_libraries(main.c sqlite3)
 
 find_package(Threads REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)

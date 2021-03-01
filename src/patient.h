@@ -22,7 +22,7 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
 int setAddress(Address * adr, char * numM, char * r, char * cp, char * v, char * iC);
 int setDate(Date * d, int j, int m, int a);
 
-#include "sqlite3.h"
+#include <sqlite3.h>
 
 //Modification d'un patient
 int addPatient(Patient *gen);

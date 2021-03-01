@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "structures.h"
-#include "sqlite3.h"
+#include <sqlite3.h>
 #include "patient.h"
 
 

@@ -5,7 +5,7 @@ LDFLAGS= -lcmocka -coverage
 
 all: main
 
-main: connect_struct_UI.o UTest.o UTest_UI.o patient.o sqlite3.o
+main: connect_struct_UI.o UTest.o UTest_UI.o patient.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
