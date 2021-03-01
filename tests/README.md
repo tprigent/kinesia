@@ -1,25 +1,45 @@
 ## Table of Contents
-1. [General Info](#general-info)
-2. [Installation](#installation)
+1. [General info](#general-info)
+2. [Get started](#get-started)
 3. [Run tests](#run-tests)
 
 ### General Info
-***
-In the folder tests you will find every files required to run the Unit Tests and the code coverage.
 
-## Installation
-***
-The installation requires to download CMocka files. All the commands needed for the installation have already been written in an executable file name run_tests.
+In this folder  you will find every files required to run:
+- unit tests (using CMocka)
+- coverage tests (using Gcov & Lcov)
+- memory tests (using Valgrind)
 
-The first time you download this project you must add permission to execute run_tests with the followind command
-```
-$ chmod +x run_tests
+A script is provided to run all of those tests.
+
+## Get started
+
+The first time you download this project you must add permission to execute run_tests with the following command:
+```bash
+chmod +x run_tests
 ```
 
 ## Run tests
-***
-To run the test you need to be in the folder tests, then execute
+To run the test, make sure you are in the ```tests/``` folder, then execute:
+```bash
+./run_tests
 ```
-$ ./run_tests
-```
-This command will download all the necessary files from the site https://git.cryptomilk.org/projects/cmocka.git, generate a file named report-{DATE}.log in tests which contains the result of the unit tests and automaticaly clean the repository.
+A message will ask you for a confirmation, type ```y``` if everything is correct.
+<br/><br/>
+
+#### Unit Tests
+During the script, chose ```u``` to launch unit tests via the ```CMakeList.txt```.
+
+CMocka software will be temporary downloaded from [source repository](https://git.cryptomilk.org/projects/cmocka.git). This may take a while.
+
+In the end, a log file named ```covreport-yyyy-mm-dd-hh-mm-ss``` will be placed in ```tests/```.
+<br/><br/>
+
+#### Coverage test & memory check
+During the script, chose ```c``` to launch coverage and memory tests.
+
+Elements needed will be compiled by the ```Makefile```.
+
+HTML coverage report will be created in ```tests/coverage/```.
+
+//add valgrind comment
