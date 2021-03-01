@@ -1,6 +1,7 @@
 CC=gcc
 CFLAGS= -Wall -MMD -coverage
 LDFLAGS= -lcmocka -coverage
+LDFLAGS+= `pkg-config --libs sqlite3`
 
 
 all: main
