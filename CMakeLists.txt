@@ -15,13 +15,13 @@ set(CMAKE_C_STANDARD 90)
 
 set(SOURCE_FILES src/main.c src/UI.c src/connect_struct_UI.c src/session_controller.c src/session_view.c src/patient.c)
 
-add_executable(main.c ${SOURCE_FILES})
+add_executable(Kinesia ${SOURCE_FILES})
 
 #define the path to open database
-target_compile_definitions(main.c PRIVATE DB_PATH="../src/database/Bdd.db")
+target_compile_definitions(Kinesia PRIVATE DB_PATH="../src/database/Bdd.db")
 
-target_link_libraries(main.c sqlite3)
+target_link_libraries(Kinesia sqlite3)
 
 find_package(Threads REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-target_link_libraries(main.c ${GTK3_LIBRARIES} pthread ${CMAKE_DL_LIBS} Threads::Threads)
+target_link_libraries(Kinesia ${GTK3_LIBRARIES} pthread ${CMAKE_DL_LIBS} Threads::Threads)
