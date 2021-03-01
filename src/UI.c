@@ -20,9 +20,13 @@ int main_UI(int argc, char **argv) {
 
     /* Create the session window */
     GtkWidget *sessionWindow = NULL;
-    sessionWindow = setSessionWindow();
+    //sessionWindow = setSessionWindow();
+    sessionWindow = setPatientWindow();
+
     /* Fill the main view */
-    setSessionEnvironment(sessionWindow);
+    //setSessionEnvironment(sessionWindow);
+    setPatientEnvironment(sessionWindow);
+
     /* Display the session view */
     gtk_widget_show_all(sessionWindow);
     gtk_main();

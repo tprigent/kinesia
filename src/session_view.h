@@ -9,6 +9,9 @@
 #include <gtk/gtk.h>
 #include "structures.h"
 
+GtkWidget *setPatientWindow();
+void setPatientEnvironment(GtkWidget *window);
+
 GtkWidget *setSessionWindow();
 void setSessionEnvironment(GtkWidget *window);
 

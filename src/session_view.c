@@ -10,6 +10,37 @@
 #include <gtk/gtk.h>
 #include <gtk/gtklabel.h>
 
+GtkWidget *setPatientWindow(){
+    GtkWidget *window = NULL;
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+    gtk_window_activate_focus(GTK_WINDOW(window));
+    gtk_window_set_title(GTK_WINDOW(window), "Kinesia");
+    gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
+    gtk_window_maximize(GTK_WINDOW(window));
+    gtk_container_set_border_width(GTK_CONTAINER(window), 10);
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    return window;
+}
+
+void setPatientEnvironment(GtkWidget *window){
+
+    /* DECLARE VARIABLES */
+    GtkWidget *grid = NULL;
+    GtkWidget *but_test = NULL;
+
+    /* ASSIGN VARIABLES */
+    but_test = gtk_button_new_with_label("Claude François");
+    grid = gtk_grid_new();
+
+
+    gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_grid_attach(GTK_GRID(grid), but_test, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    g_signal_connect(GTK_BUTTON(but_test), "clicked", G_CALLBACK(setSessionWindow), NULL);
+
+
+}
+
 /*!
 * \brief Initiate session window with some default parameters
  *
@@ -26,6 +57,10 @@ GtkWidget *setSessionWindow(){
     gtk_window_maximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+    setSessionEnvironment(window);
+    gtk_widget_show_all(window);
+
     return window;
 }
 
