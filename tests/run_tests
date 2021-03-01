@@ -29,6 +29,7 @@ while true; do
           break;;
         [Cc]* )
           echo "*** Coverage tests selected ***"
+          rm -rf coverage
           cd ../src
           make
           make run_test
