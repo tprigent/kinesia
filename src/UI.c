@@ -19,16 +19,10 @@ int main_UI(int argc, char **argv) {
     gtk_init(&argc, &argv);
 
     /* Create the session window */
-    GtkWidget *sessionWindow = NULL;
+    //GtkWidget *sessionWindow = NULL;
     //sessionWindow = setSessionWindow();
-    sessionWindow = setPatientWindow();
+    setPatientWindow();
 
-    /* Fill the main view */
-    //setSessionEnvironment(sessionWindow);
-    setPatientEnvironment(sessionWindow);
-
-    /* Display the session view */
-    gtk_widget_show_all(sessionWindow);
     gtk_main();
 
     return EXIT_SUCCESS;
