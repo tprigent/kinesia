@@ -12,6 +12,7 @@ It allows them to easily manage patient information and consultation notes.
 To build and run the project you will need to install several tools.
 
 <b>For Linux</b>
+
 Make sure that you're up to date:
 ```bash
 sudo apt-get update
