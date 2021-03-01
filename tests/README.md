@@ -32,7 +32,7 @@ During the script, chose ```u``` to launch unit tests via the ```CMakeList.txt``
 
 CMocka software will be temporary downloaded from [source repository](https://git.cryptomilk.org/projects/cmocka.git). This may take a while.
 
-In the end, a log file named ```unitreport-yyyy-mm-dd-hh-mm-ss``` will be placed in ```tests/```.
+In the end, a log file named ```unitreport-yyyy-mm-dd-hh-mm-ss.log``` will be placed in ```tests/```.
 <br/><br/>
 
 #### Coverage test & memory check
