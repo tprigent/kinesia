@@ -1,33 +1,42 @@
-CREATE TABLE patient ( id INTEGER PRIMARY KEY AUTOINCREMENT, 
-name VARCHAR(100) NOT NULL, 
-firstname VARCHAR(100) NOT NULL, 
-birthdate_year INTEGER, 
-birthdate_month INTEGER, 
-birthdate_day INTEGER, 
-place_birth VARCHAR(100),
-gender INTEGER,
-phone_number VARCHAR(20),
-mail_adress VARCHAR(100),
-ssn VARCHAR(100),
-weight INTEGER,
-height INTEGER,
-first_consultation_year INTEGER, 
-first_consultation_month INTEGER, 
-first_consultation_day INTEGER,
-global_pathologies VARCHAR(300),
-number VARCHAR(20),
-street VARCHAR(100), 
-postCode VARCHAR(50),
-city VARCHAR(100),
-other_info VARCHAR(100),
-job VARCHAR(100));
+# Kinesia
 
-CREATE TABLE seance ( idSeance INTEGER PRIMARY KEY AUTOINCREMENT, 
-idDossier INTEGER, 
-dateSeance_year INTEGER,
-dateSeance_month INTEGER,
-dateSeance_day INTEGER, 
-DateSeanceSuiv_year INTEGER,
-DateSeanceSuiv_month INTEGER,
-DateSeanceSuiv_day INTEGER, 
-observations VARCHAR(500));
+Kinesia is a free and open-source software for physiotherapists.
+It allows them to easily manage patient information and consultation notes.
+
+## Installation
+
+// To be written
+
+## Join the project
+
+To build and run the project you will need to install several tools.
+
+<b>For Linux</b>
+Make sure that you're up to date:
+```bash
+sudo apt-get update
+sudo apt-get upgrade 
+```
+Then install the following packages:
+```bash
+sudo apt-get cmake                          #for compilation
+sudo apt-get install sqlite3 libsqlite3-dev #for database
+sudo apt-get install libgtk-3-dev           #for UI
+sudo apt-get install lcov                   #for coverage test reports
+sudo apt-get install valgrind               #for memory tests
+```
+
+<b>For macOS</b>
+
+Install ```homebrew``` if necessary:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+Then install the following packages:
+```bash
+brew install cmake                      #for compilation
+brew install sqlite                     #for database
+brew install gtk+3                      #for UI
+brew install lcov                       #for coverage test reports
+```
+Valgrind is unfortunately not available for macOS. If you want to execute memory tests please use a Linux VM.
