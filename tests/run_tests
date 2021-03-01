@@ -23,7 +23,7 @@ while true; do
           cmake --build . --config
           ctest -C "Release"
           cd ../
-          mv cmocka/Testing/Temporary/LastTest.log report-${today}.log
+          mv cmocka/Testing/Temporary/LastTest.log unitreport-${today}.log
           rm -rf cmocka
           echo "*** Unit tests done ***"
           break;;
