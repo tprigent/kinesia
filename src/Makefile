@@ -12,12 +12,14 @@ main: connect_struct_UI.o UTest.o UTest_UI.o patient.o
 %.o: %.c
 	$(CC) -c $(CFLAGS) $< $^
 
-run_test: main
+cov_test: main
 	./main ; \
     lcov --capture --directory . --output-file coverage.info ; \
-    genhtml coverage.info --output-directory ../tests/coverage ; \
-    valgrind ./$<
+    genhtml coverage.info --output-directory covreport ; \
 
+mem_test: main
+	./main ; \
+    valgrind --log-file="memreport" --leak-check=yes ./$^
 
 clean:
 	rm -f *.o
