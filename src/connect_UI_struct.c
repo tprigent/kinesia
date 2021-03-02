@@ -5,6 +5,12 @@
 
 #include "connect_UI_struct.h"
 
+/*!
+ * \brief Parse string date to Date format
+ *
+ * \param[in] source string date
+ * \param[out] destination Date structure
+*/
 Date *parseDate(char *stringDate){
     Date *date = (Date *) malloc(sizeof(Date));
     int yyyy;
