@@ -21,7 +21,8 @@ set(SOURCE_FILES
         src/connect_struct_UI.c
         src/session_controller.c
         src/session_view.c
-        src/patient.c)
+        src/patient.c
+        src/connect_UI_struct.c)
 
 add_executable(Kinesia ${SOURCE_FILES})
 

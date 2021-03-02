@@ -3,11 +3,14 @@
 * \brief File with functions used to parse data from database to be displayed on UI
 */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "structures.h"
+
 #ifndef LOGICIEL_KINE_CONNECT_STRUCT_UI_H
 #define LOGICIEL_KINE_CONNECT_STRUCT_UI_H
 
-#include "structures.h"
-#include <string.h>
 
 char *get_name_UI(Patient *patient);
 char *get_date_UI(Date *date);

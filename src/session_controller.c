@@ -7,6 +7,7 @@
 #include <gtk/gtk.h>
 #include "session_controller.h"
 #include "connect_struct_UI.h"
+#include "connect_UI_struct.h"
 
 
 /*!
@@ -20,7 +21,7 @@
  * \todo active dynamic data once getFolder is done (lines to uncomment)
  * \todo do a setFolder if "Enregistrer" button is clicked
 */
-void launchFolderEditor(){
+void launchFolderEditor(Folder *folder){
 
     /* DECLARE VARIABLES */
     GtkWidget *dialog;
@@ -165,7 +166,13 @@ void launchFolderEditor(){
     switch (result)
     {
         case GTK_RESPONSE_ACCEPT:
-            // TODO: enregistrer les nouvelles informations;
+            strcpy(folder->folderName, gtk_entry_get_text(GTK_ENTRY(folder_name_entry)));
+            strcpy(folder->pathology, gtk_entry_get_text(GTK_ENTRY(pathology_entry)));
+            strcpy(folder->details, gtk_entry_buffer_get_text(GTK_ENTRY_BUFFER(other_infos_buffer)));
+            folder->startOfTreatment.day = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->day;
+            folder->startOfTreatment.month = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->month;
+            folder->startOfTreatment.year = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->year;
+            // TODO: setFolder(folder);
             break;
         default:
             break;

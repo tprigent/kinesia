@@ -9,7 +9,7 @@
 #include "structures.h"
 
 
-void launchFolderEditor();
+void launchFolderEditor(Folder *folder);
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient);
 
 #endif

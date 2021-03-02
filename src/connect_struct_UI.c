@@ -3,8 +3,6 @@
 * \brief File with functions used to parse data from database to be displayed on UI
 */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "connect_struct_UI.h"
 
 /*!
@@ -247,6 +245,7 @@ char *get_indicator_files_UI(Folder *folder){
     strcat(indicator, ")");
     return indicator;
 }
+
 
 /*!
  * \brief Free allocated char pointers
