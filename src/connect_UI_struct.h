@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "structures.h"
 
 
@@ -12,6 +13,7 @@
 #define LOGICIEL_KINE_CONNECT_UI_STRUCT_H
 
 Date *parseDate(char *stringDate);
-
+int convertToInt(char *stringNumber);
+void *parseAddress(char *stringAddress, Address *result);
 
 #endif //LOGICIEL_KINE_CONNECT_UI_STRUCT_H

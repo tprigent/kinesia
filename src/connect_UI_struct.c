@@ -22,3 +22,25 @@ Date *parseDate(char *stringDate){
     date->day = dd;
     return date;
 }
+
+/*!
+ * \brief Convert string number to int
+ *
+ * \param[in] source string number
+ * \param[out] int result
+*/
+int convertToInt(char *stringNumber){
+    int number;
+    sscanf(stringNumber, "%d", &number);
+    return number;
+}
+
+void *parseAddress(char *stringAddress, Address *result){
+    char *number = (char*) malloc(sizeof(Date));
+    char *type = (char*) malloc(sizeof(Date));;
+    char *street = (char*) malloc(sizeof(Date));;
+    sscanf(stringAddress, "%s %s %s", number, type, street);
+    strcpy(result->number, number);
+    strcpy(result->street, type);
+    strcat(result->street, street);
+}

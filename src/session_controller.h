@@ -7,6 +7,7 @@
 #define SESSION_CONTROLLER_H
 
 #include "structures.h"
+#include "patient.h"
 
 
 void launchFolderEditor(Folder *folder);

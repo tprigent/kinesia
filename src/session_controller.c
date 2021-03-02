@@ -464,7 +464,44 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     switch (result)
     {
         case GTK_RESPONSE_ACCEPT:
-            // TODO: enregistrer les nouvelles informations;
+            /* NAME */
+            strcpy(patient->firstname, (char*)gtk_entry_get_text(GTK_ENTRY(surname_entry)));
+            strcpy(patient->name, (char*)gtk_entry_get_text(GTK_ENTRY(name_entry)));
+
+            /* BIRTHDAY */
+            patient->birthdate.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->day;
+            patient->birthdate.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->month;
+            patient->birthdate.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->year;
+
+            /* WEIGHT AND HEIGHT */
+            patient->weight = convertToInt((char*) gtk_entry_get_text(GTK_ENTRY(weight_entry)));
+            patient->height = convertToInt((char *) gtk_entry_get_text(GTK_ENTRY(height_entry)));
+
+            /* FIRST CONSULTATION */
+            //patient->first_consultation.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(entry)))->day;
+
+            /* SOCIAL SECURITY NUMBER */
+            strcpy(patient->ssn, (char*) gtk_entry_get_text(GTK_ENTRY(ssn_entry)));
+
+            /* CONTACT */
+            strcpy(patient->phone_number, (char*) gtk_entry_get_text(GTK_ENTRY(number_entry)));
+            strcpy(patient->mail_address, (char*) gtk_entry_get_text(GTK_ENTRY(email_entry)));
+
+            /* GENDER */
+
+            /* ADDRESS */
+            parseAddress((char*) gtk_entry_get_text(GTK_ENTRY(address_entry)), &patient->address);
+            strcpy(patient->address.city, (char*) gtk_entry_get_text(GTK_ENTRY(city_entry)));
+            strcpy(patient->address.postCode, (char*) gtk_entry_get_text(GTK_ENTRY(postcode_entry)));
+            //other infos
+
+            /* JOB */
+            strcpy(patient->job, (char*) gtk_entry_get_text(GTK_ENTRY(job_entry)));
+
+            /* ADDITIONAL INFO */
+            strcpy(patient->global_pathologies, (char*) gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text)));
+
+            // TODO: setPatient(patient)
             break;
         default:
             break;
