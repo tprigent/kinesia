@@ -60,6 +60,10 @@ void launchFolderEditor(Folder *folder){
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(other_infos_text), 5);
     gtk_text_view_set_top_margin(GTK_TEXT_VIEW(other_infos_text), 5);
 
+    // Entry constraints
+    gtk_entry_set_max_length(GTK_ENTRY(folder_name_entry), 40);
+    gtk_entry_set_max_length(GTK_ENTRY(start_treatment_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(pathology_entry), 30);
 
 
     /* FILL THE ENTRIES */
