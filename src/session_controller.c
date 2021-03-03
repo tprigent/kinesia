@@ -249,6 +249,28 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     height_entry = gtk_entry_new();
     info_text = gtk_text_view_new();
 
+    // entry parameters
+    gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
+    gtk_entry_set_max_length(GTK_ENTRY(surname_entry), 30);
+    gtk_entry_set_max_length(GTK_ENTRY(birth_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(job_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(address_entry), 30);
+    gtk_entry_set_max_length(GTK_ENTRY(postcode_entry), 5);
+    gtk_entry_set_max_length(GTK_ENTRY(city_entry), 25);
+    gtk_entry_set_max_length(GTK_ENTRY(number_entry), 11);
+    gtk_entry_set_max_length(GTK_ENTRY(email_entry), 40);
+    gtk_entry_set_max_length(GTK_ENTRY(ssn_entry), 27);
+    gtk_entry_set_max_length(GTK_ENTRY(weight_entry), 5);
+    gtk_entry_set_max_length(GTK_ENTRY(height_entry), 5);
+
+    gtk_entry_set_input_purpose(GTK_ENTRY(name_entry), GTK_INPUT_PURPOSE_NAME);
+    gtk_entry_set_input_purpose(GTK_ENTRY(surname_entry), GTK_INPUT_PURPOSE_NAME);
+    gtk_entry_set_input_purpose(GTK_ENTRY(postcode_entry), GTK_INPUT_PURPOSE_DIGITS);
+    gtk_entry_set_input_purpose(GTK_ENTRY(number_entry), GTK_INPUT_PURPOSE_PHONE);
+    gtk_entry_set_input_purpose(GTK_ENTRY(email_entry), GTK_INPUT_PURPOSE_EMAIL);
+    gtk_entry_set_input_purpose(GTK_ENTRY(ssn_entry), GTK_INPUT_PURPOSE_DIGITS);
+
+
     info_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text));
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(info_text), 5);
     gtk_text_view_set_top_margin(GTK_TEXT_VIEW(info_text), 5);
@@ -393,7 +415,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     gtk_widget_set_halign(email, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_contact), email_entry, email, GTK_POS_BOTTOM, 2, 1);
 
-    // Adress
+    // Address
     gtk_grid_attach_next_to(GTK_GRID(grid_contact), address, email_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(address, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_contact), address_entry, address, GTK_POS_BOTTOM, 2, 1);
@@ -439,14 +461,14 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     gtk_widget_set_halign(weight, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight_entry, weight, GTK_POS_BOTTOM, 1, 1);
 
-    // SSn
+    // ssn
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_ssn, height_entry, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(patient_ssn, TRUE);
     gtk_widget_set_vexpand(patient_ssn, FALSE);
     gtk_widget_set_halign(patient_ssn, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), ssn_entry, patient_ssn, GTK_POS_BOTTOM, 2, 1);
 
-    // Important informations
+    // Important information
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_info, ssn_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_hexpand(patient_info, TRUE);
     gtk_widget_set_vexpand(patient_info, FALSE);
