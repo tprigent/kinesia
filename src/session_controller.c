@@ -202,6 +202,7 @@ void launchFolderEditor(Folder *folder){
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
+    printPatient(patient, "before being edited");
     /* DECLARE VARIABLES */
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
@@ -527,6 +528,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
             /* ADDITIONAL INFO */
             strcpy(patient->global_pathologies, (char*) gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text)));
 
+            printPatient(patient, "saving data from user entries");
             // TODO: setPatient(patient)
             break;
         default:

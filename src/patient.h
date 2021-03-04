@@ -11,6 +11,10 @@
 
 /*A changer : faire une fonction d'allocation int allocate(Patient * p) où la structure et les attributs dans la structure sont alloués, et des fonctions de remplissage ensuite*/
 
+/*affichage console d'un patient*/
+void printPatient(Patient *patient, char *context);
+void printGender(Genre gender);
+
 /* fonctions d'allocation des structures*/
 int allocatePatient(Patient ** p);
 int allocateAddress(Address * a);
