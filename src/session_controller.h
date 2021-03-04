@@ -11,5 +11,6 @@
 
 void launchFolderEditor();
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient);
+void launchNewPatientEditor(GtkWidget *but_new);
 
 #endif

@@ -31,6 +31,7 @@ void setPatientEnvironment(GtkWidget *window){
 
     /* DECLARE VARIABLES */
     GtkWidget *grid = NULL;
+    GtkWidget *grid_calendar = NULL;
     GtkWidget *grid_patient = NULL;
 
     GtkWidget *frame_test = NULL;
@@ -38,6 +39,7 @@ void setPatientEnvironment(GtkWidget *window){
     GtkWidget *box_patient = NULL;
 
     GtkWidget *calendar = NULL;
+    GtkWidget *button_new_patient = NULL;
     GtkWidget *entry_research = NULL;
     GtkWidget *button_research = NULL;
     GtkWidget *patient1 = NULL;
@@ -49,6 +51,7 @@ void setPatientEnvironment(GtkWidget *window){
     /* ASSIGN VARIABLES */
     grid = gtk_grid_new();
     grid_patient = gtk_grid_new();
+    grid_calendar = gtk_grid_new();
 
     frame_test = gtk_frame_new("CALENDRIER");
 
@@ -56,6 +59,7 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
     calendar = gtk_calendar_new();
+    button_new_patient = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     entry_research = gtk_entry_new();
     button_research = gtk_button_new_from_icon_name("system-search", GTK_ICON_SIZE_MENU);
     patient1 = gtk_button_new_with_label("Claude François");
@@ -75,9 +79,12 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_grid_attach(GTK_GRID(grid), frame_test, GTK_ALIGN_START, GTK_ALIGN_START, 1, 14);
     gtk_widget_set_hexpand(frame_test, TRUE);
     gtk_widget_set_vexpand(frame_test, TRUE);
-    gtk_container_add(GTK_CONTAINER(frame_test), calendar);
-    gtk_widget_set_vexpand(calendar, FALSE);
-    gtk_widget_set_valign(calendar, GTK_ALIGN_START);
+
+    gtk_container_add(GTK_CONTAINER(frame_test), grid_calendar);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_calendar), 5);
+
+    gtk_grid_attach(GTK_GRID(grid_calendar), calendar, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(calendar, TRUE);
 
 
     /* Search a patient */
@@ -86,6 +93,12 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_grid_attach_next_to(GTK_GRID(grid), button_research, entry_research, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_halign(button_research, GTK_ALIGN_START);
     gtk_widget_set_valign(button_research, GTK_ALIGN_START);
+
+    /* Add a new patient */
+    g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), NULL);
+    gtk_grid_attach_next_to(GTK_GRID(grid), button_new_patient, button_research, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_halign(button_new_patient, GTK_ALIGN_END);
+    gtk_widget_set_valign(button_new_patient, GTK_ALIGN_START);
 
     /* Box patient */
     gtk_grid_attach_next_to(GTK_GRID(grid), box_patient, entry_research, GTK_POS_BOTTOM, 3, 13);

@@ -7,6 +7,8 @@
 #include <gtk/gtk.h>
 #include "session_controller.h"
 #include "connect_struct_UI.h"
+#include "structures.h"
+#include "patient.h"
 
 
 /*!
@@ -466,4 +468,21 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     /* DESTROY DIALOG BOX */
     gtk_widget_destroy(dialog);
 
+}
+
+void launchNewPatientEditor(GtkWidget *but_new){
+    Patient *patient = NULL;
+    Address address;
+    Date date;
+
+    allocateAddress(&address);
+    allocatePatient(&patient);
+    char *empty = " ";
+
+    setDate(&date, 1, 1, 2000);
+    setAddress(&address, empty, empty, empty, empty, empty);
+    setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, 0, 0, date, empty, 0);
+
+
+    launchPatientEditor(but_new, patient);
 }
