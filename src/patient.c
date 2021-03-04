@@ -43,7 +43,7 @@ void printPatient(Patient *patient, char *context){
     printf("Weight: %d\n", patient->weight);
     printf("First consultation: %d/%d/%d\n", patient->first_consultation.day, patient->first_consultation.month, patient->first_consultation.year);
 
-    printf("******* End of the patient display *******")
+    printf("******* End of the patient display *******");
 }
 
 /*!
