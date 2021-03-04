@@ -13,7 +13,8 @@ set(SOURCE_FILES
         ../src/UTest.c
         ../src/UTest_UI.c
         ../src/connect_struct_UI.c
-        ../src/patient.c)
+        ../src/patient.c
+        ../src/connect_UI_struct.c)
 
 add_executable(UnitTest ../src/UTest.c ${SOURCE_FILES})
 

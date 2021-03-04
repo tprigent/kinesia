@@ -46,7 +46,7 @@ GtkWidget *setSessionWindow(){
  *
  * The three boxes are filled by external functions.
  *
- * \param[in] session window to split
+ * \param[in] window Session window to split
  * \todo check if the getPatient should be called here instead of being a parameter
 */
 void setSessionEnvironment(GtkWidget *window){
@@ -96,8 +96,8 @@ void setSessionEnvironment(GtkWidget *window){
  *
  * At the bottom a folder chooser is displayed.
  *
- * \param[in] Existing patient box
- * \param[in] Current Patient
+ * \param[in] box Existing patient box
+ * \param[in] patient Current Patient
 */
 void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient){
 
@@ -283,7 +283,7 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
  *
  * A button is displayed to see the attached media related to this Folder.
  *
- * \param[in] Existing Folder box
+ * \param[in] box Existing Folder box
  * \todo read data from database (from a Patient) instead of the sample Folder (lines to uncomment)
  * \todo create the associated media view onButtonClicked
 */
@@ -480,7 +480,7 @@ void createFolderInfoWindow(GtkWidget *box){
     /* BUTTON */
     GtkWidget *edit_folder_button = NULL;
     edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), NULL);
+    g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), folder);
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
@@ -500,7 +500,7 @@ void createFolderInfoWindow(GtkWidget *box){
  *
  * The button to attach files is set up.
  *
- * \param[in] Existing Session box
+ * \param[in] box Existing Session box
  * \todo establish communication with the database
  * \todo create the scrolling view
 */
@@ -615,7 +615,7 @@ void createSessionInfoWindow(GtkWidget *box){
 
 /*!
  * \brief Set right default margin
- * \param[in] Widget concerned
+ * \param[in] widget Widget concerned
 */
 void setStartMargin(GtkWidget *widget){
     gtk_widget_set_margin_start(widget, 5);
@@ -623,7 +623,7 @@ void setStartMargin(GtkWidget *widget){
 
 /*!
  * \brief Set top default margin
- * \param[in] Widget concerned
+ * \param[in] widget Widget concerned
 */
 void setTopMargin(GtkWidget *widget){
     gtk_widget_set_margin_top(widget, 5);
@@ -631,7 +631,7 @@ void setTopMargin(GtkWidget *widget){
 
 /*!
  * \brief Set bottom default margin
- * \param[in] Widget concerned
+ * \param[in] widget Widget concerned
 */
 void setBottomMargin(GtkWidget *widget){
     gtk_widget_set_margin_bottom(widget, 5);

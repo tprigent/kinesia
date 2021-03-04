@@ -7,9 +7,10 @@
 #define SESSION_CONTROLLER_H
 
 #include "structures.h"
+#include "patient.h"
 
 
-void launchFolderEditor();
+void launchFolderEditor(Folder *folder);
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient);
 void launchNewPatientEditor(GtkWidget *but_new);
 

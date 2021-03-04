@@ -9,6 +9,8 @@
 #include "connect_struct_UI.h"
 #include "structures.h"
 #include "patient.h"
+#include "connect_UI_struct.h"
+
 
 
 /*!
@@ -19,10 +21,12 @@
  * This function sets the dialog box attributes (size, position, name)
  * and displays entries to edit or fill Folder structure.
  *
+ * \param[in] folder Folder to be edited
+ *
  * \todo active dynamic data once getFolder is done (lines to uncomment)
  * \todo do a setFolder if "Enregistrer" button is clicked
 */
-void launchFolderEditor(){
+void launchFolderEditor(Folder *folder){
 
     /* DECLARE VARIABLES */
     GtkWidget *dialog;
@@ -61,6 +65,10 @@ void launchFolderEditor(){
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(other_infos_text), 5);
     gtk_text_view_set_top_margin(GTK_TEXT_VIEW(other_infos_text), 5);
 
+    // Entry constraints
+    gtk_entry_set_max_length(GTK_ENTRY(folder_name_entry), 40);
+    gtk_entry_set_max_length(GTK_ENTRY(start_treatment_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(pathology_entry), 30);
 
 
     /* FILL THE ENTRIES */
@@ -167,7 +175,13 @@ void launchFolderEditor(){
     switch (result)
     {
         case GTK_RESPONSE_ACCEPT:
-            // TODO: enregistrer les nouvelles informations;
+            strcpy(folder->folderName, gtk_entry_get_text(GTK_ENTRY(folder_name_entry)));
+            strcpy(folder->pathology, gtk_entry_get_text(GTK_ENTRY(pathology_entry)));
+            strcpy(folder->details, gtk_entry_buffer_get_text(GTK_ENTRY_BUFFER(other_infos_buffer)));
+            folder->startOfTreatment.day = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->day;
+            folder->startOfTreatment.month = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->month;
+            folder->startOfTreatment.year = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->year;
+            // TODO: setFolder(folder);
             break;
         default:
             break;
@@ -189,10 +203,14 @@ void launchFolderEditor(){
  *
  * More data is displayed than in the session view (all Patient anamnesis).
  *
+ * \param[in] but_edit Edit button clicked to launch this view
+ * \param[in] patient Patient to be edited
+ *
  * \todo do a setPatient if "Enregistrer" button is clicked
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
+    printPatient(patient, "before being edited");
     /* DECLARE VARIABLES */
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
@@ -225,7 +243,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     GtkWidget *height_entry = NULL;
     GtkWidget *info_text = NULL;
     GtkTextBuffer *info_buffer = NULL;
-    GtkTextIter end;
+    GtkTextIter start, end;
 
 
     /* DECLARE ELEMENTS OF THE DIALOG BOX */
@@ -243,6 +261,28 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     weight_entry = gtk_entry_new();
     height_entry = gtk_entry_new();
     info_text = gtk_text_view_new();
+
+    // entry parameters
+    gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
+    gtk_entry_set_max_length(GTK_ENTRY(surname_entry), 30);
+    gtk_entry_set_max_length(GTK_ENTRY(birth_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(job_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(address_entry), 30);
+    gtk_entry_set_max_length(GTK_ENTRY(postcode_entry), 5);
+    gtk_entry_set_max_length(GTK_ENTRY(city_entry), 25);
+    gtk_entry_set_max_length(GTK_ENTRY(number_entry), 11);
+    gtk_entry_set_max_length(GTK_ENTRY(email_entry), 40);
+    gtk_entry_set_max_length(GTK_ENTRY(ssn_entry), 27);
+    gtk_entry_set_max_length(GTK_ENTRY(weight_entry), 5);
+    gtk_entry_set_max_length(GTK_ENTRY(height_entry), 5);
+
+    gtk_entry_set_input_purpose(GTK_ENTRY(name_entry), GTK_INPUT_PURPOSE_NAME);
+    gtk_entry_set_input_purpose(GTK_ENTRY(surname_entry), GTK_INPUT_PURPOSE_NAME);
+    gtk_entry_set_input_purpose(GTK_ENTRY(postcode_entry), GTK_INPUT_PURPOSE_DIGITS);
+    gtk_entry_set_input_purpose(GTK_ENTRY(number_entry), GTK_INPUT_PURPOSE_PHONE);
+    gtk_entry_set_input_purpose(GTK_ENTRY(email_entry), GTK_INPUT_PURPOSE_EMAIL);
+    gtk_entry_set_input_purpose(GTK_ENTRY(ssn_entry), GTK_INPUT_PURPOSE_DIGITS);
+
 
     info_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text));
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(info_text), 5);
@@ -388,7 +428,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     gtk_widget_set_halign(email, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_contact), email_entry, email, GTK_POS_BOTTOM, 2, 1);
 
-    // Adress
+    // Address
     gtk_grid_attach_next_to(GTK_GRID(grid_contact), address, email_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(address, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_contact), address_entry, address, GTK_POS_BOTTOM, 2, 1);
@@ -434,14 +474,14 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     gtk_widget_set_halign(weight, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight_entry, weight, GTK_POS_BOTTOM, 1, 1);
 
-    // SSn
+    // ssn
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_ssn, height_entry, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(patient_ssn, TRUE);
     gtk_widget_set_vexpand(patient_ssn, FALSE);
     gtk_widget_set_halign(patient_ssn, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), ssn_entry, patient_ssn, GTK_POS_BOTTOM, 2, 1);
 
-    // Important informations
+    // Important information
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_info, ssn_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_hexpand(patient_info, TRUE);
     gtk_widget_set_vexpand(patient_info, FALSE);
@@ -459,7 +499,52 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     switch (result)
     {
         case GTK_RESPONSE_ACCEPT:
-            // TODO: enregistrer les nouvelles informations;
+            /* NAME */
+            strcpy(patient->firstname, (char*)gtk_entry_get_text(GTK_ENTRY(surname_entry)));
+            strcpy(patient->name, (char*)gtk_entry_get_text(GTK_ENTRY(name_entry)));
+
+            /* BIRTHDAY */
+            patient->birthdate.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->day;
+            patient->birthdate.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->month;
+            patient->birthdate.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->year;
+
+            /* WEIGHT AND HEIGHT */
+            patient->weight = convertToInt((char*) gtk_entry_get_text(GTK_ENTRY(weight_entry)));
+            patient->height = convertToInt((char *) gtk_entry_get_text(GTK_ENTRY(height_entry)));
+
+            /* FIRST CONSULTATION */
+            //patient->first_consultation.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(entry)))->day;
+
+            /* SOCIAL SECURITY NUMBER */
+            strcpy(patient->ssn, (char*) gtk_entry_get_text(GTK_ENTRY(ssn_entry)));
+
+            /* CONTACT */
+            strcpy(patient->phone_number, (char*) gtk_entry_get_text(GTK_ENTRY(number_entry)));
+            strcpy(patient->mail_address, (char*) gtk_entry_get_text(GTK_ENTRY(email_entry)));
+
+            /* GENDER */
+
+            /* ADDRESS */
+            parseAddress((char*) gtk_entry_get_text(GTK_ENTRY(address_entry)), &patient->address);
+            strcpy(patient->address.city, (char*) gtk_entry_get_text(GTK_ENTRY(city_entry)));
+            strcpy(patient->address.postCode, (char*) gtk_entry_get_text(GTK_ENTRY(postcode_entry)));
+            //other infos
+
+            /* JOB */
+            strcpy(patient->job, (char*) gtk_entry_get_text(GTK_ENTRY(job_entry)));
+
+            /* ADDITIONAL INFO */
+            GtkTextBuffer *info_result_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text));
+            char *info_text_result;
+            gtk_text_buffer_get_bounds(info_result_buffer, &start, &end);
+            info_text_result = gtk_text_buffer_get_text (info_result_buffer, &start, &end, FALSE);
+            strcpy(patient->global_pathologies, info_text_result);
+
+            /* Print for debug */
+            printPatient(patient, "saving data from user entries");
+
+            /* Save data in database */
+            modifyPatient(patient);
             break;
         default:
             break;

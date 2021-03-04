@@ -9,8 +9,6 @@
 #define LG_MAX_INFO 100
 #define LG_MAX_OTHERS 300
 
-//#define DB_PATH "database/Bdd.db"
-
 
 /**
  * \brief Structure to represent a Date
