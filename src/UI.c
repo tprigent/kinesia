@@ -6,6 +6,7 @@
 #include <gtk/gtk.h>
 #include "UI.h"
 #include "session_view.h"
+#include "patient_view.h"
 
 /*!
  * \brief Function that launch the User Interface

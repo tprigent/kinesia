@@ -20,6 +20,7 @@ set(SOURCE_FILES
         src/UI.c
         src/connect_struct_UI.c
         src/session_controller.c
+        src/patient_view.c
         src/session_view.c
         src/patient.c)
 
