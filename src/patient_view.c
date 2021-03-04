@@ -106,7 +106,6 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_container_add(GTK_CONTAINER(box_patient), grid_patient);
 
 
-
     /* ADD PATIENTS */
     gtk_grid_attach(GTK_GRID(grid_patient), patient1, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
     gtk_widget_set_hexpand(patient1, TRUE);
