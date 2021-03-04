@@ -240,7 +240,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     GtkWidget *height_entry = NULL;
     GtkWidget *info_text = NULL;
     GtkTextBuffer *info_buffer = NULL;
-    GtkTextIter end;
+    GtkTextIter start, end;
 
 
     /* DECLARE ELEMENTS OF THE DIALOG BOX */
@@ -531,10 +531,16 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
             strcpy(patient->job, (char*) gtk_entry_get_text(GTK_ENTRY(job_entry)));
 
             /* ADDITIONAL INFO */
-            strcpy(patient->global_pathologies, (char*) gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text)));
+            GtkTextBuffer *info_result_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text));
+            char *info_text_result;
+            gtk_text_buffer_get_bounds(info_result_buffer, &start, &end);
+            info_text_result = gtk_text_buffer_get_text (info_result_buffer, &start, &end, FALSE);
+            strcpy(patient->global_pathologies, info_text_result);
 
+            /* Print for debug */
             printPatient(patient, "saving data from user entries");
 
+            /* Save data in database */
             modifyPatient(patient);
             break;
         default:
