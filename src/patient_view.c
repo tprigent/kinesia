@@ -37,6 +37,7 @@ void setPatientEnvironment(GtkWidget *window){
 
     GtkWidget *box_patient = NULL;
 
+    GtkWidget *calendar = NULL;
     GtkWidget *entry_research = NULL;
     GtkWidget *button_research = NULL;
     GtkWidget *patient1 = NULL;
@@ -49,11 +50,12 @@ void setPatientEnvironment(GtkWidget *window){
     grid = gtk_grid_new();
     grid_patient = gtk_grid_new();
 
-    frame_test = gtk_frame_new("LEFT SECTION");
+    frame_test = gtk_frame_new("CALENDRIER");
 
     box_patient = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
+    calendar = gtk_calendar_new();
     entry_research = gtk_entry_new();
     button_research = gtk_button_new_from_icon_name("system-search", GTK_ICON_SIZE_MENU);
     patient1 = gtk_button_new_with_label("Claude François");
@@ -64,6 +66,7 @@ void setPatientEnvironment(GtkWidget *window){
 
     /* GRID WHICH ORGANIZES THE WINDOW */
     gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
     gtk_widget_set_hexpand(grid, TRUE);
     gtk_widget_set_vexpand(grid, TRUE);
 
@@ -72,7 +75,10 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_grid_attach(GTK_GRID(grid), frame_test, GTK_ALIGN_START, GTK_ALIGN_START, 1, 14);
     gtk_widget_set_hexpand(frame_test, TRUE);
     gtk_widget_set_vexpand(frame_test, TRUE);
-    gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
+    gtk_container_add(GTK_CONTAINER(frame_test), calendar);
+    gtk_widget_set_vexpand(calendar, FALSE);
+    gtk_widget_set_valign(calendar, GTK_ALIGN_START);
+
 
     /* Search a patient */
     gtk_grid_attach_next_to(GTK_GRID(grid), entry_research, frame_test, GTK_POS_RIGHT, 1, 1);
@@ -107,7 +113,7 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_widget_set_vexpand(patient1, FALSE);
 
     /* JUST TO TEST THE SCROLLBAR */
-    GtkWidget *patient_photo = NULL;
+    /*GtkWidget *patient_photo = NULL;
     GdkPixbuf *patient_photo_pixbuf = NULL;
 
     patient_photo_pixbuf = gdk_pixbuf_new_from_file("../src/media/claude.jpeg", NULL);
@@ -117,6 +123,6 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient_photo, patient4, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(patient_photo, FALSE);
     gtk_widget_set_vexpand(patient_photo, FALSE);
-    gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER);*/
 
 }
