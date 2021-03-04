@@ -534,7 +534,8 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
             strcpy(patient->global_pathologies, (char*) gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text)));
 
             printPatient(patient, "saving data from user entries");
-            // TODO: setPatient(patient)
+
+            modifyPatient(patient);
             break;
         default:
             break;
