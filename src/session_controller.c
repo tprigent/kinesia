@@ -18,6 +18,8 @@
  * This function sets the dialog box attributes (size, position, name)
  * and displays entries to edit or fill Folder structure.
  *
+ * \param[in] folder Folder to be edited
+ *
  * \todo active dynamic data once getFolder is done (lines to uncomment)
  * \todo do a setFolder if "Enregistrer" button is clicked
 */
@@ -197,6 +199,9 @@ void launchFolderEditor(Folder *folder){
  * and displays entries to edit or fill Patient structure.
  *
  * More data is displayed than in the session view (all Patient anamnesis).
+ *
+ * \param[in] but_edit Edit button clicked to launch this view
+ * \param[in] patient Patient to be edited
  *
  * \todo do a setPatient if "Enregistrer" button is clicked
 */

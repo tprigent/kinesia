@@ -8,7 +8,7 @@
 /*!
  * \brief Parse string date to Date format
  *
- * \param[in] source string date
+ * \param[in] stringDate source string date
  * \param[out] destination Date structure
 */
 Date *parseDate(char *stringDate){
@@ -26,7 +26,7 @@ Date *parseDate(char *stringDate){
 /*!
  * \brief Convert string number to int
  *
- * \param[in] source string number
+ * \param[in] stringNumber source string number
  * \param[out] int result
 */
 int convertToInt(char *stringNumber){
@@ -35,6 +35,12 @@ int convertToInt(char *stringNumber){
     return number;
 }
 
+/*!
+ * \brief Convert string address to Address struct (only number, type and street name)
+ *
+ * \param[in] stringAddress Source string typed by the user
+ * \param[in] result Address resulting
+*/
 void *parseAddress(char *stringAddress, Address *result){
     char *number = (char*) malloc(sizeof(Date));
     char *type = (char*) malloc(sizeof(Date));;

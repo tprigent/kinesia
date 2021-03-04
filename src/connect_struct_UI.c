@@ -8,8 +8,8 @@
 /*!
  * \brief Write an integer into a given char
  *
- * \param[in] destination char pointer
- * \param[in] source integer
+ * \param[in] str destination char pointer
+ * \param[in] num source integer
 */
 void tostring(char *str, int num){
     int i, rem, len = 0, n;
@@ -29,7 +29,7 @@ void tostring(char *str, int num){
 /*!
  * \brief Concatenate firstname and surname in one char
  *
- * \param[in] Concerned Patient
+ * \param[in] patient Concerned Patient
  * \param[out] Char pointer combining at "Firstname Surname" format
 */
 char *get_name_UI(Patient *patient){
@@ -44,7 +44,7 @@ char *get_name_UI(Patient *patient){
 /*!
  * \brief Parse Date instance to char
  *
- * \param[in] Involved Date
+ * \param[in] date Involved Date
  * \param[out] Char pointer containing the date
 */
 char *get_date_UI(Date *date){
@@ -70,7 +70,7 @@ char *get_date_UI(Date *date){
 /*!
  * \brief Convert Patient height from cm to m
  *
- * \param[in] Concerned Patient
+ * \param[in] patient Concerned Patient
  * \param[out] Char pointer containing the Patient height in m (with unit)
 */
 char *get_height_UI(Patient *patient){
@@ -94,7 +94,7 @@ char *get_height_UI(Patient *patient){
 /*!
  * \brief Convert Patient height from cm to m
  *
- * \param[in] Concerned Patient
+ * \param[in] patient Concerned Patient
  * \param[out] Char pointer containing the Patient height in m (with unit)
  * \todo see if necessary
 */
@@ -112,7 +112,7 @@ char *get_weight_UI(Patient *patient){
 /*!
  * \brief Concatenate Patient height and weight in a single char for display
  *
- * \param[in] Concerned Patient
+ * \param[in] patient Concerned Patient
  * \param[out] Char pointer containing the Patient height and weight
 */
 /* a simplifier avec les deux fonctions précédentes */
@@ -142,7 +142,7 @@ char *get_height_weight_UI(Patient *patient){
 /*!
  * \brief Parse first consultation date from Date structure to char
  *
- * \param[in] Concerned Patient
+ * \param[in] patient Concerned Patient
  * \param[out] Char pointer containing the first consultation date
  * \todo simplify with get_date_UI ???
 */
@@ -170,7 +170,7 @@ char *get_first_consultation_UI(Patient *patient){
 /*!
  * \brief Parse Address structure to single char pointer
  *
- * \param[in] Concerned Patient
+ * \param[in] patient Concerned Patient
  * \param[out] Char pointer containing the address
 */
 char *get_adress_UI(Patient *patient){
@@ -187,7 +187,7 @@ char *get_adress_UI(Patient *patient){
 /*!
  * \brief Format Folder title
  *
- * \param[in] Concerned Folder
+ * \param[in] folder Concerned Folder
  * \param[out] Char pointer containing the formatted  title
 */
 char *get_formatted_folder_title_UI(Folder *folder){
@@ -208,7 +208,7 @@ char *get_formatted_folder_title_UI(Folder *folder){
  *
  * Put breaklines every n word for long texts
  *
- * \param[in] Concerned Folder
+ * \param[in] folder Concerned Folder
  * \param[out] Char pointer containing the formatted information
  * \todo insert breakline every n char OR find a way to impose width in gtk
 */
@@ -233,7 +233,7 @@ char *get_formatted_folder_infos_UI(Folder *folder){
 /*!
  * \brief Format Folder attachment counter display
  *
- * \param[in] Concerned Folder
+ * \param[in] folder Concerned Folder
  * \param[out] Char pointer containing the formatted counter
 */
 char *get_indicator_files_UI(Folder *folder){
@@ -250,7 +250,7 @@ char *get_indicator_files_UI(Folder *folder){
 /*!
  * \brief Free allocated char pointers
  *
- * \param[in] Char to be freed
+ * \param[in] info Char to be freed
 */
 void free_info_UI(char *info){
     free(info);
