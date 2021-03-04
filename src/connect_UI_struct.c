@@ -41,7 +41,7 @@ int convertToInt(char *stringNumber){
  * \param[in] stringAddress Source string typed by the user
  * \param[in] result Address resulting
 */
-void *parseAddress(char *stringAddress, Address *result){
+void parseAddress(char *stringAddress, Address *result){
     char *number = (char*) malloc(sizeof(Date));
     char *type = (char*) malloc(sizeof(Date));;
     char *street = (char*) malloc(sizeof(Date));;
