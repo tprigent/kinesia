@@ -5,6 +5,7 @@
 
 
 #include <gtk/gtk.h>
+#include <libc.h>
 #include "session_controller.h"
 #include "connect_struct_UI.h"
 #include "connect_UI_struct.h"
@@ -209,6 +210,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     printPatient(patient, "before being edited");
     /* DECLARE VARIABLES */
+    char *mediaType = "profil";
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *name = NULL;
@@ -337,6 +339,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
+    g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), mediaType);
 
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
@@ -549,5 +552,55 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     /* DESTROY DIALOG BOX */
     gtk_widget_destroy(dialog);
+
+}
+
+void launchFileChooser(GtkWidget *photo_button, char *type){
+    GtkWidget *dialog;
+    Patient *patient = getPatient(1);                 //todo: make this dynamic
+    dialog = gtk_file_chooser_dialog_new("Open File",
+                                      NULL,
+                                      GTK_FILE_CHOOSER_ACTION_OPEN,
+                                      "Annuler", GTK_RESPONSE_CANCEL,
+                                      "Utiliser", GTK_RESPONSE_ACCEPT,
+                                      NULL);
+
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+    char *filename;
+
+    filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
+    copyToMedia(filename, patient->name, patient->firstname, type);
+    }
+
+    gtk_widget_destroy (dialog);
+}
+
+void copyToMedia(char *from, char *name, char *firstname, char *type){
+
+    /* Build the destination path: media/name-surname-type */
+    char *media_path = " ../src/media/";
+    char *dest = (char *) malloc(sizeof(char)*(strlen(name)+strlen(firstname)+strlen(type)+2*strlen("-")+strlen("/")));
+    strcpy(dest, media_path);
+    strcat(dest, name);
+    strcat(dest, "-");
+    strcat(dest, firstname);
+    strcat(dest, "-");
+    strcat(dest, type);
+    strcat(dest, "/");
+
+    /* Create directory */
+    char *mkdir = "mkdir ";
+    char *mkdir_command = (char*) malloc(sizeof(char)*(strlen(dest)+strlen(mkdir)));
+    strcpy(mkdir_command, mkdir);
+    strcat(mkdir_command, dest);
+    system(mkdir_command);
+
+    /* Build the copy command */
+    char *cp = "cp ";
+    char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)));
+    strcpy(cp_command, cp);
+    strcat(cp_command, from);
+    strcat(cp_command, dest);
+    system(cp_command);
 
 }
