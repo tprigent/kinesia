@@ -20,6 +20,7 @@
  * \todo change the name of the window once the software name found
 */
 GtkWidget *setSessionWindow(){
+
     GtkWidget *window = NULL;
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
@@ -30,8 +31,11 @@ GtkWidget *setSessionWindow(){
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
+
+    gtk_window_set_destroy_with_parent(GTK_WINDOW(window), FALSE);
     setSessionEnvironment(window);
     gtk_widget_show_all(window);
+    gtk_main();
 
     return window;
 }
@@ -73,7 +77,8 @@ void setSessionEnvironment(GtkWidget *window){
     gtk_widget_set_hexpand(boxPart[1], TRUE);
     gtk_widget_set_vexpand(boxPart[1], TRUE);
 
-    boxPart[2] = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    boxPart[2] = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(boxPart[2]), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
     setStartMargin(boxPart[2]);
     setTopMargin(boxPart[2]);
     gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[2],boxPart[1], GTK_POS_BOTTOM, 4, 1);
@@ -162,7 +167,7 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
     gtk_widget_set_hexpand(back_button, FALSE);
     gtk_widget_set_vexpand(back_button, FALSE);
     gtk_widget_set_halign(back_button, GTK_ALIGN_START);
-    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(setPatientWindow), NULL);
+    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(launchPatientView), window);
 
 
 
@@ -539,7 +544,8 @@ void createSessionInfoWindow(GtkWidget *box){
 
     /* MANAGE GRID WHICH ORGANIZES THE SESSION SECTION */
     gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 10);
-    gtk_box_pack_start(GTK_BOX(box), grid_session_section, TRUE, TRUE, 0);
+    gtk_container_add(GTK_CONTAINER(box), grid_session_section);
+    //gtk_box_pack_start(GTK_BOX(box), grid_session_section, TRUE, TRUE, 0);
 
 
     /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
@@ -607,6 +613,19 @@ void createSessionInfoWindow(GtkWidget *box){
     gtk_widget_set_vexpand(session1, FALSE);
     gtk_widget_set_halign(session1, GTK_ALIGN_FILL);
     /* ****************************************************************************** */
+
+    /* JUST TO TEST THE SCROLLBAR */
+    /*GtkWidget *patient_photo = NULL;
+    GdkPixbuf *patient_photo_pixbuf = NULL;
+
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../src/media/claude.jpeg", NULL);
+    patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 270, 350, GDK_INTERP_BILINEAR);
+    patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), patient_photo, session1, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(patient_photo, FALSE);
+    gtk_widget_set_vexpand(patient_photo, FALSE);
+    gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER); */
 
 }
 

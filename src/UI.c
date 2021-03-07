@@ -24,7 +24,7 @@ int main_UI(int argc, char **argv) {
     //sessionWindow = setSessionWindow();
     setPatientWindow();
 
-    gtk_main();
+    //gtk_main();
 
     return EXIT_SUCCESS;
 }

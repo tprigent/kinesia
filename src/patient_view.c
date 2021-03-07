@@ -21,8 +21,10 @@ GtkWidget *setPatientWindow(){
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
+    gtk_window_set_destroy_with_parent(GTK_WINDOW(window), FALSE);
     setPatientEnvironment(window);
     gtk_widget_show_all(window);
+    gtk_main();
 
     return window;
 }
@@ -95,7 +97,7 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_widget_set_valign(button_research, GTK_ALIGN_START);
 
     /* Add a new patient */
-    g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), NULL);
+    g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), window);
     gtk_grid_attach_next_to(GTK_GRID(grid), button_new_patient, button_research, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_halign(button_new_patient, GTK_ALIGN_END);
     gtk_widget_set_valign(button_new_patient, GTK_ALIGN_START);
@@ -106,12 +108,11 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_container_add(GTK_CONTAINER(box_patient), grid_patient);
 
 
-
     /* ADD PATIENTS */
     gtk_grid_attach(GTK_GRID(grid_patient), patient1, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
     gtk_widget_set_hexpand(patient1, TRUE);
     gtk_widget_set_vexpand(patient1, FALSE);
-    g_signal_connect(GTK_BUTTON(patient1), "clicked", G_CALLBACK(setSessionWindow), NULL);
+    g_signal_connect(GTK_BUTTON(patient1), "clicked", G_CALLBACK(launchSessionView), window);
 
     gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient2, patient1, GTK_POS_BOTTOM, 5, 1);
     gtk_widget_set_hexpand(patient1, TRUE);
