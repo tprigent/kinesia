@@ -20,6 +20,7 @@
  * \todo change the name of the window once the software name found
 */
 GtkWidget *setSessionWindow(){
+
     GtkWidget *window = NULL;
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
@@ -30,8 +31,11 @@ GtkWidget *setSessionWindow(){
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
+
+    gtk_window_set_destroy_with_parent(GTK_WINDOW(window), FALSE);
     setSessionEnvironment(window);
     gtk_widget_show_all(window);
+    gtk_main();
 
     return window;
 }
@@ -163,7 +167,7 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
     gtk_widget_set_hexpand(back_button, FALSE);
     gtk_widget_set_vexpand(back_button, FALSE);
     gtk_widget_set_halign(back_button, GTK_ALIGN_START);
-    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(setPatientWindow), NULL);
+    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(launchPatientView), window);
 
 
 

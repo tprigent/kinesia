@@ -10,7 +10,8 @@
 #include "structures.h"
 #include "patient.h"
 #include "connect_UI_struct.h"
-
+#include "session_view.h"
+#include "patient_view.h"
 
 
 /*!
@@ -544,7 +545,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
             printPatient(patient, "saving data from user entries");
 
             /* Save data in database */
-            modifyPatient(patient);
+            //modifyPatient(patient);
             break;
         default:
             break;
@@ -568,6 +569,15 @@ void launchNewPatientEditor(GtkWidget *but_new){
     setAddress(&address, empty, empty, empty, empty, empty);
     setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, 0, 0, date, empty, 0);
 
-
     launchPatientEditor(but_new, patient);
+}
+
+void launchSessionView(GtkWidget *but, GtkWidget *window){
+    gtk_widget_destroy(window);
+    setSessionWindow();
+}
+
+void launchPatientView(GtkWidget *but, GtkWidget *window){
+    gtk_widget_destroy(window);
+    setPatientWindow();
 }

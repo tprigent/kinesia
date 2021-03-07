@@ -13,5 +13,7 @@
 void launchFolderEditor(Folder *folder);
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient);
 void launchNewPatientEditor(GtkWidget *but_new);
+void launchSessionView(GtkWidget *but, GtkWidget *window);
+void launchPatientView(GtkWidget *but, GtkWidget *window);
 
 #endif
