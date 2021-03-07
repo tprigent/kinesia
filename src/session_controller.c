@@ -333,7 +333,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     gtk_entry_set_text(GTK_ENTRY(height_entry), patient_height_char);
     free_info_UI(patient_height_char);
 
-    patient_info = gtk_label_new("Antécédents médicaux : ");
+    patient_info = gtk_label_new("Informations importantes : ");
     gtk_text_buffer_insert(info_buffer, &end, patient->global_pathologies, -1);
     gtk_text_view_set_buffer(GTK_TEXT_VIEW(info_text), info_buffer);
 
