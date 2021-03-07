@@ -5,7 +5,6 @@
 
 
 #include <gtk/gtk.h>
-#include <libc.h>
 #include "session_controller.h"
 #include "connect_struct_UI.h"
 #include "connect_UI_struct.h"
@@ -597,12 +596,30 @@ void copyToMedia(char *from, char *name, char *firstname, char *type){
     /* Build the copy command: cp source_path/file media/name-firstname/ */
     char *cp = "cp ";
     char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)));
-    strcpy(cp_command, cp);         // command = <cp >
-    strcat(cp_command, "\"");       // command = <cp ">
-    strcat(cp_command, from);       // command = <cp "source_path/file>
-    strcat(cp_command, "\"");       // command = <cp "source_path/file">
-    strcat(cp_command, dest);       // command = <cp "source_path/file" media/name-firstname/>
+    strcpy(cp_command, cp);                     // command = <cp >
+    strcat(cp_command, "\"");                   // command = <cp ">
+    strcat(cp_command, from);                   // command = <cp "source_path/file>
+    strcat(cp_command, "\"");                   // command = <cp "source_path/file">
+    strcat(cp_command, dest);                   // command = <cp "source_path/file" media/name-firstname/>
+    strcat(cp_command, type);                   // command = <cp "source_path/file" media/name-firstname/type>
+    strcat(cp_command, ".");                    // command = <cp "source_path/file" media/name-firstname/type.>
+    strcat(cp_command, getExtension(from));     // command = <cp "source_path/file" media/name-firstname/type.ext>
     system(cp_command);
 
+}
 
+char *getExtension(char *str){
+    char *result;
+    char *last;
+    if ((last = strrchr(str, '.')) != NULL) {
+        if ((*last == '.') && (last == str))
+            return "";
+        else {
+            result = (char*) malloc(sizeof(char)*strlen(str));
+            snprintf(result, sizeof result, "%s", last + 1);
+            return result;
+        }
+    } else {
+        return "error";
+    }
 }

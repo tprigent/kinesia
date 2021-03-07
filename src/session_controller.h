@@ -14,5 +14,6 @@ void launchFolderEditor(Folder *folder);
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient);
 void launchFileChooser(GtkWidget *photo_button, char *type);
 void copyToMedia(char *from, char *name, char *firstname, char *type);
+char *getExtension(char *str);
 
 #endif
