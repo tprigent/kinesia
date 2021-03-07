@@ -595,7 +595,7 @@ void copyToMedia(char *from, char *name, char *firstname, char *type){
 
     /* Build the copy command: cp source_path/file media/name-firstname/ */
     char *cp = "cp ";
-    char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)));
+    char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)+strlen(type)+strlen(getExtension(from))+1));
     strcpy(cp_command, cp);                     // command = <cp >
     strcat(cp_command, "\"");                   // command = <cp ">
     strcat(cp_command, from);                   // command = <cp "source_path/file>

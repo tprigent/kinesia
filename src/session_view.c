@@ -193,10 +193,11 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     GtkWidget *patient_first_consultation = NULL;
     GtkWidget *patient_other_info = NULL;
 
-    char * patient_name_char = get_name_UI(patient);
+    char *patient_name_char = get_name_UI(patient);
     char *patient_birth_char = get_date_UI(&patient->birthdate);
     char *patient_height_weight_char = get_height_weight_UI(patient);
-    char * patient_first_consultation_char = get_first_consultation_UI(patient);
+    char *patient_first_consultation_char = get_first_consultation_UI(patient);
+    char *photo_path = (char*) malloc(sizeof(char)*(strlen(patient->name)+strlen(patient->firstname)+10));
 
     /* ASSIGN VARIABLES */
     frame_info = gtk_frame_new("Informations patient");
@@ -209,16 +210,28 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
     grid_etat_civil = gtk_grid_new();
     grid_medical_info = gtk_grid_new();
 
+    /* Build photo path */
+    strcpy(photo_path, "../src/media/");
+    strcat(photo_path, patient->name);
+    strcat(photo_path, "-");
+    strcat(photo_path, patient->firstname);
+    strcat(photo_path, "/");
+    strcat(photo_path, "profil.jpeg");
+
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../src/media/claude.jpeg", NULL);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file(photo_path, NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 170, 250, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
-    patient_name = gtk_label_new(patient_name_char);    free_info_UI(patient_name_char);
-    patient_birth = gtk_label_new(patient_birth_char);  free_info_UI(patient_birth_char);
+    patient_name = gtk_label_new(patient_name_char);
+    free_info_UI(patient_name_char);
+    patient_birth = gtk_label_new(patient_birth_char);
+    free_info_UI(patient_birth_char);
     patient_job = gtk_label_new(patient->job);
-    patient_height_weight = gtk_label_new(patient_height_weight_char);  free_info_UI(patient_height_weight_char);
-    patient_first_consultation = gtk_label_new(patient_first_consultation_char);    free_info_UI(patient_first_consultation_char);
+    patient_height_weight = gtk_label_new(patient_height_weight_char);
+    free_info_UI(patient_height_weight_char);
+    patient_first_consultation = gtk_label_new(patient_first_consultation_char);
+    free_info_UI(patient_first_consultation_char);
     patient_other_info = gtk_label_new(patient->global_pathologies);
 
 
