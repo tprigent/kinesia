@@ -569,6 +569,7 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
     char *filename;
 
     filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
+    printf("%s\n", filename);
     copyToMedia(filename, patient->name, patient->firstname, type);
     }
 
@@ -577,30 +578,31 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
 
 void copyToMedia(char *from, char *name, char *firstname, char *type){
 
-    /* Build the destination path: media/name-surname-type */
+    /* Build the destination path: media/name-firstname/ */
     char *media_path = " ../src/media/";
     char *dest = (char *) malloc(sizeof(char)*(strlen(name)+strlen(firstname)+strlen(type)+2*strlen("-")+strlen("/")));
     strcpy(dest, media_path);
     strcat(dest, name);
     strcat(dest, "-");
     strcat(dest, firstname);
-    strcat(dest, "-");
-    strcat(dest, type);
     strcat(dest, "/");
 
-    /* Create directory */
-    char *mkdir = "mkdir ";
+    /* Create directory media/name-firstname/ */
+    char *mkdir = "mkdir -p ";
     char *mkdir_command = (char*) malloc(sizeof(char)*(strlen(dest)+strlen(mkdir)));
-    strcpy(mkdir_command, mkdir);
-    strcat(mkdir_command, dest);
+    strcpy(mkdir_command, mkdir);   // command = <mkdir -p >
+    strcat(mkdir_command, dest);    // command = <mkdir -p media/name-firstname/>
     system(mkdir_command);
 
-    /* Build the copy command */
+    /* Build the copy command: cp source_path/file media/name-firstname/ */
     char *cp = "cp ";
     char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)));
-    strcpy(cp_command, cp);
-    strcat(cp_command, from);
-    strcat(cp_command, dest);
+    strcpy(cp_command, cp);         // command = <cp >
+    strcat(cp_command, "\"");       // command = <cp ">
+    strcat(cp_command, from);       // command = <cp "source_path/file>
+    strcat(cp_command, "\"");       // command = <cp "source_path/file">
+    strcat(cp_command, dest);       // command = <cp "source_path/file" media/name-firstname/>
     system(cp_command);
+
 
 }
