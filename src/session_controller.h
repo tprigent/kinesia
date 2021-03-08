@@ -17,6 +17,7 @@ void launchSessionView(GtkWidget *but, GtkWidget *window);
 void launchPatientView(GtkWidget *but, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, char *type);
 void copyToMedia(char *from, char *name, char *firstname, char *type);
-char *getExtension(char *str);
+char *getExtensionFromPath(char *path);
+char *getProfilExtension(Patient *patient);
 
 #endif

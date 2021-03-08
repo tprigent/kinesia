@@ -151,7 +151,9 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
     strcat(photo_path, "-");
     strcat(photo_path, patient->firstname);
     strcat(photo_path, "/");
-    strcat(photo_path, "profil.jpeg");
+    strcat(photo_path, "profil");
+    strcat(photo_path, getProfilExtension(patient));
+    printf(photo_path);
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);

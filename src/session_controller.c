@@ -600,6 +600,7 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
     filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
     printf("%s\n", filename);
     copyToMedia(filename, patient->name, patient->firstname, type);
+    getProfilExtension(patient);
     }
 
     gtk_widget_destroy (dialog);
@@ -625,31 +626,57 @@ void copyToMedia(char *from, char *name, char *firstname, char *type){
 
     /* Build the copy command: cp source_path/file media/name-firstname/ */
     char *cp = "cp ";
-    char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)+strlen(type)+strlen(getExtension(from))+1));
-    strcpy(cp_command, cp);                     // command = <cp >
-    strcat(cp_command, "\"");                   // command = <cp ">
-    strcat(cp_command, from);                   // command = <cp "source_path/file>
-    strcat(cp_command, "\"");                   // command = <cp "source_path/file">
-    strcat(cp_command, dest);                   // command = <cp "source_path/file" media/name-firstname/>
-    strcat(cp_command, type);                   // command = <cp "source_path/file" media/name-firstname/type>
-    strcat(cp_command, ".");                    // command = <cp "source_path/file" media/name-firstname/type.>
-    strcat(cp_command, getExtension(from));     // command = <cp "source_path/file" media/name-firstname/type.ext>
+    char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)+strlen(type)+strlen(getExtensionFromPath(from))+1));
+    strcpy(cp_command, cp);                             // command = <cp >
+    strcat(cp_command, "\"");                           // command = <cp ">
+    strcat(cp_command, from);                           // command = <cp "source_path/file>
+    strcat(cp_command, "\"");                           // command = <cp "source_path/file">
+    strcat(cp_command, dest);                           // command = <cp "source_path/file" media/name-firstname/>
+    strcat(cp_command, type);                           // command = <cp "source_path/file" media/name-firstname/type>
+    strcat(cp_command, ".");                            // command = <cp "source_path/file" media/name-firstname/type.>
+    strcat(cp_command, getExtensionFromPath(from));     // command = <cp "source_path/file" media/name-firstname/type.ext>
     system(cp_command);
 
 }
 
-char *getExtension(char *str){
+char *getExtensionFromPath(char *path){
     char *result;
     char *last;
-    if ((last = strrchr(str, '.')) != NULL) {
-        if ((*last == '.') && (last == str))
+    if ((last = strrchr(path, '.')) != NULL) {
+        if ((*last == '.') && (last == path))
             return "";
         else {
-            result = (char*) malloc(sizeof(char)*strlen(str));
+            result = (char*) malloc(sizeof(char)*strlen(path));
             snprintf(result, sizeof result, "%s", last + 1);
             return result;
         }
     } else {
         return "error";
     }
+}
+
+char *getProfilExtension(Patient *patient){
+    char *path = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
+    char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
+    char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
+    char *pathJPG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
+    strcpy(path, "cat ");
+    strcat(path, "../src/media/");
+    strcat(path, patient->name);
+    strcat(path, "-");
+    strcat(path, patient->firstname);
+    strcat(path, "/");
+
+    strcat(pathJPEG, path);
+    strcat(pathJPEG, "profil.jpeg");
+    strcat(pathJPG, path);
+    strcat(pathJPG, "profil.jpg");
+    strcat(pathPNG, path);
+    strcat(pathPNG, "profil.png");
+
+    if(system(pathJPEG) == 0) return ".jpeg";
+    else if(system(pathJPG) == 0) return ".jpg";
+    else if(system(pathPNG) == 0) return ".png";
+    else return ".error";
+
 }
