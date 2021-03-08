@@ -146,6 +146,7 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
     grid_medical_info = gtk_grid_new();
 
     /* Build photo path */
+    /*
     strcpy(photo_path, "../src/media/");
     strcat(photo_path, patient->name);
     strcat(photo_path, "-");
@@ -154,10 +155,11 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
     strcat(photo_path, "profil");
     strcat(photo_path, getProfileExtension(patient));
     printf(photo_path);
+    */
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file(photo_path, NULL);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../src/media/Claude-Francois/profil.jpeg", NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 170, 250, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
     patient_name = gtk_label_new(patient_name_char);
