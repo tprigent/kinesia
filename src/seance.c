@@ -4,13 +4,13 @@
 */
 
 #include "seance.h"
-#include "Structures.h"
+#include "structures.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 //Ajout d'une seance avec un instance de struct seance
-int addSeance(Seance *seance){
+int addSeance(Session *seance){
 
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -19,7 +19,7 @@ int addSeance(Seance *seance){
     sqlite3_stmt *stmt;
 
     //Ouverture de la bdd
-    rc = sqlite3_open("/BaseDeDonnee/Bdd.db", &db);
+    rc = sqlite3_open(DB_PATH, &db);
 
     //Test de l'ouverture
     if( rc ) {
@@ -44,15 +44,15 @@ int addSeance(Seance *seance){
     }
 
     //Ajout des valeurs dans la requête
-    sqlite3_bind_int(stmt,1,seance->idDossier);
-    sqlite3_bind_int(stmt,2,seance->dateSeance.year);
-    sqlite3_bind_int(stmt,3,seance->dateSeance.month);
-    sqlite3_bind_int(stmt,4,seance->dateSeance.day);
-    sqlite3_bind_int(stmt,5,seance->dateSeanceSuiv.year);
-    sqlite3_bind_int(stmt,6,seance->dateSeanceSuiv.month);
-    sqlite3_bind_int(stmt,7,seance->dateSeanceSuiv.day);
+    sqlite3_bind_int(stmt,1,seance->idFolder);
+    sqlite3_bind_int(stmt,2,seance->sessionDate.year);
+    sqlite3_bind_int(stmt,3,seance->sessionDate.month);
+    sqlite3_bind_int(stmt,4,seance->sessionDate.day);
+    sqlite3_bind_int(stmt,5,seance->nextSessionDate.year);
+    sqlite3_bind_int(stmt,6,seance->nextSessionDate.month);
+    sqlite3_bind_int(stmt,7,seance->nextSessionDate.day);
     sqlite3_bind_text(stmt,8,seance->observations,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,9,seance->nomSeance,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,9,seance->sessionName,-1,SQLITE_TRANSIENT);
 
     //Execution de la requête
     rc = sqlite3_step(stmt);
@@ -70,17 +70,17 @@ int addSeance(Seance *seance){
 }
 
 //Recupération d'une séance
-Seance* getSeance(int idSeance){
+Session * getSeance(int idSeance){
 
     sqlite3 *db;
     char *zErrMsg = 0;
     int rc;
     char *sql;
     sqlite3_stmt *stmt;
-    Seance *seance;
+    Session *seance;
 
     //Ouverture de la bdd
-    rc = sqlite3_open("/BaseDeDonnee/Bdd.db", &db);
+    rc = sqlite3_open(DB_PATH, &db);
 
     //Test de l'ouverture
     if( rc ) {
