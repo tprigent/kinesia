@@ -599,22 +599,22 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
 
     filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
     printf("%s\n", filename);
-    copyToMedia(filename, patient->name, patient->firstname, type);
-    getProfilExtension(patient);
+    copyToMedia(filename, patient , type);
+    getProfileExtension(patient);
     }
 
     gtk_widget_destroy (dialog);
 }
 
-void copyToMedia(char *from, char *name, char *firstname, char *type){
+void copyToMedia(char *from, Patient *patient, char *type){
 
     /* Build the destination path: media/name-firstname/ */
     char *media_path = " ../src/media/";
-    char *dest = (char *) malloc(sizeof(char)*(strlen(name)+strlen(firstname)+strlen(type)+2*strlen("-")+strlen("/")));
+    char *dest = (char *) malloc(sizeof(char)*(strlen(patient->name)+strlen(patient->firstname)+strlen(type)+2*strlen("-")+strlen("/")));
     strcpy(dest, media_path);
-    strcat(dest, name);
+    strcat(dest, patient->name);
     strcat(dest, "-");
-    strcat(dest, firstname);
+    strcat(dest, patient-> firstname);
     strcat(dest, "/");
 
     /* Create directory media/name-firstname/ */
@@ -655,7 +655,7 @@ char *getExtensionFromPath(char *path){
     }
 }
 
-char *getProfilExtension(Patient *patient){
+char *getProfileExtension(Patient *patient){
     char *path = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
     char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
     char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
