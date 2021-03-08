@@ -6,6 +6,7 @@
 #include <gtk/gtk.h>
 #include "UI.h"
 #include "session_view.h"
+#include "patient_view.h"
 
 /*!
  * \brief Function that launch the User Interface
@@ -23,7 +24,7 @@ int main_UI(int argc, char **argv) {
     //sessionWindow = setSessionWindow();
     setPatientWindow();
 
-    gtk_main();
+    //gtk_main();
 
     return EXIT_SUCCESS;
 }

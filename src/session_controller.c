@@ -7,7 +7,11 @@
 #include <gtk/gtk.h>
 #include "session_controller.h"
 #include "connect_struct_UI.h"
+#include "structures.h"
+#include "patient.h"
 #include "connect_UI_struct.h"
+#include "session_view.h"
+#include "patient_view.h"
 
 
 /*!
@@ -209,7 +213,6 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     printPatient(patient, "before being edited");
     /* DECLARE VARIABLES */
-    char *mediaType = "profil";
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *name = NULL;
@@ -338,7 +341,6 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
-    g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), mediaType);
 
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
@@ -552,6 +554,32 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     /* DESTROY DIALOG BOX */
     gtk_widget_destroy(dialog);
 
+}
+
+void launchNewPatientEditor(GtkWidget *but_new){
+    Patient *patient = NULL;
+    Address address;
+    Date date;
+
+    allocateAddress(&address);
+    allocatePatient(&patient);
+    char *empty = " ";
+
+    setDate(&date, 1, 1, 2000);
+    setAddress(&address, empty, empty, empty, empty, empty);
+    setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, 0, 0, date, empty, 0);
+
+    launchPatientEditor(but_new, patient);
+}
+
+void launchSessionView(GtkWidget *but, GtkWidget *window){
+    gtk_widget_destroy(window);
+    setSessionWindow();
+}
+
+void launchPatientView(GtkWidget *but, GtkWidget *window){
+    gtk_widget_destroy(window);
+    setPatientWindow();
 }
 
 void launchFileChooser(GtkWidget *photo_button, char *type){

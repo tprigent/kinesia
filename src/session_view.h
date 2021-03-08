@@ -9,13 +9,10 @@
 #include <gtk/gtk.h>
 #include "structures.h"
 
-GtkWidget *setPatientWindow();
-void setPatientEnvironment(GtkWidget *window);
-
 GtkWidget *setSessionWindow();
 void setSessionEnvironment(GtkWidget *window);
 
-void createPatientInfoWindow(GtkWidget *box, Patient *patient);
+void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient);
 void createFolderInfoWindow(GtkWidget *box);
 void createSessionInfoWindow(GtkWidget *box);
 
