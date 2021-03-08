@@ -6,4 +6,4 @@ main_UI
 cmake-build-debug/
 doc/
 tests/*.log
-tests/coverage/
+tests/covreport*/

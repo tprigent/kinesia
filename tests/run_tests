@@ -14,8 +14,8 @@ done
 
 # ask for kind of test
 while true; do
-    read -p "What test do you want to process? (unit_test u / coverage c) " uc
-    case $uc in
+    read -p "What test do you want to process? (unit_test u / coverage c /memory m) " ucm
+    case $ucm in
         [Uu]* )
           echo "*** Unit tests selected ***"
           mkdir cmocka && cd cmocka
@@ -32,11 +32,21 @@ while true; do
           rm -rf coverage
           cd ../src
           make
-          make run_test
+          make cov_test
+          mv covreport ../tests/covreport-${today}
           make clean
           echo "*** Coverage tests done ***"
           exit;;
-        * ) echo "Please answer u or c.";;
+        [Mm]* )
+          echo "*** Memory tests selected ***"
+          cd ../src
+          make
+          make mem_test
+          mv memreport ../tests/memreport-${today}.log
+          make clean
+          echo "*** Memory tests done ***"
+          exit;;
+        * ) echo "Please answer u, c or m.";;
     esac
 done
 
