@@ -152,7 +152,7 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
     strcat(photo_path, patient->firstname);
     strcat(photo_path, "/");
     strcat(photo_path, "profil");
-    strcat(photo_path, getProfilExtension(patient));
+    strcat(photo_path, getProfileExtension(patient));
     printf(photo_path);
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
