@@ -193,7 +193,6 @@ void launchFolderEditor(Folder *folder){
 
 }
 
-
 /*!
  * \brief Set up the edit Patient dialog box
  *
@@ -545,14 +544,23 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
             printPatient(patient, "saving data from user entries");
 
             /* Save data in database */
-            //modifyPatient(patient);
+            modifyPatient(patient);
+
+            /* Reload the session window */
+            GtkWidget *window = gtk_widget_get_toplevel(dialog);
+            gtk_widget_destroy(dialog);
+            printf("\n**********TEST**********\n");
+            gtk_widget_destroy(window);
+            //setSessionWindow();
             break;
         default:
+            gtk_widget_destroy(dialog);
             break;
     }
 
     /* DESTROY DIALOG BOX */
-    gtk_widget_destroy(dialog);
+
+
 
 }
 
