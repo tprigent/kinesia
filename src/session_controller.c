@@ -213,6 +213,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     printPatient(patient, "before being edited");
     /* DECLARE VARIABLES */
+    char *mediaType = "profil";
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *name = NULL;
@@ -341,6 +342,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
+    g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), mediaType);
 
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
