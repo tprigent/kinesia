@@ -7,7 +7,7 @@
 #define LOGICIEL_KINE_SEANCE_H
 
 #include <stdio.h>
-#include "Structures.h"
+#include "structures.h"
 #include <sqlite3.h>
 
 //Ajout d'une seance avec un instance de struct seance
