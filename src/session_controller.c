@@ -212,6 +212,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     printPatient(patient, "before being edited");
     /* DECLARE VARIABLES */
+    char *mediaType = "profil";
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *name = NULL;
@@ -340,6 +341,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
+    g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), mediaType);
 
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
@@ -588,4 +590,101 @@ void launchSessionView(GtkWidget *but, GtkWidget *window){
 void launchPatientView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
     setPatientWindow();
+}
+
+void launchFileChooser(GtkWidget *photo_button, char *type){
+    GtkWidget *dialog;
+    Patient *patient = getPatient(1);                 //todo: make this dynamic
+    dialog = gtk_file_chooser_dialog_new("Open File",
+                                      NULL,
+                                      GTK_FILE_CHOOSER_ACTION_OPEN,
+                                      "Annuler", GTK_RESPONSE_CANCEL,
+                                      "Utiliser", GTK_RESPONSE_ACCEPT,
+                                      NULL);
+
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+    char *filename;
+
+    filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
+    printf("%s\n", filename);
+    copyToMedia(filename, patient , type);
+    getProfileExtension(patient);
+    }
+
+    gtk_widget_destroy (dialog);
+}
+
+void copyToMedia(char *from, Patient *patient, char *type){
+
+    /* Build the destination path: media/name-firstname/ */
+    char *media_path = " ../src/media/";
+    char *dest = (char *) malloc(sizeof(char)*(strlen(patient->name)+strlen(patient->firstname)+strlen(type)+2*strlen("-")+strlen("/")));
+    strcpy(dest, media_path);
+    strcat(dest, patient->name);
+    strcat(dest, "-");
+    strcat(dest, patient-> firstname);
+    strcat(dest, "/");
+
+    /* Create directory media/name-firstname/ */
+    char *mkdir = "mkdir -p ";
+    char *mkdir_command = (char*) malloc(sizeof(char)*(strlen(dest)+strlen(mkdir)));
+    strcpy(mkdir_command, mkdir);   // command = <mkdir -p >
+    strcat(mkdir_command, dest);    // command = <mkdir -p media/name-firstname/>
+    system(mkdir_command);
+
+    /* Build the copy command: cp source_path/file media/name-firstname/ */
+    char *cp = "cp ";
+    char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)+strlen(type)+strlen(getExtensionFromPath(from))+1));
+    strcpy(cp_command, cp);                             // command = <cp >
+    strcat(cp_command, "\"");                           // command = <cp ">
+    strcat(cp_command, from);                           // command = <cp "source_path/file>
+    strcat(cp_command, "\"");                           // command = <cp "source_path/file">
+    strcat(cp_command, dest);                           // command = <cp "source_path/file" media/name-firstname/>
+    strcat(cp_command, type);                           // command = <cp "source_path/file" media/name-firstname/type>
+    strcat(cp_command, ".");                            // command = <cp "source_path/file" media/name-firstname/type.>
+    strcat(cp_command, getExtensionFromPath(from));     // command = <cp "source_path/file" media/name-firstname/type.ext>
+    system(cp_command);
+
+}
+
+char *getExtensionFromPath(char *path){
+    char *result;
+    char *last;
+    if ((last = strrchr(path, '.')) != NULL) {
+        if ((*last == '.') && (last == path))
+            return "";
+        else {
+            result = (char*) malloc(sizeof(char)*strlen(path));
+            snprintf(result, sizeof result, "%s", last + 1);
+            return result;
+        }
+    } else {
+        return "error";
+    }
+}
+
+char *getProfileExtension(Patient *patient){
+    char *path = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
+    char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
+    char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
+    char *pathJPG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
+    strcpy(path, "cat ");
+    strcat(path, "../src/media/");
+    strcat(path, patient->name);
+    strcat(path, "-");
+    strcat(path, patient->firstname);
+    strcat(path, "/");
+
+    strcat(pathJPEG, path);
+    strcat(pathJPEG, "profil.jpeg");
+    strcat(pathJPG, path);
+    strcat(pathJPG, "profil.jpg");
+    strcat(pathPNG, path);
+    strcat(pathPNG, "profil.png");
+
+    if(system(pathJPEG) == 0) return ".jpeg";
+    else if(system(pathJPG) == 0) return ".jpg";
+    else if(system(pathPNG) == 0) return ".png";
+    else return ".error";
+
 }
