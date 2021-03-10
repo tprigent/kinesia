@@ -9,6 +9,12 @@
 #include "patient.h"
 #include <gtk/gtk.h>
 
+/*!
+ * \brief Initiate patient window which shows a list of the patient
+ *
+ * Focus, position, size, title and destroy callback are set.
+ * \todo change the name of the window once the software name found
+*/
 GtkWidget *setPatientWindow(){
     GtkWidget *window = NULL;
 
@@ -29,6 +35,16 @@ GtkWidget *setPatientWindow(){
     return window;
 }
 
+/*!
+ * \brief Split the main window in two spaces and fill them
+ *
+ * The two spaces are:
+ * on the left side a calendar and buttons to archive patients,
+ * at the right side a list of patients, an search-entry and a button to create a patient.
+ *
+ *
+ * \param[in] window Patient window to fill
+*/
 void setPatientEnvironment(GtkWidget *window){
 
     /* DECLARE VARIABLES */
