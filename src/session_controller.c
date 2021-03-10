@@ -193,7 +193,6 @@ void launchFolderEditor(Folder *folder){
 
 }
 
-
 /*!
  * \brief Set up the edit Patient dialog box
  *
@@ -209,9 +208,17 @@ void launchFolderEditor(Folder *folder){
  *
  * \todo do a setPatient if "Enregistrer" button is clicked
 */
-void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
+void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
+
+
+    /* GET INFO FROM PATIENT WINDOW STRUCT */
+    Patient *patient = patient_window->patient;
+    GtkWidget *window = patient_window->window;
+
 
     printPatient(patient, "before being edited");
+    printf("\n\n**********TEST**********\n\n");
+
     /* DECLARE VARIABLES */
     char *mediaType = "profil";
     GtkWidget *dialog = NULL;
@@ -246,6 +253,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     GtkWidget *info_text = NULL;
     GtkTextBuffer *info_buffer = NULL;
     GtkTextIter start, end;
+
 
 
     /* DECLARE ELEMENTS OF THE DIALOG BOX */
@@ -497,6 +505,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
     gtk_widget_show_all(dialog);
 
+
     /* MANAGE THE USER ACTION */
     int result = gtk_dialog_run (GTK_DIALOG (dialog));
     switch (result)
@@ -544,21 +553,40 @@ void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
             strcpy(patient->global_pathologies, info_text_result);
 
             /* Print for debug */
-            printPatient(patient, "saving data from user entries");
+            //printPatient(patient, "saving data from user entries");
 
             /* Save data in database */
             modifyPatient(patient);
+
+            /* Reload the session window */
+            gtk_widget_destroy(dialog);
+
+            const char *test = gtk_window_get_title(GTK_WINDOW(window));
+            printf("\n**********TEST**********\n");
+            printf("\n %s\n", test);
+            printf("\n**********TEST**********\n");
+
+            gtk_widget_destroy(window);
+            if(patient_window->origin == 1){
+                setSessionWindow();
+            }
+            else{
+                setPatientWindow();
+            }
+
             break;
         default:
+            gtk_widget_destroy(dialog);
             break;
     }
 
     /* DESTROY DIALOG BOX */
-    gtk_widget_destroy(dialog);
+
+
 
 }
 
-void launchNewPatientEditor(GtkWidget *but_new){
+void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
     Patient *patient = NULL;
     Address address;
     Date date;
@@ -571,7 +599,13 @@ void launchNewPatientEditor(GtkWidget *but_new){
     setAddress(&address, empty, empty, empty, empty, empty);
     setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, 0, 0, date, empty, 0);
 
-    launchPatientEditor(but_new, patient);
+    /* CREATE STRUCT */
+    Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
+    patient_window->patient = patient;
+    patient_window->window = window;
+    patient_window->origin = 0;
+
+    launchPatientEditor(but_new, patient_window);
 }
 
 void launchSessionView(GtkWidget *but, GtkWidget *window){

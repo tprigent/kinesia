@@ -9,10 +9,16 @@
 #include "structures.h"
 #include "patient.h"
 
+typedef struct {
+    Patient *patient;
+    GtkWidget *window;
+    int origin;         // 0 if new patient, 1 if edition of patient
+}Patient_window;
+
 
 void launchFolderEditor(Folder *folder);
-void launchPatientEditor(GtkWidget *but_edit, Patient *patient);
-void launchNewPatientEditor(GtkWidget *but_new);
+void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
+void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
 void launchSessionView(GtkWidget *but, GtkWidget *window);
 void launchPatientView(GtkWidget *but, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, char *type);

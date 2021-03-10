@@ -55,13 +55,12 @@ GtkWidget *setSessionWindow(){
 */
 void setSessionEnvironment(GtkWidget *window){
 
-    /* GET PATIENT STRUCTURE FROM BDD ********/
+    /* GET PATIENT STRUCTURE FROM BDD */
     Patient *patient = getPatient(1);
 
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(window), grid);
-
 
     /* Set the 3 main spaces of the window */
     GtkWidget *boxPart[3];
@@ -105,6 +104,13 @@ void setSessionEnvironment(GtkWidget *window){
  * \param[in] patient Current Patient
 */
 void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient){
+
+    /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
+    Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
+    patient_window->patient = patient;
+    patient_window->window = window;
+    patient_window->origin = 1;
+
 
     /* DECLARE VARIABLES */
     GtkWidget *frame_info = NULL;
@@ -199,7 +205,7 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
     gtk_container_set_border_width(GTK_CONTAINER(grid_info), 5);
 
     /* Button to edit information */
-    g_signal_connect(GTK_BUTTON(edit_button), "clicked", G_CALLBACK(launchPatientEditor), patient);
+    g_signal_connect(GTK_BUTTON(edit_button), "clicked", G_CALLBACK(launchPatientEditor), patient_window);
     gtk_grid_attach(GTK_GRID(grid_info), edit_button, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(edit_button, TRUE);
     gtk_widget_set_vexpand(edit_button, FALSE);

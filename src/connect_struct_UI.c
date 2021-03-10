@@ -34,9 +34,9 @@ void tostring(char *str, int num){
 */
 char *get_name_UI(Patient *patient){
     char *name = (char*) malloc(sizeof(patient->name)+sizeof(patient->firstname)+sizeof(char));
-    strcpy(name, patient->firstname);
+    strcpy(name, patient->name);
     strcat(name, " ");
-    strcat(name, patient->name);
+    strcat(name, patient->firstname);
 
     return name;
 }
