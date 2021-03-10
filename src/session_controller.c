@@ -227,6 +227,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *surname = NULL;
     GtkWidget *patient_photo = NULL;    //photo
     GtkWidget *birth = NULL;
+    GtkWidget *gender = NULL;
     GtkWidget *job = NULL;
     GtkWidget *address = NULL;
     GtkWidget *postcode = NULL;
@@ -236,11 +237,13 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *patient_ssn = NULL;      //ssn
     GtkWidget *weight = NULL;
     GtkWidget *height = NULL;
+    GtkWidget *first_consult = NULL;
     GtkWidget *patient_info = NULL;
     GtkWidget *name_entry = NULL;
     GtkWidget *surname_entry = NULL;
     GtkWidget *photo_button = NULL;
     GtkWidget *birth_entry = NULL;
+    GtkWidget *gender_entry = NULL;
     GtkWidget *job_entry = NULL;
     GtkWidget *address_entry = NULL;
     GtkWidget *postcode_entry = NULL;
@@ -250,6 +253,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *ssn_entry = NULL;
     GtkWidget *weight_entry = NULL;
     GtkWidget *height_entry = NULL;
+    GtkWidget *first_consult_entry = NULL;
     GtkWidget *info_text = NULL;
     GtkTextBuffer *info_buffer = NULL;
     GtkTextIter start, end;
@@ -261,6 +265,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     name_entry = gtk_entry_new();
     surname_entry = gtk_entry_new();
     birth_entry = gtk_entry_new();
+    gender_entry = gtk_entry_new();
     job_entry = gtk_entry_new();
     address_entry = gtk_entry_new();
     postcode_entry = gtk_entry_new();
@@ -270,12 +275,14 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     ssn_entry = gtk_entry_new();
     weight_entry = gtk_entry_new();
     height_entry = gtk_entry_new();
+    first_consult_entry = gtk_entry_new();
     info_text = gtk_text_view_new();
 
     // entry parameters
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(surname_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(birth_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(gender_entry), 10);
     gtk_entry_set_max_length(GTK_ENTRY(job_entry), 10);
     gtk_entry_set_max_length(GTK_ENTRY(address_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(postcode_entry), 5);
@@ -285,6 +292,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_max_length(GTK_ENTRY(ssn_entry), 27);
     gtk_entry_set_max_length(GTK_ENTRY(weight_entry), 5);
     gtk_entry_set_max_length(GTK_ENTRY(height_entry), 5);
+    gtk_entry_set_max_length(GTK_ENTRY(first_consult_entry), 10);
 
     gtk_entry_set_input_purpose(GTK_ENTRY(name_entry), GTK_INPUT_PURPOSE_NAME);
     gtk_entry_set_input_purpose(GTK_ENTRY(surname_entry), GTK_INPUT_PURPOSE_NAME);
@@ -301,14 +309,21 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     name = gtk_label_new("Prénom : ");
     gtk_entry_set_text(GTK_ENTRY(name_entry), patient->name);
+
     surname = gtk_label_new("Nom : ");
     gtk_entry_set_text(GTK_ENTRY(surname_entry), patient->firstname);
+
     patient_photo = gtk_label_new("Photo : ");
 
     birth = gtk_label_new("Date de naissance : ");
     char *patient_birth_char = get_date_UI(&patient->birthdate);
     gtk_entry_set_text(GTK_ENTRY(birth_entry), patient_birth_char);
     free_info_UI(patient_birth_char);
+
+    gender = gtk_label_new("Sexe : ");
+    if(patient->gender == 0) gtk_entry_set_text(GTK_ENTRY(gender_entry), "HOMME");
+    else if(patient->gender == 1) gtk_entry_set_text(GTK_ENTRY(gender_entry), "FEMME");
+    else gtk_entry_set_text(GTK_ENTRY(gender_entry), "AUTRE");
 
     job = gtk_label_new("Profession : ");
     gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
@@ -342,6 +357,11 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     char *patient_height_char = get_height_UI(patient);
     gtk_entry_set_text(GTK_ENTRY(height_entry), patient_height_char);
     free_info_UI(patient_height_char);
+
+    first_consult = gtk_label_new("Date de première consultation : ");
+    char *patient_first_consult = get_date_UI(&patient->first_consultation);
+    gtk_entry_set_text(GTK_ENTRY(first_consult_entry), patient_first_consult);
+    free_info_UI(patient_first_consult);
 
     patient_info = gtk_label_new("Informations importantes : ");
     gtk_text_buffer_insert(info_buffer, &end, patient->global_pathologies, -1);
@@ -400,17 +420,22 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_widget_set_halign(birth, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), birth_entry, birth, GTK_POS_BOTTOM, 1, 1);
 
-    // Picture
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_photo, surname_entry, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(patient_photo, TRUE);
-    gtk_widget_set_vexpand(patient_photo, FALSE);
-    gtk_widget_set_halign(patient_photo, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), photo_button, patient_photo, GTK_POS_BOTTOM, 1, 1);
+    // Gender
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender, surname_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_halign(gender, GTK_ALIGN_START);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender_entry, gender, GTK_POS_BOTTOM, 1, 1);
 
     // Job
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), job, birth_entry, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_halign(job, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), job_entry, job, GTK_POS_BOTTOM, 1, 1);
+
+    // Picture
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_photo, gender_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(patient_photo, TRUE);
+    gtk_widget_set_vexpand(patient_photo, FALSE);
+    gtk_widget_set_halign(patient_photo, GTK_ALIGN_START);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), photo_button, patient_photo, GTK_POS_BOTTOM, 1, 1);
 
     /* FRAME WHICH CONTAINS CONTACT INFORMATION */
     GtkWidget *frame_contact = NULL;
@@ -485,10 +510,13 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_widget_set_halign(weight, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight_entry, weight, GTK_POS_BOTTOM, 1, 1);
 
+    // First consultation date
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consult, height_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_halign(first_consult, GTK_ALIGN_START);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consult_entry, first_consult, GTK_POS_BOTTOM, 2, 1);
+
     // ssn
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_ssn, height_entry, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(patient_ssn, TRUE);
-    gtk_widget_set_vexpand(patient_ssn, FALSE);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_ssn, first_consult_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(patient_ssn, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), ssn_entry, patient_ssn, GTK_POS_BOTTOM, 2, 1);
 
