@@ -191,6 +191,104 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     return 0;
 }
 
+//Nombre de patients
+int getNbPatient(){
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+
+    //Ouverture de la bdd
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT * FROM patient";
+
+    //Préparation de la requête
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+
+    //Execution de la requête
+    rc=0;
+    while(sqlite3_step(stmt) == SQLITE_ROW) {
+        rc++;
+    }
+
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return rc;
+}
+
+//Nom et prenom d'un patient
+char* getNameFirstnamePatient(int id){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+    char* nom;
+
+    //Ouverture de la bdd
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT name,firstname FROM patient WHERE id=?";
+
+    //Préparation de la requête
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return NULL;
+    }
+
+    sqlite3_bind_int(stmt,1,id);
+
+    //Execution de la requête
+    rc = sqlite3_step(stmt);
+
+    if(allocateStringPatient(&nom,LG_MAX_INFO*2)==-1){
+        fprintf(stderr,"Erreur allocation getNomPrenom");
+        return NULL;
+    }
+
+    strcpy(nom,(char*)sqlite3_column_text(stmt,0));
+    char* space=" ";
+    strcat(nom,space);
+    strcat(nom,(char*)sqlite3_column_text(stmt,1));
+
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return nom;
+
+}
+
 //Modification d'un patient
 int modifyPatient(Patient *gen){
     sqlite3 *db;
@@ -380,6 +478,7 @@ Patient* getPatient(int id){
     if( rc != SQLITE_OK ){
         fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);
+        return NULL;
     }
 
     sqlite3_bind_int(stmt,1,id);
