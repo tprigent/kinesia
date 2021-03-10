@@ -9,6 +9,12 @@
 #include "structures.h"
 #include "patient.h"
 
+/**
+ * \brief Structure to pass a patient and a window in a callback function
+ *
+ * This structure is used to pass many arguments in a callback function which only
+ * have one argument.
+*/
 typedef struct {
     Patient *patient;
     GtkWidget *window;
