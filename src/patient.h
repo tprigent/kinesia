@@ -30,5 +30,9 @@ int addPatient(Patient *gen);
 int modifyPatient(Patient *gen);
 //Recuperation d'un patient
 Patient* getPatient(int id);
+//Nombre de patients
+int getNbPatient();
+//Nom et prenom d'un patient
+char* getNameFirstnamePatient(int id);
 
 #endif //LOGICIEL_KINE_PATIENT_H
