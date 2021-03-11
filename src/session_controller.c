@@ -679,20 +679,21 @@ void launchPatientView(GtkWidget *but, GtkWidget *window){
 void launchFileChooser(GtkWidget *photo_button, char *type){
     GtkWidget *dialog;
     Patient *patient = getPatient(1);                 //todo: make this dynamic
-    dialog = gtk_file_chooser_dialog_new("Open File",
+    dialog = gtk_file_chooser_dialog_new("Sélection du fichier",
                                       NULL,
                                       GTK_FILE_CHOOSER_ACTION_OPEN,
                                       "Annuler", GTK_RESPONSE_CANCEL,
                                       "Utiliser", GTK_RESPONSE_ACCEPT,
                                       NULL);
 
-    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-    char *filename;
+    gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
 
-    filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
-    printf("%s\n", filename);
-    copyToMedia(filename, patient , type);
-    getProfileExtension(patient);
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        char *filename;
+        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
+        printf("%s\n", filename);
+        copyToMedia(filename, patient , type);
+        getProfileExtension(patient);
     }
 
     gtk_widget_destroy (dialog);
