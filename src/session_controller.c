@@ -544,7 +544,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
             patient->height = convertToInt((char *) gtk_entry_get_text(GTK_ENTRY(height_entry)));
 
             /* FIRST CONSULTATION */
-            //patient->first_consultation.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(entry)))->day;
+            patient->first_consultation.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->day;
+            patient->first_consultation.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->month;
+            patient->first_consultation.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->year;
 
             /* SOCIAL SECURITY NUMBER */
             strcpy(patient->ssn, (char*) gtk_entry_get_text(GTK_ENTRY(ssn_entry)));
