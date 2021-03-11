@@ -205,8 +205,6 @@ void launchFolderEditor(Folder *folder){
  *
  * \param[in] but_edit Edit button clicked to launch this view
  * \param[in] patient Patient to be edited
- *
- * \todo do a setPatient if "Enregistrer" button is clicked
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
@@ -243,7 +241,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *surname_entry = NULL;
     GtkWidget *photo_button = NULL;
     GtkWidget *birth_entry = NULL;
-    GtkWidget *gender_entry = NULL;
+    GtkWidget *gender_combo_box = NULL;
     GtkWidget *job_entry = NULL;
     GtkWidget *address_entry = NULL;
     GtkWidget *postcode_entry = NULL;
@@ -265,7 +263,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     name_entry = gtk_entry_new();
     surname_entry = gtk_entry_new();
     birth_entry = gtk_entry_new();
-    gender_entry = gtk_entry_new();
+    gender_combo_box = gtk_combo_box_text_new();
     job_entry = gtk_entry_new();
     address_entry = gtk_entry_new();
     postcode_entry = gtk_entry_new();
@@ -282,7 +280,6 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(surname_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(birth_entry), 10);
-    gtk_entry_set_max_length(GTK_ENTRY(gender_entry), 10);
     gtk_entry_set_max_length(GTK_ENTRY(job_entry), 10);
     gtk_entry_set_max_length(GTK_ENTRY(address_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(postcode_entry), 5);
@@ -321,9 +318,10 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     free_info_UI(patient_birth_char);
 
     gender = gtk_label_new("Sexe : ");
-    if(patient->gender == 0) gtk_entry_set_text(GTK_ENTRY(gender_entry), "HOMME");
-    else if(patient->gender == 1) gtk_entry_set_text(GTK_ENTRY(gender_entry), "FEMME");
-    else gtk_entry_set_text(GTK_ENTRY(gender_entry), "AUTRE");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Femme");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Homme");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Autre");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), patient->gender);
 
     job = gtk_label_new("Profession : ");
     gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
@@ -423,7 +421,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     // Gender
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender, surname_entry, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_halign(gender, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender_entry, gender, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender_combo_box, gender, GTK_POS_BOTTOM, 1, 1);
 
     // Job
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), job, birth_entry, GTK_POS_BOTTOM, 1, 1);
@@ -431,7 +429,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), job_entry, job, GTK_POS_BOTTOM, 1, 1);
 
     // Picture
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_photo, gender_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_photo, gender_combo_box, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(patient_photo, TRUE);
     gtk_widget_set_vexpand(patient_photo, FALSE);
     gtk_widget_set_halign(patient_photo, GTK_ALIGN_START);
@@ -563,6 +561,14 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
             strcpy(patient->mail_address, (char*) gtk_entry_get_text(GTK_ENTRY(email_entry)));
 
             /* GENDER */
+            char *genderResult = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(gender_combo_box));
+            if(strcmp(genderResult, "Homme") == 0){
+                patient->gender = MAN;
+            } else if (strcmp(genderResult, "Femme") == 0){
+                patient->gender = WOMAN;
+            } else {
+                patient->gender = OTHER;
+            }
 
             /* ADDRESS */
             parseAddress((char*) gtk_entry_get_text(GTK_ENTRY(address_entry)), &patient->address);
