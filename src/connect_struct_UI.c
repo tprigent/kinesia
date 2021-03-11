@@ -33,10 +33,11 @@ void tostring(char *str, int num){
  * \param[out] Char pointer combining at "Firstname Surname" format
 */
 char *get_name_UI(Patient *patient){
-    char *name = (char*) malloc(sizeof(patient->name)+sizeof(patient->firstname)+sizeof(char));
+    char *name = (char*) malloc(sizeof(patient->name)+sizeof(patient->firstname)+2*sizeof(char));
     strcpy(name, patient->name);
     strcat(name, " ");
     strcat(name, patient->firstname);
+    strcat(name, "\0");
 
     return name;
 }
@@ -73,6 +74,7 @@ char *get_date_UI(Date *date){
  * \param[in] patient Concerned Patient
  * \param[out] Char pointer containing the Patient height in m (with unit)
 */
+/*
 char *get_height_UI(Patient *patient){
     char *height = (char*) malloc(7*sizeof(char));
     char height_m[2];
@@ -90,7 +92,7 @@ char *get_height_UI(Patient *patient){
 
     return height;
 }
-
+*/
 /*!
  * \brief Convert Patient height from cm to m
  *
@@ -98,6 +100,7 @@ char *get_height_UI(Patient *patient){
  * \param[out] Char pointer containing the Patient height in m (with unit)
  * \todo see if necessary
 */
+/*
 char *get_weight_UI(Patient *patient){
     char *weight = (char*) malloc(6*sizeof(char));
     char weight_char[6];
@@ -108,7 +111,7 @@ char *get_weight_UI(Patient *patient){
 
     return weight;
 }
-
+*/
 /*!
  * \brief Concatenate Patient height and weight in a single char for display
  *
@@ -117,23 +120,10 @@ char *get_weight_UI(Patient *patient){
 */
 /* a simplifier avec les deux fonctions précédentes */
 char *get_height_weight_UI(Patient *patient){
-    char *height_weight = (char*) malloc(40*sizeof(char));
-    char height_m[2];
-    char height_cm[3];
-    char weight[6];
-    int int_height_m = (int) patient->height/100;
-    int int_height_cm = patient->height - int_height_m*100;
-
-    tostring(height_m, int_height_m);
-    tostring(height_cm, int_height_cm);
-    tostring(weight, patient->weight);
-
-    strcpy(height_weight, weight);
-    strcat(height_weight, "kg   ;   ");
-    strcat(height_weight, height_m);
-    strcat(height_weight, ".");
-    strcat(height_weight, height_cm);
-    strcat(height_weight, "m");
+    char *height_weight = (char*) malloc(sizeof(patient->height)+sizeof(patient->weight)+12*sizeof(char));
+    strcpy(height_weight, patient->height);
+    strcat(height_weight, "     ;     ");
+    strcat(height_weight, patient->weight);
     strcat(height_weight, "\0");
 
     return height_weight;

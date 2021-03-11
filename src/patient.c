@@ -39,8 +39,8 @@ void printPatient(Patient *patient, char *context){
 
     printf("Social security number: %s\n", patient->ssn);
     printf("Global pathologies: %s\n", patient->global_pathologies);
-    printf("Height: %d\n", patient->height);
-    printf("Weight: %d\n", patient->weight);
+    printf("Height: %s\n", patient->height);
+    printf("Weight: %s\n", patient->weight);
     printf("First consultation: %d/%d/%d\n", patient->first_consultation.day, patient->first_consultation.month, patient->first_consultation.year);
 
     printf("******* End of the patient display *******\n");
@@ -93,7 +93,9 @@ int allocatePatient(Patient ** p) {
     || (allocateStringPatient(&((*p)->job), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->ssn), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->phone_number), LG_MAX_INFO) !=0)
-    || (allocateStringPatient(&((*p)->place_birth), LG_MAX_INFO) !=0)) return -1;
+    || (allocateStringPatient(&((*p)->place_birth), LG_MAX_INFO) !=0)
+    || (allocateStringPatient(&((*p)->height), LG_MAX_INFO) !=0)
+    || (allocateStringPatient(&((*p)->weight), LG_MAX_INFO) !=0)) return -1;
 
     return 0;
 }
@@ -117,6 +119,8 @@ void freePatient(Patient ** p) {
     free((void *) (*p)->mail_address);
     free((void *) (*p)->job);
     free((void *) (*p)->ssn);
+    free((void *) (*p)->height);
+    free((void *) (*p)->weight);
     freeAddress(&((*p)->address));
     free((void *) *p);
 }
@@ -151,7 +155,7 @@ int setDate(Date * d, int j, int m, int a) {
 }
 
 /*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp,unsigned int idPatient) {
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, char * w, char * h, Date fc, char * gp,unsigned int idPatient) {
 
     if (p == NULL) return -1; //si l'instance de patient à remplir est vide, erreur
 
@@ -164,6 +168,8 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     strncpy(p->firstname, fn, LG_MAX_INFO);
     strncpy(p->name, name, LG_MAX_INFO);
     strncpy(p->phone_number,pn,LG_MAX_INFO);
+    strncpy(p->height,h,LG_MAX_INFO);
+    strncpy(p->weight,w,LG_MAX_INFO);
 
     /*ajout de 0 terminaux par sécurité*/
     p->place_birth[strlen(placeBirth)] = '\0';
@@ -174,13 +180,13 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     p->firstname[strlen(fn)] = '\0';
     p->name[strlen(name)] = '\0';
     p->phone_number[strlen(pn)] = '\0';
+    p->height[strlen(h)] = '\0';
+    p->weight[strlen(w)] = '\0';
 
     /*attribution des autres attributs*/
     p->address = ad;
     p->first_consultation = fc;
     p->birthdate = bd;
-    p->height = h;
-    p->weight = w;
 
     if (g > 2 || g < 0) return -1;
     p->gender = g;
@@ -337,8 +343,8 @@ int modifyPatient(Patient *gen){
     sqlite3_bind_text(stmt,i++,gen->phone_number,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->mail_address,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->ssn,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,i++,gen->weight);
-    sqlite3_bind_int(stmt,i++,gen->height);
+    sqlite3_bind_text(stmt,i++,gen->weight,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->height,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.year);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.month);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.day);
@@ -416,8 +422,8 @@ int addPatient(Patient *gen){
     sqlite3_bind_text(stmt,i++,gen->phone_number,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->mail_address,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->ssn,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,i++,gen->weight);
-    sqlite3_bind_int(stmt,i++,gen->height);
+    sqlite3_bind_text(stmt,i++,gen->weight,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->height,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.year);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.month);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.day);
@@ -510,8 +516,8 @@ Patient* getPatient(int id){
                       (char*)sqlite3_column_text(stmt,6),sqlite3_column_int(stmt,7),
                       adresse,(char*)sqlite3_column_text(stmt,8),
                       (char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,22),
-                      (char*)sqlite3_column_text(stmt,10),sqlite3_column_int(stmt,11),
-                      sqlite3_column_int(stmt,12),firstRdDdate,(char*)sqlite3_column_text(stmt,16),(unsigned int)id) != 0)
+                      (char*)sqlite3_column_text(stmt,10),(char*)sqlite3_column_text(stmt,11),
+                  (char*)sqlite3_column_text(stmt,12),firstRdDdate,(char*)sqlite3_column_text(stmt,16),(unsigned int)id) != 0)
         fprintf(stderr,"Erreur setPatient");
 
     sqlite3_finalize(stmt);

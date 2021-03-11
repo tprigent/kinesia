@@ -290,8 +290,8 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_max_length(GTK_ENTRY(number_entry), 11);
     gtk_entry_set_max_length(GTK_ENTRY(email_entry), 40);
     gtk_entry_set_max_length(GTK_ENTRY(ssn_entry), 27);
-    gtk_entry_set_max_length(GTK_ENTRY(weight_entry), 5);
-    gtk_entry_set_max_length(GTK_ENTRY(height_entry), 5);
+    gtk_entry_set_max_length(GTK_ENTRY(weight_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(height_entry), 10);
     gtk_entry_set_max_length(GTK_ENTRY(first_consult_entry), 10);
 
     gtk_entry_set_input_purpose(GTK_ENTRY(name_entry), GTK_INPUT_PURPOSE_NAME);
@@ -349,14 +349,16 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_text(GTK_ENTRY(ssn_entry), patient->ssn);
 
     weight = gtk_label_new("Poids : ");
-    char *patient_weight_char = get_weight_UI(patient);
-    gtk_entry_set_text(GTK_ENTRY(weight_entry), patient_weight_char);
-    free_info_UI(patient_weight_char);
+    gtk_entry_set_text(GTK_ENTRY(weight_entry), patient->weight);
+    //char *patient_weight_char = get_weight_UI(patient);
+    //gtk_entry_set_text(GTK_ENTRY(weight_entry), patient_weight_char);
+    //free_info_UI(patient_weight_char);
 
     height = gtk_label_new("Taille : ");
-    char *patient_height_char = get_height_UI(patient);
-    gtk_entry_set_text(GTK_ENTRY(height_entry), patient_height_char);
-    free_info_UI(patient_height_char);
+    gtk_entry_set_text(GTK_ENTRY(height_entry), patient->height);
+    //char *patient_height_char = get_height_UI(patient);
+    //gtk_entry_set_text(GTK_ENTRY(height_entry), patient_height_char);
+    //free_info_UI(patient_height_char);
 
     first_consult = gtk_label_new("Date de première consultation : ");
     char *patient_first_consult = get_date_UI(&patient->first_consultation);
@@ -549,8 +551,10 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
             patient->birthdate.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->year;
 
             /* WEIGHT AND HEIGHT */
-            patient->weight = convertToInt((char*) gtk_entry_get_text(GTK_ENTRY(weight_entry)));
-            patient->height = convertToInt((char *) gtk_entry_get_text(GTK_ENTRY(height_entry)));
+            strcpy(patient->weight, (char*)gtk_entry_get_text(GTK_ENTRY(weight_entry)));
+            strcpy(patient->height, (char*)gtk_entry_get_text(GTK_ENTRY(height_entry)));
+            //patient->weight = convertToInt((char*) gtk_entry_get_text(GTK_ENTRY(weight_entry)));
+            //patient->height = convertToInt((char *) gtk_entry_get_text(GTK_ENTRY(height_entry)));
 
             /* FIRST CONSULTATION */
             //patient->first_consultation.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(entry)))->day;
