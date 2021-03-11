@@ -350,15 +350,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     weight = gtk_label_new("Poids : ");
     gtk_entry_set_text(GTK_ENTRY(weight_entry), patient->weight);
-    //char *patient_weight_char = get_weight_UI(patient);
-    //gtk_entry_set_text(GTK_ENTRY(weight_entry), patient_weight_char);
-    //free_info_UI(patient_weight_char);
 
     height = gtk_label_new("Taille : ");
     gtk_entry_set_text(GTK_ENTRY(height_entry), patient->height);
-    //char *patient_height_char = get_height_UI(patient);
-    //gtk_entry_set_text(GTK_ENTRY(height_entry), patient_height_char);
-    //free_info_UI(patient_height_char);
 
     first_consult = gtk_label_new("Date de première consultation : ");
     char *patient_first_consult = get_date_UI(&patient->first_consultation);

@@ -69,50 +69,6 @@ char *get_date_UI(Date *date){
 }
 
 /*!
- * \brief Convert Patient height from cm to m
- *
- * \param[in] patient Concerned Patient
- * \param[out] Char pointer containing the Patient height in m (with unit)
-*/
-/*
-char *get_height_UI(Patient *patient){
-    char *height = (char*) malloc(7*sizeof(char));
-    char height_m[2];
-    char height_cm[3];
-    int int_height_m = (int) patient->height/100;
-    int int_height_cm = patient->height - int_height_m*100;
-    tostring(height_m, int_height_m);
-    tostring(height_cm, int_height_cm);
-
-    strcpy(height, height_m);
-    strcat(height, ".");
-    strcat(height, height_cm);
-    strcat(height, "m");
-    strcat(height, "\0");
-
-    return height;
-}
-*/
-/*!
- * \brief Convert Patient height from cm to m
- *
- * \param[in] patient Concerned Patient
- * \param[out] Char pointer containing the Patient height in m (with unit)
- * \todo see if necessary
-*/
-/*
-char *get_weight_UI(Patient *patient){
-    char *weight = (char*) malloc(6*sizeof(char));
-    char weight_char[6];
-    tostring(weight_char, patient->weight);
-
-    strcpy(weight, weight_char);
-    strcat(weight, "kg");
-
-    return weight;
-}
-*/
-/*!
  * \brief Concatenate Patient height and weight in a single char for display
  *
  * \param[in] patient Concerned Patient
