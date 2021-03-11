@@ -530,80 +530,74 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     /* MANAGE THE USER ACTION */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-            /* NAME */
-            strcpy(patient->firstname, (char*)gtk_entry_get_text(GTK_ENTRY(surname_entry)));
-            strcpy(patient->name, (char*)gtk_entry_get_text(GTK_ENTRY(name_entry)));
+        /* NAME */
+        strcpy(patient->firstname, (char*)gtk_entry_get_text(GTK_ENTRY(surname_entry)));
+        strcpy(patient->name, (char*)gtk_entry_get_text(GTK_ENTRY(name_entry)));
 
-            /* BIRTHDAY */
-            patient->birthdate.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->day;
-            patient->birthdate.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->month;
-            patient->birthdate.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->year;
+        /* BIRTHDAY */
+        patient->birthdate.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->day;
+        patient->birthdate.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->month;
+        patient->birthdate.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->year;
 
-            /* WEIGHT AND HEIGHT */
-            patient->weight = convertToInt((char*) gtk_entry_get_text(GTK_ENTRY(weight_entry)));
-            patient->height = convertToInt((char *) gtk_entry_get_text(GTK_ENTRY(height_entry)));
+        /* WEIGHT AND HEIGHT */
+        patient->weight = convertToInt((char*) gtk_entry_get_text(GTK_ENTRY(weight_entry)));
+        patient->height = convertToInt((char *) gtk_entry_get_text(GTK_ENTRY(height_entry)));
 
-            /* FIRST CONSULTATION */
-            patient->first_consultation.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->day;
-            patient->first_consultation.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->month;
-            patient->first_consultation.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->year;
+        /* FIRST CONSULTATION */
+        patient->first_consultation.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->day;
+        patient->first_consultation.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->month;
+        patient->first_consultation.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->year;
 
-            /* SOCIAL SECURITY NUMBER */
-            strcpy(patient->ssn, (char*) gtk_entry_get_text(GTK_ENTRY(ssn_entry)));
+        /* SOCIAL SECURITY NUMBER */
+        strcpy(patient->ssn, (char*) gtk_entry_get_text(GTK_ENTRY(ssn_entry)));
 
-            /* CONTACT */
-            strcpy(patient->phone_number, (char*) gtk_entry_get_text(GTK_ENTRY(number_entry)));
-            strcpy(patient->mail_address, (char*) gtk_entry_get_text(GTK_ENTRY(email_entry)));
+        /* CONTACT */
+        strcpy(patient->phone_number, (char*) gtk_entry_get_text(GTK_ENTRY(number_entry)));
+        strcpy(patient->mail_address, (char*) gtk_entry_get_text(GTK_ENTRY(email_entry)));
 
-            /* GENDER */
-            char *genderResult = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(gender_combo_box));
-            if(strcmp(genderResult, "Homme") == 0){
-                patient->gender = MAN;
-            } else if (strcmp(genderResult, "Femme") == 0){
-                patient->gender = WOMAN;
-            } else {
-                patient->gender = OTHER;
-            }
+        /* GENDER */
+        char *genderResult = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(gender_combo_box));
+        if(strcmp(genderResult, "Homme") == 0){
+            patient->gender = MAN;
+        } else if (strcmp(genderResult, "Femme") == 0){
+            patient->gender = WOMAN;
+        } else {
+            patient->gender = OTHER;
+        }
 
-            /* ADDRESS */
-            parseAddress((char*) gtk_entry_get_text(GTK_ENTRY(address_entry)), &patient->address);
-            strcpy(patient->address.city, (char*) gtk_entry_get_text(GTK_ENTRY(city_entry)));
-            strcpy(patient->address.postCode, (char*) gtk_entry_get_text(GTK_ENTRY(postcode_entry)));
-            //other infos
+        /* ADDRESS */
+        parseAddress((char*) gtk_entry_get_text(GTK_ENTRY(address_entry)), &patient->address);
+        strcpy(patient->address.city, (char*) gtk_entry_get_text(GTK_ENTRY(city_entry)));
+        strcpy(patient->address.postCode, (char*) gtk_entry_get_text(GTK_ENTRY(postcode_entry)));
+        //other infos
 
-            /* JOB */
-            strcpy(patient->job, (char*) gtk_entry_get_text(GTK_ENTRY(job_entry)));
+        /* JOB */
+        strcpy(patient->job, (char*) gtk_entry_get_text(GTK_ENTRY(job_entry)));
 
-            /* ADDITIONAL INFO */
-            GtkTextBuffer *info_result_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text));
-            char *info_text_result;
-            gtk_text_buffer_get_bounds(info_result_buffer, &start, &end);
-            info_text_result = gtk_text_buffer_get_text (info_result_buffer, &start, &end, FALSE);
-            strcpy(patient->global_pathologies, info_text_result);
+        /* ADDITIONAL INFO */
+        GtkTextBuffer *info_result_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text));
+        char *info_text_result;
+        gtk_text_buffer_get_bounds(info_result_buffer, &start, &end);
+        info_text_result = gtk_text_buffer_get_text (info_result_buffer, &start, &end, FALSE);
+        strcpy(patient->global_pathologies, info_text_result);
 
-            /* Print for debug */
-            //printPatient(patient, "saving data from user entries");
+        /* Print for debug */
+        //printPatient(patient, "saving data from user entries");
 
-            /* Save data in database */
-            modifyPatient(patient);
+        /* Save data in database */
+        modifyPatient(patient);
 
-            /* Reload the session window */
-            gtk_widget_destroy(dialog);
+        /* Reload the session window */
+        gtk_widget_destroy(dialog);
 
-            const char *test = gtk_window_get_title(GTK_WINDOW(window));
-            printf("\n**********TEST**********\n");
-            printf("\n %s\n", test);
-            printf("\n**********TEST**********\n");
+        gtk_widget_destroy(window);
 
-            gtk_widget_destroy(window);
-            if(patient_window->origin == 1){
-                setSessionWindow();
-            }
-            else{
-                setPatientWindow();
-            }
-
-            gtk_widget_destroy(dialog);
+        if(patient_window->origin == 1){
+            setSessionWindow();
+        }else{
+            setPatientWindow();
+        }
+        gtk_widget_destroy(dialog);
 
     } else {
         gtk_widget_destroy(dialog);
