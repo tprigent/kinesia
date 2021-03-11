@@ -51,7 +51,6 @@ GtkWidget *setSessionWindow(){
  * The three boxes are filled by external functions.
  *
  * \param[in] window Session window to split
- * \todo check if the getPatient should be called here instead of being a parameter
 */
 void setSessionEnvironment(GtkWidget *window){
 
