@@ -641,6 +641,9 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
  *
  * When the user click on a patient from the patient window, this function closes
  * the patient window and open the session window related to the patient selected.
+ *
+ * \param[in] but Button that launches the view
+ * \param[in] window Window dedicated to the patient view
 */
 void launchSessionView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
@@ -652,6 +655,9 @@ void launchSessionView(GtkWidget *but, GtkWidget *window){
  *
  * When the user click on the back button from a session window, this function closes
  * the current session window and open the patient window.
+ *
+ * \param[in] but Button that launches the view
+ * \param[in] window Window dedicated to the patient view
 */
 void launchPatientView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
@@ -683,6 +689,13 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
     gtk_widget_destroy (dialog);
 }
 
+/*!
+ * \brief Copy a given file to the media/ folder of the software.
+ *
+ * \param[in] from Path of the source file
+ * \param[in] patient To which Patient the file concerns
+ * \param[in] type Type of the media : profil or attachment
+*/
 void copyToMedia(char *from, Patient *patient, char *type){
 
     /* Build the destination path: media/name-firstname/ */
@@ -716,6 +729,12 @@ void copyToMedia(char *from, Patient *patient, char *type){
 
 }
 
+/*!
+ * \brief Get a file extension from a given path
+ *
+ * \param[in] path Where the file is located
+ * \param[out] File extension
+*/
 char *getExtensionFromPath(char *path){
     char *result;
     char *last;
@@ -732,6 +751,12 @@ char *getExtensionFromPath(char *path){
     }
 }
 
+/*!
+ * \brief Get a profile photo extension from a given Patient
+ *
+ * \param[in] patient Patient concerned
+ * \param[out] Profile photo extension
+*/
 char *getProfileExtension(Patient *patient){
     char *path = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
     char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../src/media/")+strlen(patient->name)+strlen(patient->firstname)+strlen("profil")+10));
