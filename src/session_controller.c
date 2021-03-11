@@ -173,24 +173,20 @@ void launchFolderEditor(Folder *folder){
 
     /* MANAGE THE USER ACTION */
     int result = gtk_dialog_run (GTK_DIALOG (dialog));
-    switch (result)
-    {
-        case GTK_RESPONSE_ACCEPT:
-            strcpy(folder->folderName, gtk_entry_get_text(GTK_ENTRY(folder_name_entry)));
-            strcpy(folder->pathology, gtk_entry_get_text(GTK_ENTRY(pathology_entry)));
-            strcpy(folder->details, gtk_entry_buffer_get_text(GTK_ENTRY_BUFFER(other_infos_buffer)));
-            folder->startOfTreatment.day = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->day;
-            folder->startOfTreatment.month = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->month;
-            folder->startOfTreatment.year = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->year;
-            // TODO: setFolder(folder);
-            break;
-        default:
-            break;
+    /* Action on button */
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        strcpy(folder->folderName, gtk_entry_get_text(GTK_ENTRY(folder_name_entry)));
+        strcpy(folder->pathology, gtk_entry_get_text(GTK_ENTRY(pathology_entry)));
+        strcpy(folder->details, gtk_entry_buffer_get_text(GTK_ENTRY_BUFFER(other_infos_buffer)));
+        folder->startOfTreatment.day = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->day;
+        folder->startOfTreatment.month = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->month;
+        folder->startOfTreatment.year = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->year;
+        // TODO: setFolder(folder);
+
+        gtk_widget_destroy(dialog);
+    } else {
+        gtk_widget_destroy(dialog);
     }
-
-    /* DESTROY DIALOG BOX */
-    gtk_widget_destroy(dialog);
-
 }
 
 /*!
@@ -533,10 +529,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
 
     /* MANAGE THE USER ACTION */
-    int result = gtk_dialog_run (GTK_DIALOG (dialog));
-    switch (result)
-    {
-        case GTK_RESPONSE_ACCEPT:
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
             /* NAME */
             strcpy(patient->firstname, (char*)gtk_entry_get_text(GTK_ENTRY(surname_entry)));
             strcpy(patient->name, (char*)gtk_entry_get_text(GTK_ENTRY(name_entry)));
@@ -608,15 +601,11 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
                 setPatientWindow();
             }
 
-            break;
-        default:
             gtk_widget_destroy(dialog);
-            break;
+
+    } else {
+        gtk_widget_destroy(dialog);
     }
-
-    /* DESTROY DIALOG BOX */
-
-
 
 }
 
@@ -688,6 +677,7 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
 
     gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
 
+    /* Action on button */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         char *filename;
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
