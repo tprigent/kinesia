@@ -4,7 +4,7 @@
 */
 
 #include <gtk/gtk.h>
-#include "UI.h"
+#include "main_UI.h"
 #include "work_view.h"
 #include "home_view.h"
 
@@ -16,7 +16,7 @@
  * \param[in] argc integer from the main
  * \param[in] pointer on the argv integer pointer from the main
 */
-int main_UI(int argc, char **argv) {
+int main(int argc, char **argv) {
     gtk_init(&argc, &argv);
 
     /* Create the session window */
