@@ -3,14 +3,11 @@
  * \brief File with functions to initiate the session view
 */
 
+#include <gtk/gtk.h>
 #include "work_view.h"
 #include "home_view.h"
 #include "editor_views.h"
 #include "../controler/struct_to_UI.h"
-#include "../patient.h"
-#include <gtk/gtk.h>
-#include <gtk/gtklabel.h>
-
 
 
 /*!
