@@ -16,8 +16,7 @@ add_definitions(${GTK3_CFLAGS_OTHER})
 
 # Source files
 set(SOURCE_FILES
-        src/main.c
-        src/view/UI.c
+        src/view/main_UI.c
         src/controler/struct_to_UI.c
         src/view/editor_views.c
         src/view/home_view.c
