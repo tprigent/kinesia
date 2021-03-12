@@ -12,6 +12,7 @@
 /*A changer : faire une fonction d'allocation int allocate(Patient * p) où la structure et les attributs dans la structure sont alloués, et des fonctions de remplissage ensuite*/
 
 /* fonctions d'allocation des structures*/
+int allocateStringPatient(char **string, int lg);
 int allocatePatient(Patient ** p);
 int allocateAddress(Address * a);
 void freePatient(Patient ** a);

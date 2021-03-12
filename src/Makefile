@@ -6,7 +6,7 @@ LDFLAGS+= `pkg-config --libs sqlite3`
 all: main
 
 
-main: connect_struct_UI.o UTest.o UTest_UI.o patient.o
+main: connect_struct_UI.o UTest.o UTest_UI.o UTest_BDD.o patient.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
@@ -19,7 +19,7 @@ cov_test: main
 
 mem_test: main
 	./main ; \
-    valgrind --log-file="memreport" --leak-check=yes ./$^
+    valgrind --log-file="memreport" --leak-check=yes --track-origins=yes ./$^
 
 clean:
 	rm -f *.o

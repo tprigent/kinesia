@@ -7,7 +7,7 @@ find_package(SQLite3)
 
 
 include(${PROJECT_SOURCE_DIR}/cmake/FetchCMocka.cmake)
-set(SOURCE_FILES ../src/UTest.c ../src/UTest_UI.c ../src/connect_struct_UI.c ../src/patient.c)
+set(SOURCE_FILES ../src/UTest.c ../src/UTest_UI.c ../src/UTest_BDD.c ../src/connect_struct_UI.c ../src/patient.c)
 add_executable(UnitTest ../src/UTest.c ${SOURCE_FILES})
 
 #define the path to open database in test mode

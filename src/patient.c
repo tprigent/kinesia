@@ -13,7 +13,7 @@
 
 
 /*allocation d'une chaîne de caractère de longueur lg*/
-static int allocateStringPatient(char ** string, int lg) {
+int allocateStringPatient(char ** string, int lg) {
     *string = (char *) malloc(sizeof(char)*lg);
     if(*string == (char *) NULL) return -1;
     return 0;
@@ -52,25 +52,25 @@ int allocatePatient(Patient ** p) {
 
 /*désallocation d'une instance d'Address*/
 void freeAddress(Address * a) {
-    free((void *) a->number);
-    free((void *) a->street);
-    free((void *) a->postCode);
-    free((void *) a->city);
-    free((void *) a->other_info);
+    free(a->number);
+    free(a->street);
+    free(a->postCode);
+    free(a->city);
+    free(a->other_info);
 }
 
 /*désallocation d'une instance de Patient*/
 void freePatient(Patient ** p) {
-    free((void *) (*p)->phone_number);
-    free((void *) (*p)->firstname);
-    free((void *) (*p)->global_pathologies);
-    free((void *) (*p)->place_birth);
-    free((void *) (*p)->name);
-    free((void *) (*p)->mail_address);
-    free((void *) (*p)->job);
-    free((void *) (*p)->ssn);
+    free((*p)->phone_number);
+    free((*p)->firstname);
+    free((*p)->global_pathologies);
+    free((*p)->place_birth);
+    free((*p)->name);
+    free((*p)->mail_address);
+    free((*p)->job);
+    free((*p)->ssn);
     freeAddress(&((*p)->address));
-    free((void *) *p);
+    free(*p);
 }
 
 /*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
