@@ -8,6 +8,7 @@
 
 #include "structures.h"
 #include "patient.h"
+#include "extern_files_manager.h"
 
 /**
  * \brief Structure to pass a patient and a window in a callback function
@@ -26,8 +27,5 @@ void launchFolderEditor(Folder *folder);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, char *type);
-void copyToMedia(char *from, Patient *patient, char *type);
-char *getExtensionFromPath(char *path);
-char *getProfileExtension(Patient *patient);
 
 #endif

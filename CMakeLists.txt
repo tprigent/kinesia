@@ -25,7 +25,7 @@ set(SOURCE_FILES
         src/patient.c
         src/connect_UI_struct.c
         #src/seance.c
-        )
+        src/extern_files_manager.c src/extern_files_manager.h)
 
 add_executable(Kinesia ${SOURCE_FILES})
 
