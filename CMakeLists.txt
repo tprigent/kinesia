@@ -17,20 +17,20 @@ add_definitions(${GTK3_CFLAGS_OTHER})
 # Source files
 set(SOURCE_FILES
         src/main.c
-        src/UI.c
-        src/struct_to_UI.c
-        src/editor_views.c
-        src/home_view.c
-        src/work_view.c
+        src/view/UI.c
+        src/controler/struct_to_UI.c
+        src/view/editor_views.c
+        src/view/home_view.c
+        src/view/work_view.c
         src/patient.c
-        src/UI_to_struct.c
+        src/controler/UI_to_struct.c
         #src/seance.c
-        src/extern_files_manager.c src/extern_files_manager.h)
+        src/controler/extern_files_manager.c src/controler/extern_files_manager.h)
 
 add_executable(Kinesia ${SOURCE_FILES})
 
 # Code constants
-target_compile_definitions(Kinesia PRIVATE DB_PATH="../src/database/Bdd.db")
+target_compile_definitions(Kinesia PRIVATE DB_PATH="../src/model/data.db")
 
 # Linked libraries
 target_link_libraries(Kinesia sqlite3)

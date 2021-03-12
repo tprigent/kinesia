@@ -6,7 +6,7 @@
 #define LOGICIEL_KINE_PATIENT_VIEW_H
 
 #include <gtk/gtk.h>
-#include "structures.h"
+#include "../model/structures.h"
 
 GtkWidget *setHomeWindow();
 void setHomeEnvironment(GtkWidget *window);

@@ -68,7 +68,7 @@ typedef struct{
     /**
       * \name Database information
     */
-    unsigned int id;             /**< Patient unique identifier to select him in database */
+    unsigned int id;             /**< Patient unique identifier to select him in model */
 
 }Patient;
 
@@ -87,7 +87,7 @@ typedef struct{
     /**
      * \name Database information
     */
-   unsigned int idSession;      /**< Session unique identifier to select it in database */
+   unsigned int idSession;      /**< Session unique identifier to select it in model */
     unsigned int idFolder;      /**< Related Folder identifier */
 }Session;
 
@@ -107,7 +107,7 @@ typedef struct{
     /**
      * \name Database information
     */
-    unsigned int idFolder;      /**< Folder unique identifier to select it in database */
+    unsigned int idFolder;      /**< Folder unique identifier to select it in model */
 }Folder;
 
 #endif //LOGICIEL_KINE_STRUCTURES_H

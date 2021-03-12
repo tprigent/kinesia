@@ -1,12 +1,12 @@
 /*!
 * \file struct_to_UI.h
-* \brief File with functions used to parse data from database to be displayed on UI
+* \brief File with functions used to parse data from model to be displayed on UI
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "structures.h"
+#include "../model/structures.h"
 
 #ifndef LOGICIEL_KINE_CONNECT_STRUCT_UI_H
 #define LOGICIEL_KINE_CONNECT_STRUCT_UI_H

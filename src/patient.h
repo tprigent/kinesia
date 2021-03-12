@@ -1,13 +1,13 @@
 /*!
 * \file patient.h
-* \brief File with functions to allocate, fill from database requests, and free Patient structure
+* \brief File with functions to allocate, fill from model requests, and free Patient structure
 */
 
 #ifndef LOGICIEL_KINE_PATIENT_H
 #define LOGICIEL_KINE_PATIENT_H
 
 #include <stdio.h>
-#include "structures.h"
+#include "model/structures.h"
 
 /*A changer : faire une fonction d'allocation int allocate(Patient * p) où la structure et les attributs dans la structure sont alloués, et des fonctions de remplissage ensuite*/
 

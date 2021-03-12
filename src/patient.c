@@ -1,13 +1,13 @@
 /*!
 * \file patient.c
-* \brief File with functions to allocate, fill from database requests, and free Patient structure
+* \brief File with functions to allocate, fill from model requests, and free Patient structure
 */
 
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "structures.h"
+#include "model/structures.h"
 #include <sqlite3.h>
 #include "patient.h"
 
@@ -210,10 +210,10 @@ int getNbPatient(){
 
     //Test de l'ouverture
     if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return 0;
     } else {
-        fprintf(stderr,"Opened database successfully\n");
+        fprintf(stderr,"Opened model successfully\n");
     }
 
     //Creation de la requête
@@ -255,10 +255,10 @@ char* getNameFirstnamePatient(int id){
 
     //Test de l'ouverture
     if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return 0;
     } else {
-        fprintf(stderr,"Opened database successfully\n");
+        fprintf(stderr,"Opened model successfully\n");
     }
 
     //Creation de la requête
@@ -308,10 +308,10 @@ int modifyPatient(Patient *gen){
 
     //Test de l'ouverture
     if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return 0;
     } else {
-        fprintf(stderr,"Opened database successfully\n");
+        fprintf(stderr,"Opened model successfully\n");
     }
 
     //Creation de la requête
@@ -386,10 +386,10 @@ int addPatient(Patient *gen){
 
     //Test de l'ouverture
     if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return 0;
     } else {
-        fprintf(stderr,"Opened database successfully\n");
+        fprintf(stderr,"Opened model successfully\n");
     }
 
     //Creation de la requête
@@ -471,10 +471,10 @@ Patient* getPatient(int id){
 
     //Test de l'ouverture
     if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return NULL;
     } else {
-        fprintf(stdout,"Opened database successfully\n");
+        fprintf(stdout,"Opened model successfully\n");
     }
 
     //Creation de la requête

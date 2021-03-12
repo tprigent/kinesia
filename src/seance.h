@@ -1,13 +1,13 @@
 /*!
 * \file seance.h
-* \brief File with functions to allocate, fill from database requests, and free Session structure
+* \brief File with functions to allocate, fill from model requests, and free Session structure
 */
 
 #ifndef LOGICIEL_KINE_SEANCE_H
 #define LOGICIEL_KINE_SEANCE_H
 
 #include <stdio.h>
-#include "structures.h"
+#include "model/structures.h"
 #include <sqlite3.h>
 
 //Ajout d'une seance avec un instance de struct seance

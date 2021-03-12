@@ -6,8 +6,8 @@
 #include "work_view.h"
 #include "home_view.h"
 #include "editor_views.h"
-#include "struct_to_UI.h"
-#include "patient.h"
+#include "../controler/struct_to_UI.h"
+#include "../patient.h"
 #include <gtk/gtk.h>
 #include <gtk/gtklabel.h>
 
@@ -164,7 +164,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../src/media/Claude-Francois/profil.jpeg", NULL);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../media/Claude-Francois/profil.jpeg", NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 170, 250, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
     patient_name = gtk_label_new(patient_name_char);
@@ -311,7 +311,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
  * A button is displayed to see the attached media related to this Folder.
  *
  * \param[in] box Existing Folder box
- * \todo read data from database (from a Patient) instead of the sample Folder (lines to uncomment)
+ * \todo read data from model (from a Patient) instead of the sample Folder (lines to uncomment)
  * \todo create the associated media view onButtonClicked
 */
 void fillFolderBox(GtkWidget *box){
@@ -528,7 +528,7 @@ void fillFolderBox(GtkWidget *box){
  * The button to attach files is set up.
  *
  * \param[in] box Existing Session box
- * \todo establish communication with the database
+ * \todo establish communication with the model
  * \todo create the scrolling view
 */
 void fillSessionBox(GtkWidget *box){

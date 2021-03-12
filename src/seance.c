@@ -1,10 +1,10 @@
 /*!
 * \file seance.c
-* \brief File with functions to allocate, fill from database requests, and free Session structure
+* \brief File with functions to allocate, fill from model requests, and free Session structure
 */
 
 #include "seance.h"
-#include "structures.h"
+#include "model/structures.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,10 +23,10 @@ int addSeance(Session *seance){
 
     //Test de l'ouverture
     if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return 0;
     } else {
-        fprintf(stderr,"Opened database successfully\n");
+        fprintf(stderr,"Opened model successfully\n");
     }
 
     //Creation de la requête
@@ -84,10 +84,10 @@ Session * getSeance(int idSeance){
 
     //Test de l'ouverture
     if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return NULL;
     } else {
-        fprintf(stderr,"Opened database successfully\n");
+        fprintf(stderr,"Opened model successfully\n");
     }
 
     //Creation de la requête

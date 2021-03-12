@@ -30,7 +30,7 @@ sudo apt-get upgrade
 Then install the following packages:
 ```bash
 sudo apt-get install cmake                  #for compilation
-sudo apt-get install sqlite3 libsqlite3-dev #for database
+sudo apt-get install sqlite3 libsqlite3-dev #for model
 sudo apt-get install libgtk-3-dev           #for UI
 sudo apt-get install lcov                   #for coverage test reports
 sudo apt-get install valgrind               #for memory tests
@@ -45,7 +45,7 @@ Install ```homebrew``` if necessary:
 Then install the following packages:
 ```bash
 brew install cmake                      #for compilation
-brew install sqlite                     #for database
+brew install sqlite                     #for model
 brew install gtk+3                      #for UI
 brew install lcov                       #for coverage test reports
 ```

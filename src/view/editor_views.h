@@ -6,9 +6,9 @@
 #ifndef SESSION_CONTROLLER_H
 #define SESSION_CONTROLLER_H
 
-#include "structures.h"
-#include "patient.h"
-#include "extern_files_manager.h"
+#include "../model/structures.h"
+#include "../patient.h"
+#include "../controler/extern_files_manager.h"
 
 /**
  * \brief Structure to pass a patient and a window in a callback function
