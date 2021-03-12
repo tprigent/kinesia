@@ -636,35 +636,6 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
     launchPatientEditor(but_new, patient_window);
 }
 
-/*!
- * \brief Allows to close the patient window and open the session window
- *
- * When the user click on a patient from the patient window, this function closes
- * the patient window and open the session window related to the patient selected.
- *
- * \param[in] but Button that launches the view
- * \param[in] window Window dedicated to the patient view
-*/
-void launchSessionView(GtkWidget *but, GtkWidget *window){
-    gtk_widget_destroy(window);
-    setSessionWindow();
-}
-
-/*!
- * \brief Allows to close the session window and open the patient window
- *
- * When the user click on the back button from a session window, this function closes
- * the current session window and open the patient window.
- *
- * \param[in] but Button that launches the view
- * \param[in] window Window dedicated to the patient view
-*/
-void launchPatientView(GtkWidget *but, GtkWidget *window){
-    gtk_widget_destroy(window);
-    setPatientWindow();
-}
-
-
 void launchFileChooser(GtkWidget *photo_button, char *type){
     GtkWidget *dialog;
     Patient *patient = getPatient(1);                 //todo: make this dynamic

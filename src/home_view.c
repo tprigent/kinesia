@@ -156,3 +156,17 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER);*/
 
 }
+
+/*!
+ * \brief Allows to close the session window and open the patient window
+ *
+ * When the user click on the back button from a session window, this function closes
+ * the current session window and open the patient window.
+ *
+ * \param[in] but Button that launches the view
+ * \param[in] window Window dedicated to the patient view
+*/
+void launchPatientView(GtkWidget *but, GtkWidget *window){
+    gtk_widget_destroy(window);
+    setPatientWindow();
+}

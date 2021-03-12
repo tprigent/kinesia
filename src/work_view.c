@@ -651,6 +651,20 @@ void createSessionInfoWindow(GtkWidget *box){
 
 }
 
+/*!
+ * \brief Allows to close the patient window and open the session window
+ *
+ * When the user click on a patient from the patient window, this function closes
+ * the patient window and open the session window related to the patient selected.
+ *
+ * \param[in] but Button that launches the view
+ * \param[in] window Window dedicated to the patient view
+*/
+void launchSessionView(GtkWidget *but, GtkWidget *window){
+    gtk_widget_destroy(window);
+    setSessionWindow();
+}
+
 
 /* HELPERS */
 

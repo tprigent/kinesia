@@ -10,5 +10,6 @@
 
 GtkWidget *setPatientWindow();
 void setPatientEnvironment(GtkWidget *window);
+void launchPatientView(GtkWidget *but, GtkWidget *window);
 
 #endif //LOGICIEL_KINE_PATIENT_VIEW_H

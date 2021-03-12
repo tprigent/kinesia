@@ -15,6 +15,7 @@ void setSessionEnvironment(GtkWidget *window);
 void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient);
 void createFolderInfoWindow(GtkWidget *box);
 void createSessionInfoWindow(GtkWidget *box);
+void launchSessionView(GtkWidget *but, GtkWidget *window);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);

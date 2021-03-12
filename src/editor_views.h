@@ -25,8 +25,6 @@ typedef struct {
 void launchFolderEditor(Folder *folder);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
-void launchSessionView(GtkWidget *but, GtkWidget *window);
-void launchPatientView(GtkWidget *but, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, char *type);
 void copyToMedia(char *from, Patient *patient, char *type);
 char *getExtensionFromPath(char *path);
