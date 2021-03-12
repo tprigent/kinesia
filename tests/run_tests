@@ -38,10 +38,9 @@ while true; do
           exit;;
         [Mm]* )
           echo "*** Memory tests selected ***"
-          cd ../src
           make
           make mem_test
-          mv memreport ../tests/memreport-${today}.log
+          mv memreport memreport-${today}.log
           make clean
           echo "*** Memory tests done ***"
           exit;;
