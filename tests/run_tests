@@ -30,10 +30,9 @@ while true; do
         [Cc]* )
           echo "*** Coverage tests selected ***"
           rm -rf coverage
-          cd ../src
           make
           make cov_test
-          mv covreport ../tests/covreport-${today}
+          mv covreport covreport-${today}
           make clean
           echo "*** Coverage tests done ***"
           exit;;
