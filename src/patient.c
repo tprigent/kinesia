@@ -50,7 +50,6 @@ void printPatient(Patient *patient, char *context){
  *
  * \param[in] gender Gender to be displayed
 */
-
 void printGender(Genre gender){
     if(gender == MAN) printf("man");
     else if(gender == WOMAN) printf("woman");
