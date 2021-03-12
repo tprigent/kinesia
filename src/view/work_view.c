@@ -52,7 +52,7 @@ GtkWidget *setWorkWindow(){
 void setWorkEnvironment(GtkWidget *window){
 
     /* GET PATIENT STRUCTURE FROM BDD */
-    Patient *patient = getPatient(1);
+    Patient *patient = getPatient(2);
 
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();
