@@ -19,7 +19,7 @@
  * Focus, position, size, title and destroy callback are set.
  * \todo change the name of the window once the software name found
 */
-GtkWidget *setSessionWindow(){
+GtkWidget *setWorkWindow(){
 
     GtkWidget *window = NULL;
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -33,7 +33,7 @@ GtkWidget *setSessionWindow(){
 
 
     gtk_window_set_destroy_with_parent(GTK_WINDOW(window), FALSE);
-    setSessionEnvironment(window);
+    setWorkEnvironment(window);
     gtk_widget_show_all(window);
     gtk_main();
 
@@ -52,7 +52,7 @@ GtkWidget *setSessionWindow(){
  *
  * \param[in] window Session window to split
 */
-void setSessionEnvironment(GtkWidget *window){
+void setWorkEnvironment(GtkWidget *window){
 
     /* GET PATIENT STRUCTURE FROM BDD */
     Patient *patient = getPatient(1);
@@ -84,9 +84,9 @@ void setSessionEnvironment(GtkWidget *window){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    createPatientInfoWindow(window, boxPart[0], patient);
-    createFolderInfoWindow(boxPart[1]);
-    createSessionInfoWindow(boxPart[2]);
+    fillPatientBox(window, boxPart[0], patient);
+    fillFolderBox(boxPart[1]);
+    fillSessionBox(boxPart[2]);
 }
 
 
@@ -102,7 +102,7 @@ void setSessionEnvironment(GtkWidget *window){
  * \param[in] box Existing patient box
  * \param[in] patient Current Patient
 */
-void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient){
+void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
 
     /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
@@ -314,7 +314,7 @@ void createPatientInfoWindow(GtkWidget *window, GtkWidget *box, Patient *patient
  * \todo read data from database (from a Patient) instead of the sample Folder (lines to uncomment)
  * \todo create the associated media view onButtonClicked
 */
-void createFolderInfoWindow(GtkWidget *box){
+void fillFolderBox(GtkWidget *box){
 
     /* Create sample folder for debug *********************************************** */
     Folder *folder = (Folder*) malloc(sizeof(Folder));
@@ -531,7 +531,7 @@ void createFolderInfoWindow(GtkWidget *box){
  * \todo establish communication with the database
  * \todo create the scrolling view
 */
-void createSessionInfoWindow(GtkWidget *box){
+void fillSessionBox(GtkWidget *box){
 
     /* DECLARE VARIABLES */
     GtkWidget *grid_session_section = NULL;
@@ -660,9 +660,9 @@ void createSessionInfoWindow(GtkWidget *box){
  * \param[in] but Button that launches the view
  * \param[in] window Window dedicated to the patient view
 */
-void launchSessionView(GtkWidget *but, GtkWidget *window){
+void launchWorkView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
-    setSessionWindow();
+    setWorkWindow();
 }
 
 

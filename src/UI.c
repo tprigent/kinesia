@@ -21,7 +21,7 @@ int main_UI(int argc, char **argv) {
 
     /* Create the session window */
     //GtkWidget *sessionWindow = NULL;
-    //sessionWindow = setSessionWindow();
+    //sessionWindow = setWorkWindow();
     setPatientWindow();
 
     //gtk_main();

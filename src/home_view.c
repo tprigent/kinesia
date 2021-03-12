@@ -128,7 +128,7 @@ void setPatientEnvironment(GtkWidget *window){
     gtk_grid_attach(GTK_GRID(grid_patient), patient1, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
     gtk_widget_set_hexpand(patient1, TRUE);
     gtk_widget_set_vexpand(patient1, FALSE);
-    g_signal_connect(GTK_BUTTON(patient1), "clicked", G_CALLBACK(launchSessionView), window);
+    g_signal_connect(GTK_BUTTON(patient1), "clicked", G_CALLBACK(launchWorkView), window);
 
     gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient2, patient1, GTK_POS_BOTTOM, 5, 1);
     gtk_widget_set_hexpand(patient1, TRUE);
