@@ -4,7 +4,6 @@
 */
 
 #include <gtk/gtk.h>
-#include "main_UI.h"
 #include "work_view.h"
 #include "home_view.h"
 
