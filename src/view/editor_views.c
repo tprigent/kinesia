@@ -5,14 +5,11 @@
 
 
 #include <gtk/gtk.h>
-#include "editor_views.h"
-#include "../controler/struct_to_UI.h"
-#include "../model/structures.h"
-#include "../patient.h"
-#include "../controler/UI_to_struct.h"
 #include "work_view.h"
 #include "home_view.h"
-
+#include "editor_views.h"
+#include "../controler/struct_to_UI.h"
+#include "../controler/UI_to_struct.h"
 
 /*!
  * \brief Set up the edit Folder dialog box

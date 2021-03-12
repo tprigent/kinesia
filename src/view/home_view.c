@@ -2,12 +2,13 @@
 // Created by julien on 02/03/2021.
 //
 
+#include <gtk/gtk.h>
 #include "home_view.h"
 #include "work_view.h"
 #include "editor_views.h"
 #include "../controler/struct_to_UI.h"
 #include "../patient.h"
-#include <gtk/gtk.h>
+
 
 /*!
  * \brief Initiate patient window which shows a list of the patient
