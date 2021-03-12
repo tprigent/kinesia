@@ -1,5 +1,5 @@
 /*!
-* \file session_view.h
+* \file work_view.h
 * \brief File with functions to initiate the session view
 */
 

@@ -1,5 +1,5 @@
 /*!
-* \file session_controller.h
+* \file editor_views.h
 * \brief File with callback functions of the session view
 */
 

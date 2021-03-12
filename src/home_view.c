@@ -2,9 +2,9 @@
 // Created by julien on 02/03/2021.
 //
 
-#include "patient_view.h"
-#include "session_view.h"
-#include "session_controller.h"
+#include "home_view.h"
+#include "work_view.h"
+#include "editor_views.h"
 #include "connect_struct_UI.h"
 #include "patient.h"
 #include <gtk/gtk.h>

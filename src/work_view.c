@@ -1,11 +1,11 @@
 /*!
- * \file session_view.c
+ * \file work_view.c
  * \brief File with functions to initiate the session view
 */
 
-#include "session_view.h"
-#include "patient_view.h"
-#include "session_controller.h"
+#include "work_view.h"
+#include "home_view.h"
+#include "editor_views.h"
 #include "connect_struct_UI.h"
 #include "patient.h"
 #include <gtk/gtk.h>

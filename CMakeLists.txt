@@ -19,9 +19,9 @@ set(SOURCE_FILES
         src/main.c
         src/UI.c
         src/connect_struct_UI.c
-        src/session_controller.c
-        src/patient_view.c
-        src/session_view.c
+        src/editor_views.c
+        src/home_view.c
+        src/work_view.c
         src/patient.c
         src/connect_UI_struct.c
         #src/seance.c

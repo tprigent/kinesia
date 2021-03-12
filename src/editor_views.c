@@ -1,17 +1,17 @@
 /*!
-* \file session_controller.c
+* \file editor_views.c
 * \brief File with callback functions of the session view
 */
 
 
 #include <gtk/gtk.h>
-#include "session_controller.h"
+#include "editor_views.h"
 #include "connect_struct_UI.h"
 #include "structures.h"
 #include "patient.h"
 #include "connect_UI_struct.h"
-#include "session_view.h"
-#include "patient_view.h"
+#include "work_view.h"
+#include "home_view.h"
 
 
 /*!
