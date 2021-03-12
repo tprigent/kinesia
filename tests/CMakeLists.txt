@@ -12,9 +12,9 @@ include(${PROJECT_SOURCE_DIR}/cmake/FetchCMocka.cmake)
 set(SOURCE_FILES
         ../src/UTest.c
         ../src/UTest_UI.c
-        ../src/connect_struct_UI.c
+        ../src/struct_to_UI.c
         ../src/patient.c
-        ../src/connect_UI_struct.c)
+        ../src/UI_to_struct.c)
 
 add_executable(UnitTest ../src/UTest.c ${SOURCE_FILES})
 
