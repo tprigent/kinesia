@@ -5,7 +5,7 @@
 #include "home_view.h"
 #include "work_view.h"
 #include "editor_views.h"
-#include "connect_struct_UI.h"
+#include "struct_to_UI.h"
 #include "patient.h"
 #include <gtk/gtk.h>
 

@@ -1,9 +1,9 @@
 /*!
-* \file connect_struct_UI.c
+* \file struct_to_UI.c
 * \brief File with functions used to parse data from database to be displayed on UI
 */
 
-#include "connect_struct_UI.h"
+#include "struct_to_UI.h"
 
 /*!
  * \brief Write an integer into a given char

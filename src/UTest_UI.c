@@ -1,9 +1,9 @@
 #include "structures.h"
-#include "connect_struct_UI.h"
+#include "struct_to_UI.h"
 #include "patient.h"
 
 //#include "../src/structures.h"
-//#include "../src/connect_struct_UI.h"
+//#include "../src/struct_to_UI.h"
 //#include "../src/patient.h"
 
 #include <stdio.h>

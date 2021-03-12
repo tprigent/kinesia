@@ -6,10 +6,10 @@
 
 #include <gtk/gtk.h>
 #include "editor_views.h"
-#include "connect_struct_UI.h"
+#include "struct_to_UI.h"
 #include "structures.h"
 #include "patient.h"
-#include "connect_UI_struct.h"
+#include "UI_to_struct.h"
 #include "work_view.h"
 #include "home_view.h"
 

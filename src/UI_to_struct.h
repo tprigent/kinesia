@@ -1,5 +1,5 @@
 /*!
-* \file connect_UI_struct.h
+* \file UI_to_struct.h
 * \brief File with functions used to parse data from UI entries to structure
 */
 

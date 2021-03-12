@@ -1,5 +1,5 @@
 /*!
-* \file connect_struct_UI.h
+* \file struct_to_UI.h
 * \brief File with functions used to parse data from database to be displayed on UI
 */
 

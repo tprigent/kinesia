@@ -1,9 +1,9 @@
 /*!
-* \file connect_UI_struct.c
+* \file UI_to_struct.c
 * \brief File with functions used to parse data from UI entries to structure
 */
 
-#include "connect_UI_struct.h"
+#include "UI_to_struct.h"
 
 /*!
  * \brief Parse string date to Date format
