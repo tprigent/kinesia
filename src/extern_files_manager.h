@@ -5,7 +5,9 @@
 #ifndef LOGICIEL_KINE_EXTERN_FILES_MANAGER_H
 #define LOGICIEL_KINE_EXTERN_FILES_MANAGER_H
 
-#include <libc.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "structures.h"
 
 void copyToMedia(char *from, Patient *patient, char *type);
