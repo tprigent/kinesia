@@ -6,10 +6,10 @@
 
 #include <gtk/gtk.h>
 #include "editor_views.h"
-#include "struct_to_UI.h"
-#include "structures.h"
-#include "patient.h"
-#include "UI_to_struct.h"
+#include "../controler/struct_to_UI.h"
+#include "../model/structures.h"
+#include "../patient.h"
+#include "../controler/UI_to_struct.h"
 #include "work_view.h"
 #include "home_view.h"
 
@@ -584,7 +584,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         /* Print for debug */
         //printPatient(patient, "saving data from user entries");
 
-        /* Save data in database */
+        /* Save data in model */
         modifyPatient(patient);
 
         /* Reload the session window */

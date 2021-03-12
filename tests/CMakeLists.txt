@@ -10,16 +10,16 @@ include(${PROJECT_SOURCE_DIR}/cmake/FetchCMocka.cmake)
 
 # Source files
 set(SOURCE_FILES
-        ../src/UTest.c
-        ../src/UTest_UI.c
-        ../src/struct_to_UI.c
+        UTest.c
+        UTest_UI.c
+        ../src/controler/struct_to_UI.c
         ../src/patient.c
-        ../src/UI_to_struct.c)
+        ../src/controler/UI_to_struct.c)
 
-add_executable(UnitTest ../src/UTest.c ${SOURCE_FILES})
+add_executable(UnitTest UTest.c ${SOURCE_FILES})
 
 # Code constants
-target_compile_definitions(UnitTest PRIVATE DB_PATH="../../src/database/Bdd.db")
+target_compile_definitions(UnitTest PRIVATE DB_PATH="../../src/model/data.db")
 
 # Testing
 enable_testing()

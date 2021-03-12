@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "structures.h"
+#include "../model/structures.h"
 
 
 #ifndef LOGICIEL_KINE_CONNECT_UI_STRUCT_H

@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS= -Wall -MMD -coverage -D DB_PATH='"database/Bdd.db"'
+CFLAGS= -Wall -MMD -coverage -D DB_PATH='"model/data.db"'
 LDFLAGS= -lcmocka -coverage
 LDFLAGS+= `pkg-config --libs sqlite3`
 

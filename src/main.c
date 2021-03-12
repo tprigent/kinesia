@@ -3,7 +3,7 @@
 * \brief File with function to launch the software
 */
 
-#include "UI.h"
+#include "view/UI.h"
 
 int main(int argc, char **argv) {
     main_UI(argc, argv);

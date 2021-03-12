@@ -7,7 +7,7 @@
 #define TEST_GTK_GTK_FUNCTIONS_H
 
 #include <gtk/gtk.h>
-#include "structures.h"
+#include "../model/structures.h"
 
 GtkWidget *setWorkWindow();
 void setWorkEnvironment(GtkWidget *window);

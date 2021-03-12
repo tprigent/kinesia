@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "structures.h"
+#include "../model/structures.h"
 
 void copyToMedia(char *from, Patient *patient, char *type);
 char *getExtensionFromPath(char *path);
