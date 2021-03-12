@@ -4,7 +4,6 @@
 */
 
 #include <gtk/gtk.h>
-#include "work_view.h"
 #include "home_view.h"
 
 /*!
@@ -18,12 +17,8 @@
 int main(int argc, char **argv) {
     gtk_init(&argc, &argv);
 
-    /* Create the session window */
-    //GtkWidget *sessionWindow = NULL;
-    //sessionWindow = setWorkWindow();
+    /* Launch the home window */
     setHomeWindow();
-
-    //gtk_main();
 
     return EXIT_SUCCESS;
 }
