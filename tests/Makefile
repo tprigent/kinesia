@@ -1,15 +1,24 @@
 CC=gcc
-CFLAGS= -Wall -MMD -coverage -D DB_PATH='"model/data.db"'
+CFLAGS= -Wall -MMD -coverage -D DB_PATH='"../src/model/data.db"'
 LDFLAGS= -lcmocka -coverage
 LDFLAGS+= `pkg-config --libs sqlite3`
 
 all: main
 
 
-main: connect_struct_UI.o UTest.o UTest_UI.o patient.o
+main: struct_to_UI.o UI_to_struct.o UTest.o UTest_UI.o patient.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
+	$(CC) -c $(CFLAGS) $< $^
+
+struct_to_UI.o: ../src/controler/struct_to_UI.c
+	$(CC) -c $(CFLAGS) $< $^
+
+patient.o: ../src/patient.c
+	$(CC) -c $(CFLAGS) $< $^
+
+UI_to_struct.o: ../src/controler/UI_to_struct.c
 	$(CC) -c $(CFLAGS) $< $^
 
 cov_test: main
