@@ -24,7 +24,7 @@ static int setup_patient(void **state){
 
 static void test_get_name_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("Francois Claude", get_name_UI(patient));
+    assert_string_equal("Claude Francois", get_name_UI(patient));
 }
 
 static void test_get_date_UI(void **state){
@@ -32,19 +32,10 @@ static void test_get_date_UI(void **state){
     assert_string_equal("1/2/1939", get_date_UI(&patient->birthdate));
 }
 
-static void test_get_height_UI(void **state){
-    Patient * patient = (Patient *) (*state);
-    assert_string_equal("1.70m", get_height_UI(patient));
-}
-
-static void test_get_weight_UI(void **state){
-    Patient * patient = (Patient *) (*state);
-    assert_string_equal("59kg", get_weight_UI(patient));
-}
 
 static void test_get_height_weight_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("59kg   ;   1.70m", get_height_weight_UI(patient));
+    assert_string_equal("1.70m     ;     59kg", get_height_weight_UI(patient));
 }
 
 static void test_get_first_consultation_UI(void **state){
@@ -54,7 +45,7 @@ static void test_get_first_consultation_UI(void **state){
 
 static void test_get_adress_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("2 Rue tintintin", get_adress_UI(patient));
+    assert_string_equal("2 Ruetintintin", get_adress_UI(patient));
 }
 
 static int teardown(void **state){
@@ -70,8 +61,6 @@ int main_UI(void)
     {
             cmocka_unit_test_setup_teardown(test_get_name_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_date_UI, setup_patient, teardown),
-            cmocka_unit_test_setup_teardown(test_get_height_UI, setup_patient, teardown),
-            cmocka_unit_test_setup_teardown(test_get_weight_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_height_weight_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_first_consultation_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_adress_UI, setup_patient, teardown),
