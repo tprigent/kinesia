@@ -189,7 +189,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     gtk_widget_set_hexpand(back_button, FALSE);
     gtk_widget_set_vexpand(back_button, FALSE);
     gtk_widget_set_halign(back_button, GTK_ALIGN_START);
-    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(launchPatientView), window);
+    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(launchHomeView), window);
 
 
 

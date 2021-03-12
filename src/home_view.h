@@ -8,8 +8,8 @@
 #include <gtk/gtk.h>
 #include "structures.h"
 
-GtkWidget *setPatientWindow();
-void setPatientEnvironment(GtkWidget *window);
-void launchPatientView(GtkWidget *but, GtkWidget *window);
+GtkWidget *setHomeWindow();
+void setHomeEnvironment(GtkWidget *window);
+void launchHomeView(GtkWidget *but, GtkWidget *window);
 
 #endif //LOGICIEL_KINE_PATIENT_VIEW_H

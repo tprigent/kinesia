@@ -15,7 +15,7 @@
  * Focus, position, size, title and destroy callback are set.
  * \todo change the name of the window once the software name found
 */
-GtkWidget *setPatientWindow(){
+GtkWidget *setHomeWindow(){
     GtkWidget *window = NULL;
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -28,7 +28,7 @@ GtkWidget *setPatientWindow(){
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_window_set_destroy_with_parent(GTK_WINDOW(window), FALSE);
-    setPatientEnvironment(window);
+    setHomeEnvironment(window);
     gtk_widget_show_all(window);
     gtk_main();
 
@@ -45,7 +45,7 @@ GtkWidget *setPatientWindow(){
  *
  * \param[in] window Patient window to fill
 */
-void setPatientEnvironment(GtkWidget *window){
+void setHomeEnvironment(GtkWidget *window){
 
     /* DECLARE VARIABLES */
     GtkWidget *grid = NULL;
@@ -166,7 +166,7 @@ void setPatientEnvironment(GtkWidget *window){
  * \param[in] but Button that launches the view
  * \param[in] window Window dedicated to the patient view
 */
-void launchPatientView(GtkWidget *but, GtkWidget *window){
+void launchHomeView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
-    setPatientWindow();
+    setHomeWindow();
 }

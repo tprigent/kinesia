@@ -22,7 +22,7 @@ int main_UI(int argc, char **argv) {
     /* Create the session window */
     //GtkWidget *sessionWindow = NULL;
     //sessionWindow = setWorkWindow();
-    setPatientWindow();
+    setHomeWindow();
 
     //gtk_main();
 
