@@ -61,10 +61,6 @@ void setHomeEnvironment(GtkWidget *window){
     GtkWidget *button_new_patient = NULL;
     GtkWidget *entry_research = NULL;
     GtkWidget *button_research = NULL;
-    GtkWidget *patient1 = NULL;
-    GtkWidget *patient2 = NULL;
-    GtkWidget *patient3 = NULL;
-    GtkWidget *patient4 = NULL;
 
 
     /* ASSIGN VARIABLES */
@@ -81,10 +77,6 @@ void setHomeEnvironment(GtkWidget *window){
     button_new_patient = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     entry_research = gtk_entry_new();
     button_research = gtk_button_new_from_icon_name("system-search", GTK_ICON_SIZE_MENU);
-    patient1 = gtk_button_new_with_label("Claude François");
-    patient2 = gtk_button_new_with_label("Deuxième patient");
-    patient3 = gtk_button_new_with_label("Troisième patient");
-    patient4 = gtk_button_new_with_label("Quatrième patient");
 
 
     /* GRID WHICH ORGANIZES THE WINDOW */
@@ -126,22 +118,31 @@ void setHomeEnvironment(GtkWidget *window){
 
 
     /* ADD PATIENTS */
-    gtk_grid_attach(GTK_GRID(grid_patient), patient1, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
-    gtk_widget_set_hexpand(patient1, TRUE);
-    gtk_widget_set_vexpand(patient1, FALSE);
-    g_signal_connect(GTK_BUTTON(patient1), "clicked", G_CALLBACK(launchWorkView), window);
 
-    gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient2, patient1, GTK_POS_BOTTOM, 5, 1);
-    gtk_widget_set_hexpand(patient1, TRUE);
-    gtk_widget_set_vexpand(patient1, FALSE);
+    int cursor_patient;
+    int nb_patient = getNbPatient();
+    char *patient_name;
+    GtkWidget * patient_button[nb_patient];
 
-    gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient3, patient2, GTK_POS_BOTTOM, 5, 1);
-    gtk_widget_set_hexpand(patient1, TRUE);
-    gtk_widget_set_vexpand(patient1, FALSE);
+    /* Initialize first patient */
+    patient_name = getNameFirstnamePatient(1);
+    patient_button[0] = gtk_button_new_with_label(patient_name);
 
-    gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient4, patient3, GTK_POS_BOTTOM, 5, 1);
-    gtk_widget_set_hexpand(patient1, TRUE);
-    gtk_widget_set_vexpand(patient1, FALSE);
+    gtk_grid_attach(GTK_GRID(grid_patient), patient_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
+    gtk_widget_set_hexpand(patient_button[0], TRUE);
+    gtk_widget_set_vexpand(patient_button[0], FALSE);
+    g_signal_connect(GTK_BUTTON(patient_button[0]), "clicked", G_CALLBACK(launchWorkView), window);
+
+
+    for(cursor_patient=2; cursor_patient < nb_patient+1; cursor_patient++){
+        patient_name = getNameFirstnamePatient(cursor_patient);
+        patient_button[cursor_patient-1] = gtk_button_new_with_label(patient_name);
+
+        gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient_button[cursor_patient-1], patient_button[cursor_patient-2],GTK_POS_BOTTOM, 5, 1);
+        gtk_widget_set_hexpand(patient_button[cursor_patient -1], TRUE);
+        gtk_widget_set_vexpand(patient_button[cursor_patient -1], FALSE);
+        g_signal_connect(GTK_BUTTON(patient_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window);
+    }
 
     /* JUST TO TEST THE SCROLLBAR */
     /*GtkWidget *patient_photo = NULL;
