@@ -138,7 +138,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     GtkWidget *patient_other_info = NULL;
 
     char *patient_name_char = get_name_UI(patient);
-    char *patient_birth_char = get_date_UI(&patient->birthdate);
+    char *patient_birth_char = get_age_and_birthdate(patient);
     char *patient_height_weight_char = get_height_weight_UI(patient);
     char *patient_first_consultation_char = get_first_consultation_UI(patient);
 
@@ -153,17 +153,6 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     grid_etat_civil = gtk_grid_new();
     grid_medical_info = gtk_grid_new();
 
-    /* Build photo path */
-    /*
-    strcpy(photo_path, "../src/media/");
-    strcat(photo_path, patient->name);
-    strcat(photo_path, "-");
-    strcat(photo_path, patient->firstname);
-    strcat(photo_path, "/");
-    strcat(photo_path, "profil");
-    strcat(photo_path, getProfileExtension(patient));
-    printf(photo_path);
-    */
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
