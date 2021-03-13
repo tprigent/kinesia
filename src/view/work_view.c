@@ -16,7 +16,7 @@
  * Focus, position, size, title and destroy callback are set.
  * \todo change the name of the window once the software name found
 */
-GtkWidget *setWorkWindow(){
+GtkWidget *setWorkWindow(int id_patient){
 
     GtkWidget *window = NULL;
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -30,7 +30,13 @@ GtkWidget *setWorkWindow(){
 
 
     gtk_window_set_destroy_with_parent(GTK_WINDOW(window), FALSE);
-    setWorkEnvironment(window);
+
+    Window_id *window_id = (Window_id*) malloc(sizeof(Window_id));
+    window_id->window = window;
+    window_id->id = id_patient;
+    setWorkEnvironment(window_id);
+    //free(window_id);
+
     gtk_widget_show_all(window);
     gtk_main();
 
@@ -49,11 +55,12 @@ GtkWidget *setWorkWindow(){
  *
  * \param[in] window Session window to split
 */
-void setWorkEnvironment(GtkWidget *window){
+void setWorkEnvironment(Window_id *window_id){
 
     /* GET PATIENT STRUCTURE FROM BDD */
-    Patient *patient = getPatient(2);
+    Patient *patient = getPatient(window_id->id);
 
+    GtkWidget *window = window_id->window;
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(window), grid);
@@ -657,9 +664,9 @@ void fillSessionBox(GtkWidget *box){
  * \param[in] but Button that launches the view
  * \param[in] window Window dedicated to the patient view
 */
-void launchWorkView(GtkWidget *but, GtkWidget *window){
-    gtk_widget_destroy(window);
-    setWorkWindow();
+void launchWorkView(GtkWidget *but, Window_id *window_id){
+    gtk_widget_destroy(window_id->window);
+    setWorkWindow(window_id->id);
 }
 
 

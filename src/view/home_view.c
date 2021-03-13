@@ -131,7 +131,12 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_grid_attach(GTK_GRID(grid_patient), patient_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
     gtk_widget_set_hexpand(patient_button[0], TRUE);
     gtk_widget_set_vexpand(patient_button[0], FALSE);
-    g_signal_connect(GTK_BUTTON(patient_button[0]), "clicked", G_CALLBACK(launchWorkView), window);
+
+    Window_id *window_id[nb_patient];
+    window_id[0] = (Window_id*) malloc(sizeof(Window_id));
+    window_id[0]->window = window;
+    window_id[0]->id = 1;
+    g_signal_connect(GTK_BUTTON(patient_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
 
 
     for(cursor_patient=2; cursor_patient < nb_patient+1; cursor_patient++){
@@ -141,8 +146,14 @@ void setHomeEnvironment(GtkWidget *window){
         gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient_button[cursor_patient-1], patient_button[cursor_patient-2],GTK_POS_BOTTOM, 5, 1);
         gtk_widget_set_hexpand(patient_button[cursor_patient -1], TRUE);
         gtk_widget_set_vexpand(patient_button[cursor_patient -1], FALSE);
-        g_signal_connect(GTK_BUTTON(patient_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window);
+
+        window_id[cursor_patient -1] = (Window_id*) malloc(sizeof(Window_id));
+        window_id[cursor_patient -1]->window = window;
+        window_id[cursor_patient -1]->id = cursor_patient;
+        g_signal_connect(GTK_BUTTON(patient_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window_id[cursor_patient -1]);
     }
+
+    //Have to free window_id tabb (can't be done here)
 
     /* JUST TO TEST THE SCROLLBAR */
     /*GtkWidget *patient_photo = NULL;

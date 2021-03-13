@@ -8,14 +8,15 @@
 
 #include <gtk/gtk.h>
 #include "../model/structures.h"
+#include "home_view.h"
 
-GtkWidget *setWorkWindow();
-void setWorkEnvironment(GtkWidget *window);
+GtkWidget *setWorkWindow(int id_patient);
+void setWorkEnvironment(Window_id *window_id);
 
 void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient);
 void fillFolderBox(GtkWidget *box);
 void fillSessionBox(GtkWidget *box);
-void launchWorkView(GtkWidget *but, GtkWidget *window);
+void launchWorkView(GtkWidget *but, Window_id *window_id);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);
