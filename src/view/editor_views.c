@@ -322,9 +322,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
 
     address = gtk_label_new("Adresse : ");
-    char *patient_adress_char = get_adress_UI(patient);
-    gtk_entry_set_text(GTK_ENTRY(address_entry), patient_adress_char);
-    free_info_UI(patient_adress_char);
+    char *patient_address_char = get_address_UI(patient);
+    gtk_entry_set_text(GTK_ENTRY(address_entry), patient_address_char);
+    free_info_UI(patient_address_char);
 
     postcode = gtk_label_new("Code postal : ");
     gtk_entry_set_text(GTK_ENTRY(postcode_entry), patient->address.postCode);
