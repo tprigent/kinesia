@@ -62,8 +62,8 @@ typedef struct{
     /**
       * \name Medical information
     */
-    char* weight;                   /**< Patient weight (in kg) */
-    char* height;                   /**< Patient height (in cm) */
+    int weight;                   /**< Patient weight (in kg) */
+    int height;                   /**< Patient height (in cm) */
     Date first_consultation;      /**< first consultation at this office */
     char * global_pathologies;    /**< pathologies that might be useful for a better understanding of some health issues */
 
