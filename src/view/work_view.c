@@ -153,18 +153,6 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     grid_etat_civil = gtk_grid_new();
     grid_medical_info = gtk_grid_new();
 
-    /* Build photo path */
-    /*
-    strcpy(photo_path, "../src/media/");
-    strcat(photo_path, patient->name);
-    strcat(photo_path, "-");
-    strcat(photo_path, patient->firstname);
-    strcat(photo_path, "/");
-    strcat(photo_path, "profil");
-    strcat(photo_path, getProfileExtension(patient));
-    printf(photo_path);
-    */
-
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
     patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath(patient), NULL);
