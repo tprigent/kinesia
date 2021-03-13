@@ -9,6 +9,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int allocateSeance() {
+    *s = (Session *) malloc(sizeof(Session));
+    if(*s == NULL) return -1;
+    return 0;
+}
+
 //Ajout d'une seance avec un instance de struct seance
 int addSeance(Session *seance){
 

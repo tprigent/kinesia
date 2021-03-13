@@ -62,7 +62,7 @@ void printGender(Genre gender){
 
 /*allocation d'une chaîne de caractère de longueur lg*/
 static int allocateStringPatient(char ** string, int lg) {
-    *string = (char *) malloc(sizeof(char)*lg);
+    *string = (char *) malloc(sizeof(char)*lg+1);
     if(*string == (char *) NULL) return -1;
     return 0;
 }
@@ -137,11 +137,11 @@ int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * i
     strncpy(a->postCode, cp, LG_MAX_INFO);
 
     /*ajout des 0 terminaux aux chaînes précédemment copiées par sécurité*/
-    a->number[strlen(numM)] = '\0';
-    a->street[strlen(r)] = '\0';
-    a->city[strlen(v)] = '\0';
-    a->other_info[strlen(iC)] = '\0';
-    a->postCode[strlen(cp)] = '\0';
+    a->number[LG_MAX_INFO] = '\0';
+    a->street[LG_MAX_INFO] = '\0';
+    a->city[LG_MAX_INFO] = '\0';
+    a->other_info[LG_MAX_OTHERS] = '\0';
+    a->postCode[LG_MAX_INFO] = '\0';
     return 0;
 }
 
@@ -172,16 +172,16 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     strncpy(p->weight,w,LG_MAX_INFO);
 
     /*ajout de 0 terminaux par sécurité*/
-    p->place_birth[strlen(placeBirth)] = '\0';
-    p->ssn[strlen(ns)] = '\0';
-    p->job[strlen(job)] = '\0';
-    p->mail_address[strlen(ma)] = '\0';
-    p->global_pathologies[strlen(gp)] = '\0';
-    p->firstname[strlen(fn)] = '\0';
-    p->name[strlen(name)] = '\0';
-    p->phone_number[strlen(pn)] = '\0';
-    p->height[strlen(h)] = '\0';
-    p->weight[strlen(w)] = '\0';
+    p->place_birth[LG_MAX_INFO] = '\0';
+    p->ssn[LG_MAX_INFO] = '\0';
+    p->job[LG_MAX_INFO] = '\0';
+    p->mail_address[LG_MAX_INFO] = '\0';
+    p->global_pathologies[LG_MAX_OTHERS] = '\0';
+    p->firstname[LG_MAX_INFO] = '\0';
+    p->name[LG_MAX_INFO] = '\0';
+    p->phone_number[LG_MAX_INFO] = '\0';
+    p->height[LG_MAX_INFO] = '\0';
+    p->weight[LG_MAX_INFO] = '\0';
 
     /*attribution des autres attributs*/
     p->address = ad;
