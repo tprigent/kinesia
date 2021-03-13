@@ -28,7 +28,7 @@ int allocateFolder(Folder **d) {
     return 0;
 }
 
-int setFolder(Folder *d, char * folderName, char * pathology, char * details, int stDay, int stMonth, int stYear, int nbFiles, int idF) {
+int setFolder(Folder *d, char * folderName, char * pathology, char * details, int stDay, int stMonth, int stYear, int nbFiles, int idF, int idP) {
     strncpy(d->folderName, folderName, LG_MAX_INFO);
     strncpy(d->pathology, pathology, LG_MAX_INFO);
     strncpy(d->details, details, LG_MAX_OTHERS);
@@ -40,6 +40,7 @@ int setFolder(Folder *d, char * folderName, char * pathology, char * details, in
     if (setDate(&(d->startOfTreatment), stDay, stMonth, stYear) !=0) return -1;
 
     d->idFolder = idF;
+    d->idPatient = idP;
     d->numberOfFiles=nbFiles;
 
     return 0;

@@ -12,6 +12,9 @@ include(${PROJECT_SOURCE_DIR}/cmake/FetchCMocka.cmake)
 set(SOURCE_FILES
         UTest.c
         UTest_UI.c
+        UTest_BDD.c
+        UTest_session.c
+        ../src/seance.c
         ../src/controler/struct_to_UI.c
         ../src/patient.c
         ../src/controler/UI_to_struct.c)
