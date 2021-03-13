@@ -94,6 +94,7 @@ typedef struct{
 typedef struct NodeList{
     Session session;
     struct NodeList *next;
+    struct NodeList *previous;
 }NodeList;
 
 typedef struct{
@@ -121,6 +122,7 @@ typedef struct{
      * \name Database information
     */
     unsigned int idFolder;      /**< Folder unique identifier to select it in model */
+    unsigned int idPatient;
 }Folder;
 
 #endif //LOGICIEL_KINE_STRUCTURES_H

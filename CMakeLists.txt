@@ -24,7 +24,7 @@ set(SOURCE_FILES
         src/patient.c
         src/folder.c
         src/controler/UI_to_struct.c
-        #src/seance.c
+        src/seance.c
         src/controler/extern_files_manager.c src/controler/extern_files_manager.h
         src/model/structures.h)
 
