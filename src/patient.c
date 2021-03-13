@@ -77,19 +77,40 @@ void freePatient(Patient ** p) {
 int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * iC) {
 
     if(a == NULL) return -1;
-    /*attribution des paramètres aux attributs de a*/
-    strncpy(a->number, numM, LG_MAX_INFO);
-    strncpy(a->street, r, LG_MAX_INFO);
-    strncpy(a->city, v, LG_MAX_INFO);
-    strncpy(a->other_info, iC, LG_MAX_OTHERS);
-    strncpy(a->postCode, cp, LG_MAX_INFO);
 
+    /*attribution des paramètres aux attributs de a*/
     /*ajout des 0 terminaux aux chaînes précédemment copiées par sécurité*/
-    a->number[strlen(numM)] = '\0';
-    a->street[strlen(r)] = '\0';
-    a->city[strlen(v)] = '\0';
-    a->other_info[strlen(iC)] = '\0';
-    a->postCode[strlen(cp)] = '\0';
+    if(numM == NULL )
+        a->number = NULL;
+    else {
+        strncpy(a->number, numM, LG_MAX_INFO);
+        a->number[strlen(numM)] = '\0';
+    }
+    if(r == NULL)
+        a->street = NULL;
+    else {
+        strncpy(a->street, r, LG_MAX_INFO);
+        a->street[strlen(r)] = '\0';
+    }
+    if(cp == NULL)
+        a->postCode = NULL;
+    else {
+        strncpy(a->postCode, cp, LG_MAX_INFO);
+        a->postCode[strlen(cp)] = '\0';
+    }
+    if(v == NULL)
+        a->city = NULL;
+    else{
+        strncpy(a->city, v, LG_MAX_INFO);
+        a->city[strlen(v)] = '\0';
+    }
+    if(iC == NULL)
+        a->other_info = NULL;
+    else {
+        strncpy(a->other_info, iC, LG_MAX_OTHERS);
+        a->other_info[strlen(iC)] = '\0';
+    }
+
     return 0;
 }
 
@@ -108,24 +129,57 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     if (p == NULL) return -1; //si l'instance de patient à remplir est vide, erreur
 
     /*copie des chaînes de caractères en paramètres dans les attributs de l'instance p)*/
-    strncpy(p->place_birth, placeBirth, LG_MAX_INFO);
-    strncpy(p->ssn, ns, LG_MAX_INFO);
-    strncpy(p->job, job, LG_MAX_INFO);
-    strncpy(p->mail_address, ma, LG_MAX_INFO);
-    strncpy(p->global_pathologies, gp, LG_MAX_OTHERS);
-    strncpy(p->firstname, fn, LG_MAX_INFO);
-    strncpy(p->name, name, LG_MAX_INFO);
-    strncpy(p->phone_number,pn,LG_MAX_INFO);
-
     /*ajout de 0 terminaux par sécurité*/
-    p->place_birth[strlen(placeBirth)] = '\0';
-    p->ssn[strlen(ns)] = '\0';
-    p->job[strlen(job)] = '\0';
-    p->mail_address[strlen(ma)] = '\0';
-    p->global_pathologies[strlen(gp)] = '\0';
-    p->firstname[strlen(fn)] = '\0';
-    p->name[strlen(name)] = '\0';
-    p->phone_number[strlen(pn)] = '\0';
+    if(placeBirth == NULL )
+        p->place_birth = NULL;
+    else {
+        strncpy(p->place_birth, placeBirth, LG_MAX_INFO);
+        p->place_birth[strlen(placeBirth)] = '\0';
+    }
+    if(ns == NULL)
+        p->ssn = NULL;
+    else {
+        strncpy(p->ssn, ns, LG_MAX_INFO);
+        p->ssn[strlen(ns)] = '\0';
+    }
+    if(job == NULL)
+        p->job = NULL;
+    else {
+        strncpy(p->job, job, LG_MAX_INFO);
+        p->job[strlen(job)] = '\0';
+    }
+    if(ma == NULL)
+        p->mail_address = NULL;
+    else{
+        strncpy(p->mail_address, ma, LG_MAX_INFO);
+        p->mail_address[strlen(ma)] = '\0';
+    }
+    if(gp == NULL)
+        p->global_pathologies = NULL;
+    else {
+        strncpy(p->global_pathologies, gp, LG_MAX_OTHERS);
+        p->global_pathologies[strlen(gp)] = '\0';
+    }
+    if(fn == NULL)
+        p->firstname = NULL;
+    else {
+        strncpy(p->firstname, fn, LG_MAX_INFO);
+        p->firstname[strlen(fn)] = '\0';
+    }
+    if(pn == NULL)
+        p->phone_number = NULL;
+    else {
+        strncpy(p->phone_number,pn,LG_MAX_INFO);
+        p->phone_number[strlen(pn)] = '\0';
+    }
+    if(name == NULL) {
+        p->name = NULL;
+        return -1;
+    }
+    else {
+        strncpy(p->name, name, LG_MAX_INFO);
+        p->name[strlen(name)] = '\0';
+    }
 
     /*attribution des autres attributs*/
     p->address = ad;
@@ -351,13 +405,11 @@ Patient* getPatient(int id){
             fprintf(stderr,"Erreur setDate first RDV\n");
     }
 
-    if(setAddress(&adresse,(char*)sqlite3_column_text(stmt,17),
+    setAddress(&adresse,(char*)sqlite3_column_text(stmt,17),
                   (char*)sqlite3_column_text(stmt,18),
                   (char*)sqlite3_column_text(stmt,19),
                   (char*)sqlite3_column_text(stmt,20),
-                  (char*)sqlite3_column_text(stmt,21)) == -1 ) {
-            fprintf(stderr, "Erreur set address\n");
-    }
+                  (char*)sqlite3_column_text(stmt,21));
 
     if(setPatient(patient,(char*)sqlite3_column_text(stmt,1),(char*)sqlite3_column_text(stmt,2),birthDate,
                       (char*)sqlite3_column_text(stmt,6),sqlite3_column_int(stmt,7),
