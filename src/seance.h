@@ -10,6 +10,9 @@
 #include "model/structures.h"
 #include <sqlite3.h>
 
+/*allocation's functions*/
+int allocateStringSession(Session **s);
+
 //Ajout d'une seance avec un instance de struct seance
 int addSeance(Seance *seance);
 //Recupération d'une séance
