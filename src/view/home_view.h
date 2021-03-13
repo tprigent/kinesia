@@ -8,6 +8,11 @@
 #include <gtk/gtk.h>
 #include "../model/structures.h"
 
+typedef struct {
+    GtkWidget *window;
+    int id;
+}Window_id;
+
 GtkWidget *setHomeWindow();
 void setHomeEnvironment(GtkWidget *window);
 void launchHomeView(GtkWidget *but, GtkWidget *window);

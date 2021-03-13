@@ -590,7 +590,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         gtk_widget_destroy(window);
 
         if(patient_window->origin == 1){
-            setWorkWindow();
+            setWorkWindow((int) patient->id);
         }else{
             setHomeWindow();
         }
