@@ -12,14 +12,14 @@
 #include "patient.h"
 
 
-/*allocation d'une chaîne de caractère de longueur lg*/
+/*!allocation d'une chaîne de caractère de longueur lg*/
 int allocateStringPatient(char ** string, int lg) {
     *string = (char *) malloc(sizeof(char)*lg);
     if(*string == (char *) NULL) return -1;
     return 0;
 }
 
-/*allocation mémoire des attributs d'une structure Adresse*/
+/*!allocation mémoire des attributs d'une structure Adresse*/
 int allocateAddress(Address * a) {
 
     /*allocation mémoire des chaînes de caractères de la structure Adresse*/
@@ -32,7 +32,7 @@ int allocateAddress(Address * a) {
 }
 
 
-/*allocation mémoire d'un patient*/
+/*!allocation mémoire d'un patient*/
 int allocatePatient(Patient ** p) {
     *p = (Patient *) malloc(sizeof(Patient));
 
@@ -50,7 +50,7 @@ int allocatePatient(Patient ** p) {
     return 0;
 }
 
-/*désallocation d'une instance d'Address*/
+/*!désallocation d'une instance d'Address*/
 void freeAddress(Address * a) {
     free(a->number);
     free(a->street);
@@ -59,7 +59,7 @@ void freeAddress(Address * a) {
     free(a->other_info);
 }
 
-/*désallocation d'une instance de Patient*/
+/*!désallocation d'une instance de Patient*/
 void freePatient(Patient ** p) {
     free((*p)->phone_number);
     free((*p)->firstname);
@@ -73,7 +73,7 @@ void freePatient(Patient ** p) {
     free(*p);
 }
 
-/*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
+/*!remplissage/modification des attributs d'une adresse déjà créée et allouée*/
 int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * iC) {
 
     if(a == NULL) return -1;
@@ -114,7 +114,7 @@ int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * i
     return 0;
 }
 
-/*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
+/*!remplissage/modification des attributs d'une adresse déjà créée et allouée*/
 int setDate(Date * d, int j, int m, int a) {
     if(d == NULL || j>31 || j <=0 || m <= 0 || m > 12 || a<=0) return -1;
     d->day = j;
@@ -123,7 +123,7 @@ int setDate(Date * d, int j, int m, int a) {
     return 0;
 }
 
-/*remplissage/modification des attributs d'une adresse déjà créée et allouée*/
+/*!remplissage/modification des attributs d'une adresse déjà créée et allouée*/
 int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp,unsigned int idPatient) {
 
     if (p == NULL) return -1; //si l'instance de patient à remplir est vide, erreur
@@ -197,7 +197,10 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     return 0;
 }
 
-//Modification d'un patient
+/*!
+ * This function makes an SQL request, modify a Patient entry in patient table from a Patient struct.
+ * Return 0 if an error occurred, 1 otherwise.
+*/
 int modifyPatient(Patient *gen){
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -274,7 +277,10 @@ int modifyPatient(Patient *gen){
     return 1;
 }
 
-//Ajout d'un patient dans la table patient à partir d'une instance de la struct Patient
+/*!
+ * This function makes an SQL request, add a Patient entry in patient table from a Patient struct.
+ * Return 0 if an error occurred, 1 otherwise.
+*/
 int addPatient(Patient *gen){
 
     sqlite3 *db;
@@ -351,7 +357,10 @@ int addPatient(Patient *gen){
     return 1;
 }
 
-
+/*!
+ * This function makes an SQL request, fills a Patient struct previously allocated
+ * with the results of the request and return the adress of the Patient struct allcated.
+*/
 Patient* getPatient(int id){
 
     sqlite3 *db;
