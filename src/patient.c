@@ -198,8 +198,11 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
 }
 
 /*!
- * This function makes an SQL request, modify a Patient entry in patient table from a Patient struct.
- * Return 0 if an error occurred, 1 otherwise.
+ * \brief This function makes an SQL request, modify a Patient entry in patient table from a Patient struct.
+ *
+ * \param[in] struct Patient to be modified
+ *
+ * \param[out] int, 0 if an error occurred, 1 otherwise.
 */
 int modifyPatient(Patient *gen){
     sqlite3 *db;
@@ -280,6 +283,10 @@ int modifyPatient(Patient *gen){
 /*!
  * This function makes an SQL request, add a Patient entry in patient table from a Patient struct.
  * Return 0 if an error occurred, 1 otherwise.
+ *
+ * \param[in] struct Patient to be add
+ *
+ * \param[out] int, 0 if an error occurred, 1 otherwise.
 */
 int addPatient(Patient *gen){
 
@@ -360,6 +367,10 @@ int addPatient(Patient *gen){
 /*!
  * This function makes an SQL request, fills a Patient struct previously allocated
  * with the results of the request and return the adress of the Patient struct allcated.
+ *
+ * \param[in] int id of the Patient
+ *
+ * \param[out] Patient struct of the corresponding id
 */
 Patient* getPatient(int id){
 
