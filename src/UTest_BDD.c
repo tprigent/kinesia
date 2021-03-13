@@ -83,6 +83,81 @@ static void test_setDate(void **state) {
     assert_int_equal(2021, date->year);
 }
 
+static void test_getPatient(void **state){
+
+    Patient *p = getPatient(-1);
+    assert_null(p);
+
+}
+
+static void test_addPatient(void **state){
+
+    Patient *p = NULL;
+    Address adresse;
+    Date birthDate;
+    Date firtsConsDate;
+
+    if(allocatePatient(&p) == -1 || allocateAddress(&adresse) == -1 ){
+        fprintf(stderr,"Erreur d'allocation\n");
+    }
+
+    if(setDate(&birthDate,1,1,1) == -1 ){
+        fprintf(stderr,"Erreur setDate birthdate\n");
+    }
+    if(setDate(&firtsConsDate,1,1,1) == -1 ){
+        fprintf(stderr,"Erreur setDate first consultation\n");
+    }
+
+    setAddress(&adresse,"1","1","1","1","1");
+
+    if(setPatient(p,"1","1",birthDate,"1",1,
+                  adresse,"1",
+                  "1","1",
+                  "1",1,
+                  1,firtsConsDate,"1",0) != 0) {
+        fprintf(stderr, "Erreur setPatient");
+        p = NULL;
+    }
+
+    assert_int_equal(0,addPatient(p));
+
+}
+
+static void test_modifyPatient(void **state){
+
+    Patient *p = NULL;
+    Address adresse;
+    Date birthDate;
+    Date firtsConsDate;
+
+    if(allocatePatient(&p) == -1 || allocateAddress(&adresse) == -1 ){
+        fprintf(stderr,"Erreur d'allocation\n");
+    }
+
+    if(setDate(&birthDate,2,1,1) == -1 ){
+        fprintf(stderr,"Erreur setDate birthdate\n");
+    }
+    if(setDate(&firtsConsDate,12,1,1) == -1 ){
+        fprintf(stderr,"Erreur setDate first consultation\n");
+    }
+
+    setAddress(&adresse,"1","1","1","1","1");
+
+    if(setPatient(p,"1","1",birthDate,"1",1,
+                  adresse,"1",
+                  "1","1",
+                  "1",1,
+                  1,firtsConsDate,"1",0) != 0) {
+        fprintf(stderr, "Erreur setPatient");
+        p = NULL;
+    }
+
+    p->id=2;
+
+    assert_int_equal(0,modifyPatient(p));
+
+}
+
 static int teardown_patient(void **state) {
     Patient * patient = (Patient *) *state;
     freePatient(&patient);
@@ -110,6 +185,9 @@ int main_BDD(void)
                     cmocka_unit_test_setup_teardown(test_setPatient, setup_patient, teardown_patient),
                     cmocka_unit_test_setup_teardown(test_setAddress, setup_address, teardown_address),
                     cmocka_unit_test_setup_teardown(test_setDate, setup_date, teardown_date),
+                    cmocka_unit_test(test_getPatient),
+                    cmocka_unit_test(test_addPatient),
+                    cmocka_unit_test(test_modifyPatient)
             };
     return cmocka_run_group_tests_name("Test counter module",tests_BDD,NULL,NULL);
 }
