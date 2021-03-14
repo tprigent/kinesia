@@ -1,6 +1,7 @@
-//
-// Created by paul on 01/03/2021.
-//
+/*!
+* \file folder.c
+* \brief File with functions to allocate, fill from database requests, and free Folder structure
+*/
 
 #include "folder.h"
 #include <sqlite3.h>

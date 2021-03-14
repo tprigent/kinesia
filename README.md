@@ -35,6 +35,10 @@ sudo apt-get install libgtk-3-dev           #for UI
 sudo apt-get install lcov                   #for coverage test reports
 sudo apt-get install valgrind               #for memory tests
 ```
+if needed, add the path `/usr/lib` in the library paths by doing :
+```bash
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib
+```
 
 #### For macOS
 

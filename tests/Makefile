@@ -1,12 +1,12 @@
 CC=gcc
-CFLAGS= -Wall -MMD -coverage -D DB_PATH='"../src/model/data.db"'
+CFLAGS= -Wall -MMD -coverage -D DB_PATH='"database/Bdd.db"'
 LDFLAGS= -lcmocka -coverage
 LDFLAGS+= `pkg-config --libs sqlite3`
 
 all: main
 
 
-main: struct_to_UI.o UI_to_struct.o UTest.o UTest_UI.o patient.o
+main: struct_to_UI.o UI_to_struct.o UTest.o UTest_UI.o UTest_BDD.o patient.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
@@ -28,7 +28,7 @@ cov_test: main
 
 mem_test: main
 	./main ; \
-    valgrind --log-file="memreport" --leak-check=yes ./$^
+    valgrind --log-file="memreport" --leak-check=yes --track-origins=yes ./$^
 
 clean:
 	rm -f *.o
