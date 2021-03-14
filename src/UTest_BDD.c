@@ -119,7 +119,7 @@ static void test_addPatient(void **state){
         p = NULL;
     }
 
-    assert_int_equal(0,addPatient(p));
+    assert_int_equal(1,addPatient(p));
 
 }
 
@@ -154,7 +154,7 @@ static void test_modifyPatient(void **state){
 
     p->id=2;
 
-    assert_int_equal(0,modifyPatient(p));
+    assert_int_equal(1,modifyPatient(p));
 
 }
 
