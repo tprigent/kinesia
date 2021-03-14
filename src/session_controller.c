@@ -17,8 +17,6 @@
  * This function sets the dialog box attributes (size, position, name)
  * and displays entries to edit or fill Folder structure.
  *
- * \todo active dynamic data once getFolder is done (lines to uncomment)
- * \todo do a setFolder if "Enregistrer" button is clicked
 */
 void launchFolderEditor(){
 
@@ -187,7 +185,6 @@ void launchFolderEditor(){
  *
  * More data is displayed than in the session view (all Patient anamnesis).
  *
- * \todo do a setPatient if "Enregistrer" button is clicked
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient *patient){
 

@@ -14,7 +14,6 @@
 * \brief Initiate session window with some default parameters
  *
  * Focus, position, size, title and destroy callback are set.
- * \todo change the name of the window once the software name found
 */
 GtkWidget *setSessionWindow(){
     GtkWidget *window = NULL;
@@ -40,7 +39,6 @@ GtkWidget *setSessionWindow(){
  * The three boxes are filled by external functions.
  *
  * \param[in] session window to split
- * \todo check if the getPatient should be called here instead of being a parameter
 */
 void setSessionEnvironment(GtkWidget *window){
 
@@ -275,8 +273,6 @@ void createPatientInfoWindow(GtkWidget *box, Patient *patient){
  * A button is displayed to see the attached media related to this Folder.
  *
  * \param[in] Existing Folder box
- * \todo read data from database (from a Patient) instead of the sample Folder (lines to uncomment)
- * \todo create the associated media view onButtonClicked
 */
 void createFolderInfoWindow(GtkWidget *box){
 
@@ -492,8 +488,6 @@ void createFolderInfoWindow(GtkWidget *box){
  * The button to attach files is set up.
  *
  * \param[in] Existing Session box
- * \todo establish communication with the database
- * \todo create the scrolling view
 */
 void createSessionInfoWindow(GtkWidget *box){
 
