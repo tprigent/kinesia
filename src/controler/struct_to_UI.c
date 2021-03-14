@@ -90,7 +90,6 @@ char *get_height_weight_UI(Patient *patient){
  *
  * \param[in] patient Concerned Patient
  * \param[out] Char pointer containing the first consultation date
- * \todo simplify with get_date_UI ???
 */
 char *get_first_consultation_UI(Patient *patient){
 
@@ -156,7 +155,6 @@ char *get_formatted_folder_title_UI(Folder *folder){
  *
  * \param[in] folder Concerned Folder
  * \param[out] Char pointer containing the formatted information
- * \todo insert breakline every n char OR find a way to impose width in gtk
 */
 char *get_formatted_folder_infos_UI(Folder *folder){
     /*int length = (int) strlen(folder->details);

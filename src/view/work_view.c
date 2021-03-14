@@ -14,7 +14,6 @@
 * \brief Initiate session window with some default parameters
  *
  * Focus, position, size, title and destroy callback are set.
- * \todo change the name of the window once the software name found
 */
 GtkWidget *setWorkWindow(int id_patient){
 
@@ -302,8 +301,6 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
  * A button is displayed to see the attached media related to this Folder.
  *
  * \param[in] box Existing Folder box
- * \todo read data from model (from a Patient) instead of the sample Folder (lines to uncomment)
- * \todo create the associated media view onButtonClicked
 */
 void fillFolderBox(GtkWidget *box){
 
@@ -519,8 +516,6 @@ void fillFolderBox(GtkWidget *box){
  * The button to attach files is set up.
  *
  * \param[in] box Existing Session box
- * \todo establish communication with the model
- * \todo create the scrolling view
 */
 void fillSessionBox(GtkWidget *box){
 
