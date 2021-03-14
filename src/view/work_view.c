@@ -538,7 +538,27 @@ void fillSessionBox(GtkWidget *box){
 
     session->idSession = 1;
     session->idFolder = 1;
+    /* ******************************/
 
+    /* Create a second session for the tests */
+    Session *session2 = (Session*) malloc(sizeof(Session));
+
+    session2->sessionName = (char*) malloc(20*sizeof(char));
+    strcpy(session2->sessionName, "Seconde séance");
+
+    session2->sessionDate.day = 14;
+    session2->sessionDate.month = 2;
+    session2->sessionDate.year = 2021;
+
+    session2->nextSessionDate.day = 21;
+    session2->nextSessionDate.month = 2;
+    session2->nextSessionDate.year = 2021;
+
+    session2->observations = (char*) malloc(50*sizeof(char));
+    strcpy(session2->observations, "Observations pour la seconde séance");
+
+    session2->idSession = 2;
+    session2->idFolder = 1;
     /* ******************************/
 
     /* DECLARE VARIABLES */
@@ -633,7 +653,7 @@ void fillSessionBox(GtkWidget *box){
     gtk_widget_set_vexpand(text_session_note, TRUE);
 
 
-    /* ******************************* SECOND PART : SECTION TO DISPLAY OLD SESSIONS *********************************** */
+    /* SECOND PART : SECTION TO DISPLAY OLD SESSIONS */
 
     int session_cursor;
     int nb_session = 1;
@@ -646,7 +666,7 @@ void fillSessionBox(GtkWidget *box){
     gtk_widget_set_vexpand(session_button[0], FALSE);
     gtk_widget_set_halign(session_button[0], GTK_ALIGN_FILL);
 
-    /* ****************************************************************************** */
+    /* Loop to display all the other sessions */
 
     /* JUST TO TEST THE SCROLLBAR */
     /*GtkWidget *patient_photo = NULL;
