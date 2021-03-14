@@ -519,6 +519,28 @@ void fillFolderBox(GtkWidget *box){
 */
 void fillSessionBox(GtkWidget *box){
 
+    /* Create a session for the tests */
+    Session *session = (Session*) malloc(sizeof(Session));
+
+    session->sessionName = (char*) malloc(20*sizeof(char));
+    strcpy(session->sessionName, "Première séance");
+
+    session->sessionDate.day = 14;
+    session->sessionDate.month = 3;
+    session->sessionDate.year = 2021;
+
+    session->nextSessionDate.day = 21;
+    session->nextSessionDate.month = 3;
+    session->nextSessionDate.year = 2021;
+
+    session->observations = (char*) malloc(50*sizeof(char));
+    strcpy(session->observations, "Observations pour la première séance");
+
+    session->idSession = 1;
+    session->idFolder = 1;
+
+    /* ******************************/
+
     /* DECLARE VARIABLES */
     GtkWidget *grid_session_section = NULL;
     GtkWidget *grid_add_session = NULL;
