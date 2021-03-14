@@ -436,8 +436,9 @@ Patient* getPatient(int id){
                       adresse,(char*)sqlite3_column_text(stmt,8),
                       (char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,22),
                       (char*)sqlite3_column_text(stmt,10),sqlite3_column_int(stmt,11),
-                      sqlite3_column_int(stmt,12),firstRdDdate,(char*)sqlite3_column_text(stmt,16),(unsigned int)id) != 0)
+                      sqlite3_column_int(stmt,12),firstRdDdate,(char*)sqlite3_column_text(stmt,16),(unsigned int)id) != 0){
         fprintf(stderr,"Erreur setPatient");
+        patient = NULL;}
 
     sqlite3_finalize(stmt);
 
