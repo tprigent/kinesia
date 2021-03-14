@@ -1,3 +1,8 @@
+/*!
+* \file UTest_BDD.c
+* \brief Functions to test the functions linking structure and BDD, and allocations
+*/
+
 #include <stdarg.h>
 #include <setjmp.h>
 #include <stdlib.h>

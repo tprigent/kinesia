@@ -1,3 +1,8 @@
+/*!
+* \file UTest_UI.c
+* \brief Functions to test the functions linking structure and UI
+*/
+
 #include "structures.h"
 #include "connect_struct_UI.h"
 #include "patient.h"
