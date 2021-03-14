@@ -24,37 +24,51 @@ static int setup_patient(void **state){
 
 static void test_get_name_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("Francois Claude", get_name_UI(patient));
+    char * temp = get_name_UI(patient);
+    assert_string_equal("Francois Claude", temp);
+    free(temp);
 }
 
 static void test_get_date_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("1/2/1939", get_date_UI(&patient->birthdate));
+    char *temp = get_date_UI(&patient->birthdate);
+    assert_string_equal("1/2/1939", temp);
+    free(temp);
 }
 
 static void test_get_height_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("1.70m", get_height_UI(patient));
+    char * temp = get_height_UI(patient);
+    assert_string_equal("1.70m", temp);
+    free((void *) temp);
 }
 
 static void test_get_weight_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("59kg", get_weight_UI(patient));
+    char *temp = get_weight_UI(patient);
+    assert_string_equal("59kg", temp);
+    free(temp);
 }
 
 static void test_get_height_weight_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("59kg   ;   1.70m", get_height_weight_UI(patient));
+    char *temp = get_height_weight_UI(patient);
+    assert_string_equal("59kg   ;   1.70m", temp);
+    free(temp);
 }
 
 static void test_get_first_consultation_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("Première consultation : 1/1/1962", get_first_consultation_UI(patient));
+    char *temp = get_first_consultation_UI(patient);
+    assert_string_equal("Première consultation : 1/1/1962", temp);
+    free(temp);
 }
 
 static void test_get_adress_UI(void **state){
     Patient * patient = (Patient *) (*state);
-    assert_string_equal("2 Rue tintintin", get_adress_UI(patient));
+    char * temp = get_adress_UI(patient);
+    assert_string_equal("2 Rue tintintin", temp);
+    free(temp);
 }
 
 static int teardown(void **state){

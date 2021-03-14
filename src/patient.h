@@ -15,7 +15,7 @@
 int allocateStringPatient(char **string, int lg);
 int allocatePatient(Patient ** p);
 int allocateAddress(Address * a);
-void freePatient(Patient ** a);
+void freePatient(Patient ** p);
 void freeAddress(Address * a);
 
 /*fonction de remplissage/modification des attributs des structures*/

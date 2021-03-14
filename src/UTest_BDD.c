@@ -47,9 +47,9 @@ static void test_setPatient(void **state) {
     Patient * patient = (Patient *) *state;
     Date date;
     setDate(&date, 12, 3, 2021);
-    Address address;
-    allocateAddress(&address);
-    setAddress(&address, "15", "rue de la soif", "35000", "Rennes", "APPT 30");
+
+    Address address = {"15", "rue de la soif", "35000", "Rennes", "none"};
+
     assert_int_equal(0, setPatient(patient, "Claude", "Francois", date, "ici", 0, address, "0123456789", "mailAddress", "chanteur", "11111111", 68, 170, date, "test",1));
     assert_string_equal("Claude", patient->name);
     assert_string_equal("Francois", patient->firstname);
