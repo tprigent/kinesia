@@ -138,7 +138,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     GtkWidget *patient_other_info = NULL;
 
     char *patient_name_char = get_name_UI(patient);
-    char *patient_birth_char = get_date_UI(&patient->birthdate);
+    char *patient_birth_char = get_age_and_birthdate(patient);
     char *patient_height_weight_char = get_height_weight_UI(patient);
     char *patient_first_consultation_char = get_first_consultation_UI(patient);
 
@@ -533,6 +533,7 @@ void fillSessionBox(GtkWidget *box){
 
     GtkWidget *session_title_new = NULL;
     GtkWidget *entry_title_new = NULL;
+    GtkWidget *save_button = NULL;
     GtkWidget *session_next_meeting = NULL;
     GtkWidget *session_attach_button = NULL;
     GtkWidget *text_session_note = NULL;
@@ -546,6 +547,7 @@ void fillSessionBox(GtkWidget *box){
 
     session_title_new = gtk_label_new("Titre :");
     entry_title_new = gtk_entry_new();
+    save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     session_next_meeting = gtk_label_new("Prochain rendez-vous : 13/02/2020");
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
     text_session_note = gtk_text_view_new();
@@ -584,6 +586,12 @@ void fillSessionBox(GtkWidget *box){
     gtk_widget_set_hexpand(entry_title_new, FALSE);
     gtk_widget_set_vexpand(entry_title_new, FALSE);
     gtk_widget_set_halign(entry_title_new, GTK_ALIGN_START);
+
+    /* Manage to display the save button */
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), save_button, session_title_new, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(save_button, FALSE);
+    gtk_widget_set_vexpand(save_button, FALSE);
+    gtk_widget_set_halign(save_button, GTK_ALIGN_END);
 
     /* Manage to display the next appointment */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_title_new, GTK_POS_RIGHT, 1, 1);
