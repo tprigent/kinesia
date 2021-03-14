@@ -194,6 +194,33 @@ char *get_indicator_files_UI(Folder *folder){
 
 
 /*!
+ * \brief Get the birthdate and the age of a Patient
+ *
+ * \param[in] patient Patient concerned
+ * \param[out] String containing the birthdate and age to the format "dd/mm/yyy (xxx ans)"
+*/
+char *get_age_and_birthdate(Patient *patient){
+    char *ageString = (char*) malloc(sizeof(char)*strlen("00/00/0000 (000 ans)"));
+    int age = 0;
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    int birth_day= patient->birthdate.day;
+    int birth_month = patient->birthdate.month;
+    int birth_year = patient->birthdate.year;
+    int now_day = tm.tm_mday;
+    int now_month = tm.tm_mon + 1;
+    int now_year = tm.tm_year + 1900;
+
+    age = now_year - birth_year;
+    if(birth_month>now_month) age --;
+    if(birth_month == now_month && birth_day>now_day) age --;
+    snprintf(ageString, sizeof(char)*strlen("00/00/0000 (000 ans)"), "%s (%d ans)",get_date_UI(&patient->birthdate) ,age);
+    return ageString;
+}
+
+
+/*!
  * \brief Free allocated char pointers
  *
  * \param[in] info Char to be freed
