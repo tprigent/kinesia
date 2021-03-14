@@ -634,22 +634,18 @@ void fillSessionBox(GtkWidget *box){
 
 
     /* ******************************* SECOND PART : SECTION TO DISPLAY OLD SESSIONS *********************************** */
-    /* Cette section n'est pas encore terminée */
-    // 2ème séance
-    GtkWidget *session2 = NULL; //Pour l'instant modélisé par bouton avant d'apprend a faire des menus déroulant
-    session2 = gtk_button_new_with_label("Séance du 27/01/2021");
-    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session2, frame_add_session, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(session2, TRUE);
-    gtk_widget_set_vexpand(session2, FALSE);
-    gtk_widget_set_halign(session2, GTK_ALIGN_FILL);
 
-    // 1ère séance
-    GtkWidget *session1 = NULL; //Pour l'instant modélisé par bouton avant d'apprend a faire des menus déroulant
-    session1 = gtk_button_new_with_label("Séance du 12/01/2021");
-    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session1, session2, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(session1, TRUE);
-    gtk_widget_set_vexpand(session1, FALSE);
-    gtk_widget_set_halign(session1, GTK_ALIGN_FILL);
+    int session_cursor;
+    int nb_session = 1;
+    GtkWidget *session_button[nb_session];
+
+    /* Initialize the first session to display */
+    session_button[0] = gtk_button_new_with_label(session->sessionName);
+    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_button[0], frame_add_session, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(session_button[0], TRUE);
+    gtk_widget_set_vexpand(session_button[0], FALSE);
+    gtk_widget_set_halign(session_button[0], GTK_ALIGN_FILL);
+
     /* ****************************************************************************** */
 
     /* JUST TO TEST THE SCROLLBAR */
