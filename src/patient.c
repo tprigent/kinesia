@@ -23,8 +23,8 @@ void printPatient(Patient *patient, char *context){
     printf("-> Context: %s\n", context);
     printf("\033[0m");
 
-    printf("Name: %s ", patient->name);
-    printf("Firstname: %s\n", patient->firstname);
+    printf("Firstname: %s ", patient->firstname);
+    printf("Name: %s\n", patient->name);
     printf("Gender: ");
     printGender(patient->gender);
     printf("\n");
@@ -83,8 +83,8 @@ int allocatePatient(Patient ** p) {
     *p = (Patient *) malloc(sizeof(Patient));
 
     /*test des allocations de chaque attribut de la structure patient qui ont besoin d'être alloués*/
-    if((p == NULL) || (allocateStringPatient(&((*p)->name), LG_MAX_INFO) !=0)
-    || (allocateStringPatient(&((*p)->firstname), LG_MAX_INFO) !=0)
+    if((p == NULL) || (allocateStringPatient(&((*p)->firstname), LG_MAX_INFO) !=0)
+    || (allocateStringPatient(&((*p)->name), LG_MAX_INFO) !=0)
     || (allocateAddress(&((*p)->address)) !=0)
     || (allocateStringPatient(&((*p)->global_pathologies), LG_MAX_OTHERS) !=0)
     || (allocateStringPatient(&((*p)->mail_address), LG_MAX_INFO) !=0)
@@ -110,10 +110,10 @@ void freeAddress(Address * a) {
 /*désallocation d'une instance de Patient*/
 void freePatient(Patient ** p) {
     free((void *) (*p)->phone_number);
-    free((void *) (*p)->firstname);
+    free((void *) (*p)->name);
     free((void *) (*p)->global_pathologies);
     free((void *) (*p)->place_birth);
-    free((void *) (*p)->name);
+    free((void *) (*p)->firstname);
     free((void *) (*p)->mail_address);
     free((void *) (*p)->job);
     free((void *) (*p)->ssn);
@@ -163,8 +163,8 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     strncpy(p->job, job, LG_MAX_INFO);
     strncpy(p->mail_address, ma, LG_MAX_INFO);
     strncpy(p->global_pathologies, gp, LG_MAX_OTHERS);
-    strncpy(p->firstname, fn, LG_MAX_INFO);
     strncpy(p->name, name, LG_MAX_INFO);
+    strncpy(p->firstname, fn, LG_MAX_INFO);
     strncpy(p->phone_number,pn,LG_MAX_INFO);
     strncpy(p->height,h,LG_MAX_INFO);
     strncpy(p->weight,w,LG_MAX_INFO);
@@ -175,8 +175,8 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     p->job[strlen(job)] = '\0';
     p->mail_address[strlen(ma)] = '\0';
     p->global_pathologies[strlen(gp)] = '\0';
-    p->firstname[strlen(fn)] = '\0';
     p->name[strlen(name)] = '\0';
+    p->firstname[strlen(fn)] = '\0';
     p->phone_number[strlen(pn)] = '\0';
     p->height[strlen(h)] = '\0';
     p->weight[strlen(w)] = '\0';
@@ -260,7 +260,7 @@ char* getNameFirstnamePatient(int id){
     }
 
     //Creation de la requête
-    sql = "SELECT name,firstname FROM patient WHERE id=?";
+    sql = "SELECT firstname,name FROM patient WHERE id=?";
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
@@ -313,7 +313,7 @@ int modifyPatient(Patient *gen){
     }
 
     //Creation de la requête
-    sql = "UPDATE patient SET name=?,firstname=?,birthdate_year=?,birthdate_month=?,"
+    sql = "UPDATE patient SET firstname=?,name=?,birthdate_year=?,birthdate_month=?,"
           "birthdate_day=?,place_birth=?,"
           "gender=?,phone_number=?,mail_adress=?,ssn=?,weight=?,"
           "height=?,first_consultation_year=?,"
@@ -331,8 +331,8 @@ int modifyPatient(Patient *gen){
     //Ajout des valeurs dans la requête
     int i;
     i=1;
-    sqlite3_bind_text(stmt,i++,gen->name,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->firstname,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->name,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->birthdate.year);
     sqlite3_bind_int(stmt,i++,gen->birthdate.month);
     sqlite3_bind_int(stmt,i++,gen->birthdate.day);
@@ -391,7 +391,7 @@ int addPatient(Patient *gen){
     }
 
     //Creation de la requête
-    sql = "INSERT INTO patient (name,firstname,birthdate_year,birthdate_month"
+    sql = "INSERT INTO patient (firstname,name,birthdate_year,birthdate_month"
           ",birthdate_day,place_birth"
           ",gender,phone_number,mail_adress,ssn,weight,"
           "height,first_consultation_year,first_consultation_month,"
@@ -410,8 +410,8 @@ int addPatient(Patient *gen){
     //Ajout des valeurs dans la requête
     int i;
     i=1;
-    sqlite3_bind_text(stmt,i++,gen->name,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->firstname,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,i++,gen->name,-1,SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt,i++,gen->birthdate.year);
     sqlite3_bind_int(stmt,i++,gen->birthdate.month);
     sqlite3_bind_int(stmt,i++,gen->birthdate.day);

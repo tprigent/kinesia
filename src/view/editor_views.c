@@ -300,10 +300,10 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_text_buffer_get_end_iter(info_buffer, &end);
 
     name = gtk_label_new("Prénom : ");
-    gtk_entry_set_text(GTK_ENTRY(name_entry), patient->name);
+    gtk_entry_set_text(GTK_ENTRY(name_entry), patient->firstname);
 
     surname = gtk_label_new("Nom : ");
-    gtk_entry_set_text(GTK_ENTRY(surname_entry), patient->firstname);
+    gtk_entry_set_text(GTK_ENTRY(surname_entry), patient->name);
 
     patient_photo = gtk_label_new("Photo : ");
 
@@ -526,8 +526,8 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     /* MANAGE THE USER ACTION */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         /* NAME */
-        strcpy(patient->firstname, (char*)gtk_entry_get_text(GTK_ENTRY(surname_entry)));
-        strcpy(patient->name, (char*)gtk_entry_get_text(GTK_ENTRY(name_entry)));
+        strcpy(patient->name, (char*)gtk_entry_get_text(GTK_ENTRY(surname_entry)));
+        strcpy(patient->firstname, (char*)gtk_entry_get_text(GTK_ENTRY(name_entry)));
 
         /* BIRTHDAY */
         patient->birthdate.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->day;

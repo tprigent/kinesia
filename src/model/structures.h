@@ -48,7 +48,7 @@ typedef struct{
       * \name Civil status
     */
     char * name;                   /**< Patient name */
-    char * firstname;              /**< Patient first */
+    char * firstname;              /**< Patient first name */
     Date birthdate;                /**< Patient birthdate */
     char * place_birth;            /**< Patient place of birth (city) */
     Genre gender;                  /**< Patient gender (enum) */
