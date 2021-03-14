@@ -12,6 +12,14 @@
 #include "patient.h"
 #include "structures.h"
 
+/*!
+ * \brief Setup function which allocates a patient
+ *
+ * This function allocates a patient and puts it in *state
+ *
+ * \param[in] A pointer address to pass the allocated patient
+ * \param[out] An int to know if patient is well allocated
+*/
 static int setup_patient(void **state) {
     Patient *patient = (Patient *) NULL;
     if(allocatePatient(&patient) != 0) return -1;
@@ -28,7 +36,14 @@ static int setup_patient(void **state) {
     *state = patient;
     return 0;
 }
-
+/*!
+ * \brief Setup function which allocates an address
+ *
+ * This function allocates an address and puts it in *state
+ *
+ * \param[in] A pointer address to pass the allocated address
+ * \param[out] An int to know if address is well allocated
+*/
 static int setup_address(void **state) {
     Address * address = malloc(sizeof(Address));
     if(allocateAddress(address) != 0) return -1;
@@ -41,6 +56,14 @@ static int setup_address(void **state) {
     return 0;
 }
 
+/*!
+ * \brief Setup function which allocates a Date
+ *
+ * This function allocates a Date and puts it in *state
+ *
+ * \param[in] A pointer address to pass the allocated date
+ * \param[out] An int to know if date is well allocated
+*/
 static int setup_date(void **state) {
     Date * date = malloc(sizeof(Date));
     assert_non_null(date);
@@ -48,6 +71,11 @@ static int setup_date(void **state) {
     return 0;
 }
 
+/*!
+ * \brief function test_setPatient which runs a test for function setPatient()
+ *
+ * \param[in] A pointer address to pass the allocated patient
+*/
 static void test_setPatient(void **state) {
     Patient * patient = (Patient *) *state;
     Date date;
@@ -70,6 +98,11 @@ static void test_setPatient(void **state) {
     assert_int_equal(1, patient->id);
 }
 
+/*!
+ * \brief function test_setAddress which runs a test for function setAddress()
+ *
+ * \param[in] A pointer address to pass the allocated address
+*/
 static void test_setAddress(void **state) {
     Address * address = (Address *) *state;
     setAddress(address, "15", "rue de la soif", "35000", "Rennes", "APPT 30");
@@ -80,6 +113,11 @@ static void test_setAddress(void **state) {
     assert_string_equal("APPT 30", address->other_info);
 }
 
+/*!
+ * \brief function test_setDate which runs a test for function setDate()
+ *
+ * \param[in] A pointer address to pass the allocated date
+*/
 static void test_setDate(void **state) {
     Date * date = *state;
     setDate(date, 12, 3, 2021);
@@ -163,12 +201,28 @@ static void test_modifyPatient(void **state){
 
 }
 
+/*!
+ * \brief Teardown function which desallocates the patient
+ *
+ * This function desallocates the patient allocated by setup function
+ *
+ * \param[in] A pointer adress to pass the allocated patient
+ * \param[out] An int to tell that desallocation worked
+*/
 static int teardown_patient(void **state) {
     Patient * patient = (Patient *) *state;
     freePatient(&patient);
     return 0;
 }
 
+/*!
+ * \brief Teardown function which desallocates the address
+ *
+ * This function desallocates the address allocated by setup function
+ *
+ * \param[in] A pointer adress to pass the allocated address
+ * \param[out] An int to tell that desallocation worked
+*/
 static int teardown_address(void **state) {
     Address * address = (Address *) *state;
     freeAddress(address);
@@ -176,12 +230,25 @@ static int teardown_address(void **state) {
     return 0;
 }
 
+/*!
+ * \brief Teardown function which desallocates the date
+ *
+ * This function desallocates the date allocated by setup function
+ *
+ * \param[in] A pointer address to pass the allocated date
+ * \param[out] An int to tell that desallocation worked
+*/
 static int teardown_date(void **state) {
     Date * date = (Date *) *state;
     free(date);
     return 0;
 }
 
+/*!
+ * \brief main function which runs the tests for BDD
+ *
+ * \param[out] An int to tell if tests are passed
+*/
 int main_BDD(void)
 {
 

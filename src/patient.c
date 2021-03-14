@@ -11,15 +11,28 @@
 #include <sqlite3.h>
 #include "patient.h"
 
-
-/*!allocation d'une chaîne de caractère de longueur lg*/
+/*!
+ * \brief This function allocates memory for a string of length lg
+ *
+ * \param[in] char ** string the address of the string to allocate
+ * \param[in] int lg the length of the string
+ *
+ * \param[out] int 0 if the allocation went well, -1 otherwise
+*/
 int allocateStringPatient(char ** string, int lg) {
     *string = (char *) malloc(sizeof(char)*lg);
     if(*string == (char *) NULL) return -1;
     return 0;
 }
 
-/*!allocation mémoire des attributs d'une structure Adresse*/
+
+/*!
+ * \brief This function allocates memory for the attributes of an address
+ *
+ * \param[in] Address * a the address to allocate
+ *
+ * \param[out] int, 0 if the allocation went well, -1 otherwise
+*/
 int allocateAddress(Address * a) {
 
     /*allocation mémoire des chaînes de caractères de la structure Adresse*/
@@ -32,7 +45,14 @@ int allocateAddress(Address * a) {
 }
 
 
-/*!allocation mémoire d'un patient*/
+
+/*!
+ * \brief This function allocates memory for an instance of Patient, and the attributes of the instance
+ *
+ * \param[in] Patient **p, the address of the pointer of Patient to allocate
+ *
+ * \param[out] int, 0 if the allocation went well, -1 otherwise
+*/
 int allocatePatient(Patient ** p) {
     *p = (Patient *) malloc(sizeof(Patient));
 
@@ -50,7 +70,12 @@ int allocatePatient(Patient ** p) {
     return 0;
 }
 
-/*!désallocation d'une instance d'Address*/
+
+/*!
+ * \brief This function frees the memory of the attributes of an Address instance
+ *
+ * \param[in] Address *a the pointer of an address to free.
+*/
 void freeAddress(Address * a) {
     free((void*)a->number);
     free((void*)a->street);
@@ -59,7 +84,12 @@ void freeAddress(Address * a) {
     free((void*)a->other_info);
 }
 
-/*!désallocation d'une instance de Patient*/
+
+/*!
+ * \brief This function frees the memory of an instance of Patient
+ *
+ * \param[in] Patient **p the address of the pointer of Patient to free
+*/
 void freePatient(Patient ** p) {
     freeAddress(&((*p)->address));
     free((void*)(*p)->phone_number);
@@ -74,7 +104,18 @@ void freePatient(Patient ** p) {
     free((void*)*p);
 }
 
-/*!remplissage/modification des attributs d'une adresse déjà créée et allouée*/
+/*!
+ * \brief This function fills the attributes of an instance of address with the in parameters
+ *
+ * \param[in] Address * a the pointer of the instance of address to fill
+ * \param[in] char * numM the number in the street
+ * \param[in] char * r the street
+ * \param[in] char * cp the post code
+ * \param[in] char * v the city
+ * \param[in] char * iC the other info
+ *
+ * \param[out] int 0 if it went well, -1 otherwise
+*/
 int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * iC) {
 
     if(a == NULL) return -1;
@@ -115,7 +156,16 @@ int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * i
     return 0;
 }
 
-/*!remplissage/modification des attributs d'une adresse déjà créée et allouée*/
+/*!
+ * \brief This function fills a Date with the in parameters
+ *
+ * \param[in] Date * d the pointer of the date to fill
+ * \param[in] int j the day
+ * \param[in] int m the month
+ * \param[in] int a the year
+ *
+ * \param[out] int, 0 if it went well, -1 otherwise
+*/
 int setDate(Date * d, int j, int m, int a) {
     if(d == NULL || j>31 || j <=0 || m <= 0 || m > 12 || a<=0) return -1;
     d->day = j;
@@ -124,7 +174,28 @@ int setDate(Date * d, int j, int m, int a) {
     return 0;
 }
 
-/*!remplissage/modification des attributs d'une adresse déjà créée et allouée*/
+/*!
+ * \brief This function fills an instance of Patient, with the in parameters
+ *
+ * \param[in] Patient *p, the pointer of Patient to fill
+ * \param[in] char * name, the name of the Patient
+ * \param[in] char * fn, the firstname of the Patient
+ * \param[in] Date bd, the birthdate of the Patient
+ * \param[in] char * placeBirth, the birth place of the Patient
+ * \param[in] int g, the gender of the Patient
+ * \param[in] Address ad, the address of the Patient
+ * \param[in] char * pn, the phone number of the Patient
+ * \param[in] char * ma, the mail address of the Patient
+ * \param[in] char * job, the job of the Patient
+ * \param[in] char * ns, the ssn of the Patient
+ * \param[in] int w, the weight of the Patient
+ * \param[in] int h, the height of the Patient
+ * \param[in] Date fc, the date of the first consultation of the Patient
+ * \param[in] char * gp, the global pathologies or medical informations of the Patient
+ * \param[in] unsigned int idPatient, the id of the Patient
+ *
+ * \param[out] int, 0 if it went well, -1 otherwise
+*/
 int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, int w, int h, Date fc, char * gp,unsigned int idPatient) {
 
     if (p == NULL) return -1; //si l'instance de patient à remplir est vide, erreur
