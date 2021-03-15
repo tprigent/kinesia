@@ -535,7 +535,7 @@ void fillSessionBox(GtkWidget *box){
     session[0]->nextSessionDate.year = 2021;
 
     session[0]->observations = (char*) malloc(50*sizeof(char));
-    strcpy(session[0]->observations, "Observations pour la première séance");
+    strcpy(session[0]->observations, "Observations pour la première séance ");
 
     session[0]->idSession = 1;
     session[0]->idFolder = 1;
@@ -596,7 +596,7 @@ void fillSessionBox(GtkWidget *box){
 
 
     /* MANAGE GRID WHICH ORGANIZES THE SESSION SECTION */
-    gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 10);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 5);
     gtk_container_add(GTK_CONTAINER(box), grid_session_section);
     //gtk_box_pack_start(GTK_BOX(box), grid_session_section, TRUE, TRUE, 0);
 
@@ -660,9 +660,12 @@ void fillSessionBox(GtkWidget *box){
     int session_cursor;
     int nb_session = 2;
     char *date[nb_session];
+    char *nextDate[nb_session];
     GtkWidget *date_label[nb_session];
+    GtkWidget *nextDate_label[nb_session];
     GtkWidget *observations_label[nb_session];
     GtkWidget *session_date[nb_session];
+    GtkWidget *session_nextDate[nb_session];
     GtkWidget *session_observations[nb_session];
     GtkWidget *session_grid[nb_session];
     GtkWidget *session_frame[nb_session];
@@ -670,12 +673,20 @@ void fillSessionBox(GtkWidget *box){
     /* ASSIGN VARIABLES */
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         session_frame[session_cursor] = gtk_frame_new(session[session_cursor]->sessionName);
+        gtk_frame_set_label_align(GTK_FRAME(session_frame[session_cursor]), 0.5, 0.5);
+
         session_grid[session_cursor] = gtk_grid_new();
+        gtk_container_set_border_width(GTK_CONTAINER(session_grid[session_cursor]), 5);
 
         date_label[session_cursor] = gtk_label_new("Date : ");
         date[session_cursor] = get_date_UI(&session[session_cursor]->sessionDate);
         session_date[session_cursor] = gtk_label_new(date[session_cursor]);
         free(date[session_cursor]);
+
+        nextDate_label[session_cursor] = gtk_label_new("Date du prochain rendez-vous : ");
+        nextDate[session_cursor] = get_date_UI(&session[session_cursor]->nextSessionDate);
+        session_nextDate[session_cursor] = gtk_label_new(nextDate[session_cursor]);
+        free(nextDate[session_cursor]);
 
         observations_label[session_cursor] = gtk_label_new("Observations : ");
         session_observations[session_cursor] = gtk_label_new(session[session_cursor]->observations);
@@ -688,13 +699,26 @@ void fillSessionBox(GtkWidget *box){
     gtk_widget_set_halign(session_frame[0], GTK_ALIGN_FILL);
     gtk_container_add(GTK_CONTAINER(session_frame[0]), session_grid[0]);
 
+
     gtk_grid_attach(GTK_GRID(session_grid[0]), date_label[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_halign(date_label[0], GTK_ALIGN_START);
+
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_date[0], date_label[0], GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_halign(session_date[0], GTK_ALIGN_START);
+
+    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), nextDate_label[0], session_date[0], GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(nextDate_label[0], TRUE);
+    gtk_widget_set_halign(nextDate_label[0], GTK_ALIGN_END);
+
+    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_nextDate[0], nextDate_label[0], GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(session_nextDate[0], FALSE);
+    gtk_widget_set_halign(session_nextDate[0], GTK_ALIGN_END);
+
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), observations_label[0], date_label[0], GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_halign(observations_label[0], GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_observations[0], observations_label[0], GTK_POS_RIGHT, 1, 1);
+
+    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_observations[0], observations_label[0], GTK_POS_RIGHT, 3, 1);
+    gtk_widget_set_hexpand(session_grid[0], TRUE);
     gtk_widget_set_halign(session_observations[0], GTK_ALIGN_START);
 
     /* Loop to display all the other sessions */
@@ -707,11 +731,22 @@ void fillSessionBox(GtkWidget *box){
 
         gtk_grid_attach(GTK_GRID(session_grid[session_cursor-1]), date_label[session_cursor-1], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         gtk_widget_set_halign(date_label[session_cursor-1], GTK_ALIGN_START);
+
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_date[session_cursor-1], date_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
         gtk_widget_set_halign(session_date[session_cursor-1], GTK_ALIGN_START);
+
+        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), nextDate_label[session_cursor-1], session_date[session_cursor-1], GTK_POS_RIGHT, 1, 1);
+        gtk_widget_set_hexpand(nextDate_label[session_cursor-1], TRUE);
+        gtk_widget_set_halign(nextDate_label[session_cursor-1], GTK_ALIGN_END);
+
+        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_nextDate[session_cursor-1], nextDate_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
+        gtk_widget_set_hexpand(session_nextDate[session_cursor-1], FALSE);
+        gtk_widget_set_halign(session_nextDate[session_cursor-1], GTK_ALIGN_END);
+
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), observations_label[session_cursor-1], date_label[session_cursor-1], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_halign(observations_label[session_cursor-1], GTK_ALIGN_START);
-        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_observations[session_cursor-1], observations_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
+
+        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_observations[session_cursor-1], observations_label[session_cursor-1], GTK_POS_RIGHT, 3, 1);
         gtk_widget_set_halign(session_observations[session_cursor-1], GTK_ALIGN_START);
     }
 
