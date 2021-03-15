@@ -657,7 +657,9 @@ void fillSessionBox(GtkWidget *box){
 
     int session_cursor;
     int nb_session = 2;
-    GtkWidget *session_button[nb_session];
+    char *date[nb_session];
+    GtkWidget *session_date[nb_session];
+    //GtkWidget *date_label = NULL;
     GtkWidget *session_frame[nb_session];
 
     /* Initialize the first session to display */
@@ -666,8 +668,10 @@ void fillSessionBox(GtkWidget *box){
     gtk_widget_set_hexpand(session_frame[0], TRUE);
     gtk_widget_set_vexpand(session_frame[0], FALSE);
     gtk_widget_set_halign(session_frame[0], GTK_ALIGN_FILL);
-    session_button[0] = gtk_button_new_with_label(session->sessionName);
-    gtk_container_add(GTK_CONTAINER(session_frame[0]), session_button[0]);
+    date[0] = get_date_UI(&session->sessionDate);
+    session_date[0] = gtk_label_new(date[0]);
+    free(date[0]);
+    gtk_container_add(GTK_CONTAINER(session_frame[0]), session_date[0]);
 
     /* Loop to display all the other sessions */
     for(session_cursor=2; session_cursor<nb_session+1; session_cursor++){
@@ -676,10 +680,12 @@ void fillSessionBox(GtkWidget *box){
         gtk_widget_set_hexpand(session_frame[session_cursor-1], TRUE);
         gtk_widget_set_vexpand(session_frame[session_cursor-1], FALSE);
         gtk_widget_set_halign(session_frame[session_cursor-1], GTK_ALIGN_FILL);
-        session_button[session_cursor-1] = gtk_button_new_with_label(session2->sessionName);
-        gtk_container_add(GTK_CONTAINER(session_frame[session_cursor-1]), session_button[session_cursor-1]);
-
+        date[session_cursor-1] = get_date_UI(&session2->sessionDate);
+        session_date[session_cursor-1] = gtk_label_new(date[session_cursor-1]);
+        free(date[session_cursor-1]);
+        gtk_container_add(GTK_CONTAINER(session_frame[session_cursor-1]), session_date[session_cursor-1]);
     }
+
 
     /* JUST TO TEST THE SCROLLBAR */
     /*GtkWidget *patient_photo = NULL;
