@@ -656,23 +656,29 @@ void fillSessionBox(GtkWidget *box){
 
     /* SECOND PART : SECTION TO DISPLAY OLD SESSIONS */
 
+    /* DECLARE VARIABLES */
     int session_cursor;
     int nb_session = 2;
     char *date[nb_session];
     GtkWidget *date_label[nb_session];
-    GtkWidget *session_grid[nb_session];
+    GtkWidget *observations_label[nb_session];
     GtkWidget *session_date[nb_session];
+    GtkWidget *session_observations[nb_session];
+    GtkWidget *session_grid[nb_session];
     GtkWidget *session_frame[nb_session];
 
-    /* A loop to allocate the widgets */
+    /* ASSIGN VARIABLES */
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         session_frame[session_cursor] = gtk_frame_new(session[session_cursor]->sessionName);
-        date_label[session_cursor] = gtk_label_new("Date : ");
         session_grid[session_cursor] = gtk_grid_new();
 
+        date_label[session_cursor] = gtk_label_new("Date : ");
         date[session_cursor] = get_date_UI(&session[session_cursor]->sessionDate);
         session_date[session_cursor] = gtk_label_new(date[session_cursor]);
         free(date[session_cursor]);
+
+        observations_label[session_cursor] = gtk_label_new("Observations : ");
+        session_observations[session_cursor] = gtk_label_new(session[session_cursor]->observations);
     }
 
     /* Initialize the first session to display */
@@ -681,8 +687,15 @@ void fillSessionBox(GtkWidget *box){
     gtk_widget_set_vexpand(session_frame[0], FALSE);
     gtk_widget_set_halign(session_frame[0], GTK_ALIGN_FILL);
     gtk_container_add(GTK_CONTAINER(session_frame[0]), session_grid[0]);
+
     gtk_grid_attach(GTK_GRID(session_grid[0]), date_label[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_halign(date_label[0], GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_date[0], date_label[0], GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_halign(session_date[0], GTK_ALIGN_START);
+    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), observations_label[0], date_label[0], GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_halign(observations_label[0], GTK_ALIGN_START);
+    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_observations[0], observations_label[0], GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_halign(session_observations[0], GTK_ALIGN_START);
 
     /* Loop to display all the other sessions */
     for(session_cursor=2; session_cursor<nb_session+1; session_cursor++){
@@ -691,9 +704,15 @@ void fillSessionBox(GtkWidget *box){
         gtk_widget_set_vexpand(session_frame[session_cursor-1], FALSE);
         gtk_widget_set_halign(session_frame[session_cursor-1], GTK_ALIGN_FILL);
         gtk_container_add(GTK_CONTAINER(session_frame[session_cursor-1]), session_grid[session_cursor-1]);
-        gtk_grid_attach(GTK_GRID(session_grid[session_cursor-1]), date_label[session_cursor-1], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_date[session_cursor-1], date_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
 
+        gtk_grid_attach(GTK_GRID(session_grid[session_cursor-1]), date_label[session_cursor-1], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+        gtk_widget_set_halign(date_label[session_cursor-1], GTK_ALIGN_START);
+        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_date[session_cursor-1], date_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
+        gtk_widget_set_halign(session_date[session_cursor-1], GTK_ALIGN_START);
+        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), observations_label[session_cursor-1], date_label[session_cursor-1], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_halign(observations_label[session_cursor-1], GTK_ALIGN_START);
+        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_observations[session_cursor-1], observations_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
+        gtk_widget_set_halign(session_observations[session_cursor-1], GTK_ALIGN_START);
     }
 
 
