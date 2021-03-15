@@ -658,9 +658,12 @@ void fillSessionBox(GtkWidget *box){
     int session_cursor;
     int nb_session = 2;
     char *date[nb_session];
+    GtkWidget *date_label[nb_session];
+    GtkWidget *session_grid[nb_session];
     GtkWidget *session_date[nb_session];
-    //GtkWidget *date_label = NULL;
     GtkWidget *session_frame[nb_session];
+
+    date_label[0] = gtk_label_new("Date : ");
 
     /* Initialize the first session to display */
     session_frame[0] = gtk_frame_new(session->sessionName);
@@ -671,7 +674,10 @@ void fillSessionBox(GtkWidget *box){
     date[0] = get_date_UI(&session->sessionDate);
     session_date[0] = gtk_label_new(date[0]);
     free(date[0]);
-    gtk_container_add(GTK_CONTAINER(session_frame[0]), session_date[0]);
+    session_grid[0] = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(session_frame[0]), session_grid[0]);
+    gtk_grid_attach(GTK_GRID(session_grid[0]), date_label[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_date[0], date_label[0], GTK_POS_RIGHT, 1, 1);
 
     /* Loop to display all the other sessions */
     for(session_cursor=2; session_cursor<nb_session+1; session_cursor++){
@@ -683,7 +689,12 @@ void fillSessionBox(GtkWidget *box){
         date[session_cursor-1] = get_date_UI(&session2->sessionDate);
         session_date[session_cursor-1] = gtk_label_new(date[session_cursor-1]);
         free(date[session_cursor-1]);
-        gtk_container_add(GTK_CONTAINER(session_frame[session_cursor-1]), session_date[session_cursor-1]);
+        date_label[session_cursor-1] = gtk_label_new("Date : ");
+        session_grid[session_cursor-1] = gtk_grid_new();
+        gtk_container_add(GTK_CONTAINER(session_frame[session_cursor-1]), session_grid[session_cursor-1]);
+        gtk_grid_attach(GTK_GRID(session_grid[session_cursor-1]), date_label[session_cursor-1], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_date[session_cursor-1], date_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
+
     }
 
 
