@@ -520,45 +520,46 @@ void fillFolderBox(GtkWidget *box){
 void fillSessionBox(GtkWidget *box){
 
     /* Create a session for the tests */
-    Session *session = (Session*) malloc(sizeof(Session));
+    Session *session[2];
+    session[0] = (Session*) malloc(sizeof(Session));
 
-    session->sessionName = (char*) malloc(20*sizeof(char));
-    strcpy(session->sessionName, "Première séance");
+    session[0]->sessionName = (char*) malloc(20*sizeof(char));
+    strcpy(session[0]->sessionName, "Première séance");
 
-    session->sessionDate.day = 14;
-    session->sessionDate.month = 3;
-    session->sessionDate.year = 2021;
+    session[0]->sessionDate.day = 14;
+    session[0]->sessionDate.month = 3;
+    session[0]->sessionDate.year = 2021;
 
-    session->nextSessionDate.day = 21;
-    session->nextSessionDate.month = 3;
-    session->nextSessionDate.year = 2021;
+    session[0]->nextSessionDate.day = 21;
+    session[0]->nextSessionDate.month = 3;
+    session[0]->nextSessionDate.year = 2021;
 
-    session->observations = (char*) malloc(50*sizeof(char));
-    strcpy(session->observations, "Observations pour la première séance");
+    session[0]->observations = (char*) malloc(50*sizeof(char));
+    strcpy(session[0]->observations, "Observations pour la première séance");
 
-    session->idSession = 1;
-    session->idFolder = 1;
+    session[0]->idSession = 1;
+    session[0]->idFolder = 1;
     /* ******************************/
 
     /* Create a second session for the tests */
-    Session *session2 = (Session*) malloc(sizeof(Session));
+    session[1] = (Session*) malloc(sizeof(Session));
 
-    session2->sessionName = (char*) malloc(20*sizeof(char));
-    strcpy(session2->sessionName, "Seconde séance");
+    session[1]->sessionName = (char*) malloc(20*sizeof(char));
+    strcpy(session[1]->sessionName, "Seconde séance");
 
-    session2->sessionDate.day = 14;
-    session2->sessionDate.month = 2;
-    session2->sessionDate.year = 2021;
+    session[1]->sessionDate.day = 14;
+    session[1]->sessionDate.month = 2;
+    session[1]->sessionDate.year = 2021;
 
-    session2->nextSessionDate.day = 21;
-    session2->nextSessionDate.month = 2;
-    session2->nextSessionDate.year = 2021;
+    session[1]->nextSessionDate.day = 21;
+    session[1]->nextSessionDate.month = 2;
+    session[1]->nextSessionDate.year = 2021;
 
-    session2->observations = (char*) malloc(50*sizeof(char));
-    strcpy(session2->observations, "Observations pour la seconde séance");
+    session[1]->observations = (char*) malloc(50*sizeof(char));
+    strcpy(session[1]->observations, "Observations pour la seconde séance");
 
-    session2->idSession = 2;
-    session2->idFolder = 1;
+    session[1]->idSession = 2;
+    session[1]->idFolder = 1;
     /* ******************************/
 
     /* DECLARE VARIABLES */
@@ -663,34 +664,32 @@ void fillSessionBox(GtkWidget *box){
     GtkWidget *session_date[nb_session];
     GtkWidget *session_frame[nb_session];
 
-    date_label[0] = gtk_label_new("Date : ");
+    /* A loop to allocate the widgets */
+    for(session_cursor=0; session_cursor<nb_session; session_cursor++){
+        session_frame[session_cursor] = gtk_frame_new(session[session_cursor]->sessionName);
+        date_label[session_cursor] = gtk_label_new("Date : ");
+        session_grid[session_cursor] = gtk_grid_new();
+
+        date[session_cursor] = get_date_UI(&session[session_cursor]->sessionDate);
+        session_date[session_cursor] = gtk_label_new(date[session_cursor]);
+        free(date[session_cursor]);
+    }
 
     /* Initialize the first session to display */
-    session_frame[0] = gtk_frame_new(session->sessionName);
     gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_frame[0], frame_add_session, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session_frame[0], TRUE);
     gtk_widget_set_vexpand(session_frame[0], FALSE);
     gtk_widget_set_halign(session_frame[0], GTK_ALIGN_FILL);
-    date[0] = get_date_UI(&session->sessionDate);
-    session_date[0] = gtk_label_new(date[0]);
-    free(date[0]);
-    session_grid[0] = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(session_frame[0]), session_grid[0]);
     gtk_grid_attach(GTK_GRID(session_grid[0]), date_label[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_date[0], date_label[0], GTK_POS_RIGHT, 1, 1);
 
     /* Loop to display all the other sessions */
     for(session_cursor=2; session_cursor<nb_session+1; session_cursor++){
-        session_frame[session_cursor-1] = gtk_frame_new(session2->sessionName);
         gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_frame[session_cursor-1], session_frame[session_cursor-2], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(session_frame[session_cursor-1], TRUE);
         gtk_widget_set_vexpand(session_frame[session_cursor-1], FALSE);
         gtk_widget_set_halign(session_frame[session_cursor-1], GTK_ALIGN_FILL);
-        date[session_cursor-1] = get_date_UI(&session2->sessionDate);
-        session_date[session_cursor-1] = gtk_label_new(date[session_cursor-1]);
-        free(date[session_cursor-1]);
-        date_label[session_cursor-1] = gtk_label_new("Date : ");
-        session_grid[session_cursor-1] = gtk_grid_new();
         gtk_container_add(GTK_CONTAINER(session_frame[session_cursor-1]), session_grid[session_cursor-1]);
         gtk_grid_attach(GTK_GRID(session_grid[session_cursor-1]), date_label[session_cursor-1], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_date[session_cursor-1], date_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
