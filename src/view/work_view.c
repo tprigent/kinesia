@@ -658,21 +658,27 @@ void fillSessionBox(GtkWidget *box){
     int session_cursor;
     int nb_session = 2;
     GtkWidget *session_button[nb_session];
+    GtkWidget *session_frame[nb_session];
 
     /* Initialize the first session to display */
+    session_frame[0] = gtk_frame_new(session->sessionName);
+    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_frame[0], frame_add_session, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(session_frame[0], TRUE);
+    gtk_widget_set_vexpand(session_frame[0], FALSE);
+    gtk_widget_set_halign(session_frame[0], GTK_ALIGN_FILL);
     session_button[0] = gtk_button_new_with_label(session->sessionName);
-    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_button[0], frame_add_session, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(session_button[0], TRUE);
-    gtk_widget_set_vexpand(session_button[0], FALSE);
-    gtk_widget_set_halign(session_button[0], GTK_ALIGN_FILL);
+    gtk_container_add(GTK_CONTAINER(session_frame[0]), session_button[0]);
 
     /* Loop to display all the other sessions */
     for(session_cursor=2; session_cursor<nb_session+1; session_cursor++){
+        session_frame[session_cursor-1] = gtk_frame_new(session2->sessionName);
+        gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_frame[session_cursor-1], session_frame[session_cursor-2], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(session_frame[session_cursor-1], TRUE);
+        gtk_widget_set_vexpand(session_frame[session_cursor-1], FALSE);
+        gtk_widget_set_halign(session_frame[session_cursor-1], GTK_ALIGN_FILL);
         session_button[session_cursor-1] = gtk_button_new_with_label(session2->sessionName);
-        gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_button[session_cursor-1], session_button[session_cursor-2], GTK_POS_BOTTOM, 1, 1);
-        gtk_widget_set_hexpand(session_button[session_cursor-1], TRUE);
-        gtk_widget_set_vexpand(session_button[session_cursor-1], FALSE);
-        gtk_widget_set_halign(session_button[session_cursor-1], GTK_ALIGN_FILL);
+        gtk_container_add(GTK_CONTAINER(session_frame[session_cursor-1]), session_button[session_cursor-1]);
+
     }
 
     /* JUST TO TEST THE SCROLLBAR */
