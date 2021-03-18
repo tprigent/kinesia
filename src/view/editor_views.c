@@ -663,3 +663,49 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
 
     gtk_widget_destroy (dialog);
 }
+
+void launchDeletePatientWarning(GtkWidget *delete_button, Patient_window *patient_window){
+    GtkWidget *dialog;
+    GtkWidget *content_area;
+    GtkWidget *title;
+    GtkWidget *explanations;
+    GtkWidget *symbol;
+
+    dialog = gtk_dialog_new_with_buttons ("Suppression d'une fiche patient",NULL,GTK_DIALOG_MODAL,
+                                          "Annuler",GTK_RESPONSE_REJECT,
+                                          "Supprimer", GTK_RESPONSE_ACCEPT,NULL);
+
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    /* CREATE A GRID IN THE DIALOG BOX */
+    GtkWidget *grid_dialog = NULL;
+    grid_dialog = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_dialog), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
+
+    /* INITIATE MESSAGE ELEMENTS */
+    title = gtk_label_new("Attention, vous êtes sur le point de supprimer la fiche patient de ...");
+
+    /* FILL THE GRID */
+    gtk_grid_attach(GTK_GRID(grid_dialog), title, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
+    gtk_widget_set_halign(title, TRUE);
+    gtk_widget_set_hexpand(title, TRUE);
+
+
+    /* SETUP THE VIEW PARAMETERS */
+    gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 300, 150);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    gtk_widget_show_all(dialog);
+
+    /* MANAGE THE USER ACTION */
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        // deletePatient(...);
+        gtk_widget_destroy(dialog);
+    } else {
+        gtk_widget_destroy(dialog);
+    }
+}
