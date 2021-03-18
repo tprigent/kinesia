@@ -186,7 +186,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     /* ************************** SECOND PART : SECTION WHICH CONTAINS PATIENT INFORMATION **************************** */
     /* Manage the frame global and its grid */
     gtk_frame_set_label_align(GTK_FRAME(frame_info), 0.5, 0.5);
-    gtk_grid_attach_next_to(GTK_GRID(grid_left_section), frame_info, back_button, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_left_section), frame_info, back_button, GTK_POS_BOTTOM, 1, 3);
     gtk_widget_set_hexpand(frame_info, TRUE);
     gtk_widget_set_vexpand(frame_info, TRUE);
 
@@ -269,10 +269,14 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
 
     /* ******************************* THIRD PART : SECTION WHICH CONTAINS THE FOLDERS ******************************** */
     GtkWidget *folder_box = NULL;
-    folder_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    folder_box = gtk_scrolled_window_new(NULL, NULL);
     gtk_grid_attach_next_to(GTK_GRID(grid_left_section), folder_box, frame_info, GTK_POS_BOTTOM, 3, 1);
     gtk_widget_set_hexpand(folder_box, TRUE);
-    gtk_widget_set_vexpand(folder_box, FALSE);
+    gtk_widget_set_vexpand(folder_box, TRUE);
+
+    GtkWidget *folder_grid = NULL;
+    folder_grid = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(folder_box), folder_grid);
 
     int nb_folders = 3; // sere récupéré par une fonction
     int i = 0;
@@ -285,9 +289,13 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     name_folder[1] = name_folder2;
     name_folder[2] = name_folder3;
 
-    for(i =0; i < nb_folders; i++){
+    folder_button[0] = gtk_button_new_with_label(name_folder[0]);
+    gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(folder_button[0], TRUE);
+    for(i =1; i < nb_folders; i++){
         folder_button[i] = gtk_button_new_with_label(name_folder[i]);
-        gtk_box_pack_start(GTK_BOX(folder_box), folder_button[i], FALSE, FALSE, 0);
+        gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[i], folder_button[i-1], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(folder_button[i], TRUE);
     }
 
 }
