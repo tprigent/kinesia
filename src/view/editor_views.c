@@ -207,6 +207,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     /* GET INFO FROM PATIENT WINDOW STRUCT */
     Patient *patient = patient_window->patient;
     GtkWidget *window = patient_window->window;
+    int origin = patient_window->origin;
 
 
     printPatient(patient, "before being edited");
@@ -582,14 +583,18 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         //printPatient(patient, "saving data from user entries");
 
         /* Save data in model */
-        modifyPatient(patient);
+        if(origin == 1){
+            modifyPatient(patient);
+        } else {
+            addPatient(patient);
+        }
 
         /* Reload the session window */
         gtk_widget_destroy(dialog);
 
         gtk_widget_destroy(window);
 
-        if(patient_window->origin == 1){
+        if(origin == 1){
             setWorkWindow((int) patient->id);
         }else{
             setHomeWindow();
