@@ -61,6 +61,7 @@ void setHomeEnvironment(GtkWidget *window){
     GtkWidget *button_new_patient = NULL;
     GtkWidget *entry_research = NULL;
     GtkWidget *button_research = NULL;
+    GtkWidget *tabs = NULL;
 
 
     /* ASSIGN VARIABLES */
@@ -77,7 +78,7 @@ void setHomeEnvironment(GtkWidget *window){
     button_new_patient = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     entry_research = gtk_entry_new();
     button_research = gtk_button_new_from_icon_name("system-search", GTK_ICON_SIZE_MENU);
-
+    tabs = gtk_notebook_new();
 
     /* GRID WHICH ORGANIZES THE WINDOW */
     gtk_container_add(GTK_CONTAINER(window), grid);
@@ -101,21 +102,30 @@ void setHomeEnvironment(GtkWidget *window){
     /* Search a patient */
     gtk_grid_attach_next_to(GTK_GRID(grid), entry_research, frame_test, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_valign(entry_research, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid), button_research, entry_research, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(entry_research, TRUE);
+    gtk_grid_attach_next_to(GTK_GRID(grid), button_research, entry_research, GTK_POS_RIGHT, 3, 1);
     gtk_widget_set_halign(button_research, GTK_ALIGN_START);
     gtk_widget_set_valign(button_research, GTK_ALIGN_START);
+    gtk_widget_set_hexpand(button_research, TRUE);
 
     /* Add a new patient */
     g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), window);
     gtk_grid_attach_next_to(GTK_GRID(grid), button_new_patient, button_research, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_halign(button_new_patient, GTK_ALIGN_END);
     gtk_widget_set_valign(button_new_patient, GTK_ALIGN_START);
+    gtk_widget_set_hexpand(button_new_patient, TRUE);
 
     /* Box patient */
-    gtk_grid_attach_next_to(GTK_GRID(grid), box_patient, entry_research, GTK_POS_BOTTOM, 3, 13);
+    gtk_grid_attach_next_to(GTK_GRID(grid), tabs, entry_research, GTK_POS_BOTTOM, 6,1);
+    gtk_widget_set_hexpand(tabs, TRUE);
+    gtk_widget_set_vexpand(tabs, TRUE);
+    gtk_widget_set_margin_top(tabs, 15);
     gtk_grid_set_row_spacing(GTK_GRID(grid_patient), 5);
     gtk_container_add(GTK_CONTAINER(box_patient), grid_patient);
 
+    /* Add tabs */
+    gtk_notebook_append_page(GTK_NOTEBOOK(tabs), box_patient, gtk_label_new("Patients actifs"));
+    gtk_notebook_append_page(GTK_NOTEBOOK(tabs), gtk_label_new("Fiches patient archivées ici..."), gtk_label_new("Archives"));
 
     /* ADD PATIENTS */
 
@@ -133,11 +143,14 @@ void setHomeEnvironment(GtkWidget *window){
     delete_button[0] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
 
     gtk_grid_attach(GTK_GRID(grid_patient), patient_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
+    gtk_widget_set_margin_top(patient_button[0], 5);
     gtk_widget_set_hexpand(patient_button[0], TRUE);
     gtk_widget_set_vexpand(patient_button[0], FALSE);
 
     gtk_grid_attach_next_to(GTK_GRID(grid_patient), archive_button[0], patient_button[0], GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_margin_top(archive_button[0], 5);
     gtk_grid_attach_next_to(GTK_GRID(grid_patient), delete_button[0], archive_button[0], GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_margin_top(delete_button[0], 5);
 
 
     Window_id *window_id[nb_patient];
@@ -170,19 +183,6 @@ void setHomeEnvironment(GtkWidget *window){
     }
 
     //Have to free window_id tabb (can't be done here)
-
-    /* JUST TO TEST THE SCROLLBAR */
-    /*GtkWidget *patient_photo = NULL;
-    GdkPixbuf *patient_photo_pixbuf = NULL;
-
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../src/media/claude.jpeg", NULL);
-    patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 270, 350, GDK_INTERP_BILINEAR);
-    patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
-
-    gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient_photo, patient4, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(patient_photo, FALSE);
-    gtk_widget_set_vexpand(patient_photo, FALSE);
-    gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER);*/
 
 }
 
