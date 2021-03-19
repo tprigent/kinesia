@@ -625,9 +625,9 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
 
     allocateAddress(&address);
     allocatePatient(&patient);
-    char *empty = " ";
+    char *empty = "";
 
-    setDate(&date, 1, 1, 2000);
+    setDate(&date, 1, 1, 1900);
     setAddress(&address, empty, empty, empty, empty, empty);
     setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, empty, empty, date, empty, id);
 
