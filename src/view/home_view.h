@@ -11,10 +11,13 @@
 typedef struct {
     GtkWidget *window;
     int id;
+    Session *session;
 }Window_id;
 
 GtkWidget *setHomeWindow();
 void setHomeEnvironment(GtkWidget *window);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
+
+Session *createEmptySession();
 
 #endif //LOGICIEL_KINE_PATIENT_VIEW_H

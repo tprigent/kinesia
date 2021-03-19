@@ -136,6 +136,8 @@ void setHomeEnvironment(GtkWidget *window){
     window_id[0] = (Window_id*) malloc(sizeof(Window_id));
     window_id[0]->window = window;
     window_id[0]->id = 1;
+    window_id[0]->session = createEmptySession();
+
     g_signal_connect(GTK_BUTTON(patient_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
 
 
@@ -150,6 +152,7 @@ void setHomeEnvironment(GtkWidget *window){
         window_id[cursor_patient -1] = (Window_id*) malloc(sizeof(Window_id));
         window_id[cursor_patient -1]->window = window;
         window_id[cursor_patient -1]->id = cursor_patient;
+        window_id[cursor_patient -1]->session = createEmptySession();
         g_signal_connect(GTK_BUTTON(patient_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window_id[cursor_patient -1]);
     }
 
@@ -182,4 +185,22 @@ void setHomeEnvironment(GtkWidget *window){
 void launchHomeView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
     setHomeWindow();
+}
+
+Session *createEmptySession(){
+    Session *newSession = (Session*) malloc(sizeof(Session));
+    newSession->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
+    strcpy(newSession->sessionName, "Nouvelle séance");
+    newSession->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+    strcpy(newSession->observations, "Remarques");
+    newSession->sessionDate.day = 1;
+    newSession->sessionDate.month= 1;
+    newSession->sessionDate.year= 2000;
+    newSession->nextSessionDate.day = 1;
+    newSession->nextSessionDate.month= 1;
+    newSession->nextSessionDate.year= 2000;
+    newSession->idSession = 3; // METTRE ENSUITE LE NOMBRE DE SESSIONS EXISTANTES + 1
+    newSession->idFolder = 1; // METTRE ENSUITE L'ID DU DOSSIER LE PLUS RÉCENT POUR LE PATIENT CHOISI
+
+    return newSession;
 }

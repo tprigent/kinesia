@@ -10,12 +10,12 @@
 #include "../model/structures.h"
 #include "home_view.h"
 
-GtkWidget *setWorkWindow(int id_patient);
-void setWorkEnvironment(Window_id *window_id);
+GtkWidget *setWorkWindow(int id_patient, Session *session);
+void setWorkEnvironment(Window_id *window_id, Session *session);
 
 void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient);
 void fillFolderBox(GtkWidget *box);
-void fillSessionBox(GtkWidget *box);
+void fillSessionBox(GtkWidget *box, Session *session);
 void launchWorkView(GtkWidget *but, Window_id *window_id);
 
 void setStartMargin(GtkWidget *widget);

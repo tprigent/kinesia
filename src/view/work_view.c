@@ -15,7 +15,7 @@
  *
  * Focus, position, size, title and destroy callback are set.
 */
-GtkWidget *setWorkWindow(int id_patient){
+GtkWidget *setWorkWindow(int id_patient, Session *session){
 
     GtkWidget *window = NULL;
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -33,7 +33,7 @@ GtkWidget *setWorkWindow(int id_patient){
     Window_id *window_id = (Window_id*) malloc(sizeof(Window_id));
     window_id->window = window;
     window_id->id = id_patient;
-    setWorkEnvironment(window_id);
+    setWorkEnvironment(window_id, session);
     //free(window_id);
 
     gtk_widget_show_all(window);
@@ -54,7 +54,7 @@ GtkWidget *setWorkWindow(int id_patient){
  *
  * \param[in] window Session window to split
 */
-void setWorkEnvironment(Window_id *window_id){
+void setWorkEnvironment(Window_id *window_id, Session *session){
 
     /* GET PATIENT STRUCTURE FROM BDD */
     Patient *patient = getPatient(window_id->id);
@@ -89,7 +89,7 @@ void setWorkEnvironment(Window_id *window_id){
     /* Fill in the 3 spaces */
     fillPatientBox(window, boxPart[0], patient);
     fillFolderBox(boxPart[1]);
-    fillSessionBox(boxPart[2]);
+    fillSessionBox(boxPart[2], session);
 }
 
 
@@ -299,7 +299,6 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     }
 
 }
-
 
 /*!
 * \brief Fill the Folder box
@@ -512,7 +511,6 @@ void fillFolderBox(GtkWidget *box){
 
 }
 
-
 /*!
 * \brief Fill the Session box
  *
@@ -525,7 +523,7 @@ void fillFolderBox(GtkWidget *box){
  *
  * \param[in] box Existing Session box
 */
-void fillSessionBox(GtkWidget *box){
+void fillSessionBox(GtkWidget *box, Session *currentSession){
 
     /* Create a session for the tests */
     Session *session[2];
@@ -583,6 +581,8 @@ void fillSessionBox(GtkWidget *box){
     GtkWidget *session_next_meeting = NULL;
     GtkWidget *session_attach_button = NULL;
     GtkWidget *text_session_note = NULL;
+    GtkTextBuffer *session_buffer = NULL;
+    GtkTextIter start, end;
 
     /* ASSIGN VARIABLES */
     grid_session_section = gtk_grid_new();
@@ -593,10 +593,17 @@ void fillSessionBox(GtkWidget *box){
 
     session_title_new = gtk_label_new("Titre :");
     entry_title_new = gtk_entry_new();
+    gtk_entry_set_text(GTK_ENTRY(entry_title_new), currentSession->sessionName);
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     session_next_meeting = gtk_label_new("Prochain rendez-vous : 13/02/2020");
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
+
     text_session_note = gtk_text_view_new();
+    session_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_session_note));
+    gtk_text_buffer_get_end_iter(session_buffer, &end);
+    gtk_text_buffer_insert(session_buffer, &end, currentSession->observations, -1);
+    gtk_text_view_set_buffer(GTK_TEXT_VIEW(text_session_note), session_buffer);
+
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(text_session_note), 5);
     gtk_text_view_set_right_margin(GTK_TEXT_VIEW(text_session_note), 5);
     gtk_text_view_set_top_margin(GTK_TEXT_VIEW(text_session_note), 5);
@@ -786,6 +793,7 @@ void fillSessionBox(GtkWidget *box){
 
 }
 
+
 /*!
  * \brief Allows to close the patient window and open the session window
  *
@@ -797,7 +805,7 @@ void fillSessionBox(GtkWidget *box){
 */
 void launchWorkView(GtkWidget *but, Window_id *window_id){
     gtk_widget_destroy(window_id->window);
-    setWorkWindow(window_id->id);
+    setWorkWindow(window_id->id, window_id->session);
 }
 
 
