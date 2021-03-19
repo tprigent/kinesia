@@ -647,6 +647,12 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_hexpand(new_session_button, TRUE);
     gtk_widget_set_vexpand(new_session_button, FALSE);
     gtk_widget_set_halign(new_session_button, GTK_ALIGN_END);
+    Window_id *window_id1 = (Window_id*) malloc(sizeof(Window_id));
+    window_id1->window = window;
+    window_id1->id = idPatient;
+    window_id1->session = createEmptySession();
+    g_signal_connect(GTK_BUTTON(new_session_button), "clicked", G_CALLBACK(launchWorkView), window_id1);
+
 
     /* Manage to display the save button */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), save_button, new_session_button, GTK_POS_RIGHT, 1, 1);
