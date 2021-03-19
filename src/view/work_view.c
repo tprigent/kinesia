@@ -669,6 +669,7 @@ void fillSessionBox(GtkWidget *box){
     int nb_session = 2;
     char *date[nb_session];
     char *nextDate[nb_session];
+    GtkWidget *edit_button[nb_session];
     GtkWidget *date_label[nb_session];
     GtkWidget *nextDate_label[nb_session];
     GtkWidget *observations_label[nb_session];
@@ -683,7 +684,10 @@ void fillSessionBox(GtkWidget *box){
         session_frame[session_cursor] = gtk_frame_new(session[session_cursor]->sessionName);
         gtk_frame_set_label_align(GTK_FRAME(session_frame[session_cursor]), 0.5, 0.5);
 
+        edit_button[session_cursor] = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+
         session_grid[session_cursor] = gtk_grid_new();
+        gtk_grid_set_column_spacing(GTK_GRID(session_grid[session_cursor]), 5);
         gtk_container_set_border_width(GTK_CONTAINER(session_grid[session_cursor]), 5);
 
         date_label[session_cursor] = gtk_label_new("Date : ");
@@ -722,7 +726,11 @@ void fillSessionBox(GtkWidget *box){
     gtk_widget_set_hexpand(session_nextDate[0], FALSE);
     gtk_widget_set_halign(session_nextDate[0], GTK_ALIGN_END);
 
-    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), observations_label[0], date_label[0], GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), edit_button[0], session_nextDate[0], GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(edit_button[0], FALSE);
+    gtk_widget_set_halign(edit_button[0], GTK_ALIGN_END);
+
+    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), observations_label[0], date_label[0], GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(observations_label[0], GTK_ALIGN_START);
 
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_observations[0], observations_label[0], GTK_POS_RIGHT, 3, 1);
@@ -750,6 +758,10 @@ void fillSessionBox(GtkWidget *box){
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_nextDate[session_cursor-1], nextDate_label[session_cursor-1], GTK_POS_RIGHT, 1, 1);
         gtk_widget_set_hexpand(session_nextDate[session_cursor-1], FALSE);
         gtk_widget_set_halign(session_nextDate[session_cursor-1], GTK_ALIGN_END);
+
+        gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), edit_button[session_cursor-1], session_nextDate[session_cursor-1], GTK_POS_RIGHT, 1, 1);
+        gtk_widget_set_hexpand(edit_button[session_cursor-1], FALSE);
+        gtk_widget_set_halign(edit_button[session_cursor-1], GTK_ALIGN_END);
 
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), observations_label[session_cursor-1], date_label[session_cursor-1], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_halign(observations_label[session_cursor-1], GTK_ALIGN_START);
