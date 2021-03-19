@@ -89,7 +89,7 @@ void setWorkEnvironment(Window_id *window_id, Session *session){
     /* Fill in the 3 spaces */
     fillPatientBox(window, boxPart[0], patient);
     fillFolderBox(boxPart[1]);
-    fillSessionBox(boxPart[2], session);
+    fillSessionBox(window, boxPart[2], session, window_id->id);
 }
 
 
@@ -523,7 +523,7 @@ void fillFolderBox(GtkWidget *box){
  *
  * \param[in] box Existing Session box
 */
-void fillSessionBox(GtkWidget *box, Session *currentSession){
+void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, int idPatient){
 
     /* Create a session for the tests */
     Session *session[2];
@@ -736,6 +736,12 @@ void fillSessionBox(GtkWidget *box, Session *currentSession){
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), edit_button[0], session_nextDate[0], GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_hexpand(edit_button[0], FALSE);
     gtk_widget_set_halign(edit_button[0], GTK_ALIGN_END);
+    Window_id *window_id = (Window_id*) malloc(sizeof(Window_id));
+    window_id->window = window;
+    window_id->session = session[0];
+    window_id->id = idPatient;
+    g_signal_connect(GTK_BUTTON(edit_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id);
+
 
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), observations_label[0], date_label[0], GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(observations_label[0], GTK_ALIGN_START);
