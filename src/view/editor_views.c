@@ -276,7 +276,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_max_length(GTK_ENTRY(surname_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(birth_entry), 10);
     gtk_entry_set_max_length(GTK_ENTRY(job_entry), 10);
-    gtk_entry_set_max_length(GTK_ENTRY(address_entry), 60);
+    gtk_entry_set_max_length(GTK_ENTRY(address_entry), 50);
     gtk_entry_set_max_length(GTK_ENTRY(postcode_entry), 5);
     gtk_entry_set_max_length(GTK_ENTRY(city_entry), 25);
     gtk_entry_set_max_length(GTK_ENTRY(number_entry), 11);
@@ -586,16 +586,14 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
         /* Reload the session window */
         gtk_widget_destroy(dialog);
-
         gtk_widget_destroy(window);
-
         if(patient_window->origin == 1){
             Session *session = createEmptySession();
             setWorkWindow((int) patient->id, session);
         }else{
             setHomeWindow();
         }
-        gtk_widget_destroy(dialog);
+        //gtk_widget_destroy(dialog);
 
     } else {
         gtk_widget_destroy(dialog);
