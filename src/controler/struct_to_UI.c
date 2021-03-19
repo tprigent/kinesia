@@ -119,7 +119,7 @@ char *get_first_consultation_UI(Patient *patient){
  * \param[out] Char pointer containing the address
 */
 char *get_adress_UI(Patient *patient){
-    char *adress = (char*) malloc(50*sizeof(char));
+    char *adress = (char*) malloc(100*sizeof(char));
 
     strcpy(adress, patient->address.number);
     strcat(adress, " ");
