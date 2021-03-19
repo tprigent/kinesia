@@ -76,7 +76,7 @@ void setWorkEnvironment(Window_id *window_id, Session *session){
     setStartMargin(boxPart[1]);
     gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[1],boxPart[0], GTK_POS_RIGHT, 4, 5);
     gtk_widget_set_hexpand(boxPart[1], TRUE);
-    gtk_widget_set_vexpand(boxPart[1], TRUE);
+    gtk_widget_set_vexpand(boxPart[1], FALSE);
 
     boxPart[2] = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(boxPart[2]), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
@@ -342,6 +342,7 @@ void fillFolderBox(GtkWidget *box){
     GtkWidget *grid_folder = NULL;
     grid_folder = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(cadre_folder), grid_folder);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 5);
     /* ****************************************************************************** */
 
 
