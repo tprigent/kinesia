@@ -217,6 +217,17 @@ char *get_age_and_birthdate(Patient *patient){
     return ageString;
 }
 
+char *get_current_date(){
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    Date *date_struct = (Date*) malloc(sizeof(Date));
+    date_struct->day = tm.tm_mday;
+    date_struct->month = tm.tm_mon + 1;
+    date_struct->year = tm.tm_year + 1900;
+
+    char *date = get_date_UI(date_struct);
+    return date;
+}
 
 /*!
  * \brief Free allocated char pointers

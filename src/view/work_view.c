@@ -578,6 +578,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     GtkWidget *session_title_new = NULL;
     GtkWidget *entry_title_new = NULL;
+    GtkWidget *session_date_new = NULL;
+    GtkWidget *entry_date_new = NULL;
     GtkWidget *save_button = NULL;
     GtkWidget *new_session_button = NULL;
     GtkWidget *session_next_meeting = NULL;
@@ -596,6 +598,11 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     session_title_new = gtk_label_new("Titre :");
     entry_title_new = gtk_entry_new();
     gtk_entry_set_text(GTK_ENTRY(entry_title_new), currentSession->sessionName);
+    session_date_new = gtk_label_new("Date :");
+    entry_date_new = gtk_entry_new();
+    char *current_date = get_current_date();
+    gtk_entry_set_text(GTK_ENTRY(entry_date_new), current_date);
+    free_info_UI(current_date);
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     session_next_meeting = gtk_label_new("Prochain rendez-vous : 13/02/2020");
@@ -643,8 +650,19 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_vexpand(entry_title_new, FALSE);
     gtk_widget_set_halign(entry_title_new, GTK_ALIGN_START);
 
+    /* Manage to display the date of the session */
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_date_new, session_title_new, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(session_date_new, FALSE);
+    gtk_widget_set_vexpand(session_date_new, FALSE);
+    gtk_widget_set_halign(session_date_new, GTK_ALIGN_START);
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), entry_date_new, session_date_new, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(entry_date_new, FALSE);
+    gtk_widget_set_vexpand(entry_date_new, FALSE);
+    gtk_widget_set_halign(entry_date_new, GTK_ALIGN_START);
+
     /* Manage to display the new session button */
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), new_session_button, session_title_new, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), new_session_button, session_date_new, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_hexpand(new_session_button, TRUE);
     gtk_widget_set_vexpand(new_session_button, FALSE);
     gtk_widget_set_halign(new_session_button, GTK_ALIGN_END);
@@ -662,7 +680,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_halign(save_button, GTK_ALIGN_END);
 
     /* Manage to display the next appointment */
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_title_new, GTK_POS_RIGHT, 2, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_title_new, GTK_POS_RIGHT, 3, 1);
     gtk_widget_set_hexpand(session_next_meeting, FALSE);
     gtk_widget_set_vexpand(session_next_meeting, FALSE);
     gtk_widget_set_halign(session_next_meeting, GTK_ALIGN_END);
@@ -671,13 +689,14 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, entry_title_new, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session_attach_button, FALSE);
     gtk_widget_set_vexpand(session_attach_button, FALSE);
-    gtk_widget_set_halign(entry_title_new, GTK_ALIGN_START);
+    //gtk_widget_set_halign(session_attach_button, GTK_ALIGN_CENTER);
 
     /* Manage the frame and its entry to add informations about the session */
     gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, 0.5);
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 2, 4);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 3, 3);
     gtk_widget_set_hexpand(frame_session_note, TRUE);
     gtk_widget_set_vexpand(frame_session_note, TRUE);
+    //gtk_widget_set_halign(frame_session_note, GTK_ALIGN_START);
 
     gtk_container_add(GTK_CONTAINER(frame_session_note), text_session_note);
     gtk_widget_set_hexpand(text_session_note, TRUE);
