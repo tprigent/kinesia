@@ -685,6 +685,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     GtkWidget *session_observations[nb_session];
     GtkWidget *session_grid[nb_session];
     GtkWidget *session_frame[nb_session];
+    Window_id *window_id[nb_session];
+
 
     /* ASSIGN VARIABLES */
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
@@ -709,6 +711,11 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         observations_label[session_cursor] = gtk_label_new("Observations : ");
         session_observations[session_cursor] = gtk_label_new(session[session_cursor]->observations);
+
+        window_id[session_cursor] = (Window_id*) malloc(sizeof(Window_id));
+        window_id[session_cursor]->window = window;
+        window_id[session_cursor]->session = session[session_cursor];
+        window_id[session_cursor]->id = idPatient;
     }
 
     /* Initialize the first session to display */
@@ -736,11 +743,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), edit_button[0], session_nextDate[0], GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_hexpand(edit_button[0], FALSE);
     gtk_widget_set_halign(edit_button[0], GTK_ALIGN_END);
-    Window_id *window_id = (Window_id*) malloc(sizeof(Window_id));
-    window_id->window = window;
-    window_id->session = session[0];
-    window_id->id = idPatient;
-    g_signal_connect(GTK_BUTTON(edit_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id);
+    g_signal_connect(GTK_BUTTON(edit_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
 
 
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), observations_label[0], date_label[0], GTK_POS_BOTTOM, 2, 1);
@@ -775,6 +778,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), edit_button[session_cursor-1], session_nextDate[session_cursor-1], GTK_POS_RIGHT, 1, 1);
         gtk_widget_set_hexpand(edit_button[session_cursor-1], FALSE);
         gtk_widget_set_halign(edit_button[session_cursor-1], GTK_ALIGN_END);
+        g_signal_connect(GTK_BUTTON(edit_button[session_cursor-1]), "clicked", G_CALLBACK(launchWorkView), window_id[session_cursor-1]);
 
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), observations_label[session_cursor-1], date_label[session_cursor-1], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_halign(observations_label[session_cursor-1], GTK_ALIGN_START);
