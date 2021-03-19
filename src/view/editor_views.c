@@ -207,6 +207,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     /* GET INFO FROM PATIENT WINDOW STRUCT */
     Patient *patient = patient_window->patient;
     GtkWidget *window = patient_window->window;
+    int origin = patient_window->origin;
 
 
     printPatient(patient, "before being edited");
@@ -582,14 +583,18 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         //printPatient(patient, "saving data from user entries");
 
         /* Save data in model */
-        modifyPatient(patient);
+        if(origin == 1){
+            modifyPatient(patient);
+        } else {
+            addPatient(patient);
+        }
 
         /* Reload the session window */
         gtk_widget_destroy(dialog);
 
         gtk_widget_destroy(window);
 
-        if(patient_window->origin == 1){
+        if(origin == 1){
             Session *session = createEmptySession();
             setWorkWindow((int) patient->id, session);
         }else{
@@ -658,4 +663,54 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
     }
 
     gtk_widget_destroy (dialog);
+}
+
+void launchDeletePatientWarning(GtkWidget *delete_button, Patient_window *patient_window){
+    GtkWidget *dialog;
+    GtkWidget *content_area;
+    GtkWidget *title;
+    GtkWidget *explanations;
+    GtkWidget *patientName;
+    GtkWidget *symbol;
+
+    dialog = gtk_dialog_new_with_buttons ("Suppression d'une fiche patient",NULL,GTK_DIALOG_MODAL,
+                                          "Annuler",GTK_RESPONSE_REJECT,
+                                          "Supprimer", GTK_RESPONSE_ACCEPT,NULL);
+
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    /* CREATE A GRID IN THE DIALOG BOX */
+    GtkWidget *grid_dialog = NULL;
+    grid_dialog = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_dialog), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
+
+    /* INITIATE MESSAGE ELEMENTS */
+    title = gtk_label_new(NULL);
+    gtk_label_set_markup(GTK_LABEL(title), "<b><big>Attention, vous êtes sur le point de supprimer une fiche patient.</big></b>");
+    explanations = gtk_label_new("La fiche patient suivante, ainsi que tous les dossiers et séances rattachées seront supprimées.");
+    //patientName = gtk_label_new(getNameFirstnamePatient((int) patient_window->patient->id));
+
+    /* FILL THE GRID */
+    gtk_grid_attach(GTK_GRID(grid_dialog), title, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), explanations, title, GTK_POS_BOTTOM, 5,1);
+    //gtk_grid_attach_next_to(GTK_GRID(grid_dialog), patientName, explanations, GTK_POS_BOTTOM, 5,1);
+
+
+    /* SETUP THE VIEW PARAMETERS */
+    gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 300, 125);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    gtk_widget_show_all(dialog);
+
+    /* MANAGE THE USER ACTION */
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        // deletePatient(...);
+        gtk_widget_destroy(dialog);
+    } else {
+        gtk_widget_destroy(dialog);
+    }
 }

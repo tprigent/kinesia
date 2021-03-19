@@ -122,15 +122,23 @@ void setHomeEnvironment(GtkWidget *window){
     int cursor_patient;
     int nb_patient = getNbPatient();
     char *patient_name;
-    GtkWidget * patient_button[nb_patient];
+    GtkWidget *patient_button[nb_patient];
+    GtkWidget *archive_button[nb_patient];
+    GtkWidget *delete_button[nb_patient];
 
     /* Initialize first patient */
     patient_name = getNameFirstnamePatient(1);
     patient_button[0] = gtk_button_new_with_label(patient_name);
+    archive_button[0] = gtk_button_new_from_icon_name("user-trash", GTK_ICON_SIZE_MENU);
+    delete_button[0] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
 
     gtk_grid_attach(GTK_GRID(grid_patient), patient_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
     gtk_widget_set_hexpand(patient_button[0], TRUE);
     gtk_widget_set_vexpand(patient_button[0], FALSE);
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_patient), archive_button[0], patient_button[0], GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_patient), delete_button[0], archive_button[0], GTK_POS_RIGHT, 1, 1);
+
 
     Window_id *window_id[nb_patient];
     window_id[0] = (Window_id*) malloc(sizeof(Window_id));
@@ -139,20 +147,28 @@ void setHomeEnvironment(GtkWidget *window){
     window_id[0]->session = createEmptySession();
 
     g_signal_connect(GTK_BUTTON(patient_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
-
+    g_signal_connect(GTK_BUTTON(archive_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
+    g_signal_connect(GTK_BUTTON(delete_button[0]), "clicked", G_CALLBACK(launchDeletePatientWarning), window_id[0]);
 
     for(cursor_patient=2; cursor_patient < nb_patient+1; cursor_patient++){
         patient_name = getNameFirstnamePatient(cursor_patient);
         patient_button[cursor_patient-1] = gtk_button_new_with_label(patient_name);
+        archive_button[cursor_patient-1] = gtk_button_new_from_icon_name("user-trash", GTK_ICON_SIZE_MENU);
+        delete_button[cursor_patient-1] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
 
         gtk_grid_attach_next_to(GTK_GRID(grid_patient), patient_button[cursor_patient-1], patient_button[cursor_patient-2],GTK_POS_BOTTOM, 5, 1);
         gtk_widget_set_hexpand(patient_button[cursor_patient -1], TRUE);
         gtk_widget_set_vexpand(patient_button[cursor_patient -1], FALSE);
 
+        gtk_grid_attach_next_to(GTK_GRID(grid_patient), archive_button[cursor_patient-1], patient_button[cursor_patient-1], GTK_POS_RIGHT, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid_patient), delete_button[cursor_patient-1], archive_button[cursor_patient-1], GTK_POS_RIGHT, 1, 1);
+
         window_id[cursor_patient -1] = (Window_id*) malloc(sizeof(Window_id));
         window_id[cursor_patient -1]->window = window;
         window_id[cursor_patient -1]->id = cursor_patient;
         window_id[cursor_patient -1]->session = createEmptySession();
+        g_signal_connect(GTK_BUTTON(archive_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window_id[cursor_patient -1]);
+        g_signal_connect(GTK_BUTTON(delete_button[cursor_patient -1]), "clicked", G_CALLBACK(launchDeletePatientWarning), window_id[cursor_patient -1]);
         g_signal_connect(GTK_BUTTON(patient_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window_id[cursor_patient -1]);
     }
 
