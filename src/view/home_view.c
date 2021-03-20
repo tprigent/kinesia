@@ -160,8 +160,8 @@ void setHomeEnvironment(GtkWidget *window){
     window_id[0]->session = createEmptySession();
 
     g_signal_connect(GTK_BUTTON(patient_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
-    g_signal_connect(GTK_BUTTON(archive_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
-    g_signal_connect(GTK_BUTTON(delete_button[0]), "clicked", G_CALLBACK(launchDeletePatientWarning), window_id[0]);
+    g_signal_connect(GTK_BUTTON(archive_button[0]), "clicked", G_CALLBACK(launchPatientWarning), "archive");
+    g_signal_connect(GTK_BUTTON(delete_button[0]), "clicked", G_CALLBACK(launchPatientWarning), "delete");
 
     for(cursor_patient=2; cursor_patient < nb_patient+1; cursor_patient++){
         patient_name = getNameFirstnamePatient(cursor_patient);
@@ -180,8 +180,8 @@ void setHomeEnvironment(GtkWidget *window){
         window_id[cursor_patient -1]->window = window;
         window_id[cursor_patient -1]->id = cursor_patient;
         window_id[cursor_patient -1]->session = createEmptySession();
-        g_signal_connect(GTK_BUTTON(archive_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window_id[cursor_patient -1]);
-        g_signal_connect(GTK_BUTTON(delete_button[cursor_patient -1]), "clicked", G_CALLBACK(launchDeletePatientWarning), window_id[cursor_patient -1]);
+        g_signal_connect(GTK_BUTTON(archive_button[cursor_patient -1]), "clicked", G_CALLBACK(launchPatientWarning), "archive");
+        g_signal_connect(GTK_BUTTON(delete_button[cursor_patient -1]), "clicked", G_CALLBACK(launchPatientWarning), "delete");
         g_signal_connect(GTK_BUTTON(patient_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window_id[cursor_patient -1]);
     }
 
