@@ -112,7 +112,7 @@ void launchFolderEditor(Folder *folder){
     GtkWidget *grid_folder = NULL;
     grid_folder = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(frame_folder), grid_folder);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 0);
     gtk_grid_set_row_spacing(GTK_GRID(grid_folder), 5);
     gtk_grid_set_column_spacing(GTK_GRID(grid_folder), 15);
     gtk_widget_set_hexpand(grid_folder, TRUE);
