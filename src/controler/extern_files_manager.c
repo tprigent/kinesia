@@ -14,7 +14,7 @@
 void copyToMedia(char *from, Patient *patient, char *type){
 
     /* Build the destination path: media/name-firstname/ */
-    char *media_path = " ../media/";
+    char *media_path = " ../media/patient-data/";
     char *dest = (char *) malloc(sizeof(char)*(strlen(patient->firstname)+strlen(patient->name)+strlen(type)+2*strlen("-")+strlen("/")));
     strcpy(dest, media_path);
     strcat(dest, patient->firstname);
@@ -73,12 +73,12 @@ char *getExtensionFromPath(char *path){
  * \param[out] Profile photo extension
 */
 char *getProfileExtension(Patient *patient){
-    char *path = (char*) malloc(sizeof(char)*(strlen("../media/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../media/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../media/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathJPG = (char*) malloc(sizeof(char)*(strlen("../media/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *pathJPG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
     strcpy(path, "cat ");
-    strcat(path, "../media/");
+    strcat(path, "../media/patient-data/");
     strcat(path, patient->firstname);
     strcat(path, "-");
     strcat(path, patient->name);
@@ -100,7 +100,7 @@ char *getProfileExtension(Patient *patient){
 
 char *getProfilePhotoPath(Patient *patient){
     char *photo_path = (char*) malloc(sizeof(char)*(strlen(patient->firstname)+strlen(patient->name)+100));
-    strcpy(photo_path, "../media/");
+    strcpy(photo_path, "../media/patient-data/");
     strcat(photo_path, patient->firstname);
     strcat(photo_path, "-");
     strcat(photo_path, patient->name);
