@@ -191,7 +191,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     gtk_widget_set_vexpand(frame_info, TRUE);
 
     gtk_container_add(GTK_CONTAINER(frame_info), grid_info);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_info), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_info), 0);
 
     /* Button to edit information */
     g_signal_connect(GTK_BUTTON(edit_button), "clicked", G_CALLBACK(launchPatientEditor), patient_window);
@@ -342,7 +342,7 @@ void fillFolderBox(GtkWidget *box){
     GtkWidget *grid_folder = NULL;
     grid_folder = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(cadre_folder), grid_folder);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 0);
     /* ****************************************************************************** */
 
 
@@ -621,7 +621,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
 
     /* MANAGE GRID WHICH ORGANIZES THE SESSION SECTION */
-    gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 0);
     gtk_container_add(GTK_CONTAINER(box), grid_session_section);
     //gtk_box_pack_start(GTK_BOX(box), grid_session_section, TRUE, TRUE, 0);
 
@@ -634,7 +634,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_vexpand(frame_add_session, TRUE);
     gtk_widget_set_halign(frame_add_session, GTK_ALIGN_FILL);
 
-    gtk_container_set_border_width(GTK_CONTAINER(grid_add_session), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_add_session), 0);
     gtk_grid_set_row_spacing(GTK_GRID(grid_add_session), 5);
     gtk_grid_set_column_spacing(GTK_GRID(grid_add_session), 5);
     gtk_container_add(GTK_CONTAINER(frame_add_session), grid_add_session);
@@ -731,7 +731,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         session_grid[session_cursor] = gtk_grid_new();
         gtk_grid_set_column_spacing(GTK_GRID(session_grid[session_cursor]), 5);
-        gtk_container_set_border_width(GTK_CONTAINER(session_grid[session_cursor]), 5);
+        gtk_container_set_border_width(GTK_CONTAINER(session_grid[session_cursor]), 0);
 
         date_label[session_cursor] = gtk_label_new("Date : ");
         date[session_cursor] = get_date_UI(&session[session_cursor]->sessionDate);
