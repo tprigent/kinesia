@@ -16,6 +16,7 @@
  * \todo change the name of the window once the software name found
 */
 GtkWidget *setHomeWindow(){
+
     GtkWidget *window = NULL;
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
