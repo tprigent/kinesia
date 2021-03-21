@@ -112,7 +112,7 @@ void launchFolderEditor(Folder *folder){
     GtkWidget *grid_folder = NULL;
     grid_folder = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(frame_folder), grid_folder);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 0);
     gtk_grid_set_row_spacing(GTK_GRID(grid_folder), 5);
     gtk_grid_set_column_spacing(GTK_GRID(grid_folder), 15);
     gtk_widget_set_hexpand(grid_folder, TRUE);
@@ -373,7 +373,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *grid_dialog = NULL;
     grid_dialog = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_dialog), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_dialog), 0);
     gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
     gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
 
@@ -389,7 +389,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *grid_etat_civil = NULL;
     grid_etat_civil = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(frame_etat_civil), grid_etat_civil);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_etat_civil), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_etat_civil), 0);
     gtk_grid_set_row_spacing(GTK_GRID(grid_etat_civil), 5);
     gtk_grid_set_column_spacing(GTK_GRID(grid_etat_civil), 15);
 
@@ -438,7 +438,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *grid_contact = NULL;
     grid_contact = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(frame_contact), grid_contact);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_contact), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_contact), 0);
     gtk_grid_set_row_spacing(GTK_GRID(grid_contact), 5);
     gtk_grid_set_column_spacing(GTK_GRID(grid_contact), 5);
 
@@ -481,7 +481,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *grid_medical_info = NULL;
     grid_medical_info = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(frame_medical_info), grid_medical_info);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_medical_info), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_medical_info), 0);
     gtk_grid_set_row_spacing(GTK_GRID(grid_medical_info), 5);
     gtk_grid_set_column_spacing(GTK_GRID(grid_medical_info), 5);
 
