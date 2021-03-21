@@ -124,6 +124,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     GtkWidget *grid_info = NULL;
     GtkWidget *grid_etat_civil = NULL;
     GtkWidget *grid_medical_info = NULL;
+    GtkWidget *grid_other_info = NULL;
 
     GtkWidget *back_button = NULL;
     GtkWidget *edit_button = NULL;
@@ -151,6 +152,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     grid_info = gtk_grid_new();
     grid_etat_civil = gtk_grid_new();
     grid_medical_info = gtk_grid_new();
+    grid_other_info = gtk_grid_new();
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
@@ -264,7 +266,10 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     gtk_widget_set_vexpand(frame_other_info, FALSE);
 
     /* Section which fills other information */
-    gtk_container_add(GTK_CONTAINER(frame_other_info), patient_other_info);
+    gtk_container_add(GTK_CONTAINER(frame_other_info), grid_other_info);
+    gtk_widget_set_hexpand(grid_other_info, TRUE);
+    gtk_grid_attach(GTK_GRID(grid_other_info), patient_other_info, GTK_ALIGN_CENTER, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(patient_other_info, TRUE);
 
 
     /* ******************************* THIRD PART : SECTION WHICH CONTAINS THE FOLDERS ******************************** */
