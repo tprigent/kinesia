@@ -151,6 +151,17 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_grid_attach_next_to(GTK_GRID(grid_patient), delete_button[0], archive_button[0], GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_margin_top(delete_button[0], 5);
 
+    WarningType *deleteWarning[nb_patient];
+    deleteWarning[0] = (WarningType*) malloc(sizeof(WarningType));
+    deleteWarning[0]->patientID = 1;
+    deleteWarning[0]->window = window;
+    deleteWarning[0]->actionType = 0;
+
+    WarningType *archiveWarning[nb_patient];
+    archiveWarning[0] = (WarningType*) malloc(sizeof(WarningType));
+    archiveWarning[0]->patientID = 1;
+    archiveWarning[0]->window = window;
+    archiveWarning[0]->actionType = 1;
 
     Window_id *window_id[nb_patient];
     window_id[0] = (Window_id*) malloc(sizeof(Window_id));
@@ -175,6 +186,14 @@ void setHomeEnvironment(GtkWidget *window){
         gtk_grid_attach_next_to(GTK_GRID(grid_patient), archive_button[cursor_patient-1], patient_button[cursor_patient-1], GTK_POS_RIGHT, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(grid_patient), delete_button[cursor_patient-1], archive_button[cursor_patient-1], GTK_POS_RIGHT, 1, 1);
 
+        deleteWarning[cursor_patient -1] = (WarningType*) malloc(sizeof(WarningType));
+        deleteWarning[cursor_patient -1]->patientID = cursor_patient;
+        deleteWarning[cursor_patient -1]->window = window;
+        deleteWarning[cursor_patient -1]->actionType = 0;
+        archiveWarning[cursor_patient -1] = (WarningType*) malloc(sizeof(WarningType));
+        archiveWarning[cursor_patient -1]->patientID = cursor_patient;
+        archiveWarning[cursor_patient -1]->window = window;
+        archiveWarning[cursor_patient -1]->actionType = 1;
         window_id[cursor_patient -1] = (Window_id*) malloc(sizeof(Window_id));
         window_id[cursor_patient -1]->window = window;
         window_id[cursor_patient -1]->id = cursor_patient;
@@ -184,7 +203,7 @@ void setHomeEnvironment(GtkWidget *window){
         g_signal_connect(GTK_BUTTON(patient_button[cursor_patient -1]), "clicked", G_CALLBACK(launchWorkView), window_id[cursor_patient -1]);
     }
 
-    //Have to free window_id tabb (can't be done here)
+    //Have to free window_id tabb (can't be done here)*/
 
 }
 
