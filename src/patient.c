@@ -177,31 +177,31 @@ int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * i
         strcpy(a->number, "\0");
     else {
         strncpy(a->number, numM, LG_MAX_INFO);
-        a->number[strlen(numM)] = '\0';
+        a->number[LG_MAX_INFO] = '\0';
     }
     if(r == NULL)
         strcpy(a->street, "\0");
     else {
         strncpy(a->street, r, LG_MAX_INFO);
-        a->street[strlen(r)] = '\0';
+        a->street[LG_MAX_INFO] = '\0';
     }
     if(cp == NULL)
         strcpy(a->postCode, "\0");
     else {
         strncpy(a->postCode, cp, LG_MAX_INFO);
-        a->postCode[strlen(cp)] = '\0';
+        a->postCode[LG_MAX_INFO] = '\0';
     }
     if(v == NULL)
         strcpy(a->city, "\0");
     else{
         strncpy(a->city, v, LG_MAX_INFO);
-        a->city[strlen(v)] = '\0';
+        a->city[LG_MAX_INFO] = '\0';
     }
     if(iC == NULL)
         strcpy(a->other_info, "\0");
     else {
         strncpy(a->other_info, iC, LG_MAX_OTHERS);
-        a->other_info[strlen(iC)] = '\0';
+        a->other_info[LG_MAX_OTHERS] = '\0';
     }
 
     return 0;
@@ -257,57 +257,57 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
         strcpy(p->place_birth, "\0");
     else {
         strncpy(p->place_birth, placeBirth, LG_MAX_INFO);
-        p->place_birth[strlen(placeBirth)] = '\0';
+        p->place_birth[LG_MAX_INFO] = '\0';
     }
     if(ns == NULL)
         strcpy(p->ssn, "\0");
     else {
         strncpy(p->ssn, ns, LG_MAX_INFO);
-        p->ssn[strlen(ns)] = '\0';
+        p->ssn[LG_MAX_INFO] = '\0';
     }
     if(job == NULL)
         strcpy(p->job, "\0");
     else {
         strncpy(p->job, job, LG_MAX_INFO);
-        p->job[strlen(job)] = '\0';
+        p->job[LG_MAX_INFO] = '\0';
     }
     if(ma == NULL)
         strcpy(p->mail_address, "\0");
     else{
         strncpy(p->mail_address, ma, LG_MAX_INFO);
-        p->mail_address[strlen(ma)] = '\0';
+        p->mail_address[LG_MAX_INFO] = '\0';
     }
     if(gp == NULL)
         strcpy(p->global_pathologies, "\0");
     else {
         strncpy(p->global_pathologies, gp, LG_MAX_OTHERS);
-        p->global_pathologies[strlen(gp)] = '\0';
+        p->global_pathologies[LG_MAX_OTHERS] = '\0';
     }
     if(fn == NULL)
         strcpy(p->firstname, "\0");
     else {
         strncpy(p->firstname, fn, LG_MAX_INFO);
-        p->firstname[strlen(fn)] = '\0';
+        p->firstname[LG_MAX_INFO] = '\0';
     }
     if(pn == NULL)
         strcpy(p->phone_number, "\0");
     else {
         strncpy(p->phone_number,pn,LG_MAX_INFO);
-        p->phone_number[strlen(pn)] = '\0';
+        p->phone_number[LG_MAX_INFO] = '\0';
     }
     if(h == NULL) {
         strcpy(p->height, "\0");
     }
     else {
         strncpy(p->height, h, LG_MAX_INFO);
-        p->height[strlen(h)] = '\0';
+        p->height[LG_MAX_INFO] = '\0';
     }
     if(w == NULL) {
         strcpy(p->weight, "\0");
     }
     else {
         strncpy(p->weight, w, LG_MAX_INFO);
-        p->weight[strlen(w)] = '\0';
+        p->weight[LG_MAX_INFO] = '\0';
     }
     if(name == NULL) {
         strcpy(p->name, "\0");
@@ -315,7 +315,7 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     }
     else {
         strncpy(p->name, name, LG_MAX_INFO);
-        p->name[strlen(name)] = '\0';
+        p->name[LG_MAX_INFO] = '\0';
     }
 
     /*attribution des autres attributs*/
