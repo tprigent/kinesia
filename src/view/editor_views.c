@@ -599,8 +599,6 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         }else{
             setHomeWindow();
         }
-        //gtk_widget_destroy(dialog);
-
     } else {
         gtk_widget_destroy(dialog);
     }
@@ -678,9 +676,9 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
  * This function launches a dialog box to request user confirmation.
  *
  * \param[in] button Button clicked to launch this dialog box
- * \param[in] type Type of warning: "delete" or "archive"
+ * \param[in] type Type of warning: 0 = "delete" or 1 = "archive"
 */
-void launchPatientWarning(GtkWidget *button, char *type){
+void launchPatientWarning(GtkWidget *button, WarningType *warning){
     GtkWidget *dialog;
     GtkWidget *content_area;
     GtkWidget *title;
@@ -689,7 +687,7 @@ void launchPatientWarning(GtkWidget *button, char *type){
     GdkPixbuf *symbolPixbuf;
     GtkWidget *symbol;
 
-    if(strcmp(type, "delete") == 0){
+    if(warning->actionType == 0){
         dialog = gtk_dialog_new_with_buttons ("Suppression d'une fiche patient",NULL,GTK_DIALOG_MODAL,
                                               "Annuler",GTK_RESPONSE_REJECT,
                                               "Supprimer", GTK_RESPONSE_ACCEPT,NULL);
@@ -711,7 +709,7 @@ void launchPatientWarning(GtkWidget *button, char *type){
 
     /* INITIATE MESSAGE ELEMENTS */
     title = gtk_label_new(NULL);
-    if(strcmp(type, "delete") == 0){
+    if(warning->actionType == 0){
         gtk_label_set_markup(GTK_LABEL(title), "<b><big>Attention, vous êtes sur le point de supprimer une fiche patient.</big></b>");
         explanations = gtk_label_new("Tous les dossiers et séances rattachées seront également supprimées.");
         symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
@@ -721,15 +719,15 @@ void launchPatientWarning(GtkWidget *button, char *type){
         explanations = gtk_label_new("Confirmez-vous cette action ?");
         symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/archive_512.png", 64, 64, TRUE,
                                                          NULL);
-        //patientName = gtk_label_new(getNameFirstnamePatient((int) patient_window->patient->id));
     }
+    patientName = gtk_label_new(getNameFirstnamePatient((int) warning->patientID));
     symbol = gtk_image_new_from_pixbuf(symbolPixbuf);
+
     /* FILL THE GRID */
     gtk_grid_attach(GTK_GRID(grid_dialog), title, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), explanations, title, GTK_POS_BOTTOM, 5,1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), GTK_WIDGET(symbol), explanations, GTK_POS_BOTTOM, 5,1);
-    //gtk_grid_attach_next_to(GTK_GRID(grid_dialog), patientName, explanations, GTK_POS_BOTTOM, 5,1);
-
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), patientName, explanations, GTK_POS_BOTTOM, 5, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), GTK_WIDGET(symbol), patientName, GTK_POS_BOTTOM, 5,1);
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
@@ -740,8 +738,20 @@ void launchPatientWarning(GtkWidget *button, char *type){
 
     /* MANAGE THE USER ACTION */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        // deletePatient(...);
+        Patient *patient = getPatient((int) warning->patientID);
+        if(warning->actionType == 0){
+            //deletePatient
+            //modifyPatient
+        } else {
+            patient->isArchived = 1;
+            modifyPatient(patient);
+        }
+
+        /* Reload the session window */
         gtk_widget_destroy(dialog);
+        gtk_widget_destroy(warning->window);
+        setHomeWindow();
+
     } else {
         gtk_widget_destroy(dialog);
     }
