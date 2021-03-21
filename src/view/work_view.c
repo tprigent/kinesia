@@ -710,8 +710,16 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     /* SECOND PART : SECTION TO DISPLAY OLD SESSIONS */
 
+    GtkWidget *session_notebook = NULL;
+    GtkWidget *session_grid = NULL;
+    session_notebook = gtk_notebook_new();
+    session_grid = gtk_grid_new();
+    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_notebook, frame_add_session, GTK_POS_BOTTOM, 1, 1);
+    gtk_notebook_append_page(GTK_NOTEBOOK(session_notebook), session_grid, gtk_label_new("Patients actifs"));
+
+
     /* DECLARE VARIABLES */
-    int session_cursor;
+    /*int session_cursor;
     int nb_session = 2;
     char *date[nb_session];
     char *nextDate[nb_session];
@@ -724,11 +732,11 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     GtkWidget *session_observations[nb_session];
     GtkWidget *session_grid[nb_session];
     GtkWidget *session_frame[nb_session];
-    Window_id *window_id[nb_session];
+    Window_id *window_id[nb_session]; */
 
 
     /* ASSIGN VARIABLES */
-    for(session_cursor=0; session_cursor<nb_session; session_cursor++){
+    /*for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         session_frame[session_cursor] = gtk_frame_new(session[session_cursor]->sessionName);
         gtk_frame_set_label_align(GTK_FRAME(session_frame[session_cursor]), 0.5, 0.5);
 
@@ -755,10 +763,10 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         window_id[session_cursor]->window = window;
         window_id[session_cursor]->session = session[session_cursor];
         window_id[session_cursor]->id = idPatient;
-    }
+    }*/
 
     /* Initialize the first session to display */
-    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_frame[0], frame_add_session, GTK_POS_BOTTOM, 1, 1);
+    /*gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_frame[0], frame_add_session, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session_frame[0], TRUE);
     gtk_widget_set_vexpand(session_frame[0], FALSE);
     gtk_widget_set_halign(session_frame[0], GTK_ALIGN_FILL);
@@ -790,10 +798,10 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_observations[0], observations_label[0], GTK_POS_RIGHT, 3, 1);
     gtk_widget_set_hexpand(session_grid[0], TRUE);
-    gtk_widget_set_halign(session_observations[0], GTK_ALIGN_START);
+    gtk_widget_set_halign(session_observations[0], GTK_ALIGN_START);*/
 
     /* Loop to display all the other sessions */
-    for(session_cursor=2; session_cursor<nb_session+1; session_cursor++){
+    /*for(session_cursor=2; session_cursor<nb_session+1; session_cursor++){
         gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_frame[session_cursor-1], session_frame[session_cursor-2], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(session_frame[session_cursor-1], TRUE);
         gtk_widget_set_vexpand(session_frame[session_cursor-1], FALSE);
@@ -824,7 +832,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_observations[session_cursor-1], observations_label[session_cursor-1], GTK_POS_RIGHT, 3, 1);
         gtk_widget_set_halign(session_observations[session_cursor-1], GTK_ALIGN_START);
-    }
+    }*/
 
 
     /* JUST TO TEST THE SCROLLBAR */
