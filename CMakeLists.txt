@@ -21,9 +21,11 @@ set(SOURCE_FILES
         src/view/home_view.c
         src/view/work_view.c
         src/patient.c
+        src/folder.c
         src/controler/UI_to_struct.c
-        #src/seance.c
-        src/controler/extern_files_manager.c src/controler/extern_files_manager.h)
+        src/seance.c
+        src/controler/extern_files_manager.c src/controler/extern_files_manager.h
+        src/model/structures.h)
 
 add_executable(Kinesia ${SOURCE_FILES})
 

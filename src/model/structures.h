@@ -92,6 +92,17 @@ typedef struct{
     unsigned int idFolder;      /**< Related Folder identifier */
 }Session;
 
+typedef struct NodeList{
+    Session session;
+    struct NodeList *next;
+    struct NodeList *previous;
+}NodeList;
+
+typedef struct{
+    NodeList *first;
+    NodeList *current;
+    NodeList *last;
+}SessionList;
 
 /**
  * \brief Structure to represent a Folder
@@ -105,10 +116,14 @@ typedef struct{
     char *details;              /**< Important things to know about the pathology */
     Date startOfTreatment;      /**< Date of the beginning of the treatment */
     unsigned int numberOfFiles; /**< Attachment counter */
+
+    SessionList *ListOfSessions;
+
     /**
      * \name Database information
     */
     unsigned int idFolder;      /**< Folder unique identifier to select it in model */
+    unsigned int idPatient;
 }Folder;
 
 #endif //LOGICIEL_KINE_STRUCTURES_H
