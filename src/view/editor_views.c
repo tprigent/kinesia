@@ -717,8 +717,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
         gtk_label_set_markup(GTK_LABEL(title),
                              "<b><big>Vous êtes sur le point d'archiver un patient</big></b>");
         explanations = gtk_label_new("Confirmez-vous cette action ?");
-        symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/archive_512.png", 64, 64, TRUE,
-                                                         NULL);
+        symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/archive_512.png", 64, 64, TRUE,NULL);
     }
     patientName = gtk_label_new(getNameFirstnamePatient((int) warning->patientID));
     symbol = gtk_image_new_from_pixbuf(symbolPixbuf);
@@ -755,4 +754,5 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     } else {
         gtk_widget_destroy(dialog);
     }
+
 }
