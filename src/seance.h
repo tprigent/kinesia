@@ -11,8 +11,6 @@
 #include <sqlite3.h>
 
 /*session's allocation's functions*/
-int allocateStringSession(char **string, int lg);
-int allocateSession(Session *s);
 void freeSession(Session *s);
 
 /*list gestion's functions*/

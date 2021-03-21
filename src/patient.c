@@ -218,7 +218,6 @@ int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * i
  * \param[out] int, 0 if it went well, -1 otherwise
 */
 int setDate(Date * d, int j, int m, int a) {
-    if(d == NULL || j>31 || j <=0 || m <= 0 || m > 12 || a<=0) return -1;
     d->day = j;
     d->month = m;
     d->year = a;
