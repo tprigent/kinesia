@@ -761,42 +761,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_notebook, frame_add_session, GTK_POS_BOTTOM, 1, 1);
 
-
-    /* Initialize the first session to display */
-    /*gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_frame[0], frame_add_session, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(session_frame[0], TRUE);
-    gtk_widget_set_vexpand(session_frame[0], FALSE);
-    gtk_widget_set_halign(session_frame[0], GTK_ALIGN_FILL);
-    gtk_container_add(GTK_CONTAINER(session_frame[0]), session_grid[0]);
-
-
-    gtk_grid_attach(GTK_GRID(session_grid[0]), date_label[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_halign(date_label[0], GTK_ALIGN_START);
-
-    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_date[0], date_label[0], GTK_POS_RIGHT, 1, 1);
-    gtk_widget_set_halign(session_date[0], GTK_ALIGN_START);
-
-    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), nextDate_label[0], session_date[0], GTK_POS_RIGHT, 1, 1);
-    gtk_widget_set_hexpand(nextDate_label[0], TRUE);
-    gtk_widget_set_halign(nextDate_label[0], GTK_ALIGN_END);
-
-    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_nextDate[0], nextDate_label[0], GTK_POS_RIGHT, 1, 1);
-    gtk_widget_set_hexpand(session_nextDate[0], FALSE);
-    gtk_widget_set_halign(session_nextDate[0], GTK_ALIGN_END);
-
-    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), edit_button[0], session_nextDate[0], GTK_POS_RIGHT, 1, 1);
-    gtk_widget_set_hexpand(edit_button[0], FALSE);
-    gtk_widget_set_halign(edit_button[0], GTK_ALIGN_END);
-    g_signal_connect(GTK_BUTTON(edit_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
-
-
-    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), observations_label[0], date_label[0], GTK_POS_BOTTOM, 2, 1);
-    gtk_widget_set_halign(observations_label[0], GTK_ALIGN_START);
-
-    gtk_grid_attach_next_to(GTK_GRID(session_grid[0]), session_observations[0], observations_label[0], GTK_POS_RIGHT, 3, 1);
-    gtk_widget_set_hexpand(session_grid[0], TRUE);
-    gtk_widget_set_halign(session_observations[0], GTK_ALIGN_START);*/
-
     /* Loop to display all the other sessions */
     for(session_cursor=1; session_cursor<nb_session+1; session_cursor++){
         gtk_notebook_append_page(GTK_NOTEBOOK(session_notebook), session_grid[session_cursor-1], gtk_label_new(session[session_cursor-1]->sessionName));
