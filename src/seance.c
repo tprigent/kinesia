@@ -11,43 +11,51 @@
 #include "string.h"
 #include "patient.h"
 
-int allocateStringSession(char **string, int lg) {
-    *string = malloc(sizeof(char)*lg+1);
-    if(*string == NULL) return -1;
-    return 0;
-}
-
-int allocateSession(Session *s) {
-
-    if(allocateStringSession(&(s->observations), LG_MAX_INFO) !=0
-    || allocateStringSession(&(s->sessionName), LG_MAX_INFO) !=0) return -1;
-
-    return 0;
-}
 
 void freeSession(Session *s) {
-    free((void *)s->observations);
-    free((void *)s->sessionName);
+    if(s->observations!=NULL) free((void *)s->observations);
+    if(s->sessionName!=NULL) free((void *)s->sessionName);
+}
+
+static Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
+
+    newS->sessionName = (char *) malloc(sizeof(char)*LG_MAX_INFO + 1);
+    newS->observations = (char *) malloc(sizeof(char)*LG_MAX_OTHERS + 1);
+
+    if(newS->sessionName !=NULL && newS->observations != NULL) {
+        if(sName == NULL) strcpy(newS->sessionName, "\0");
+        else {
+            strncpy(newS->sessionName, sName, LG_MAX_INFO);
+            newS->sessionName[LG_MAX_INFO] = '\0';
+        }
+
+        if(obs == NULL) strcpy(newS->observations, "\0");
+        else {
+            strncpy(newS->observations, obs, LG_MAX_OTHERS);
+            newS->observations[LG_MAX_OTHERS] = '\0';
+        }
+
+        setDate(&(newS->nextSessionDate), nsdDay, nsdMonth, nsdYear);
+        setDate(&(newS->sessionDate), sdDay, sdMonth, sdYear);
+
+        newS->idFolder = idFolder;
+        newS->idSession = idS;
+
+    }
+
+    else freeSession(newS);
+
+    return newS;
 }
 
 static NodeList * newNodeList(char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder, NodeList *nextNode, NodeList *prevNode) {
-    NodeList *newNode = malloc(sizeof(NodeList));
-    if(newNode != NULL) {
-        if(allocateSession(&(newNode->session)) !=0) return NULL;
+    NodeList *newNode = (NodeList *) malloc(sizeof(NodeList));
 
-        strncpy(newNode->session.sessionName, sName, LG_MAX_INFO);
-        strncpy(newNode->session.observations, obs, LG_MAX_OTHERS);
-        newNode->session.sessionName[LG_MAX_INFO] = '\0';
-        newNode->session.observations[LG_MAX_OTHERS] = '\0';
+    if(newNode == NULL) return NULL;
+    newNode->session = *initSession(&newNode->session, sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, idS, idFolder);
 
-        if(setDate(&(newNode->session.nextSessionDate), nsdDay, nsdMonth, nsdYear) !=0
-        || setDate(&(newNode->session.sessionDate), sdDay, sdMonth, sdYear) !=0) return NULL;
-
-        newNode->session.idFolder = idFolder;
-        newNode->session.idSession = idS;
-        newNode->next = nextNode;
-        newNode->previous = prevNode;
-    }
+    newNode->next = nextNode;
+    newNode->previous = prevNode;
     return newNode;
 }
 
@@ -72,14 +80,14 @@ int insertFirst(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, 
     NodeList * newNode = newNodeList(sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, idS, idFolder, l->first, NULL);
     if(newNode == NULL) return -1;
 
-    if(isEmpty(l)) {
+    if(isEmpty(l) !=0) {
 
         l->last = newNode;
     }
-    l->first->previous = newNode;
+    else l->first->previous = newNode;
     l->first = newNode;
 
-    return -1;
+    return 0;
 }
 
 int insertLast(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
@@ -87,11 +95,11 @@ int insertLast(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, i
     NodeList * newNode = newNodeList(sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, idS, idFolder, NULL, l->last);
     if(newNode == NULL) return -1;
 
-    l->last->next = newNode;
-    l->last = newNode;
-    if(isEmpty(l)) {
+    if(isEmpty(l) !=0) {
         l->first = newNode;
     }
+    else l->last->next = newNode;
+    l->last = newNode;
 
     return 0;
 }
@@ -104,6 +112,8 @@ void deleteFirst(SessionList *l) {
 
 void deleteCurrent(SessionList *l) {
     NodeList *ptr = l->current;
+    if(l->current == l->last) l->last = l->current->previous;
+    if(l->current == l->first) l->first = l->current->next;
     l->current->next->previous = l->current->previous;
     l->current->previous->next = l->current->next;
     l->current = l->first;
@@ -135,6 +145,7 @@ void setOnLast(SessionList *l) {
 }
 
 void setOnNext(SessionList *l) {
+    if(l->current == NULL) l->current = NULL;
     l->current = l->current->next;
 }
 
@@ -145,9 +156,10 @@ int isOutOfList(SessionList *l) {
 
 void freeList(SessionList *l) {
     setOnFirst(l);
-    while(!isEmpty(l)) {
+    while(isOutOfList(l) ==0) {
+        NodeList *temp = l->current->next;
         freeNodeList(l->current);
-        setOnNext(l);
+        l->current = temp;
     }
     free(l);
 }

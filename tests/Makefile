@@ -6,7 +6,7 @@ LDFLAGS+= `pkg-config --libs sqlite3`
 all: main
 
 
-main: struct_to_UI.o UI_to_struct.o UTest.o UTest_UI.o UTest_BDD.o patient.o
+main: struct_to_UI.o UI_to_struct.o UTest.o UTest_UI.o UTest_BDD.o UTest_session.o patient.o seance.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
@@ -16,6 +16,9 @@ struct_to_UI.o: ../src/controler/struct_to_UI.c
 	$(CC) -c $(CFLAGS) $< $^
 
 patient.o: ../src/patient.c
+	$(CC) -c $(CFLAGS) $< $^
+
+seance.o: ../src/seance.c
 	$(CC) -c $(CFLAGS) $< $^
 
 UI_to_struct.o: ../src/controler/UI_to_struct.c
