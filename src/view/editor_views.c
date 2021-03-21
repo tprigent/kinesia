@@ -676,7 +676,7 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
  * This function launches a dialog box to request user confirmation.
  *
  * \param[in] button Button clicked to launch this dialog box
- * \param[in] type Type of warning: 1 = "delete" or 0 = "archive"
+ * \param[in] type Type of warning: 0 = "delete" or 1 = "archive"
 */
 void launchPatientWarning(GtkWidget *button, WarningType *warning){
     GtkWidget *dialog;
@@ -687,7 +687,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     GdkPixbuf *symbolPixbuf;
     GtkWidget *symbol;
 
-    if(warning->actionType == 1){
+    if(warning->actionType == 0){
         dialog = gtk_dialog_new_with_buttons ("Suppression d'une fiche patient",NULL,GTK_DIALOG_MODAL,
                                               "Annuler",GTK_RESPONSE_REJECT,
                                               "Supprimer", GTK_RESPONSE_ACCEPT,NULL);
@@ -709,7 +709,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
 
     /* INITIATE MESSAGE ELEMENTS */
     title = gtk_label_new(NULL);
-    if(warning->actionType == 1){
+    if(warning->actionType == 0){
         gtk_label_set_markup(GTK_LABEL(title), "<b><big>Attention, vous êtes sur le point de supprimer une fiche patient.</big></b>");
         explanations = gtk_label_new("Tous les dossiers et séances rattachées seront également supprimées.");
         symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
@@ -739,7 +739,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     /* MANAGE THE USER ACTION */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         Patient *patient = getPatient((int) warning->patientID);
-        if(warning->actionType == 1){
+        if(warning->actionType == 0){
             //deletePatient
             //modifyPatient
         } else {
