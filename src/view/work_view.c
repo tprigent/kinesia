@@ -588,6 +588,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     GtkWidget *save_button = NULL;
     GtkWidget *new_session_button = NULL;
     GtkWidget *session_next_meeting = NULL;
+    GtkWidget *entry_next_meeting = NULL;
     GtkWidget *session_attach_button = NULL;
     GtkWidget *text_session_note = NULL;
     GtkTextBuffer *session_buffer = NULL;
@@ -603,14 +604,18 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     session_title_new = gtk_label_new("Titre :");
     entry_title_new = gtk_entry_new();
     gtk_entry_set_text(GTK_ENTRY(entry_title_new), currentSession->sessionName);
+
     session_date_new = gtk_label_new("Date :");
     entry_date_new = gtk_entry_new();
     char *current_date = get_current_date();
     gtk_entry_set_text(GTK_ENTRY(entry_date_new), current_date);
+    session_next_meeting = gtk_label_new("Prochain rendez-vous : ");
+    entry_next_meeting = gtk_entry_new();
+    gtk_entry_set_text(GTK_ENTRY(entry_next_meeting), current_date);
     free_info_UI(current_date);
+
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
-    session_next_meeting = gtk_label_new("Prochain rendez-vous : 13/02/2020");
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
 
     text_session_note = gtk_text_view_new();
@@ -685,10 +690,15 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_halign(save_button, GTK_ALIGN_END);
 
     /* Manage to display the next appointment */
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_title_new, GTK_POS_RIGHT, 3, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_date_new, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_hexpand(session_next_meeting, FALSE);
     gtk_widget_set_vexpand(session_next_meeting, FALSE);
     gtk_widget_set_halign(session_next_meeting, GTK_ALIGN_END);
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), entry_next_meeting, session_next_meeting, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(entry_next_meeting, FALSE);
+    gtk_widget_set_vexpand(entry_next_meeting, FALSE);
+    gtk_widget_set_halign(entry_next_meeting, GTK_ALIGN_START);
 
     /* Manage the button to attach items */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, entry_title_new, GTK_POS_BOTTOM, 1, 1);
@@ -698,7 +708,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     /* Manage the frame and its entry to add informations about the session */
     gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, 0.5);
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 3, 3);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 5, 3);
     gtk_widget_set_hexpand(frame_session_note, TRUE);
     gtk_widget_set_vexpand(frame_session_note, TRUE);
     //gtk_widget_set_halign(frame_session_note, GTK_ALIGN_START);
