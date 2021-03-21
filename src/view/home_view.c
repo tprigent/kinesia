@@ -206,7 +206,9 @@ void launchHomeView(GtkWidget *but, GtkWidget *window){
 Session *createEmptySession(){
     Session *newSession = (Session*) malloc(sizeof(Session));
     newSession->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
-    strcpy(newSession->sessionName, "Nouvelle séance");
+    char *new_session_name = get_new_session_name();
+    strcpy(newSession->sessionName, new_session_name);
+    free_info_UI(new_session_name);
     newSession->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
     strcpy(newSession->observations, "Remarques");
     newSession->sessionDate.day = 1;
