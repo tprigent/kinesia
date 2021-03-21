@@ -217,6 +217,7 @@ char *get_age_and_birthdate(Patient *patient){
     return ageString;
 }
 
+// VOIR POUR FREE LA DATE
 char *get_current_date(){
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -227,6 +228,17 @@ char *get_current_date(){
 
     char *date = get_date_UI(date_struct);
     return date;
+}
+
+char *get_new_session_name(){
+    char *new_session_name = (char*) malloc(21*sizeof(char));
+    char *date = get_current_date();
+
+    strcpy(new_session_name, "Séance du ");
+    strcat(new_session_name, date);
+    strcat(new_session_name, "\0");
+
+    return new_session_name;
 }
 
 /*!
