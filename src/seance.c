@@ -26,7 +26,7 @@ int addSeance(Session *seance){
         fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return 0;
     } else {
-        fprintf(stderr,"Opened model successfully\n");
+        fprintf(stderr,"Opened database successfully\n");
     }
 
     //Creation de la requête
@@ -87,7 +87,7 @@ Session * getSeance(int idSeance){
         fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
         return NULL;
     } else {
-        fprintf(stderr,"Opened model successfully\n");
+        fprintf(stderr,"Opened database successfully\n");
     }
 
     //Creation de la requête
