@@ -195,7 +195,7 @@ Patient* getPatient(int id){
 
 }
 
-int* getIdPatientArchive (){
+int* getArchivedPatientID(){
 
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -244,7 +244,7 @@ int* getIdPatientArchive (){
 
 }
 
-int* getIdPatientNonArchive (){
+int* getActivePatientID(){
 
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -291,4 +291,20 @@ int* getIdPatientNonArchive (){
     sqlite3_close(db);
     return tab_id;
 
+}
+
+int getNbArchivedPatient(){
+    int i;
+    int count = 0;
+    int nbPatients = getNbPatient();
+    for(i = 1; i<=nbPatients; i++){
+        if(getPatient(i)->isArchived == 1){
+            count ++;
+        }
+    }
+    return count;
+}
+
+int getNbActivePatient(){
+    return (getNbPatient()-getNbArchivedPatient());
 }
