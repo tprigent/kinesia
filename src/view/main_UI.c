@@ -8,6 +8,9 @@
 
 /*!
  * \brief Function that launch style.css to modify application style
+ *
+ * This function set necessary parameters to load css and use css file
+ *
 */
 static void load_css(){
     GtkCssProvider *provider;
