@@ -8,5 +8,6 @@
 #include "../model/structures.h"
 
 Folder* getFolder(int idFolder);
+char* getNameFolder(int idFolder);
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_FOLDER_H
