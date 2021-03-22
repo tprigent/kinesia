@@ -1,8 +1,8 @@
 #include "../src/model/structures.h"
 #include "../src/controller/struct_to_UI.h"
-#include "../src/patient.h"
+#include "../src/model/patient_manager.h"
 #include "UTest_session.h"
-#include "../src/seance.h"
+#include "../src/model/session_manager.h"
 
 #include <stdio.h>
 

@@ -7,7 +7,8 @@
 #define SESSION_CONTROLLER_H
 
 #include "../model/structures.h"
-#include "../patient.h"
+#include "../model/patient_manager.h"
+#include "../controller/BDD_to_struct_patient.h"
 #include "../controller/extern_files_manager.h"
 
 /**
