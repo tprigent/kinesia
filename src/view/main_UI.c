@@ -1,5 +1,5 @@
 /*!
-* \file UI.c
+* \file main_UI.c
 * \brief File with function to launch the User Interface
 */
 
@@ -9,6 +9,12 @@
 #include "../controller/struct_to_BDD_session.h"
 #include "../model/structures.h"
 
+/*!
+ * \brief Function that launch style.css to modify application style
+ *
+ * This function set necessary parameters to load css and use css file
+ *
+*/
 static void load_css(){
     GtkCssProvider *provider;
     GdkDisplay *display;
