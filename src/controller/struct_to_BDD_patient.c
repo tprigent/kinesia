@@ -124,8 +124,8 @@ int addPatient(Patient *gen){
           ",gender,phone_number,mail_adress,ssn,weight,"
           "height,first_consultation_year,first_consultation_month,"
           "first_consultation_day,global_pathologies,"
-          "number,street,postCode,city,other_info,job) VALUES (?,?,?,?,?,"
-          "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          "number,street,postCode,city,other_info,job,isArchived) VALUES (?,?,?,?,?,"
+          "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     //Préparing the request
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
@@ -160,6 +160,7 @@ int addPatient(Patient *gen){
     sqlite3_bind_text(stmt,i++,gen->address.city,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->address.other_info,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->job,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,i++,gen->isArchived);
 
     //Executing the request
     rc = sqlite3_step(stmt);
