@@ -23,7 +23,7 @@ void freePatient(Patient ** p);
 void freeAddress(Address * a);
 
 /*fonction de remplissage/modification des attributs des structures*/
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, char * w, char * h, Date fc, char * gp,unsigned int idPatient);
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, char * w, char * h, Date fc, char * gp,unsigned int idPatient,int isArchived);
 int setAddress(Address * adr, char * numM, char * r, char * cp, char * v, char * iC);
 int setDate(Date * d, int j, int m, int a);
 

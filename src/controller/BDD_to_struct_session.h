@@ -8,5 +8,6 @@
 #include "../model/structures.h"
 
 Session * getSession(int idSession);
+int * getSessionId(int idFolder);
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_SESSION_H

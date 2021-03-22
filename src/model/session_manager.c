@@ -17,7 +17,7 @@ void freeSession(Session *s) {
     if(s->sessionName!=NULL) free((void *)s->sessionName);
 }
 
-static Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
+Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
 
     newS->sessionName = (char *) malloc(sizeof(char)*LG_MAX_INFO + 1);
     newS->observations = (char *) malloc(sizeof(char)*LG_MAX_OTHERS + 1);
