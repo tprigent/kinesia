@@ -1,6 +1,7 @@
-//
-// Created by julien on 02/03/2021.
-//
+/*!
+* \file home_views.c
+* \brief File to initiate the homepage view (calendar, patient list, ...)
+*/
 
 #include <gtk/gtk.h>
 #include "home_view.h"

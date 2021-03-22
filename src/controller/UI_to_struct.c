@@ -1,6 +1,6 @@
 /*!
 * \file UI_to_struct.c
-* \brief File with functions used to parse data from UI entries to structure
+* \brief File with functions used to parse data from UI entries to structures
 */
 
 #include "UI_to_struct.h"

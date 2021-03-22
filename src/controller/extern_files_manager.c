@@ -1,6 +1,7 @@
-//
-// Created by Théo Prigent on 12/03/2021.
-//
+/*!
+* \file extern_files_manager.c
+* \brief File utilities to load, copy and move attachments to the software
+*/
 
 #include "extern_files_manager.h"
 

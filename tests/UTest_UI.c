@@ -7,11 +7,6 @@
 #include "../src/controller/struct_to_UI.h"
 #include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/model/patient_manager.h"
-
-//#include "../src/structures.h"
-//#include "../src/struct_to_UI.h"
-//#include "../src/patient.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
