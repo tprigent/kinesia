@@ -3,10 +3,10 @@
 //
 
 #include "BDD_to_struct_session.h"
+#include "../model/session_manager.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../model/session_manager.c"
 
 //Recupération d'une séance
 Session * getSession(int idSession){
@@ -34,17 +34,21 @@ Session * getSession(int idSession){
     //Creation de la requête
     sql = "SELECT * FROM seance WHERE idSeance=?";
 
-    sqlite3_bind_int(stmt,-1,idSession);
-
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     if( rc != SQLITE_OK ){
         fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);
     }
 
-    while(sqlite3_step(stmt) == SQLITE_ROW){
+    sqlite3_bind_int(stmt,1,idSession);
 
-    }
+    sqlite3_step(stmt);
+
+    initSession(session,(char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,8),
+                sqlite3_column_int(stmt,4),sqlite3_column_int(stmt,3),sqlite3_column_int(stmt,2),
+                sqlite3_column_int(stmt,7),sqlite3_column_int(stmt,6),sqlite3_column_int(stmt,5),
+                sqlite3_column_int(stmt,0),sqlite3_column_int(stmt,1));
+
     sqlite3_finalize(stmt);
 
     //Fermeture de la bdd
@@ -81,13 +85,13 @@ int * getSessionId(int idFolder){
     //Creation de la requête
     sql = "SELECT idSeance FROM seance WHERE idDossier=?";
 
-    sqlite3_bind_int(stmt,-1,idFolder);
-
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     if( rc != SQLITE_OK ){
         fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);
     }
+
+    sqlite3_bind_int(stmt,1,idFolder);
 
     int i;
     i=0;

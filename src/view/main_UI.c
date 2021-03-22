@@ -5,6 +5,9 @@
 
 #include <gtk/gtk.h>
 #include "home_view.h"
+#include "../controller/BDD_to_struct_session.h"
+#include "../controller/struct_to_BDD_session.h"
+#include "../model/structures.h"
 
 static void load_css(){
     GtkCssProvider *provider;
@@ -34,13 +37,27 @@ static void load_css(){
  * \param[in] pointer on the argv integer pointer from the main
 */
 int main(int argc, char **argv) {
-    gtk_init(&argc, &argv);
+    /*gtk_init(&argc, &argv);
 
     gtk_init(NULL, NULL);
     load_css();
 
     /* Launch the home window */
-    setHomeWindow();
+    //setHomeWindow();
+
+    Session *s= getSession(1);
+
+    s->sessionName = "Nouvelle seance";
+
+    addSession(s);
+
+    s->sessionName = "Nouveau nom";
+
+    modifySession(s);
+
+    s = getSession(1);
+
+    printf("Nom :%s",s->sessionName);
 
     return EXIT_SUCCESS;
 }

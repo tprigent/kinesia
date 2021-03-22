@@ -8,7 +8,7 @@
 #include "../model/structures.h"
 
 int addSession(Session *session);
-
+int modifySession(Session *session);
 
 
 #endif //LOGICIEL_KINE_STRUCT_TO_BDD_SESSION_H

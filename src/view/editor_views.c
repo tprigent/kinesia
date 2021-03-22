@@ -628,7 +628,7 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
 
     setDate(&date, 1, 1, 1900);
     setAddress(&address, empty, empty, empty, empty, empty);
-    setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, empty, empty, date, empty, id);
+    setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, empty, empty, date, empty, id,0);
 
     /* CREATE STRUCT */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
