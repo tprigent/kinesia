@@ -8,9 +8,6 @@
 #include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/model/patient_manager.h"
 
-//#include "../src/structures.h"
-//#include "../src/struct_to_UI.h"
-//#include "../src/patient.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,7 +46,7 @@ static int setup_patient(void **state){
 static void test_get_name_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char * temp = get_name_UI(patient);
-    assert_string_equal("Claude Francois", temp);
+    assert_string_equal("Claude François", temp);
     free(temp);
 }
 
@@ -110,6 +107,26 @@ static void test_get_adress_UI(void **state){
     free(temp);
 }
 
+static void test_get_age_and_birthdate(void **state){
+    Patient * patient = (Patient *) (*state);
+    char * age = get_age_and_birthdate(patient);
+    assert_string_equal("1/2/1939 (82 ans)", age);
+    free(age);
+}
+
+static void test_get_current_date(void **state){
+    char * date = get_current_date();
+    assert_string_equal("22/3/2021", date);
+    free(date);
+}
+
+static void test_get_new_session_name(void **state){
+    char * session_name = get_new_session_name();
+    assert_string_equal("Séance du 22/3/2021", session_name);
+    free(session_name);
+}
+
+
 /*!
  * \brief Teardown function which desallocates the patient
  *
@@ -139,6 +156,9 @@ int main_UI(void)
             cmocka_unit_test_setup_teardown(test_get_height_weight_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_first_consultation_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_adress_UI, setup_patient, teardown),
+            cmocka_unit_test_setup_teardown(test_get_age_and_birthdate, setup_patient, teardown),
+            cmocka_unit_test_setup_teardown(test_get_current_date, setup_patient, teardown),
+            cmocka_unit_test_setup_teardown(test_get_new_session_name, setup_patient, teardown),
     };
     return cmocka_run_group_tests_name("Test UI module",tests_UI,NULL,NULL);
 }
