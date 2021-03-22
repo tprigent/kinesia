@@ -38,9 +38,9 @@ int modifyPatient(Patient *gen){
           "gender=?,phone_number=?,mail_adress=?,ssn=?,weight=?,"
           "height=?,first_consultation_year=?,"
           "first_consultation_month=?,first_consultation_day=?,global_pathologies=?,"
-          "number=?,street=?,postCode=?,city=?,other_info=?,job=? WHERE id=?";
+          "number=?,street=?,postCode=?,city=?,other_info=?,job=?,isArchived=? WHERE id=?";
 
-    //Préparing the request
+    //Preparing the request
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     if( rc != SQLITE_OK ){
         fprintf(stderr, "Prepare error: %s\n", zErrMsg);
@@ -73,6 +73,7 @@ int modifyPatient(Patient *gen){
     sqlite3_bind_text(stmt,i++,gen->address.city,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->address.other_info,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->job,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,i++,gen->isArchived);
 
     sqlite3_bind_int(stmt,i++,(int)gen->id);
 
