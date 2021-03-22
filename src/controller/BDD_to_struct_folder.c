@@ -110,3 +110,51 @@ char* getNameFolder(int idFolder){
     return folderName;
 
 }
+
+int* getIdFolder(int idPatient){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt=NULL;
+    int* tab_id;
+
+    tab_id = (int*)malloc(sizeof(int)*NB_MAX_SESSION);
+
+    //Ouverture de la bdd
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
+        return NULL;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT idFolder FROM folder WHERE idPatient=?";
+
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    sqlite3_bind_int(stmt,1,idPatient);
+
+    int i;
+    i=0;
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+        tab_id[i] = sqlite3_column_int(stmt,0);
+        i++;
+    }
+
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return tab_id;
+
+}
