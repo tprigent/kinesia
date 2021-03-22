@@ -4,10 +4,10 @@
 
 #include "BDD_to_struct_folder.h"
 #include <sqlite3.h>
-#include "../model/structures.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "../model/folder_manager.h"
+#include <string.h>
 
 Folder* getFolder(int idFolder){
 
@@ -63,5 +63,50 @@ Folder* getFolder(int idFolder){
     //Fermeture de la bdd
     sqlite3_close(db);
     return folder;
+
+}
+
+char* getNameFolder(int idFolder){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt=NULL;
+    char* folderName;
+
+    folderName = (char*)malloc(sizeof(char)*LG_MAX_INFO);
+
+    //Ouverture de la bdd
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
+        return NULL;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT folderName FROM folder WHERE idFolder=?";
+
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    sqlite3_bind_int(stmt,1,idFolder);
+
+    sqlite3_step(stmt);
+
+    strcpy(folderName,(char*)sqlite3_column_text(stmt,0));
+
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return folderName;
 
 }
