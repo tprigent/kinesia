@@ -1,6 +1,6 @@
 /*!
 * \file struct_to_UI.h
-* \brief File with functions used to parse data from model to be displayed on UI
+* \brief File with functions used to parse data from structures to be displayed on UI
 */
 
 #include <stdio.h>

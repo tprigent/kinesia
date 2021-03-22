@@ -1,6 +1,7 @@
-//
-// Created by Théo Prigent on 12/03/2021.
-//
+/*!
+* \file extern_files_manager.h
+* \brief File utilities to load, copy and move attachments to the software
+*/
 
 #ifndef LOGICIEL_KINE_EXTERN_FILES_MANAGER_H
 #define LOGICIEL_KINE_EXTERN_FILES_MANAGER_H

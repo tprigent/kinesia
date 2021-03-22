@@ -1,6 +1,6 @@
 /*!
 * \file editor_views.c
-* \brief File with callback functions of the session view
+* \brief File with callback functions to launch dialog boxes across the software
 */
 
 

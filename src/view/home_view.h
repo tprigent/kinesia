@@ -1,8 +1,7 @@
 /*!
- * \file home_view.c
- * \brief File with declaration of functions to initiate the home view
+* \file home_views.h
+* \brief File to initiate the homepage view (calendar, patient list, ...)
 */
-
 
 #ifndef LOGICIEL_KINE_PATIENT_VIEW_H
 #define LOGICIEL_KINE_PATIENT_VIEW_H

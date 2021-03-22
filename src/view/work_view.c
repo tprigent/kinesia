@@ -1,6 +1,7 @@
 /*!
  * \file work_view.c
- * \brief File with functions to initiate the session view
+ * \brief File with functions to initiate the working view
+ * (information and tools useful during a session)
 */
 
 #include <gtk/gtk.h>
