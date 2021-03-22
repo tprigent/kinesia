@@ -37,27 +37,13 @@ static void load_css(){
  * \param[in] pointer on the argv integer pointer from the main
 */
 int main(int argc, char **argv) {
-    /*gtk_init(&argc, &argv);
+    gtk_init(&argc, &argv);
 
     gtk_init(NULL, NULL);
     load_css();
 
-    /* Launch the home window */
-    //setHomeWindow();
-
-    Session *s= getSession(1);
-
-    s->sessionName = "Nouvelle seance";
-
-    addSession(s);
-
-    s->sessionName = "Nouveau nom";
-
-    modifySession(s);
-
-    s = getSession(1);
-
-    printf("Nom :%s",s->sessionName);
+    /* Launch the home window*/
+    setHomeWindow();
 
     return EXIT_SUCCESS;
 }
