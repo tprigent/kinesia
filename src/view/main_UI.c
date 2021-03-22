@@ -1,11 +1,14 @@
 /*!
-* \file UI.c
+* \file main_UI.c
 * \brief File with function to launch the User Interface
 */
 
 #include <gtk/gtk.h>
 #include "home_view.h"
 
+/*!
+ * \brief Function that launch style.css to modify application style
+*/
 static void load_css(){
     GtkCssProvider *provider;
     GdkDisplay *display;
