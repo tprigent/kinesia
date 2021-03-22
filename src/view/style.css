@@ -1,3 +1,8 @@
+/*!
+* \file style.css
+* \brief File with defines background and widgets colors
+*/
+
 window {
   background-color: #F3F4FF;
 }
