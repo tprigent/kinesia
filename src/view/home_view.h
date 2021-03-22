@@ -1,6 +1,8 @@
-//
-// Created by julien on 02/03/2021.
-//
+/*!
+ * \file home_view.c
+ * \brief File with declaration of functions to initiate the home view
+*/
+
 
 #ifndef LOGICIEL_KINE_PATIENT_VIEW_H
 #define LOGICIEL_KINE_PATIENT_VIEW_H
