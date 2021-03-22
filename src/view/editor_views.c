@@ -687,15 +687,22 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     GtkWidget *patientName;
     GdkPixbuf *symbolPixbuf;
     GtkWidget *symbol;
+    Patient *patient;
 
+    patient = getPatient((int) warning->patientID);
     if(warning->actionType == 0){
         dialog = gtk_dialog_new_with_buttons ("Suppression d'une fiche patient",NULL,GTK_DIALOG_MODAL,
                                               "Annuler",GTK_RESPONSE_REJECT,
                                               "Supprimer", GTK_RESPONSE_ACCEPT,NULL);
-    } else {
+    } else if (patient->isArchived == 0){
+
         dialog = gtk_dialog_new_with_buttons ("Archivage d'une fiche patient",NULL,GTK_DIALOG_MODAL,
                                               "Annuler",GTK_RESPONSE_REJECT,
                                               "Archiver", GTK_RESPONSE_ACCEPT,NULL);
+    } else {
+        dialog = gtk_dialog_new_with_buttons ("Réactivation d'une fiche patient",NULL,GTK_DIALOG_MODAL,
+                                              "Annuler",GTK_RESPONSE_REJECT,
+                                              "Réactiver", GTK_RESPONSE_ACCEPT,NULL);
     }
 
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -714,11 +721,16 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
         gtk_label_set_markup(GTK_LABEL(title), "<b><big>Attention, vous êtes sur le point de supprimer une fiche patient.</big></b>");
         explanations = gtk_label_new("Tous les dossiers et séances rattachées seront également supprimées.");
         symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
-    } else {
+    } else if (patient->isArchived == 0){
         gtk_label_set_markup(GTK_LABEL(title),
-                             "<b><big>Vous êtes sur le point d'archiver un patient</big></b>");
+                             "<b><big>Vous êtes sur le point d'archiver une fiche patient</big></b>");
         explanations = gtk_label_new("Confirmez-vous cette action ?");
         symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/archive_512.png", 64, 64, TRUE,NULL);
+    } else {
+        gtk_label_set_markup(GTK_LABEL(title),
+                             "<b><big>Vous êtes sur le point de réactiver une fiche patient</big></b>");
+        explanations = gtk_label_new("Confirmez-vous cette action ?");
+        symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/undo_512.png", 64, 64, TRUE,NULL);
     }
     patientName = gtk_label_new(getNameFirstnamePatient((int) warning->patientID));
     symbol = gtk_image_new_from_pixbuf(symbolPixbuf);
@@ -743,10 +755,11 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
             //deletePatient
             //modifyPatient
         } else {
-            patient->isArchived = 1;
+            if(patient->isArchived == 1) patient->isArchived = 0;
+            else if(patient->isArchived == 0) patient->isArchived = 1;
             modifyPatient(patient);
         }
-
+        printPatient(patient, "just after archiving\n");
         /* Reload the session window */
         gtk_widget_destroy(dialog);
         gtk_widget_destroy(warning->window);
