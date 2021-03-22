@@ -9,5 +9,6 @@
 
 Folder* getFolder(int idFolder);
 char* getNameFolder(int idFolder);
+int* getIdFolder(int idPatient);
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_FOLDER_H
