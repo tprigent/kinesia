@@ -14,9 +14,10 @@ set(SOURCE_FILES
         UTest_UI.c
         UTest_BDD.c
         UTest_session.c
-        ../src/seance.c
+        ../src/model/session_manager.c
+        ../src/model/folder_manager.c
         ../src/controler/struct_to_UI.c
-        ../src/patient.c
+        ../src/model/patient_manager.c
         ../src/controler/UI_to_struct.c)
 
 add_executable(UnitTest UTest.c ${SOURCE_FILES})

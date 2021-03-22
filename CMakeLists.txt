@@ -20,12 +20,12 @@ set(SOURCE_FILES
         src/view/editor_views.c
         src/view/home_view.c
         src/view/work_view.c
-        src/patient.c
-        src/folder.c
+        src/model/patient_manager.c
+        src/model/folder_manager.c
         src/controler/UI_to_struct.c
-        src/seance.c
+        src/model/session_manager.c
         src/controler/extern_files_manager.c src/controler/extern_files_manager.h
-        src/model/structures.h)
+        src/model/structures.h src/controler/struct_to_BDD_patient.c src/controler/struct_to_BDD_patient.h src/controler/BDD_to_struct_patient.c src/controler/BDD_to_struct_patient.h src/controler/struct_to_BDD_folder.c src/controler/struct_to_BDD_folder.h src/controler/struct_to_BDD_session.c src/controler/struct_to_BDD_session.h src/controler/BDD_to_struct_session.c src/controler/BDD_to_struct_session.h src/controler/BDD_to_struct_folder.c src/controler/BDD_to_struct_folder.h)
 
 add_executable(Kinesia ${SOURCE_FILES})
 
