@@ -12,6 +12,7 @@
 
 /*session's allocation's functions*/
 void freeSession(Session *s);
+Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder);
 
 /*list gestion's functions*/
 void initList(SessionList *l);
@@ -28,10 +29,5 @@ void setOnNext(SessionList *l);
 int isOutOfList(SessionList *l);
 void freeList(SessionList *l);
 
-
-//Ajout d'une seance avec un instance de struct seance
-int addSession(Session *session);
-//Recupération d'une séance
-Session* getSession(int idSession);
 
 #endif //LOGICIEL_KINE_SESSION_MANAGER_H

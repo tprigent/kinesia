@@ -8,7 +8,7 @@
 
 #define LG_MAX_INFO 100
 #define LG_MAX_OTHERS 300
-
+#define NB_MAX_SESSION 100
 
 /**
  * \brief Structure to represent a Date

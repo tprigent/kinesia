@@ -246,7 +246,7 @@ int setDate(Date * d, int j, int m, int a) {
  *
  * \param[out] int, 0 if it went well, -1 otherwise
 */
-int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, char* w, char* h, Date fc, char * gp,unsigned int idPatient) {
+int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, int g, Address ad, char* pn, char * ma, char* job, char * ns, char* w, char* h, Date fc, char * gp,unsigned int idPatient,int isArchived) {
 
     if (p == NULL) return -1; //si l'instance de patient à remplir est vide, erreur
 
@@ -356,6 +356,7 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
 
     /*attribution d'un id unique par patient*/
     p->id = idPatient;
+    p->isArchived = isArchived;
 
     return 0;
 }

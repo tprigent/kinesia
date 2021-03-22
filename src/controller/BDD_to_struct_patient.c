@@ -6,6 +6,7 @@
 #include "../model/patient_manager.h"
 #include <string.h>
 #include <sqlite3.h>
+#include <stdlib.h>
 
 //Nombre de patients
 int getNbPatient(){
@@ -180,7 +181,8 @@ Patient* getPatient(int id){
                   adresse,(char*)sqlite3_column_text(stmt,8),
                   (char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,22),
                   (char*)sqlite3_column_text(stmt,10),(char*)sqlite3_column_text(stmt,11),
-                  (char*)sqlite3_column_text(stmt,12),firstRdDdate,(char*)sqlite3_column_text(stmt,16),(unsigned int)id) != 0){
+                  (char*)sqlite3_column_text(stmt,12),firstRdDdate,
+                  (char*)sqlite3_column_text(stmt,16),(unsigned int)id,sqlite3_column_int(stmt,23)) != 0){
         fprintf(stderr,"Erreur setPatient");
         patient = NULL;}
 
@@ -190,5 +192,103 @@ Patient* getPatient(int id){
     //Closing database
     sqlite3_close(db);
     return patient;
+
+}
+
+int* getIdPatientArchive (){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+    int *tab_id;
+
+    if((tab_id = (int*)malloc(sizeof(int)*NB_MAX_SESSION)) == NULL ){
+        return NULL;
+    }
+
+    //Opening database
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Testing opening
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return NULL;
+    } else {
+        fprintf(stdout,"Opened database successfully\n");
+    }
+
+    //Creating te request
+    sql = "SELECT id FROM patient WHERE isArchived=1";
+
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return NULL;
+    }
+
+    int i;
+    i=0;
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+        tab_id[i] = sqlite3_column_int(stmt,0);
+        i++;
+    }
+
+    sqlite3_finalize(stmt);
+
+    //Closing database
+    sqlite3_close(db);
+    return tab_id;
+
+}
+
+int* getIdPatientNonArchive (){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+    int *tab_id;
+
+    if((tab_id = (int*)malloc(sizeof(int)*NB_MAX_SESSION)) == NULL ){
+        return NULL;
+    }
+
+    //Opening database
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Testing opening
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return NULL;
+    } else {
+        fprintf(stdout,"Opened database successfully\n");
+    }
+
+    //Creating te request
+    sql = "SELECT id FROM patient WHERE isArchived=0";
+
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return NULL;
+    }
+
+    int i;
+    i=0;
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+        tab_id[i] = sqlite3_column_int(stmt,0);
+        i++;
+    }
+
+    sqlite3_finalize(stmt);
+
+    //Closing database
+    sqlite3_close(db);
+    return tab_id;
 
 }
