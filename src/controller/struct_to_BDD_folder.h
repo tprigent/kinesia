@@ -8,5 +8,6 @@
 #include "../model/structures.h"
 
 int addFolder(Folder *folder);
+int modifyFolder(Folder *folder);
 
 #endif //LOGICIEL_KINE_STRUCT_TO_BDD_FOLDER_H
