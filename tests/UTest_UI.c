@@ -14,6 +14,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
+
 /*!
  * \brief Setup function which allocates and return a patient
  *
