@@ -9,7 +9,7 @@
 #include <stddef.h>
 #include <cmocka.h>
 #include "UTest_BDD.h"
-#include "../src/patient.h"
+#include "../src/model/patient.h"
 #include "../src/model/structures.h"
 
 /*!

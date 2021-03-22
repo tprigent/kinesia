@@ -3,11 +3,11 @@
 * \brief File with functions to allocate, fill from model requests, and free Session structure
 */
 
-#ifndef LOGICIEL_KINE_SEANCE_H
-#define LOGICIEL_KINE_SEANCE_H
+#ifndef LOGICIEL_KINE_SESSION_MANAGER_H
+#define LOGICIEL_KINE_SESSION_MANAGER_H
 
 #include <stdio.h>
-#include "model/structures.h"
+#include "structures.h"
 #include <sqlite3.h>
 
 /*session's allocation's functions*/
@@ -34,4 +34,4 @@ int addSession(Session *session);
 //Recupération d'une séance
 Session* getSession(int idSession);
 
-#endif //LOGICIEL_KINE_SEANCE_H
+#endif //LOGICIEL_KINE_SESSION_MANAGER_H
