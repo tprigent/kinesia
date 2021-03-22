@@ -87,7 +87,7 @@ int modifySession(Session *session){
     }
 
     //Creation de la requête
-    sql = "UPDATE TABLE seance SET idDossier=?,dateSeance_year=?,dateSeance_month=?"
+    sql = "UPDATE seance SET idDossier=?,dateSeance_year=?,dateSeance_month=?"
           ",dateSeance_day=?,dateSeanceSuiv_year=?"
           ",dateSeanceSuiv_month=?,dateSeanceSuiv_day=?,observations=?,nomSeance=? WHERE idSeance=?";
 
