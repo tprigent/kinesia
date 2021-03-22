@@ -801,20 +801,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         gtk_widget_set_halign(session_observations[session_cursor-1], GTK_ALIGN_START);
     }
 
-
-    /* JUST TO TEST THE SCROLLBAR */
-    /*GtkWidget *patient_photo = NULL;
-    GdkPixbuf *patient_photo_pixbuf = NULL;
-
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file("../src/media/claude.jpeg", NULL);
-    patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 270, 350, GDK_INTERP_BILINEAR);
-    patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
-
-    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), patient_photo, session1, GTK_POS_BOTTOM, 1, 1);
-    gtk_widget_set_hexpand(patient_photo, FALSE);
-    gtk_widget_set_vexpand(patient_photo, FALSE);
-    gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER); */
-
 }
 
 

@@ -1,6 +1,6 @@
 /*!
 * \file work_view.h
-* \brief File with functions to initiate the session view
+* \brief File with declaration of functions to initiate the session view
 */
 
 #ifndef TEST_GTK_GTK_FUNCTIONS_H

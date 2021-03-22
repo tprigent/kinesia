@@ -74,7 +74,6 @@ char *get_date_UI(Date *date){
  * \param[in] patient Concerned Patient
  * \param[out] Char pointer containing the Patient height and weight
 */
-/* a simplifier avec les deux fonctions précédentes */
 char *get_height_weight_UI(Patient *patient){
     char *height_weight = (char*) malloc(sizeof(patient->height)+sizeof(patient->weight)+12*sizeof(char));
     strcpy(height_weight, patient->height);
@@ -195,7 +194,7 @@ char *get_indicator_files_UI(Folder *folder){
  * \brief Get the birthdate and the age of a Patient
  *
  * \param[in] patient Patient concerned
- * \param[out] String containing the birthdate and age to the format "dd/mm/yyy (xxx ans)"
+ * \param[out] String containing the birthdate and age to the format "dd/mm/yyyy (xxx ans)"
 */
 char *get_age_and_birthdate(Patient *patient){
     char *ageString = (char*) malloc(sizeof(char)*strlen("00/00/0000 (000 ans)"));
@@ -217,6 +216,11 @@ char *get_age_and_birthdate(Patient *patient){
     return ageString;
 }
 
+/*!
+ * \brief Get the current date
+ *
+ * \param[out] String containing the current date in format "dd/mm/yyyy"
+*/
 // VOIR POUR FREE LA DATE
 char *get_current_date(){
     time_t t = time(NULL);
@@ -230,6 +234,14 @@ char *get_current_date(){
     return date;
 }
 
+/*!
+ * \brief Get the default name for a new session
+ *
+ * This functions returns a default name for a new session,
+ * the name depends of the day (Séance du dd/mm/yyyy)
+ *
+ * \param[out] String containing the new session name
+*/
 char *get_new_session_name(){
     char *new_session_name = (char*) malloc(21*sizeof(char));
     char *date = get_current_date();
