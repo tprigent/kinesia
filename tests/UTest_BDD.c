@@ -10,9 +10,10 @@
 #include <cmocka.h>
 #include "UTest_BDD.h"
 #include "../src/model/patient_manager.h"
-#include "../src/model/structures.h"
 #include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/controller/struct_to_BDD_patient.h"
+#include "../src/model/patient_manager.h"
+#include "../src/model/structures.h"
 
 /*!
  * \brief Setup function which allocates a patient
