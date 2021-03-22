@@ -16,15 +16,15 @@ add_definitions(${GTK3_CFLAGS_OTHER})
 # Source files
 set(SOURCE_FILES
         src/view/main_UI.c
-        src/controler/struct_to_UI.c
+        src/controller/struct_to_UI.c
         src/view/editor_views.c
         src/view/home_view.c
         src/view/work_view.c
         src/patient.c
         src/folder.c
-        src/controler/UI_to_struct.c
+        src/controller/UI_to_struct.c
         src/seance.c
-        src/controler/extern_files_manager.c src/controler/extern_files_manager.h
+        src/controller/extern_files_manager.c src/controller/extern_files_manager.h
         src/model/structures.h)
 
 add_executable(Kinesia ${SOURCE_FILES})

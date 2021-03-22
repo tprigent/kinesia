@@ -4,7 +4,7 @@
 */
 
 #include "../src/model/structures.h"
-#include "../src/controler/struct_to_UI.h"
+#include "../src/controller/struct_to_UI.h"
 #include "../src/patient.h"
 
 //#include "../src/structures.h"

@@ -12,7 +12,7 @@ main: struct_to_UI.o UI_to_struct.o UTest.o UTest_UI.o UTest_BDD.o UTest_session
 %.o: %.c
 	$(CC) -c $(CFLAGS) $< $^
 
-struct_to_UI.o: ../src/controler/struct_to_UI.c
+struct_to_UI.o: ../src/controller
 	$(CC) -c $(CFLAGS) $< $^
 
 patient.o: ../src/patient.c
@@ -21,7 +21,7 @@ patient.o: ../src/patient.c
 seance.o: ../src/seance.c
 	$(CC) -c $(CFLAGS) $< $^
 
-UI_to_struct.o: ../src/controler/UI_to_struct.c
+UI_to_struct.o: ../src/controller
 	$(CC) -c $(CFLAGS) $< $^
 
 cov_test: main
