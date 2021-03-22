@@ -7,6 +7,8 @@
 #include "../src/controller/struct_to_UI.h"
 #include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/model/patient_manager.h"
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -45,7 +47,7 @@ static int setup_patient(void **state){
 static void test_get_name_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char * temp = get_name_UI(patient);
-    assert_string_equal("Claude Francois", temp);
+    assert_string_equal("Claude François", temp);
     free(temp);
 }
 
@@ -93,9 +95,9 @@ static void test_get_first_consultation_UI(void **state){
 }
 
 /*!
- * \brief test test_get_adress_UI function
+ * \brief test get_adress_UI function
  *
- * This function tests test_get_adress_UI which returns a char* "number street" passing a patient
+ * This function tests get_adress_UI which returns a char* "number street" passing a patient
  *
  * \param[in] A pointer adress to pass the allocated patient
 */
@@ -105,6 +107,49 @@ static void test_get_adress_UI(void **state){
     assert_string_equal("2 Ruetintintin", temp);
     free(temp);
 }
+
+/*!
+ * \brief test get_age_and_birthdate function
+ *
+ * This function tests get_age_and_birthdate which returns the birthdate of
+ * a patient and his age
+ *
+ * \param[in] A pointer adress to pass the allocated patient
+*/
+static void test_get_age_and_birthdate(void **state){
+    Patient * patient = (Patient *) (*state);
+    char * age = get_age_and_birthdate(patient);
+    assert_string_equal("1/2/1939 (82 ans)", age);
+    free(age);
+}
+
+/*!
+ * \brief test get_current_date function
+ *
+ * This function tests get_current_date which returns the date of the day
+ *
+ * \param[in] A pointer adress to pass the allocated patient
+*/
+static void test_get_current_date(void **state){
+    char * date = get_current_date();
+    assert_string_equal("22/3/2021", date);
+    free(date);
+}
+
+/*!
+ * \brief test get_new_session_name function
+ *
+ * This function tests get_new_session_name which returns a formatted name for
+ * a new session (Séance du dd/mm/yyyy)
+ *
+ * \param[in] A pointer adress to pass the allocated patient
+*/
+static void test_get_new_session_name(void **state){
+    char * session_name = get_new_session_name();
+    assert_string_equal("Séance du 22/3/2021", session_name);
+    free(session_name);
+}
+
 
 /*!
  * \brief Teardown function which desallocates the patient
@@ -135,6 +180,9 @@ int main_UI(void)
             cmocka_unit_test_setup_teardown(test_get_height_weight_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_first_consultation_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_adress_UI, setup_patient, teardown),
+            cmocka_unit_test_setup_teardown(test_get_age_and_birthdate, setup_patient, teardown),
+            cmocka_unit_test_setup_teardown(test_get_current_date, setup_patient, teardown),
+            cmocka_unit_test_setup_teardown(test_get_new_session_name, setup_patient, teardown),
     };
     return cmocka_run_group_tests_name("Test UI module",tests_UI,NULL,NULL);
 }
