@@ -7,7 +7,7 @@
 #include "work_view.h"
 #include "home_view.h"
 #include "editor_views.h"
-#include "../controler/struct_to_UI.h"
+#include "../controller/struct_to_UI.h"
 
 
 /*!
