@@ -723,11 +723,18 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     /* SECOND PART : SECTION TO DISPLAY OLD SESSIONS */
 
     /* DECLARE VARIABLES */
+    SessionList *session_list = NULL;
+    session_list = getSessionList(1);
+    setOnFirst(session_list);
+    int nb_session = 0;
+    while(!isOutOfList(session_list)){
+        setOnNext(session_list);
+        nb_session += 1;
+    }
+
     int session_cursor;
-    int nb_session = 2;
     char *date[nb_session];
     char *nextDate[nb_session];
-    SessionList *session_list = NULL;
     GtkWidget *session_notebook;
     GtkWidget *edit_button[nb_session];
     GtkWidget *date_label[nb_session];
@@ -741,9 +748,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
 
     /* ASSIGN VARIABLES */
-    session_list = getSessionList(1);
-    setOnFirst(session_list);
     session_notebook = gtk_notebook_new();
+    setOnFirst(session_list);
 
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         edit_button[session_cursor] = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
