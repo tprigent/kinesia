@@ -19,10 +19,16 @@
 GtkWidget *setWorkWindow(int id_patient, Session *session){
 
     GtkWidget *window = NULL;
+    GdkPixbuf *symbolPixbuf = NULL;
+
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_window_activate_focus(GTK_WINDOW(window));
     gtk_window_set_title(GTK_WINDOW(window), "Kinesia");
+
+    symbolPixbuf = gdk_pixbuf_new_from_file("../media/graphic-assets/logo.jpg", NULL);
+    gtk_window_set_icon(GTK_WINDOW(window), symbolPixbuf);
+
     gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
     gtk_window_maximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
