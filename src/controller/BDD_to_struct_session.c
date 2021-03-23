@@ -125,7 +125,7 @@ SessionList * getSessionList(int idF) {
 
     while(i<NB_MAX_SESSION && tab_id[i] != -1) {
         Session * s = getSession(tab_id[i]);
-        if(insertLast(l, s->sessionName, s->observations, s->sessionDate.day, s->sessionDate.month, s->sessionDate.year, s->nextSessionDate.day, s->nextSessionDate.month, s->nextSessionDate.year, s->idSession, s->idFolder) !=0) return NULL;
+        if(insertFirst(l, s->sessionName, s->observations, s->sessionDate.day, s->sessionDate.month, s->sessionDate.year, s->nextSessionDate.day, s->nextSessionDate.month, s->nextSessionDate.year, s->idSession, s->idFolder) !=0) return NULL;
         freeSession(s);
         free(s);
         i++;
