@@ -9,6 +9,7 @@
 #include "home_view.h"
 #include "editor_views.h"
 #include "../controller/struct_to_UI.h"
+#include "../controller/BDD_to_struct_folder.h"
 
 
 /*!
@@ -323,16 +324,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
 */
 void fillFolderBox(GtkWidget *box){
 
-    /* Create sample folder for debug *********************************************** */
-    Folder *folder = (Folder*) malloc(sizeof(Folder));
-    folder->folderName = "Entorse de la cheville";
-    folder->startOfTreatment.year = 2021;
-    folder->startOfTreatment.month = 03;
-    folder->startOfTreatment.day = 05;
-    folder->pathology = "Entorse";
-    folder->details = "Informations supplémentaires (retour à la ligne à gérer)";
-    folder->numberOfFiles = 5;
-    folder->idFolder = 111;
+    /* Getting folder  ************************************************************** */
+    Folder *folder = getFolder(1);
     /* ****************************************************************************** */
 
     /* Create a grid which contains the different elements of the folder ************ */
