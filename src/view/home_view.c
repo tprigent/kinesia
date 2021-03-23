@@ -273,12 +273,17 @@ Session *createEmptySession(){
     free_info_UI(new_session_name);
     newSession->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
     strcpy(newSession->observations, "Remarques");
-    newSession->sessionDate.day = 1;
-    newSession->sessionDate.month= 1;
-    newSession->sessionDate.year= 2000;
-    newSession->nextSessionDate.day = 1;
-    newSession->nextSessionDate.month= 1;
-    newSession->nextSessionDate.year= 2000;
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    newSession->sessionDate.day = tm.tm_mday;
+    newSession->sessionDate.month = tm.tm_mon + 1;
+    newSession->sessionDate.year = tm.tm_year + 1900;
+
+    newSession->nextSessionDate.day = tm.tm_mday;
+    newSession->nextSessionDate.month = tm.tm_mon + 1;
+    newSession->nextSessionDate.year = tm.tm_year + 1900;
+
     newSession->idSession = 3; // METTRE ENSUITE LE NOMBRE DE SESSIONS EXISTANTES + 1
     newSession->idFolder = 1; // METTRE ENSUITE L'ID DU DOSSIER LE PLUS RÉCENT POUR LE PATIENT CHOISI
 
