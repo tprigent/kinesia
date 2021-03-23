@@ -133,3 +133,47 @@ SessionList * getSessionList(int idF) {
     free(tab_id);
     return l;
 }
+
+int getNbSession(int idFolder) {
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+
+    //Ouverture de la bdd
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT * FROM seance where idDossier=?";
+
+    //Préparation de la requête
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+
+    sqlite3_bind_int(stmt,1,idFolder);
+
+    //Execution de la requête
+    rc=0;
+    while(sqlite3_step(stmt) == SQLITE_ROW) {
+        rc++;
+    }
+
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return rc;
+}

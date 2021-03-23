@@ -43,6 +43,12 @@ static void test_getSessionList(void **state) {
     freeList(l);
 }
 
+static void test_getNbSession(void **state) {
+    assert_int_equal(1, getNbSession(1));
+    assert_int_equal(1, getNbSession(2));
+    assert_int_equal(0, getNbSession(3));
+}
+
 int main_BDD_session(void) {
     const struct CMUnitTest tests_BDD_session[]=
             {
