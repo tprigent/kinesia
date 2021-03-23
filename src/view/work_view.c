@@ -10,6 +10,8 @@
 #include "editor_views.h"
 #include "../controller/struct_to_UI.h"
 #include "../controller/BDD_to_struct_folder.h"
+#include "../controller/BDD_to_struct_session.h"
+#include "../model/session_manager.h"
 
 
 /*!
@@ -725,6 +727,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     int nb_session = 2;
     char *date[nb_session];
     char *nextDate[nb_session];
+    SessionList *session_list = NULL;
     GtkWidget *session_notebook;
     GtkWidget *edit_button[nb_session];
     GtkWidget *date_label[nb_session];
@@ -738,6 +741,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
 
     /* ASSIGN VARIABLES */
+    session_list = getSessionList(1);
+    setOnFirst(session_list);
     session_notebook = gtk_notebook_new();
 
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
@@ -748,22 +753,24 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         gtk_container_set_border_width(GTK_CONTAINER(session_grid[session_cursor]), 0);
 
         date_label[session_cursor] = gtk_label_new("Date : ");
-        date[session_cursor] = get_date_UI(&session[session_cursor]->sessionDate);
+        date[session_cursor] = get_date_UI(&session_list->current->session.sessionDate);
         session_date[session_cursor] = gtk_label_new(date[session_cursor]);
         free(date[session_cursor]);
 
         nextDate_label[session_cursor] = gtk_label_new("Date du prochain rendez-vous : ");
-        nextDate[session_cursor] = get_date_UI(&session[session_cursor]->nextSessionDate);
+        nextDate[session_cursor] = get_date_UI(&session_list->current->session.nextSessionDate);
         session_nextDate[session_cursor] = gtk_label_new(nextDate[session_cursor]);
         free(nextDate[session_cursor]);
 
         observations_label[session_cursor] = gtk_label_new("Observations : ");
-        session_observations[session_cursor] = gtk_label_new(session[session_cursor]->observations);
+        session_observations[session_cursor] = gtk_label_new(session_list->current->session.observations);
 
         window_id[session_cursor] = (Window_id*) malloc(sizeof(Window_id));
         window_id[session_cursor]->window = window;
         window_id[session_cursor]->session = session[session_cursor];
         window_id[session_cursor]->id = idPatient;
+
+        setOnNext(session_list);
     }
 
     //gtk_notebook_append_page(GTK_NOTEBOOK(session_notebook), session_grid, gtk_label_new("Patients actifs"));
@@ -772,8 +779,9 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_grid_attach_next_to(GTK_GRID(grid_session_section), session_notebook, frame_add_session, GTK_POS_BOTTOM, 1, 1);
 
     /* Loop to display all the other sessions */
+    setOnFirst(session_list);
     for(session_cursor=1; session_cursor<nb_session+1; session_cursor++){
-        gtk_notebook_append_page(GTK_NOTEBOOK(session_notebook), session_grid[session_cursor-1], gtk_label_new(session[session_cursor-1]->sessionName));
+        gtk_notebook_append_page(GTK_NOTEBOOK(session_notebook), session_grid[session_cursor-1], gtk_label_new(session_list->current->session.sessionName));
 
         gtk_grid_attach(GTK_GRID(session_grid[session_cursor-1]), date_label[session_cursor-1], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         gtk_widget_set_halign(date_label[session_cursor-1], GTK_ALIGN_START);
@@ -799,6 +807,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         gtk_grid_attach_next_to(GTK_GRID(session_grid[session_cursor-1]), session_observations[session_cursor-1], observations_label[session_cursor-1], GTK_POS_RIGHT, 3, 1);
         gtk_widget_set_halign(session_observations[session_cursor-1], GTK_ALIGN_START);
+
+        setOnNext(session_list);
     }
 
 }
