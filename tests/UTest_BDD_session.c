@@ -5,6 +5,7 @@
 #include <cmocka.h>
 #include "../src/controller/BDD_to_struct_session.h"
 #include "UTest_BDD_session.h"
+#include "../src/model/session_manager.h"
 
 static void test_getSession(void **state){
     Session * s = getSession(1);
@@ -39,13 +40,15 @@ static void test_getSessionList(void **state) {
     assert_int_equal(30, l->last->session.nextSessionDate.day);
     assert_int_equal(22, l->last->session.sessionDate.day);
     assert_int_equal(2, l->last->session.idSession);
+    freeList(l);
 }
 
 int main_BDD_session(void) {
     const struct CMUnitTest tests_BDD_session[]=
             {
                     cmocka_unit_test(test_getSession),
-                    cmocka_unit_test(test_getSessionId)
+                    cmocka_unit_test(test_getSessionId),
+                    cmocka_unit_test(test_getSessionList)
             };
     return cmocka_run_group_tests_name("Test BDD_session module",tests_BDD_session,NULL,NULL);
 }
