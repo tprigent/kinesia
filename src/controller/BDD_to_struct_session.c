@@ -94,11 +94,17 @@ int * getSessionId(int idFolder){
     sqlite3_bind_int(stmt,1,idFolder);
 
     int i;
+    int j;
     i=0;
     while(sqlite3_step(stmt) == SQLITE_ROW){
         tab_id[i] = sqlite3_column_int(stmt,0);
         i++;
     }
+
+    for(j=i; j<NB_MAX_SESSION; j++) {
+        tab_id[j] = -1;
+    }
+
     sqlite3_finalize(stmt);
 
     //Fermeture de la bdd
