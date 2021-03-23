@@ -609,12 +609,15 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     session_date_new = gtk_label_new("Date :");
     entry_date_new = gtk_entry_new();
-    char *current_date = get_current_date();
-    gtk_entry_set_text(GTK_ENTRY(entry_date_new), current_date);
+    char *session_date_char = get_date_UI(&currentSession->sessionDate);
+    gtk_entry_set_text(GTK_ENTRY(entry_date_new), session_date_char);
+    free_info_UI(session_date_char);
+
     session_next_meeting = gtk_label_new("Prochain rendez-vous : ");
     entry_next_meeting = gtk_entry_new();
-    gtk_entry_set_text(GTK_ENTRY(entry_next_meeting), current_date);
-    free_info_UI(current_date);
+    char *next_session_date_char = get_date_UI(&currentSession->nextSessionDate);
+    gtk_entry_set_text(GTK_ENTRY(entry_next_meeting), next_session_date_char);
+    free_info_UI(next_session_date_char);
 
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
@@ -773,7 +776,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         window_id[session_cursor] = (Window_id*) malloc(sizeof(Window_id));
         window_id[session_cursor]->window = window;
-        window_id[session_cursor]->session = session[session_cursor];
+        window_id[session_cursor]->session = &session_list->current->session;
         window_id[session_cursor]->id = idPatient;
 
         setOnNext(session_list);
