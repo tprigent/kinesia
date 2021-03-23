@@ -86,7 +86,7 @@ static void test_setPatient(void **state) {
 
     Address address = {"15", "rue de la soif", "35000", "Rennes", "none"};
 
-    assert_int_equal(0, setPatient(patient, "Claude", "Francois", date, "ici", 0, address, "0123456789", "mailAddress", "chanteur", "11111111", 68, 170, date, "test",1));
+    assert_int_equal(0, setPatient(patient, "Claude", "Francois", date, "ici", 0, address, "0123456789", "mailAddress", "chanteur", "11111111", "68", "170", date, "test",1,0));
     assert_string_equal("Claude", patient->name);
     assert_string_equal("Francois", patient->firstname);
     assert_string_equal("ici", patient->place_birth);
@@ -160,7 +160,7 @@ static void test_addPatient(void **state){
                   adresse,"1",
                   "1","1",
                   "1",1,
-                  1,firtsConsDate,"1",0) != 0) {
+                  1,firtsConsDate,"1",0,1) != 0) {
         fprintf(stderr, "Erreur setPatient");
         p = NULL;
     }
@@ -193,7 +193,7 @@ static void test_modifyPatient(void **state){
                   adresse,"1",
                   "1","1",
                   "1",1,
-                  1,firtsConsDate,"1",0) != 0) {
+                  1,firtsConsDate,"1",0,0) != 0) {
         fprintf(stderr, "Erreur setPatient");
         p = NULL;
     }
