@@ -54,17 +54,17 @@ sudo gedit /etc/ld.so.conf
 
 #### For macOS
 
-Firstly you will need to install git tools and commands:
+Firstly, if it has never been done before, you will need to install Xcode Command Line Tools to get ```gcc``` compiler and ```git```:
 ```bash
-git --version
+xcode-select --install
 ```
-If a window prompt on your screen follow the indications to complete installation.
+A window will prompt on your screen, follow the indications to complete installation.
 
-In order to download the project on your computer go in the folder where you want to install the project and type:
+In order to download the project on your computer go in the folder where you want to clone the project and type in terminal:
 ```bash
 git clone "url"
 ```
-The url can be find on the github page.
+The url can be find on the gitlab page.
 
 Install ```homebrew``` if necessary:
 ```bash
@@ -81,6 +81,6 @@ Valgrind is unfortunately not available for macOS. If you want to execute memory
 
 ### Testing
 ***
-See this specific [```README```](https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine/-/blob/cov_integration/tests/README.md).
+See this specific [```README```](tests/README.md).
 
 ## Credits
