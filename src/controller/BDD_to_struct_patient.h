@@ -10,7 +10,9 @@
 int getNbPatient();
 char* getNameFirstnamePatient(int id);
 Patient* getPatient(int id);
-int* getIdPatientArchive ();
-int* getIdPatientNonArchive ();
+int* getArchivedPatientID();
+int* getActivePatientID();
+int getNbArchivedPatient();
+int getNbActivePatient();
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_PATIENT_H
