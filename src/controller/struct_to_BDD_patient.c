@@ -160,7 +160,7 @@ int addPatient(Patient *gen){
     sqlite3_bind_text(stmt,i++,gen->address.city,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->address.other_info,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->job,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,i++,gen->isArchived);
+    sqlite3_bind_int(stmt,i,gen->isArchived);
 
     //Executing the request
     rc = sqlite3_step(stmt);
@@ -170,6 +170,63 @@ int addPatient(Patient *gen){
         return 0;
     }
     sqlite3_finalize(stmt);
+
+    //Closing database
+    sqlite3_close(db);
+    return 1;
+}
+
+int deletePatient(int id){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc1,rc2,rc3;
+    char *sql1;
+    char *sql2;
+    char *sql3;
+    sqlite3_stmt *stmt1;
+    sqlite3_stmt *stmt2;
+    sqlite3_stmt *stmt3;
+
+    //Opening database
+    rc1 = sqlite3_open("/home/paul/Bdd/TestBdd.db", &db);
+
+    //Testing the opening
+    if( rc1 ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+//Creating the request
+    sql1 = "DELETE FROM seance WHERE idFolder IN (SELECT idFolder FROM folder WHERE idPatient=?)";
+    sql2 = "DELETE FROM folder WHERE idPatient=?";
+    sql3 = "DELETE FROM gens WHERE id=?";
+
+    //Préparing the requests
+    rc1 = sqlite3_prepare_v2(db,sql1,-1,&stmt1,NULL);
+    rc2 = sqlite3_prepare_v2(db,sql2,-1,&stmt2,NULL);
+    rc3 = sqlite3_prepare_v2(db,sql3,-1,&stmt3,NULL);
+    if( rc1 != SQLITE_OK || rc2 != SQLITE_OK || rc3 != SQLITE_OK ){
+        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+
+    //Adding values to the requests
+    sqlite3_bind_int(stmt1,1,id);
+    sqlite3_bind_int(stmt2,1,id);
+    sqlite3_bind_int(stmt3,1,id);
+
+    //Executing the request
+    while(sqlite3_step(stmt1) == SQLITE_ROW){}
+    sqlite3_step(stmt2);
+    sqlite3_step(stmt3);
+
+    sqlite3_finalize(stmt1);
+    sqlite3_finalize(stmt2);
+    sqlite3_finalize(stmt3);
 
     //Closing database
     sqlite3_close(db);
