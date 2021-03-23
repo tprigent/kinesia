@@ -16,7 +16,7 @@ Session * getSession(int idSession){
     int rc;
     char *sql;
     sqlite3_stmt *stmt=NULL;
-    Session *session;
+    Session *session=NULL;
 
     session = (Session*)malloc(sizeof(Session));
 
@@ -94,15 +94,40 @@ int * getSessionId(int idFolder){
     sqlite3_bind_int(stmt,1,idFolder);
 
     int i;
+    int j;
     i=0;
     while(sqlite3_step(stmt) == SQLITE_ROW){
         tab_id[i] = sqlite3_column_int(stmt,0);
         i++;
     }
+
+    for(j=i; j<NB_MAX_SESSION; j++) {
+        tab_id[j] = -1;
+    }
+
     sqlite3_finalize(stmt);
 
     //Fermeture de la bdd
     sqlite3_close(db);
     return tab_id;
 
+}
+
+SessionList * getSessionList(int idF) {
+    SessionList * l = (SessionList *) malloc(sizeof(SessionList));
+    initList(l);
+    if (l == NULL) return NULL;
+
+    int * tab_id = getSessionId(idF);
+    if(tab_id == NULL) return NULL;
+
+    int i = 0;
+
+    while(i<NB_MAX_SESSION && tab_id[i] != -1) {
+        Session * s = getSession(tab_id[i]);
+        if(insertLast(l, s->sessionName, s->observations, s->sessionDate.day, s->sessionDate.month, s->sessionDate.year, s->nextSessionDate.day, s->nextSessionDate.month, s->nextSessionDate.year, s->idSession, s->idFolder) !=0) return NULL;
+        freeSession(s);
+        i++;
+    }
+    return l;
 }

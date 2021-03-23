@@ -1,0 +1,51 @@
+#include <stdarg.h>
+#include <setjmp.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include <cmocka.h>
+#include "../src/controller/BDD_to_struct_session.h"
+#include "UTest_BDD_session.h"
+
+static void test_getSession(void **state){
+    Session * s = getSession(1);
+    assert_non_null(s);
+    assert_string_equal("Nouveau nom", s->sessionName);
+    assert_int_equal(s->sessionDate.day, 22);
+    assert_int_equal(s->nextSessionDate.day, 30);
+    assert_int_equal(1, s->idSession);
+    freeSession(s);
+    free(s);
+}
+
+static void test_getSessionId(void **state){
+    int* tab_id = getSessionId(1);
+    assert_int_equal(1, tab_id[0]);
+    assert_int_equal(2, tab_id[1]);
+    free(tab_id);
+}
+
+static void test_getSessionList(void **state) {
+    SessionList *l = getSessionList(1);
+    assert_non_null(l);
+
+    assert_string_equal("Nouveau nom", l->first->session.sessionName);
+    assert_string_equal("Comme d'habitude", l->first->session.observations);
+    assert_int_equal(30, l->first->session.nextSessionDate.day);
+    assert_int_equal(22, l->first->session.sessionDate.day);
+    assert_int_equal(1, l->first->session.idSession);
+
+    assert_string_equal("Nouvelle seance", l->last->session.sessionName);
+    assert_string_equal("Comme d'habitude", l->last->session.observations);
+    assert_int_equal(30, l->last->session.nextSessionDate.day);
+    assert_int_equal(22, l->last->session.sessionDate.day);
+    assert_int_equal(2, l->last->session.idSession);
+}
+
+int main_BDD_session(void) {
+    const struct CMUnitTest tests_BDD_session[]=
+            {
+                    cmocka_unit_test(test_getSession),
+                    cmocka_unit_test(test_getSessionId)
+            };
+    return cmocka_run_group_tests_name("Test BDD_session module",tests_BDD_session,NULL,NULL);
+}

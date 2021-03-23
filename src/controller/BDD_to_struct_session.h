@@ -9,5 +9,6 @@
 
 Session * getSession(int idSession);
 int * getSessionId(int idFolder);
+SessionList * getSessionList(int idF);
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_SESSION_H
