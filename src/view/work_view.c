@@ -533,49 +533,6 @@ void fillFolderBox(GtkWidget *box){
 */
 void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, int idPatient){
 
-    /* Create a session for the tests */
-    Session *session[2];
-    session[0] = (Session*) malloc(sizeof(Session));
-
-    session[0]->sessionName = (char*) malloc(20*sizeof(char));
-    strcpy(session[0]->sessionName, "Première séance");
-
-    session[0]->sessionDate.day = 14;
-    session[0]->sessionDate.month = 3;
-    session[0]->sessionDate.year = 2021;
-
-    session[0]->nextSessionDate.day = 21;
-    session[0]->nextSessionDate.month = 3;
-    session[0]->nextSessionDate.year = 2021;
-
-    session[0]->observations = (char*) malloc(50*sizeof(char));
-    strcpy(session[0]->observations, "Observations pour la première séance ");
-
-    session[0]->idSession = 1;
-    session[0]->idFolder = 1;
-    /* ******************************/
-
-    /* Create a second session for the tests */
-    session[1] = (Session*) malloc(sizeof(Session));
-
-    session[1]->sessionName = (char*) malloc(20*sizeof(char));
-    strcpy(session[1]->sessionName, "Seconde séance");
-
-    session[1]->sessionDate.day = 14;
-    session[1]->sessionDate.month = 2;
-    session[1]->sessionDate.year = 2021;
-
-    session[1]->nextSessionDate.day = 21;
-    session[1]->nextSessionDate.month = 2;
-    session[1]->nextSessionDate.year = 2021;
-
-    session[1]->observations = (char*) malloc(50*sizeof(char));
-    strcpy(session[1]->observations, "Observations pour la seconde séance");
-
-    session[1]->idSession = 2;
-    session[1]->idFolder = 1;
-    /* ******************************/
-
     /* DECLARE VARIABLES */
     GtkWidget *grid_session_section = NULL;
     GtkWidget *grid_add_session = NULL;
