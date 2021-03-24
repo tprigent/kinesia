@@ -12,7 +12,7 @@
 #include "home_view.h"
 
 GtkWidget *setWorkWindow(int id_patient, Session *session);
-void setWorkEnvironment(Window_id *window_id, Session *session);
+void setWorkEnvironment(Window_id *window_id);
 
 void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient);
 void fillFolderBox(GtkWidget *box);
@@ -21,6 +21,5 @@ void launchWorkView(GtkWidget *but, Window_id *window_id);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);
-void setBottomMargin(GtkWidget *widget);
 
 #endif //TEST_GTK_GTK_FUNCTIONS_H
