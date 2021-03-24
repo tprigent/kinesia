@@ -5,9 +5,6 @@
 
 #include <gtk/gtk.h>
 #include "home_view.h"
-#include "../controller/BDD_to_struct_session.h"
-#include "../controller/struct_to_BDD_session.h"
-#include "../model/structures.h"
 
 /*!
  * \brief Function that launch style.css to modify application style
