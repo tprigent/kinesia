@@ -6,7 +6,13 @@
 #include <sqlite3.h>
 #include <stdio.h>
 
-//Ajout d'une seance avec un instance de struct seance
+/*!
+ * \brief This function makes an SQL request, adds a session from a Session struct.
+ *
+ * \param[in] a Session struct.
+ *
+ * \param[out] int, 1 if an error occurred, 0 otherwise
+*/
 int addSession(Session *session){
 
     sqlite3 *db;
@@ -66,7 +72,13 @@ int addSession(Session *session){
 
 }
 
-//Ajout d'une seance avec un instance de struct seance
+/*!
+ * \brief This function makes an SQL request, modify a Session entry in patient table from a Session struct.
+ *
+ * \param[in] struct Session to be modified
+ *
+ * \param[out] int, 0 if an error occurred, 1 otherwise.
+*/
 int modifySession(Session *session){
 
     sqlite3 *db;
