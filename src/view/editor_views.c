@@ -21,9 +21,6 @@
  * and displays entries to edit or fill Folder structure.
  *
  * \param[in] folder Folder to be edited
- *
- * \todo active dynamic data once getFolder is done (lines to uncomment)
- * \todo do a setFolder if "Enregistrer" button is clicked
 */
 void launchFolderEditor(Folder *folder){
 
@@ -198,7 +195,7 @@ void launchFolderEditor(Folder *folder){
  * More data is displayed than in the session view (all Patient anamnesis).
  *
  * \param[in] but_edit Edit button clicked to launch this view
- * \param[in] patient Patient to be edited
+ * \param[in] patient_window Structure (Patient_window) containing infos needed to modify Patient and reload the view
  *
  * \todo do a setPatient if "Enregistrer" button is clicked
 */
@@ -324,9 +321,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
 
     address = gtk_label_new("Adresse : ");
-    char *patient_adress_char = get_adress_UI(patient);
-    gtk_entry_set_text(GTK_ENTRY(address_entry), patient_adress_char);
-    free_info_UI(patient_adress_char);
+    gtk_entry_set_text(GTK_ENTRY(address_entry), patient->address.street);
 
     postcode = gtk_label_new("Code postal : ");
     gtk_entry_set_text(GTK_ENTRY(postcode_entry), patient->address.postCode);
@@ -565,7 +560,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         }
 
         /* ADDRESS */
-        parseAddress((char*) gtk_entry_get_text(GTK_ENTRY(address_entry)), &patient->address);
+        strcpy(patient->address.street, (char*) gtk_entry_get_text(GTK_ENTRY(address_entry)));
         strcpy(patient->address.city, (char*) gtk_entry_get_text(GTK_ENTRY(city_entry)));
         strcpy(patient->address.postCode, (char*) gtk_entry_get_text(GTK_ENTRY(postcode_entry)));
         //other infos
@@ -596,7 +591,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
         if(origin == 1){
             Session *session = createEmptySession();
-            setWorkWindow((int) patient->id, session);
+            setWorkWindow((int) patient->id, session, patient_window->session_type);
         }else{
             setHomeWindow();
         }
@@ -627,7 +622,7 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
     char *empty = "";
 
     setDate(&date, 1, 1, 1900);
-    setAddress(&address, empty, empty, empty, empty, empty);
+    setAddress(&address, empty, empty, empty, empty);
     setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, empty, empty, date, empty, id,0);
 
     /* CREATE STRUCT */
@@ -677,7 +672,7 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
  * This function launches a dialog box to request user confirmation.
  *
  * \param[in] button Button clicked to launch this dialog box
- * \param[in] type Type of warning: 0 = "delete" or 1 = "archive"
+ * \param[in] warning Struct WarningType containing Patient id, window and action type
 */
 void launchPatientWarning(GtkWidget *button, WarningType *warning){
     GtkWidget *dialog;
@@ -750,7 +745,6 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
 
     /* MANAGE THE USER ACTION */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        Patient *patient = getPatient((int) warning->patientID);
         if(warning->actionType == 0){
             //deletePatient
             //modifyPatient

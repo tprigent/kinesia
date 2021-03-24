@@ -31,8 +31,7 @@ typedef enum {MAN, WOMAN, OTHER}Genre;
  * \brief Structure to represent an Address
 */
 typedef struct {
-    char * number;                  /**< street number (add bis or ter if necessary) */
-    char * street;                  /**< name of the street, avenue, etc */
+    char * street;                  /**< number and name of the street, avenue, etc */
     char * postCode;                /**< number of digit can depend */
     char * city;                    /**< city name */
     char * other_info;              /**< floor number, building number (if applicable) */

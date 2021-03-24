@@ -22,9 +22,9 @@
  * \brief Setup function which allocates and return a patient
  *
  * This function get the patient with id 1 (Claude Francois)
- * and pass its adress in *state for the next tests
+ * and pass its addressin *state for the next tests
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
  * \param[out] An int to know if patient is well allocated
 */
 static int setup_patient(void **state){
@@ -40,9 +40,9 @@ static int setup_patient(void **state){
  * \brief Setup function which allocates and fill a patient
  *
  * This function gets the patient with id 1 (Claude Francois)
- * and pass its adress in *state for the next tests
+ * and pass its addressin *state for the next tests
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
  * \param[out] An int to know if patient is well allocated
 */
 static void test_get_name_UI(void **state){
@@ -57,7 +57,7 @@ static void test_get_name_UI(void **state){
  *
  * This function tests get_date_UI which returns a char* "xx/xx/xxxx" passing a patient Birthdate
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
 */
 static void test_get_date_UI(void **state){
     Patient * patient = (Patient *) (*state);
@@ -72,7 +72,7 @@ static void test_get_date_UI(void **state){
  *
  * This function tests get_height_weight_UI which returns a char* "xxkg   ;   x.xxm" passing a patient
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
 */
 static void test_get_height_weight_UI(void **state){
     Patient * patient = (Patient *) (*state);
@@ -86,7 +86,7 @@ static void test_get_height_weight_UI(void **state){
  *
  * This function tests get_first_consultation_UI which returns a char* "Première consultation  : xx/xx/xxxx" passing a patient
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
 */
 static void test_get_first_consultation_UI(void **state){
     Patient * patient = (Patient *) (*state);
@@ -95,19 +95,6 @@ static void test_get_first_consultation_UI(void **state){
     free(temp);
 }
 
-/*!
- * \brief test get_adress_UI function
- *
- * This function tests get_adress_UI which returns a char* "number street" passing a patient
- *
- * \param[in] A pointer adress to pass the allocated patient
-*/
-static void test_get_adress_UI(void **state){
-    Patient * patient = (Patient *) (*state);
-    char * temp = get_adress_UI(patient);
-    assert_string_equal("2 Ruetintintin", temp);
-    free(temp);
-}
 
 /*!
  * \brief test get_age_and_birthdate function
@@ -115,7 +102,7 @@ static void test_get_adress_UI(void **state){
  * This function tests get_age_and_birthdate which returns the birthdate of
  * a patient and his age
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
 */
 static void test_get_age_and_birthdate(void **state){
     Patient * patient = (Patient *) (*state);
@@ -129,7 +116,7 @@ static void test_get_age_and_birthdate(void **state){
  *
  * This function tests get_current_date which returns the date of the day
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
 */
 static void test_get_current_date(void **state){
     char * date = get_current_date();
@@ -143,7 +130,7 @@ static void test_get_current_date(void **state){
  * This function tests get_new_session_name which returns a formatted name for
  * a new session (Séance du dd/mm/yyyy)
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
 */
 static void test_get_new_session_name(void **state){
     char * session_name = get_new_session_name();
@@ -157,7 +144,7 @@ static void test_get_new_session_name(void **state){
  *
  * This function desallocates the patient allocated by setup function
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
  * \param[out] An int to tell that desallocation worked
 */
 static int teardown(void **state){
@@ -180,7 +167,6 @@ int main_UI(void)
             cmocka_unit_test_setup_teardown(test_get_date_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_height_weight_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_first_consultation_UI, setup_patient, teardown),
-            cmocka_unit_test_setup_teardown(test_get_adress_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_age_and_birthdate, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_current_date, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_new_session_name, setup_patient, teardown),

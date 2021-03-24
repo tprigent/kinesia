@@ -32,7 +32,7 @@ void printPatient(Patient *patient, char *context){
 
     printf("Birthdate: %d/%d/%d\n", patient->birthdate.day, patient->birthdate.month, patient->birthdate.year);
     printf("Place of birth: %s\n", patient->place_birth);
-    printf("Address: %s %s, %s %s (%s)\n", patient->address.number, patient->address.street, patient->address.postCode, patient->address.city, patient->address.other_info);
+    printf("Address: %s %s, %s (%s)\n", patient->address.street, patient->address.postCode, patient->address.city, patient->address.other_info);
     printf("Phone: %s\n", patient->phone_number);
     printf("Mail: %s\n", patient->mail_address);
     printf("Job: %s\n", patient->job);
@@ -53,9 +53,9 @@ void printPatient(Patient *patient, char *context){
  * \param[in] gender Gender to be displayed
 */
 void printGender(Genre gender){
-    if(gender == MAN) printf("man");
-    else if(gender == WOMAN) printf("woman");
-    else if(gender == OTHER) printf("other");
+    if(gender == 1) printf("man");
+    else if(gender == 0) printf("woman");
+    else if(gender == 2) printf("other");
     else printf("error");
 }
 
@@ -85,7 +85,6 @@ int allocateStringPatient(char ** string, int lg) {
 int allocateAddress(Address * a) {
 
     /*allocation mémoire des chaînes de caractères de la structure Adresse*/
-    if (allocateStringPatient(&(a->number), LG_MAX_INFO) !=0) return -1;
     if (allocateStringPatient(&(a->street), LG_MAX_INFO) !=0) return -1;
     if (allocateStringPatient(&(a->city), LG_MAX_INFO) !=0) return -1;
     if (allocateStringPatient(&(a->other_info), LG_MAX_OTHERS) !=0) return -1;
@@ -128,7 +127,6 @@ int allocatePatient(Patient ** p) {
  * \param[in] Address *a the pointer of an address to free.
 */
 void freeAddress(Address * a) {
-    free((void*)a->number);
     free((void*)a->street);
     free((void*)a->postCode);
     free((void*)a->city);
@@ -168,18 +166,12 @@ void freePatient(Patient ** p) {
  *
  * \param[out] int 0 if it went well, -1 otherwise
 */
-int setAddress(Address * a, char * numM, char * r, char * cp, char * v, char * iC) {
+int setAddress(Address *a, char * r, char * cp, char * v, char * iC) {
 
     if(a == NULL) return -1;
 
     /*attribution des paramètres aux attributs de a*/
     /*ajout des 0 terminaux aux chaînes précédemment copiées par sécurité*/
-    if(numM == NULL )
-        strcpy(a->number, "\0");
-    else {
-        strncpy(a->number, numM, LG_MAX_INFO);
-        a->number[LG_MAX_INFO] = '\0';
-    }
     if(r == NULL)
         strcpy(a->street, "\0");
     else {
@@ -319,12 +311,6 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     }
 
     /*attribution des autres attributs*/
-    if(ad.number == NULL) strcpy(p->address.number, "\0");
-    else {
-        strncpy(p->address.number, ad.number, LG_MAX_INFO);
-        p->address.number[LG_MAX_INFO] = '\0';
-    }
-
     if(ad.street == NULL) strcpy(p->address.street, "\0");
     else {
         strncpy(p->address.street, ad.street, LG_MAX_INFO);
