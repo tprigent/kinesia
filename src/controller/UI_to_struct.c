@@ -51,11 +51,10 @@ void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session){
     printf("\n********* TEST4 ***********\n");
     /* SAVE DATA IN MODEL */
     if(new_session->origin == 1){
-        printf("\nEdit patient\n");
+        printf("\nEdit Session\n");
     }
     else{
-        printf("\nAdd Patient\n");
-        //addSession(new_session->session);
+        addSession(new_session->session);
     }
 
 }
