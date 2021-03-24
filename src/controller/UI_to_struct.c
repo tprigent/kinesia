@@ -5,6 +5,7 @@
 
 #include "UI_to_struct.h"
 #include "struct_to_BDD_session.h"
+#include "../view/work_view.h"
 
 /*!
  * \brief Parse string date to Date format
@@ -54,5 +55,5 @@ void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session){
         printf("\nNew Session\n");
         addSession(new_session->session);
     }
-
+    launchWorkView(NULL, new_session->window_id);
 }

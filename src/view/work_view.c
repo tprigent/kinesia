@@ -686,6 +686,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     saveSession->sessionDate = entry_date_new;
     saveSession->nextSessionDate = entry_next_meeting;
     saveSession->observations = text_session_note;
+    saveSession->window_id = window_id1;
     g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveNewSession), saveSession);
 
     /* Manage to display the next appointment */
