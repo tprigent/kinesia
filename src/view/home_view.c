@@ -259,7 +259,7 @@ void setHomeEnvironment(GtkWidget *window){
  *
  * \param[in] window Window dedicated to the patient view
 */
-void launchHomeView(GtkWidget *window){
+void launchHomeView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
     setHomeWindow();
 }
