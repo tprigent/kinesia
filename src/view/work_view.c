@@ -652,8 +652,14 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_vexpand(save_button, FALSE);
     gtk_widget_set_halign(save_button, GTK_ALIGN_END);
 
-    //NewSessionEntries *saveSession = (NewSessionEntries*) malloc(sizeof(NewSessionEntries));
-    //g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveNewSession), saveNe);
+    NewSessionEntries *saveSession = (NewSessionEntries*) malloc(sizeof(NewSessionEntries));
+    saveSession->session = currentSession;
+    saveSession->origin = 0;
+    saveSession->sessionName = entry_title_new;
+    saveSession->sessionDate = entry_date_new;
+    saveSession->nextSessionDate = entry_next_meeting;
+    saveSession->observations = text_session_note;
+    g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveNewSession), saveSession);
 
     /* Manage to display the next appointment */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_date_new, GTK_POS_RIGHT, 1, 1);
