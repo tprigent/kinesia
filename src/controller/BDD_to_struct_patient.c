@@ -170,7 +170,7 @@ Patient* getPatient(int id){
         fprintf(stderr,"Erreur setDate first RDV\n");
     }
 
-    setAddress(&adresse,(char*)sqlite3_column_text(stmt,17),
+    setAddress(&adresse,
                (char*)sqlite3_column_text(stmt,18),
                (char*)sqlite3_column_text(stmt,19),
                (char*)sqlite3_column_text(stmt,20),

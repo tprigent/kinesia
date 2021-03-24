@@ -46,7 +46,7 @@ void parseAddress(char *stringAddress, Address *result){
     char *type = (char*) malloc(sizeof(Date));;
     char *street = (char*) malloc(sizeof(Date));;
     sscanf(stringAddress, "%s %s %s", number, type, street);
-    strcpy(result->number, number);
+    //strcpy(result->number, number);
     strcpy(result->street, type);
     strcat(result->street, street);
 }

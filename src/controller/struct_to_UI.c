@@ -120,7 +120,7 @@ char *get_first_consultation_UI(Patient *patient){
 char *get_adress_UI(Patient *patient){
     char *adress = (char*) malloc(100*sizeof(char));
 
-    strcpy(adress, patient->address.number);
+    //strcpy(adress, patient->address.number);
     strcat(adress, " ");
     strcat(adress, patient->address.street);
     strcat(adress, "\0");
