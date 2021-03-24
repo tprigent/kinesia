@@ -32,7 +32,7 @@ void printPatient(Patient *patient, char *context){
 
     printf("Birthdate: %d/%d/%d\n", patient->birthdate.day, patient->birthdate.month, patient->birthdate.year);
     printf("Place of birth: %s\n", patient->place_birth);
-    printf("Address: %s %s, %s %s (%s)\n", patient->address.street, patient->address.postCode, patient->address.city, patient->address.other_info);
+    printf("Address: %s %s, %s %s\n", patient->address.street, patient->address.postCode, patient->address.city, patient->address.other_info);
     printf("Phone: %s\n", patient->phone_number);
     printf("Mail: %s\n", patient->mail_address);
     printf("Job: %s\n", patient->job);
