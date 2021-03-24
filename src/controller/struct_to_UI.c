@@ -112,23 +112,6 @@ char *get_first_consultation_UI(Patient *patient){
 }
 
 /*!
- * \brief Parse Address structure to single char pointer
- *
- * \param[in] patient Concerned Patient
- * \param[out] Char pointer containing the address
-*/
-char *get_adress_UI(Patient *patient){
-    char *adress = (char*) malloc(100*sizeof(char));
-
-    strcpy(adress, patient->address.number);
-    strcat(adress, " ");
-    strcat(adress, patient->address.street);
-    strcat(adress, "\0");
-
-    return adress;
-}
-
-/*!
  * \brief Format Folder title
  *
  * \param[in] folder Concerned Folder

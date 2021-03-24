@@ -324,9 +324,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
 
     address = gtk_label_new("Adresse : ");
-    char *patient_adress_char = get_adress_UI(patient);
-    gtk_entry_set_text(GTK_ENTRY(address_entry), patient_adress_char);
-    free_info_UI(patient_adress_char);
+    gtk_entry_set_text(GTK_ENTRY(address_entry), patient->address.street);
 
     postcode = gtk_label_new("Code postal : ");
     gtk_entry_set_text(GTK_ENTRY(postcode_entry), patient->address.postCode);
@@ -565,7 +563,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         }
 
         /* ADDRESS */
-        parseAddress((char*) gtk_entry_get_text(GTK_ENTRY(address_entry)), &patient->address);
+        strcpy(patient->address.street, (char*) gtk_entry_get_text(GTK_ENTRY(address_entry)));
         strcpy(patient->address.city, (char*) gtk_entry_get_text(GTK_ENTRY(city_entry)));
         strcpy(patient->address.postCode, (char*) gtk_entry_get_text(GTK_ENTRY(postcode_entry)));
         //other infos
@@ -627,7 +625,7 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
     char *empty = "";
 
     setDate(&date, 1, 1, 1900);
-    setAddress(&address, empty, empty, empty, empty, empty);
+    setAddress(&address, empty, empty, empty, empty);
     setPatient(patient, empty, empty, date, empty, 0, address, empty, empty, empty, empty, empty, empty, date, empty, id,0);
 
     /* CREATE STRUCT */
