@@ -32,7 +32,7 @@ void printPatient(Patient *patient, char *context){
 
     printf("Birthdate: %d/%d/%d\n", patient->birthdate.day, patient->birthdate.month, patient->birthdate.year);
     printf("Place of birth: %s\n", patient->place_birth);
-    printf("Address: %s %s, %s %s (%s)\n", patient->address.street, patient->address.postCode, patient->address.city, patient->address.other_info);
+    printf("Address: %s %s, %s (%s)\n", patient->address.street, patient->address.postCode, patient->address.city, patient->address.other_info);
     printf("Phone: %s\n", patient->phone_number);
     printf("Mail: %s\n", patient->mail_address);
     printf("Job: %s\n", patient->job);
@@ -53,9 +53,9 @@ void printPatient(Patient *patient, char *context){
  * \param[in] gender Gender to be displayed
 */
 void printGender(Genre gender){
-    if(gender == MAN) printf("man");
-    else if(gender == WOMAN) printf("woman");
-    else if(gender == OTHER) printf("other");
+    if(gender == 1) printf("man");
+    else if(gender == 0) printf("woman");
+    else if(gender == 2) printf("other");
     else printf("error");
 }
 
