@@ -23,7 +23,7 @@
  * \param[in] id_patient ID of the patient file opened
  * \param[in] session Session to be opened
 */
-GtkWidget *setWorkWindow(int id_patient, Session *session){
+GtkWidget *setWorkWindow(int id_patient, Session *session, int session_type){
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
@@ -48,6 +48,7 @@ GtkWidget *setWorkWindow(int id_patient, Session *session){
     window_id->window = window;
     window_id->patientID = id_patient;
     window_id->session = session;
+    window_id->session_type = session_type;
     setWorkEnvironment(window_id);
 
     gtk_widget_show_all(window);
@@ -101,9 +102,9 @@ void setWorkEnvironment(Window_id *window_id){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    fillPatientBox(window, boxPart[0], patient);
+    fillPatientBox(window, boxPart[0], patient, window_id->session_type);
     fillFolderBox(boxPart[1]);
-    fillSessionBox(window, boxPart[2], window_id->session, window_id->patientID);
+    fillSessionBox(window, boxPart[2], window_id->session, window_id->patientID, window_id->session_type);
 }
 
 
@@ -120,13 +121,14 @@ void setWorkEnvironment(Window_id *window_id){
  * \param[in] patient Current Patient
  * \param[in] patient Patient opened
 */
-void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
+void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient, int session_type){
 
     /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
     patient_window->patient = patient;
     patient_window->window = window;
     patient_window->origin = 1;
+    patient_window->session_type = session_type;
 
 
     /* DECLARE VARIABLES */
@@ -539,7 +541,7 @@ void fillFolderBox(GtkWidget *box){
  * \param[in] currentSession Current Session
  * \param[in] idPatient ID of the current Patient
 */
-void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, int idPatient){
+void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, int idPatient, int session_type){
 
     /* DECLARE VARIABLES */
     GtkWidget *grid_session_section = NULL;
@@ -667,6 +669,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     window_id1->window = window;
     window_id1->patientID = idPatient;
     window_id1->session = createEmptySession();
+    window_id1->session_type = 0;
     g_signal_connect(GTK_BUTTON(new_session_button), "clicked", G_CALLBACK(launchWorkView), window_id1);
 
 
@@ -678,7 +681,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     NewSessionEntries *saveSession = (NewSessionEntries*) malloc(sizeof(NewSessionEntries));
     saveSession->session = currentSession;
-    saveSession->origin = 0;
+    saveSession->origin = session_type;
     saveSession->sessionName = entry_title_new;
     saveSession->sessionDate = entry_date_new;
     saveSession->nextSessionDate = entry_next_meeting;
@@ -764,6 +767,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         window_id[session_cursor]->window = window;
         window_id[session_cursor]->session = &session_list->current->session;
         window_id[session_cursor]->patientID = idPatient;
+        window_id[session_cursor]->session_type = 1;
 
         setOnNext(session_list);
     }
@@ -820,7 +824,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 */
 void launchWorkView(GtkWidget *but, Window_id *window_id){
     gtk_widget_destroy(window_id->window);
-    setWorkWindow(window_id->patientID, window_id->session);
+    setWorkWindow(window_id->patientID, window_id->session, window_id->session_type);
 }
 
 
