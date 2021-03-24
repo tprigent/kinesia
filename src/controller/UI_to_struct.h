@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../model/structures.h"
+#include "../view/home_view.h"
 
 
 #ifndef LOGICIEL_KINE_CONNECT_UI_STRUCT_H
@@ -20,6 +21,7 @@ typedef struct{
     GtkWidget *nextSessionDate;
     GtkWidget *observations;
     int origin;                     //0 for new session; 1 to edit session
+    Window_id *window_id;
 }NewSessionEntries;
 
 Date *parseDate(char *stringDate);
