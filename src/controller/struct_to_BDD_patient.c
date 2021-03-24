@@ -92,8 +92,8 @@ int modifyPatient(Patient *gen){
 }
 
 /*!
- * This function makes an SQL request, add a Patient entry in patient table from a Patient struct.
- * Return 0 if an error occurred, 1 otherwise.
+ * \brief This function makes an SQL request, add a Patient entry in patient table from a Patient struct.
+ * \brief Return 0 if an error occurred, 1 otherwise.
  *
  * \param[in] struct Patient to be add
  *
@@ -176,6 +176,13 @@ int addPatient(Patient *gen){
     return 1;
 }
 
+/*!
+ * \brief This function makes an SQL request, removes a patient and its related folders and sessions from the database.
+ *
+ * \param[in] a Folder struct.
+ *
+ * \param[out] int, 1 if an error occurred, 0 otherwise
+*/
 int deletePatient(int id){
 
     sqlite3 *db;

@@ -8,7 +8,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//Recupération d'une séance
+/*!
+ * This function makes an SQL request, returns a Session struct from the sesison's id.
+ *
+ * \param[in] int, the session's id
+ *
+ * \param[out] Session*, a pointer to the session's struct
+*/
 Session * getSession(int idSession){
 
     sqlite3 *db;
@@ -57,7 +63,13 @@ Session * getSession(int idSession){
 
 }
 
-//Array of session id from a folder id
+/*!
+ * This function makes an SQL request, returns the session's id of a folder.
+ *
+ * \param[in] int, the folder's id
+ *
+ * \param[out] int*, the session's id of the folder
+*/
 int * getSessionId(int idFolder){
 
     sqlite3 *db;
@@ -134,6 +146,13 @@ SessionList * getSessionList(int idF) {
     return l;
 }
 
+/*!
+ * This function makes an SQL request, returns the number of sessions in a folder.
+ *
+ * \param[in] int, the folder's id
+ *
+ * \param[out] int, the number of sessions in the folder
+*/
 int getNbSession(int idFolder) {
     sqlite3 *db;
     char *zErrMsg = 0;

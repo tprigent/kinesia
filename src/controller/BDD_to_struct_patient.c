@@ -8,7 +8,11 @@
 #include <sqlite3.h>
 #include <stdlib.h>
 
-//Nombre de patients
+/*!
+ * This function makes an SQL request, returns the number of patient in the database.
+ *
+ * \param[out] int, the number of patient.
+*/
 int getNbPatient(){
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -51,7 +55,14 @@ int getNbPatient(){
     return rc;
 }
 
-//Nom et prenom d'un patient
+/*!
+ * This function makes an SQL request, returns the name and first name of a patient
+ * from a patient's id.
+ *
+ * \param[in] int, the patient's id
+ *
+ * \param[out] char*, the name and first name of the patient: "<Name> <Firstname>".
+*/
 char* getNameFirstnamePatient(int id){
 
     sqlite3 *db;
@@ -195,6 +206,11 @@ Patient* getPatient(int id){
 
 }
 
+/*!
+ * This function makes an SQL request, returns the patients archived's id sorted by name.
+ *
+ * \param[out] int*, an array of the id's.
+*/
 int* getArchivedPatientID(){
 
     sqlite3 *db;
@@ -244,6 +260,11 @@ int* getArchivedPatientID(){
 
 }
 
+/*!
+ * This function makes an SQL request, returns the patients active's id sorted by name.
+ *
+ * \param[out] int*, an array of the id's.
+*/
 int* getActivePatientID(){
 
     sqlite3 *db;
@@ -293,6 +314,11 @@ int* getActivePatientID(){
 
 }
 
+/*!
+ * This function returns the number of archived patients.
+ *
+ * \param[out] int, the number of archived patients.
+*/
 int getNbArchivedPatient(){
     int i;
     int count = 0;
@@ -303,8 +329,23 @@ int getNbArchivedPatient(){
         }
     }
     return count;
+
+    /* int* nb;
+     * int i = 0;
+     * nb = getArchivedPatientID();
+     * while(nb[i] != NULL){
+     *   i++;
+     * }
+     * free(nb);
+     * return i;
+    */
 }
 
+/*!
+ * This function returns the number of archived patients.
+ *
+ * \param[out] int, the number of archived patients.
+*/
 int getNbActivePatient(){
     return (getNbPatient()-getNbArchivedPatient());
 }
