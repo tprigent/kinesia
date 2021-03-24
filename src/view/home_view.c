@@ -188,7 +188,7 @@ void setHomeEnvironment(GtkWidget *window){
         Window_id *window_id_active[nbActivePatient];
         window_id_active[i] = (Window_id*) malloc(sizeof(Window_id));
         window_id_active[i]->window = window;
-        window_id_active[i]->id = activePatient[i];
+        window_id_active[i]->patientID = activePatient[i];
         window_id_active[i]->session = createEmptySession();
         g_signal_connect(GTK_BUTTON(archive_button[i]), "clicked", G_CALLBACK(launchPatientWarning), archiveWarning[i]);
         g_signal_connect(GTK_BUTTON(active_delete_button[i]), "clicked", G_CALLBACK(launchPatientWarning), deleteActiveWarning[i]);
@@ -240,7 +240,7 @@ void setHomeEnvironment(GtkWidget *window){
         Window_id *window_id_archived[nbArchivedPatient];
         window_id_archived[i] = (Window_id*) malloc(sizeof(Window_id));
         window_id_archived[i]->window = window;
-        window_id_archived[i]->id = archivedPatient[i];
+        window_id_archived[i]->patientID = archivedPatient[i];
         window_id_archived[i]->session = createEmptySession();
         g_signal_connect(GTK_BUTTON(unarchive_button[i]), "clicked", G_CALLBACK(launchPatientWarning), unarchiveWarning[i]);
         g_signal_connect(GTK_BUTTON(archived_delete_button[i]), "clicked", G_CALLBACK(launchPatientWarning), deleteArchivedWarning[i]);
@@ -257,7 +257,6 @@ void setHomeEnvironment(GtkWidget *window){
  * When the user click on the back button from a session window, this function closes
  * the current session window and open the patient window.
  *
- * \param[in] but Button that launches the view
  * \param[in] window Window dedicated to the patient view
 */
 void launchHomeView(GtkWidget *but, GtkWidget *window){
@@ -265,6 +264,14 @@ void launchHomeView(GtkWidget *but, GtkWidget *window){
     setHomeWindow();
 }
 
+/*!
+ * \brief Create and allocate an empty session
+ *
+ * When a new session is created, this function allocates it
+ * and fills it with the current date
+ *
+ * \param[out] Empty session
+*/
 Session *createEmptySession(){
     Session *newSession = (Session*) malloc(sizeof(Session));
     newSession->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
