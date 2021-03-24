@@ -209,7 +209,7 @@ static void test_modifyPatient(void **state){
  *
  * This function desallocates the patient allocated by setup function
  *
- * \param[in] A pointer adress to pass the allocated patient
+ * \param[in] A pointer addressto pass the allocated patient
  * \param[out] An int to tell that desallocation worked
 */
 static int teardown_patient(void **state) {
@@ -223,7 +223,7 @@ static int teardown_patient(void **state) {
  *
  * This function desallocates the address allocated by setup function
  *
- * \param[in] A pointer adress to pass the allocated address
+ * \param[in] A pointer addressto pass the allocated address
  * \param[out] An int to tell that desallocation worked
 */
 static int teardown_address(void **state) {

@@ -110,7 +110,7 @@ char* getNameFirstnamePatient(int id){
 
 /*!
  * This function makes an SQL request, fills a Patient struct previously allocated
- * with the results of the request and return the adress of the Patient struct allcated.
+ * with the results of the request and return the addressof the Patient struct allcated.
  *
  * \param[in] int id of the Patient
  *
@@ -170,8 +170,7 @@ Patient* getPatient(int id){
         fprintf(stderr,"Erreur setDate first RDV\n");
     }
 
-    setAddress(&adresse,(char*)sqlite3_column_text(stmt,17),
-               (char*)sqlite3_column_text(stmt,18),
+    setAddress(&adresse,(char*)sqlite3_column_text(stmt,18),
                (char*)sqlite3_column_text(stmt,19),
                (char*)sqlite3_column_text(stmt,20),
                (char*)sqlite3_column_text(stmt,21));
