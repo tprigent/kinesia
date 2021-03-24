@@ -14,12 +14,15 @@
 #define LOGICIEL_KINE_CONNECT_UI_STRUCT_H
 
 typedef struct{
+    Session *session;
     GtkWidget *sessionName;
     GtkWidget *sessionDate;
     GtkWidget *nextSessionDate;
     GtkWidget *observations;
+    int origin;                     //0 for new session; 1 to edit session
 }NewSessionEntries;
 
 Date *parseDate(char *stringDate);
+void saveNewSession(NewSessionEntries *new_session);
 
 #endif //LOGICIEL_KINE_CONNECT_UI_STRUCT_H

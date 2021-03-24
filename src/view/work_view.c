@@ -8,6 +8,7 @@
 #include "work_view.h"
 #include "home_view.h"
 #include "editor_views.h"
+#include "../controller/UI_to_struct.h"
 #include "../controller/struct_to_UI.h"
 #include "../controller/BDD_to_struct_folder.h"
 #include "../controller/BDD_to_struct_session.h"
@@ -650,6 +651,9 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_hexpand(save_button, FALSE);
     gtk_widget_set_vexpand(save_button, FALSE);
     gtk_widget_set_halign(save_button, GTK_ALIGN_END);
+
+    //NewSessionEntries *saveSession = (NewSessionEntries*) malloc(sizeof(NewSessionEntries));
+    //g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveNewSession), saveNe);
 
     /* Manage to display the next appointment */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_date_new, GTK_POS_RIGHT, 1, 1);
