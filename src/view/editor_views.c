@@ -21,9 +21,6 @@
  * and displays entries to edit or fill Folder structure.
  *
  * \param[in] folder Folder to be edited
- *
- * \todo active dynamic data once getFolder is done (lines to uncomment)
- * \todo do a setFolder if "Enregistrer" button is clicked
 */
 void launchFolderEditor(Folder *folder){
 
@@ -198,7 +195,7 @@ void launchFolderEditor(Folder *folder){
  * More data is displayed than in the session view (all Patient anamnesis).
  *
  * \param[in] but_edit Edit button clicked to launch this view
- * \param[in] patient Patient to be edited
+ * \param[in] patient_window Structure (Patient_window) containing infos needed to modify Patient and reload the view
  *
  * \todo do a setPatient if "Enregistrer" button is clicked
 */
@@ -675,7 +672,7 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
  * This function launches a dialog box to request user confirmation.
  *
  * \param[in] button Button clicked to launch this dialog box
- * \param[in] type Type of warning: 0 = "delete" or 1 = "archive"
+ * \param[in] warning Struct WarningType containing Patient id, window and action type
 */
 void launchPatientWarning(GtkWidget *button, WarningType *warning){
     GtkWidget *dialog;
@@ -748,7 +745,6 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
 
     /* MANAGE THE USER ACTION */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        Patient *patient = getPatient((int) warning->patientID);
         if(warning->actionType == 0){
             //deletePatient
             //modifyPatient

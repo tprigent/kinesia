@@ -9,15 +9,21 @@
 #include <gtk/gtk.h>
 #include "../model/structures.h"
 
+/**
+ * \brief Structure to pass a Session and a Patient to the callback
+ *
+ * This structure is used to pass many arguments in a callback function which has only
+ * one argument.
+*/
 typedef struct {
-    GtkWidget *window;
-    int id;
-    Session *session;
+    GtkWidget *window;      /**< Parent window to be reload after changes */
+    int patientID;          /**< ID of the Patient to be edited */
+    Session *session;       /**< Session to be edited */
 }Window_id;
 
 GtkWidget *setHomeWindow();
 void setHomeEnvironment(GtkWidget *window);
-void launchHomeView(GtkWidget *but, GtkWidget *window);
+void launchHomeView(GtkWidget *window);
 
 Session *createEmptySession();
 
