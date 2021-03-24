@@ -533,49 +533,6 @@ void fillFolderBox(GtkWidget *box){
 */
 void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, int idPatient){
 
-    /* Create a session for the tests */
-    Session *session[2];
-    session[0] = (Session*) malloc(sizeof(Session));
-
-    session[0]->sessionName = (char*) malloc(20*sizeof(char));
-    strcpy(session[0]->sessionName, "Première séance");
-
-    session[0]->sessionDate.day = 14;
-    session[0]->sessionDate.month = 3;
-    session[0]->sessionDate.year = 2021;
-
-    session[0]->nextSessionDate.day = 21;
-    session[0]->nextSessionDate.month = 3;
-    session[0]->nextSessionDate.year = 2021;
-
-    session[0]->observations = (char*) malloc(50*sizeof(char));
-    strcpy(session[0]->observations, "Observations pour la première séance ");
-
-    session[0]->idSession = 1;
-    session[0]->idFolder = 1;
-    /* ******************************/
-
-    /* Create a second session for the tests */
-    session[1] = (Session*) malloc(sizeof(Session));
-
-    session[1]->sessionName = (char*) malloc(20*sizeof(char));
-    strcpy(session[1]->sessionName, "Seconde séance");
-
-    session[1]->sessionDate.day = 14;
-    session[1]->sessionDate.month = 2;
-    session[1]->sessionDate.year = 2021;
-
-    session[1]->nextSessionDate.day = 21;
-    session[1]->nextSessionDate.month = 2;
-    session[1]->nextSessionDate.year = 2021;
-
-    session[1]->observations = (char*) malloc(50*sizeof(char));
-    strcpy(session[1]->observations, "Observations pour la seconde séance");
-
-    session[1]->idSession = 2;
-    session[1]->idFolder = 1;
-    /* ******************************/
-
     /* DECLARE VARIABLES */
     GtkWidget *grid_session_section = NULL;
     GtkWidget *grid_add_session = NULL;
@@ -609,12 +566,15 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     session_date_new = gtk_label_new("Date :");
     entry_date_new = gtk_entry_new();
-    char *current_date = get_current_date();
-    gtk_entry_set_text(GTK_ENTRY(entry_date_new), current_date);
+    char *session_date_char = get_date_UI(&currentSession->sessionDate);
+    gtk_entry_set_text(GTK_ENTRY(entry_date_new), session_date_char);
+    free_info_UI(session_date_char);
+
     session_next_meeting = gtk_label_new("Prochain rendez-vous : ");
     entry_next_meeting = gtk_entry_new();
-    gtk_entry_set_text(GTK_ENTRY(entry_next_meeting), current_date);
-    free_info_UI(current_date);
+    char *next_session_date_char = get_date_UI(&currentSession->nextSessionDate);
+    gtk_entry_set_text(GTK_ENTRY(entry_next_meeting), next_session_date_char);
+    free_info_UI(next_session_date_char);
 
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
@@ -723,18 +683,12 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     /* SECOND PART : SECTION TO DISPLAY OLD SESSIONS */
 
     /* DECLARE VARIABLES */
-    SessionList *session_list = NULL;
-    session_list = getSessionList(1);
-    setOnFirst(session_list);
-    int nb_session = 0;
-    while(!isOutOfList(session_list)){
-        setOnNext(session_list);
-        nb_session += 1;
-    }
 
+    int nb_session = getNbSession(1);
     int session_cursor;
     char *date[nb_session];
     char *nextDate[nb_session];
+    SessionList *session_list = NULL;
     GtkWidget *session_notebook;
     GtkWidget *edit_button[nb_session];
     GtkWidget *date_label[nb_session];
@@ -749,6 +703,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     /* ASSIGN VARIABLES */
     session_notebook = gtk_notebook_new();
+    session_list = getSessionList(1);
     setOnFirst(session_list);
 
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
@@ -773,7 +728,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         window_id[session_cursor] = (Window_id*) malloc(sizeof(Window_id));
         window_id[session_cursor]->window = window;
-        window_id[session_cursor]->session = session[session_cursor];
+        window_id[session_cursor]->session = &session_list->current->session;
         window_id[session_cursor]->id = idPatient;
 
         setOnNext(session_list);

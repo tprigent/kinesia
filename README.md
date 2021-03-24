@@ -22,11 +22,23 @@ To build and run the project you will need to install several tools.
 ***
 #### For Linux
 
-Make sure that you're up to date:
+Make sure that you are up to date:
 ```bash
 sudo apt-get update
 sudo apt-get upgrade 
 ```
+
+Firstly you will need to install git tools and commands:
+```bash
+sudo apt-get install git git -gui gitk meld pandoc
+```
+
+In order to download the project on your computer go in the folder where you want to install the project and type:
+```bash
+git clone "url"
+```
+The url can be find on the github page.
+
 Then install the following packages:
 ```bash
 sudo apt-get install cmake                  #for compilation
@@ -35,12 +47,24 @@ sudo apt-get install libgtk-3-dev           #for UI
 sudo apt-get install lcov                   #for coverage test reports
 sudo apt-get install valgrind               #for memory tests
 ```
-if needed, add the path `/usr/lib` in the library paths by doing :
+if needed, add the path `/usr/lib` at the end of ld.so.conf file by doing :
 ```bash
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib
+sudo gedit /etc/ld.so.conf
 ```
 
 #### For macOS
+
+Firstly, if it has never been done before, you will need to install Xcode Command Line Tools to get ```gcc``` compiler and ```git```:
+```bash
+xcode-select --install
+```
+A window will prompt on your screen, follow the indications to complete installation.
+
+In order to download the project on your computer go in the folder where you want to clone the project and type in terminal:
+```bash
+git clone "url"
+```
+The url can be find on the gitlab page.
 
 Install ```homebrew``` if necessary:
 ```bash
@@ -57,6 +81,6 @@ Valgrind is unfortunately not available for macOS. If you want to execute memory
 
 ### Testing
 ***
-See this specific [```README```](https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine/-/blob/cov_integration/tests/README.md).
+See this specific [```README```](tests/README.md).
 
 ## Credits
