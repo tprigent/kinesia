@@ -23,6 +23,6 @@ typedef struct{
 }NewSessionEntries;
 
 Date *parseDate(char *stringDate);
-void saveNewSession(NewSessionEntries *new_session);
+void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session);
 
 #endif //LOGICIEL_KINE_CONNECT_UI_STRUCT_H
