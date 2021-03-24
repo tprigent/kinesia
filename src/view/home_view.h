@@ -23,7 +23,7 @@ typedef struct {
 
 GtkWidget *setHomeWindow();
 void setHomeEnvironment(GtkWidget *window);
-void launchHomeView(GtkWidget *window);
+void launchHomeView(GtkWidget *but, GtkWidget *window);
 
 Session *createEmptySession();
 
