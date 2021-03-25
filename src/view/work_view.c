@@ -677,12 +677,12 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         gtk_widget_set_hexpand(new_session_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(new_session_button[session_cursor], FALSE);
         gtk_widget_set_halign(new_session_button[session_cursor], GTK_ALIGN_END);
-        /*Window_id *window_id1 = (Window_id*) malloc(sizeof(Window_id));
-        window_id1->window = window;
-        window_id1->patientID = idPatient;
-        window_id1->session = createEmptySession();
-        window_id1->session_type = 0;
-        g_signal_connect(GTK_BUTTON(new_session_button), "clicked", G_CALLBACK(launchWorkView), window_id1);*/
+        /*window_id[session_cursor] = (Window_id*) malloc(sizeof(Window_id));
+        window_id[session_cursor]->window = window;
+        window_id[session_cursor]->patientID = idPatient;
+        window_id[session_cursor]->session = createEmptySession();
+        window_id[session_cursor]->session_type = 0;*/
+        g_signal_connect(GTK_BUTTON(new_session_button[session_cursor]), "clicked", G_CALLBACK(addNewSessionUI), notebook);
 
 
         /* Manage to display the save button */
@@ -845,6 +845,14 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 void launchWorkView(GtkWidget *but, Window_id *window_id){
     gtk_widget_destroy(window_id->window);
     setWorkWindow(window_id->patientID, window_id->session, window_id->session_type);
+}
+
+void addNewSessionUI(GtkWidget *button, GtkWidget *notebook){
+    GtkWidget *button_test;
+    button_test = gtk_button_new_with_label("Test");
+    gtk_notebook_insert_page(GTK_NOTEBOOK(notebook), button_test, gtk_label_new("TEST"), 0);
+    gtk_widget_show_all(notebook);
+
 }
 
 
