@@ -674,7 +674,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         gtk_widget_set_halign(save_button[session_cursor], GTK_ALIGN_END);*/
 
         /* Manage to display the new session button */
-        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 7, 1);
         gtk_widget_set_hexpand(new_session_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(new_session_button[session_cursor], FALSE);
         gtk_widget_set_halign(new_session_button[session_cursor], GTK_ALIGN_END);
@@ -705,7 +705,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         /* Manage the frame and its entry to add informations about the session */
         gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, 0.5);
-        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 5, 3);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 10, 3);
         gtk_widget_set_hexpand(frame_session_note[session_cursor], TRUE);
         gtk_widget_set_vexpand(frame_session_note[session_cursor], TRUE);
         //gtk_widget_set_halign(frame_session_note, GTK_ALIGN_START);
@@ -825,21 +825,7 @@ void addNewSessionUI(GtkWidget *button, GtkWidget *notebook){
     gtk_widget_set_halign(entry_next_meeting, GTK_ALIGN_START);
 
     /* Manage to display the save button */
-    /*gtk_grid_attach_next_to(GTK_GRID(grid_add_session), save_button, entry_next_meeting, GTK_POS_TOP, 6, 1);
-    gtk_widget_set_hexpand(save_button, FALSE);
-    gtk_widget_set_vexpand(save_button, FALSE);
-    gtk_widget_set_halign(save_button, GTK_ALIGN_END);*/
-
-    /* Manage to display the new session button */
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), new_session_button, entry_next_meeting, GTK_POS_TOP, 8, 1);
-    gtk_widget_set_hexpand(new_session_button, FALSE);
-    gtk_widget_set_vexpand(new_session_button, FALSE);
-    gtk_widget_set_halign(new_session_button, GTK_ALIGN_END);
-    //g_signal_connect(GTK_BUTTON(new_session_button), "clicked", G_CALLBACK(addNewSessionUI), notebook);
-
-
-    /* Manage to display the save button */
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), save_button, new_session_button, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), save_button, entry_next_meeting, GTK_POS_TOP, 8, 1);
     gtk_widget_set_hexpand(save_button, FALSE);
     gtk_widget_set_vexpand(save_button, FALSE);
     gtk_widget_set_halign(save_button, GTK_ALIGN_END);
@@ -860,7 +846,7 @@ void addNewSessionUI(GtkWidget *button, GtkWidget *notebook){
 
     /* Manage the frame and its entry to add informations about the session */
     gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, 0.5);
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 5, 3);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 10, 3);
     gtk_widget_set_hexpand(frame_session_note, TRUE);
     gtk_widget_set_vexpand(frame_session_note, TRUE);
     //gtk_widget_set_halign(frame_session_note, GTK_ALIGN_START);
