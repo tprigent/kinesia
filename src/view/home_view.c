@@ -293,7 +293,7 @@ Session *createEmptySession(){
     newSession->nextSessionDate.month = tm.tm_mon + 1;
     newSession->nextSessionDate.year = tm.tm_year + 1900;
 
-    newSession->idSession = 3; // METTRE ENSUITE LE NOMBRE DE SESSIONS EXISTANTES + 1
+    newSession->idSession = 0; // METTRE ENSUITE LE NOMBRE DE SESSIONS EXISTANTES + 1
     newSession->idFolder = 1; // METTRE ENSUITE L'ID DU DOSSIER LE PLUS RÉCENT POUR LE PATIENT CHOISI
 
     return newSession;
