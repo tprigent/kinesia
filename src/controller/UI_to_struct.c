@@ -11,6 +11,7 @@
 
 
 void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session){
+    printf("\n****** TEST ******\n");
     /* SESSION NAME */
     strcpy(new_session->session->sessionName, (char*)gtk_entry_get_text(GTK_ENTRY(new_session->sessionName)));
 
@@ -32,13 +33,12 @@ void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session){
     strcpy(new_session->session->observations, info_text_result);
 
     /* SAVE DATA IN MODEL */
-    if(new_session->origin == 1){
-        printf("\nEdit Session\n");
-        modifySession(new_session->session);
-    }
-    else{
+    if(new_session->origin == 0){
         printf("\nNew Session\n");
         addSession(new_session->session);
     }
-    launchWorkView(NULL, new_session->window_id);
+    else{
+        printf("\nEdit Session\n");
+        modifySession(new_session->session);
+    }
 }

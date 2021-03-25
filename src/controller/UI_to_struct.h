@@ -21,7 +21,6 @@ typedef struct{
     GtkWidget *nextSessionDate;
     GtkWidget *observations;
     int origin;                     //0 for new session; 1 to edit session
-    Window_id *window_id;
 }NewSessionEntries;
 
 

@@ -569,6 +569,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     char *next_session_date_char[nb_session];
 
     SessionList *session_list = NULL;
+    NewSessionEntries *saveSession[nb_session];
 
     /* ASSIGN VARIABLES */
     notebook = gtk_notebook_new();
@@ -691,15 +692,14 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         gtk_widget_set_vexpand(save_button[session_cursor], FALSE);
         gtk_widget_set_halign(save_button[session_cursor], GTK_ALIGN_END);
 
-        /*NewSessionEntries *saveSession = (NewSessionEntries*) malloc(sizeof(NewSessionEntries));
-        saveSession->session = currentSession;
-        saveSession->origin = session_type;
-        saveSession->sessionName = entry_title_new;
-        saveSession->sessionDate = entry_date_new;
-        saveSession->nextSessionDate = entry_next_meeting;
-        saveSession->observations = text_session_note;
-        saveSession->window_id = window_id1;
-        g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveNewSession), saveSession);*/
+        saveSession[session_cursor] = (NewSessionEntries*) malloc(sizeof(NewSessionEntries));
+        saveSession[session_cursor]->session = &session_list->current->session;
+        saveSession[session_cursor]->origin = (int) session_list->current->session.idSession;
+        saveSession[session_cursor]->sessionName = entry_title_new[session_cursor];
+        saveSession[session_cursor]->sessionDate = entry_date_new[session_cursor];
+        saveSession[session_cursor]->nextSessionDate = entry_next_meeting[session_cursor];
+        saveSession[session_cursor]->observations = text_session_note[session_cursor];
+        g_signal_connect(GTK_BUTTON(save_button[session_cursor]), "clicked", G_CALLBACK(saveNewSession), saveSession[session_cursor]);
 
         /* Manage to display the next appointment */
         gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_next_meeting[session_cursor], entry_date_new[session_cursor], GTK_POS_RIGHT, 1, 1);
