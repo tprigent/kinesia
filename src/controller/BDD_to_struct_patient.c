@@ -8,7 +8,11 @@
 #include <sqlite3.h>
 #include <stdlib.h>
 
-//Nombre de patients
+/*!
+ * This function makes an SQL request, returns the number of patient in the database.
+ *
+ * \param[out] int, the number of patient.
+*/
 int getNbPatient(){
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -51,7 +55,14 @@ int getNbPatient(){
     return rc;
 }
 
-//Nom et prenom d'un patient
+/*!
+ * This function makes an SQL request, returns the name and first name of a patient
+ * from a patient's id.
+ *
+ * \param[in] int, the patient's id
+ *
+ * \param[out] char*, the name and first name of the patient: "<Name> <Firstname>".
+*/
 char* getNameFirstnamePatient(int id){
 
     sqlite3 *db;
@@ -86,7 +97,7 @@ char* getNameFirstnamePatient(int id){
     sqlite3_bind_int(stmt,1,id);
 
     //Execution de la requête
-    rc = sqlite3_step(stmt);
+    sqlite3_step(stmt);
 
     if(allocateStringPatient(&nom,LG_MAX_INFO*2)==-1){
         fprintf(stderr,"Erreur allocation getNomPrenom");
@@ -194,6 +205,11 @@ Patient* getPatient(int id){
 
 }
 
+/*!
+ * This function makes an SQL request, returns the patients archived's id sorted by name.
+ *
+ * \param[out] int*, an array of the id's, ending with the value -1.
+*/
 int* getArchivedPatientID(){
 
     sqlite3 *db;
@@ -228,12 +244,14 @@ int* getArchivedPatientID(){
         return NULL;
     }
 
-    int i;
-    i=0;
+    int nbArchivedPatient;
+    nbArchivedPatient=0;
     while(sqlite3_step(stmt) == SQLITE_ROW){
-        tab_id[i] = sqlite3_column_int(stmt,0);
-        i++;
+        tab_id[nbArchivedPatient] = sqlite3_column_int(stmt,0);
+        nbArchivedPatient++;
     }
+
+    tab_id[nbArchivedPatient] = -1;
 
     sqlite3_finalize(stmt);
 
@@ -243,6 +261,11 @@ int* getArchivedPatientID(){
 
 }
 
+/*!
+ * This function makes an SQL request, returns the patients active's id sorted by name.
+ *
+ * \param[out] int*, an array of the id's, ending with the value -1.
+*/
 int* getActivePatientID(){
 
     sqlite3 *db;
@@ -277,12 +300,14 @@ int* getActivePatientID(){
         return NULL;
     }
 
-    int i;
-    i=0;
+    int nbArchivedPatient;
+    nbArchivedPatient=0;
     while(sqlite3_step(stmt) == SQLITE_ROW){
-        tab_id[i] = sqlite3_column_int(stmt,0);
-        i++;
+        tab_id[nbArchivedPatient] = sqlite3_column_int(stmt,0);
+        nbArchivedPatient++;
     }
+
+    tab_id[nbArchivedPatient] = -1;
 
     sqlite3_finalize(stmt);
 
@@ -292,18 +317,28 @@ int* getActivePatientID(){
 
 }
 
-int getNbArchivedPatient(){
-    int i;
-    int count = 0;
-    int nbPatients = getNbPatient();
-    for(i = 1; i<=nbPatients; i++){
-        if(getPatient(i)->isArchived == 1){
-            count ++;
-        }
+/*!
+ * This function returns the number of archived patients.
+ *
+ * \param[out] int, the number of archived patients.
+*/
+int getNbActivePatient(){
+
+    int* nb;
+    int i = 0;
+    nb = getActivePatientID();
+    while(nb[i] != -1){
+        i++;
     }
-    return count;
+    return i;
+
 }
 
-int getNbActivePatient(){
-    return (getNbPatient()-getNbArchivedPatient());
+/*!
+ * This function returns the number of archived patients.
+ *
+ * \param[out] int, the number of archived patients.
+*/
+int getNbArchivedPatient(){
+    return (getNbPatient()-getNbActivePatient());
 }
