@@ -529,7 +529,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         /* Choose view to display: work_view if existing, home_view if new Patient */
         if(origin == 1){
             Session *session = createEmptySession();
-            setWorkWindow((int) patient->id, session, patient_window->session_type);
+            setWorkWindow((int) patient->id);
         }else{
             setHomeWindow();
         }
