@@ -14,19 +14,26 @@
 /**
  * \brief Structure to pass a patient and a window in a callback function
  *
- * This structure is used to pass many arguments in a callback function which only
- * have one argument.
+ * This structure is used to pass many arguments in a callback function which has only
+ * one argument.
 */
 typedef struct {
-    Patient *patient;
-    GtkWidget *window;
-    int origin;         // 0 if new patient, 1 if edition of patient
+    Patient *patient;       /**< Patient to be edited */
+    GtkWidget *window;      /**< Parent window to be reload after changes */
+    int origin;             /**< 0 if new patient, 1 if edition of existing Patient */
+    int session_type;       /**< 0 new session; 1 edit session */
 }Patient_window;
 
+/**
+ * \brief Structure to choose the warning
+ *
+ * This structure enables the callback to act on the patient, choose the action to be done
+ * and reload the parent window after changes.
+*/
 typedef struct {
-    int patientID;
-    int actionType;
-    GtkWidget *window;
+    int patientID;         /**< ID of the Patient to be deleted or archived */
+    int actionType;        /**< Type of warning: 0 = "delete" or 1 = "archive" */
+    GtkWidget *window;     /**< Parent window to be reload after changes */
 }WarningType;
 
 

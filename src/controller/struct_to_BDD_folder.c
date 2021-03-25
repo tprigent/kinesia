@@ -6,6 +6,13 @@
 #include <sqlite3.h>
 #include <stdio.h>
 
+/*!
+ * This function makes an SQL request, adds a folder in the database from a Folder struct.
+ *
+ * \param[in] a Folder struct.
+ *
+ * \param[out] int, 1 if an error occurred, 0 otherwise
+*/
 int addFolder(Folder *folder){
 
     sqlite3 *db;
@@ -66,6 +73,13 @@ int addFolder(Folder *folder){
 
 }
 
+/*!
+ * This function makes an SQL request, changed the folder's entries in the database.
+ *
+ * \param[in] a Folder struct.
+ *
+ * \param[out] int, 1 if an error occurred, 0 otherwise
+*/
 int modifyFolder(Folder *folder){
 
     sqlite3 *db;

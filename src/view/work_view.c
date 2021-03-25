@@ -8,6 +8,7 @@
 #include "work_view.h"
 #include "home_view.h"
 #include "editor_views.h"
+#include "../controller/UI_to_struct.h"
 #include "../controller/struct_to_UI.h"
 #include "../controller/BDD_to_struct_folder.h"
 #include "../controller/BDD_to_struct_session.h"
@@ -18,8 +19,11 @@
 * \brief Initiate session window with some default parameters
  *
  * Focus, position, size, title and destroy callback are set.
+ *
+ * \param[in] id_patient ID of the patient file opened
+ * \param[in] session Session to be opened
 */
-GtkWidget *setWorkWindow(int id_patient, Session *session){
+GtkWidget *setWorkWindow(int id_patient, Session *session, int session_type){
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
@@ -42,9 +46,10 @@ GtkWidget *setWorkWindow(int id_patient, Session *session){
 
     Window_id *window_id = (Window_id*) malloc(sizeof(Window_id));
     window_id->window = window;
-    window_id->id = id_patient;
-    setWorkEnvironment(window_id, session);
-    //free(window_id);
+    window_id->patientID = id_patient;
+    window_id->session = session;
+    window_id->session_type = session_type;
+    setWorkEnvironment(window_id);
 
     gtk_widget_show_all(window);
     gtk_main();
@@ -62,12 +67,12 @@ GtkWidget *setWorkWindow(int id_patient, Session *session){
  *
  * The three boxes are filled by external functions.
  *
- * \param[in] window Session window to split
+ * \param[in] window_id Window_id structure with window, patient ID and session
 */
-void setWorkEnvironment(Window_id *window_id, Session *session){
+void setWorkEnvironment(Window_id *window_id){
 
     /* GET PATIENT STRUCTURE FROM BDD */
-    Patient *patient = getPatient(window_id->id);
+    Patient *patient = getPatient(window_id->patientID);
 
     GtkWidget *window = window_id->window;
     GtkWidget *grid = NULL;
@@ -97,9 +102,9 @@ void setWorkEnvironment(Window_id *window_id, Session *session){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    fillPatientBox(window, boxPart[0], patient);
+    fillPatientBox(window, boxPart[0], patient, window_id->session_type);
     fillFolderBox(boxPart[1]);
-    fillSessionBox(window, boxPart[2], session, window_id->id);
+    fillSessionBox(window, boxPart[2], window_id->session, window_id->patientID, window_id->session_type);
 }
 
 
@@ -114,14 +119,16 @@ void setWorkEnvironment(Window_id *window_id, Session *session){
  *
  * \param[in] box Existing patient box
  * \param[in] patient Current Patient
+ * \param[in] patient Patient opened
 */
-void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
+void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient, int session_type){
 
     /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
     patient_window->patient = patient;
     patient_window->window = window;
     patient_window->origin = 1;
+    patient_window->session_type = session_type;
 
 
     /* DECLARE VARIABLES */
@@ -294,7 +301,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     gtk_container_add(GTK_CONTAINER(folder_box), folder_grid);
 
     int nb_folders = 3; // sere récupéré par une fonction
-    int i = 0;
+    int i;
     GtkWidget *folder_button[nb_folders];
     char *name_folder[nb_folders];
     char name_folder1[] = "#Dossier1"; // sera récupéré par une fonction
@@ -307,7 +314,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     folder_button[0] = gtk_button_new_with_label(name_folder[0]);
     gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(folder_button[0], TRUE);
-    for(i =1; i < nb_folders; i++){
+    for(i = 1; i < nb_folders; i++){
         folder_button[i] = gtk_button_new_with_label(name_folder[i]);
         gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[i], folder_button[i-1], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(folder_button[i], TRUE);
@@ -530,8 +537,11 @@ void fillFolderBox(GtkWidget *box){
  * The button to attach files is set up.
  *
  * \param[in] box Existing Session box
+ * \param[in] window Current window to enable refresh
+ * \param[in] currentSession Current Session
+ * \param[in] idPatient ID of the current Patient
 */
-void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, int idPatient){
+void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, int idPatient, int session_type){
 
     /* DECLARE VARIABLES */
     GtkWidget *grid_session_section = NULL;
@@ -551,7 +561,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     GtkWidget *session_attach_button = NULL;
     GtkWidget *text_session_note = NULL;
     GtkTextBuffer *session_buffer = NULL;
-    GtkTextIter start, end;
+    GtkTextIter end;
 
     /* ASSIGN VARIABLES */
     grid_session_section = gtk_grid_new();
@@ -657,10 +667,38 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_halign(new_session_button, GTK_ALIGN_END);
     Window_id *window_id1 = (Window_id*) malloc(sizeof(Window_id));
     window_id1->window = window;
-    window_id1->id = idPatient;
+    window_id1->patientID = idPatient;
     window_id1->session = createEmptySession();
+    window_id1->session_type = 0;
     g_signal_connect(GTK_BUTTON(new_session_button), "clicked", G_CALLBACK(launchWorkView), window_id1);
 
+
+    /* Manage to display the save button */
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), save_button, new_session_button, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(save_button, FALSE);
+    gtk_widget_set_vexpand(save_button, FALSE);
+    gtk_widget_set_halign(save_button, GTK_ALIGN_END);
+
+    NewSessionEntries *saveSession = (NewSessionEntries*) malloc(sizeof(NewSessionEntries));
+    saveSession->session = currentSession;
+    saveSession->origin = session_type;
+    saveSession->sessionName = entry_title_new;
+    saveSession->sessionDate = entry_date_new;
+    saveSession->nextSessionDate = entry_next_meeting;
+    saveSession->observations = text_session_note;
+    saveSession->window_id = window_id1;
+    g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveNewSession), saveSession);
+
+    /* Manage to display the next appointment */
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting, entry_date_new, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(session_next_meeting, FALSE);
+    gtk_widget_set_vexpand(session_next_meeting, FALSE);
+    gtk_widget_set_halign(session_next_meeting, GTK_ALIGN_END);
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), entry_next_meeting, session_next_meeting, GTK_POS_RIGHT, 1, 1);
+    gtk_widget_set_hexpand(entry_next_meeting, FALSE);
+    gtk_widget_set_vexpand(entry_next_meeting, FALSE);
+    gtk_widget_set_halign(entry_next_meeting, GTK_ALIGN_START);
 
     /* Manage the button to attach items */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, entry_title_new, GTK_POS_BOTTOM, 1, 1);
@@ -729,7 +767,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         window_id[session_cursor] = (Window_id*) malloc(sizeof(Window_id));
         window_id[session_cursor]->window = window;
         window_id[session_cursor]->session = &session_list->current->session;
-        window_id[session_cursor]->id = idPatient;
+        window_id[session_cursor]->patientID = idPatient;
+        window_id[session_cursor]->session_type = 1;
 
         setOnNext(session_list);
     }
@@ -781,12 +820,12 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
  * When the user click on a patient from the patient window, this function closes
  * the patient window and open the session window related to the patient selected.
  *
- * \param[in] but Button that launches the view
- * \param[in] window Window dedicated to the patient view
+ * \param[in] window_id Window to be refresh and ID of the Patient concerned
+ * \param[in] but Button pressed to launch the work view
 */
 void launchWorkView(GtkWidget *but, Window_id *window_id){
     gtk_widget_destroy(window_id->window);
-    setWorkWindow(window_id->id, window_id->session);
+    setWorkWindow(window_id->patientID, window_id->session, window_id->session_type);
 }
 
 
@@ -806,12 +845,4 @@ void setStartMargin(GtkWidget *widget){
 */
 void setTopMargin(GtkWidget *widget){
     gtk_widget_set_margin_top(widget, 5);
-}
-
-/*!
- * \brief Set bottom default margin
- * \param[in] widget Widget concerned
-*/
-void setBottomMargin(GtkWidget *widget){
-    gtk_widget_set_margin_bottom(widget, 5);
 }
