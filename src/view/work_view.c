@@ -564,14 +564,19 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     GtkWidget *session_attach_button[nb_session];
     GtkWidget *text_session_note[nb_session];
     GtkTextBuffer *session_buffer[nb_session];
-    GtkTextIter end;
+    GtkTextIter end[nb_session];
 
     char *session_date_char[nb_session];
     char *next_session_date_char[nb_session];
 
+    SessionList *session_list = NULL;
+
     /* ASSIGN VARIABLES */
     notebook = gtk_notebook_new();
     grid_session_section = gtk_grid_new();
+
+    session_list = getSessionList(1);
+    setOnFirst(session_list);
 
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         grid_add_session[session_cursor] = gtk_grid_new();
@@ -580,17 +585,17 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         session_title_new[session_cursor] = gtk_label_new("Titre :");
         entry_title_new[session_cursor] = gtk_entry_new();
-        gtk_entry_set_text(GTK_ENTRY(entry_title_new[session_cursor]), currentSession->sessionName);
+        gtk_entry_set_text(GTK_ENTRY(entry_title_new[session_cursor]), session_list->current->session.sessionName);
 
         session_date_new[session_cursor] = gtk_label_new("Date :");
         entry_date_new[session_cursor] = gtk_entry_new();
-        session_date_char[session_cursor] = get_date_UI(&currentSession->sessionDate);
+        session_date_char[session_cursor] = get_date_UI(&session_list->current->session.sessionDate);
         gtk_entry_set_text(GTK_ENTRY(entry_date_new[session_cursor]), session_date_char[session_cursor]);
         free_info_UI(session_date_char[session_cursor]);
 
         session_next_meeting[session_cursor] = gtk_label_new("Prochain rendez-vous : ");
         entry_next_meeting[session_cursor] = gtk_entry_new();
-        next_session_date_char[session_cursor] = get_date_UI(&currentSession->nextSessionDate);
+        next_session_date_char[session_cursor] = get_date_UI(&session_list->current->session.nextSessionDate);
         gtk_entry_set_text(GTK_ENTRY(entry_next_meeting[session_cursor]), next_session_date_char[session_cursor]);
         free_info_UI(next_session_date_char[session_cursor]);
 
@@ -600,14 +605,16 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
         text_session_note[session_cursor] = gtk_text_view_new();
         session_buffer[session_cursor] = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_session_note));
-        gtk_text_buffer_get_end_iter(session_buffer[session_cursor], &end);
-        gtk_text_buffer_insert(session_buffer[session_cursor], &end, currentSession->observations, -1);
+        gtk_text_buffer_get_end_iter(session_buffer[session_cursor], &end[session_cursor]);
+        gtk_text_buffer_insert(session_buffer[session_cursor], &end[session_cursor], session_list->current->session.observations, -1);
         gtk_text_view_set_buffer(GTK_TEXT_VIEW(text_session_note[session_cursor]), session_buffer[session_cursor]);
 
         gtk_text_view_set_left_margin(GTK_TEXT_VIEW(text_session_note[session_cursor]), 5);
         gtk_text_view_set_right_margin(GTK_TEXT_VIEW(text_session_note[session_cursor]), 5);
         gtk_text_view_set_top_margin(GTK_TEXT_VIEW(text_session_note[session_cursor]), 5);
         gtk_text_view_set_bottom_margin(GTK_TEXT_VIEW(text_session_note[session_cursor]), 5);
+
+        setOnNext(session_list);
     }
 
 
@@ -624,6 +631,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     gtk_widget_set_vexpand(notebook, TRUE);
     gtk_widget_set_halign(notebook, GTK_ALIGN_FILL);
 
+    setOnFirst(session_list);
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         /* Manage the entry to add a title */
         gtk_grid_attach(GTK_GRID(grid_add_session[session_cursor]), session_title_new[session_cursor], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
@@ -721,7 +729,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
         gtk_widget_set_hexpand(text_session_note[session_cursor], TRUE);
         gtk_widget_set_vexpand(text_session_note[session_cursor], TRUE);
 
-        gtk_notebook_append_page(GTK_NOTEBOOK(notebook), grid_add_session[session_cursor], gtk_label_new("Test"));
+        gtk_notebook_append_page(GTK_NOTEBOOK(notebook), grid_add_session[session_cursor], gtk_label_new(session_list->current->session.sessionName));
+        setOnNext(session_list);
 
     }
 
