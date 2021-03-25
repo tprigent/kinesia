@@ -10,8 +10,14 @@
 #include "struct_to_BDD_patient.h"
 
 
-
-void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session){
+/*!
+ * \brief Copy Session editor entries to the Session struct
+ * and save data to database
+ *
+ * \param[in] save_button Button triggering the save process
+ * \param[in] new_session SessionEntries containing all of the data of the Session to be saved
+*/
+void saveSessionEntries(GtkWidget *save_button, SessionEntries *new_session){
     /* SESSION NAME */
     strcpy(new_session->session->sessionName, (char*)gtk_entry_get_text(GTK_ENTRY(new_session->sessionName)));
 
@@ -44,6 +50,16 @@ void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session){
     launchWorkView(NULL, new_session->window_id);
 }
 
+/*!
+ * \brief Copy Folder editor entries to the Folder struct
+ * and save data to database
+ *
+ * \param[in] folder             Edited Folder
+ * \param[in] folder_name        Folder name entry
+ * \param[in] pathology          Pathology entry
+ * \param[in] other_infos_buffer Buffer containing more infos about the Folder
+ * \param[in] start_treatment    Date of the beginning of the treatment (text entry)
+*/
 void saveFolderEntries(Folder *folder, GtkWidget *folder_name,GtkWidget *pathology,
                        GtkTextBuffer *other_infos_buffer, GtkWidget *start_treatment){
 
@@ -57,6 +73,30 @@ void saveFolderEntries(Folder *folder, GtkWidget *folder_name,GtkWidget *patholo
 
 }
 
+/*!
+ * \brief Copy Patient editor entries to the Patient struct
+ * and save data to database
+ *
+ * \param[in] patient           Edited Patient
+ * \param[in] origin            Boolean to indicate if the Patient is existing (1) or not (0)
+ * \param[in] surname           Firstname entry
+ * \param[in] name              Name entry
+ * \param[in] birth             Birthdate entry
+ * \param[in] weight            Weight entry
+ * \param[in] height            Height entry
+ * \param[in] first_consult     First consultation date entry
+ * \param[in] ssn               Social security number entry
+ * \param[in] number            Phone number entry
+ * \param[in] email             Mail entry
+ * \param[in] gender_combo_box  Combo box to select Patient gender
+ * \param[in] address           Number and street entry
+ * \param[in] city              City entry
+ * \param[in] postcode          Postcode entry
+ * \param[in] job               Job entry
+ * \param[in] info_text         Large text view for additional infos about Patient
+ * \param[in] end               Iterator to know the end of the text buffer
+
+*/
 void savePatientEntries(Patient *patient, int origin, GtkWidget *surname, GtkWidget *name,
                         GtkWidget *birth, GtkWidget *weight, GtkWidget *height,
                         GtkWidget *first_consult, GtkWidget *ssn, GtkWidget *number,
