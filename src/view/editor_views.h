@@ -21,7 +21,6 @@ typedef struct {
     Patient *patient;       /**< Patient to be edited */
     GtkWidget *window;      /**< Parent window to be reload after changes */
     int origin;             /**< 0 if new patient, 1 if edition of existing Patient */
-    int session_type;       /**< 0 new session; 1 edit session */
 }Patient_window;
 
 /**
