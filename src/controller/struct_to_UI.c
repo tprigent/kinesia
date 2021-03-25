@@ -30,7 +30,7 @@ void tostring(char *str, int num){
  * \brief Concatenate firstname and surname in one char
  *
  * \param[in] patient Concerned Patient
- * \param[out] Char pointer combining at "Firstname Surname" format
+ * \param[out] Char pointer combining at "Firstname Name" format
 */
 char *get_name_UI(Patient *patient){
     char *name = (char*) malloc(sizeof(patient->firstname)+sizeof(patient->name)+2*sizeof(char));
@@ -204,7 +204,6 @@ char *get_age_and_birthdate(Patient *patient){
  *
  * \param[out] String containing the current date in format "dd/mm/yyyy"
 */
-// VOIR POUR FREE LA DATE
 char *get_current_date(){
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);

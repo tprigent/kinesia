@@ -9,5 +9,6 @@
 
 int modifyPatient(Patient *gen);
 int addPatient(Patient *gen);
+int deletePatient(int id);
 
 #endif //LOGICIEL_KINE_STRUCT_TO_BDD_PATIENT_H

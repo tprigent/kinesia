@@ -95,19 +95,6 @@ static void test_get_first_consultation_UI(void **state){
     free(temp);
 }
 
-/*!
- * \brief test get_adress_UI function
- *
- * This function tests get_adress_UI which returns a char* "number street" passing a patient
- *
- * \param[in] A pointer addressto pass the allocated patient
-*/
-static void test_get_adress_UI(void **state){
-    Patient * patient = (Patient *) (*state);
-    char * temp = get_adress_UI(patient);
-    assert_string_equal("2 Ruetintintin", temp);
-    free(temp);
-}
 
 /*!
  * \brief test get_age_and_birthdate function
@@ -180,7 +167,6 @@ int main_UI(void)
             cmocka_unit_test_setup_teardown(test_get_date_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_height_weight_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_first_consultation_UI, setup_patient, teardown),
-            cmocka_unit_test_setup_teardown(test_get_adress_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_age_and_birthdate, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_current_date, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_new_session_name, setup_patient, teardown),
