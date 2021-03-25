@@ -24,7 +24,7 @@ typedef struct{
     Window_id *window_id;
 }NewSessionEntries;
 
-Date *parseDate(char *stringDate);
+
 void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session);
 
 #endif //LOGICIEL_KINE_CONNECT_UI_STRUCT_H
