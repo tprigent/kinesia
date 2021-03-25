@@ -97,7 +97,7 @@ char* getNameFirstnamePatient(int id){
     sqlite3_bind_int(stmt,1,id);
 
     //Execution de la requête
-    rc = sqlite3_step(stmt);
+    sqlite3_step(stmt);
 
     if(allocateStringPatient(&nom,LG_MAX_INFO*2)==-1){
         fprintf(stderr,"Erreur allocation getNomPrenom");
@@ -208,7 +208,7 @@ Patient* getPatient(int id){
 /*!
  * This function makes an SQL request, returns the patients archived's id sorted by name.
  *
- * \param[out] int*, an array of the id's.
+ * \param[out] int*, an array of the id's, ending with the value -1.
 */
 int* getArchivedPatientID(){
 
@@ -244,12 +244,14 @@ int* getArchivedPatientID(){
         return NULL;
     }
 
-    int i;
-    i=0;
+    int nbArchivedPatient;
+    nbArchivedPatient=0;
     while(sqlite3_step(stmt) == SQLITE_ROW){
-        tab_id[i] = sqlite3_column_int(stmt,0);
-        i++;
+        tab_id[nbArchivedPatient] = sqlite3_column_int(stmt,0);
+        nbArchivedPatient++;
     }
+
+    tab_id[nbArchivedPatient] = -1;
 
     sqlite3_finalize(stmt);
 
@@ -262,7 +264,7 @@ int* getArchivedPatientID(){
 /*!
  * This function makes an SQL request, returns the patients active's id sorted by name.
  *
- * \param[out] int*, an array of the id's.
+ * \param[out] int*, an array of the id's, ending with the value -1.
 */
 int* getActivePatientID(){
 
@@ -298,12 +300,14 @@ int* getActivePatientID(){
         return NULL;
     }
 
-    int i;
-    i=0;
+    int nbArchivedPatient;
+    nbArchivedPatient=0;
     while(sqlite3_step(stmt) == SQLITE_ROW){
-        tab_id[i] = sqlite3_column_int(stmt,0);
-        i++;
+        tab_id[nbArchivedPatient] = sqlite3_column_int(stmt,0);
+        nbArchivedPatient++;
     }
+
+    tab_id[nbArchivedPatient] = -1;
 
     sqlite3_finalize(stmt);
 
@@ -318,26 +322,16 @@ int* getActivePatientID(){
  *
  * \param[out] int, the number of archived patients.
 */
-int getNbArchivedPatient(){
-    int i;
-    int count = 0;
-    int nbPatients = getNbPatient();
-    for(i = 1; i<=nbPatients; i++){
-        if(getPatient(i)->isArchived == 1){
-            count ++;
-        }
-    }
-    return count;
+int getNbActivePatient(){
 
-    /* int* nb;
-     * int i = 0;
-     * nb = getArchivedPatientID();
-     * while(nb[i] != NULL){
-     *   i++;
-     * }
-     * free(nb);
-     * return i;
-    */
+    int* nb;
+    int i = 0;
+    nb = getActivePatientID();
+    while(nb[i] != -1){
+        i++;
+    }
+    return i;
+
 }
 
 /*!
@@ -345,6 +339,6 @@ int getNbArchivedPatient(){
  *
  * \param[out] int, the number of archived patients.
 */
-int getNbActivePatient(){
-    return (getNbPatient()-getNbArchivedPatient());
+int getNbArchivedPatient(){
+    return (getNbPatient()-getNbActivePatient());
 }
