@@ -235,7 +235,7 @@ int* getArchivedPatientID(){
     }
 
     //Creating te request
-    sql = "SELECT id FROM patient WHERE isArchived=1 ORDER BY name DESC";
+    sql = "SELECT id FROM patient WHERE isArchived=1 ORDER BY name ASC";
 
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     if( rc != SQLITE_OK ){
