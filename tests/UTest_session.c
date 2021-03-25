@@ -1,5 +1,5 @@
 #include "../src/model/structures.h"
-#include "../src/controller/struct_to_UI.h"
+#include "../src/controller/display_helpers.h"
 #include "../src/model/patient_manager.h"
 #include "UTest_session.h"
 #include "../src/model/session_manager.h"

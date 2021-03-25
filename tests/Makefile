@@ -12,7 +12,7 @@ main: struct_to_UI.o UI_to_struct.o UTest.o UTest_UI.o UTest_session.o UTest_BDD
 %.o: %.c
 	$(CC) -c $(CFLAGS) $< $^
 
-struct_to_UI.o: ../src/controller/struct_to_UI.c
+struct_to_UI.o: ../src/controller/display_helpers.c
 	$(CC) -c $(CFLAGS) $< $^
 
 patient_manager.o: ../src/model/patient_manager.c

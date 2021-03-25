@@ -23,7 +23,7 @@ char *get_indicator_files_UI(Folder *folder);
 char *get_age_and_birthdate(Patient *patient);
 char *get_current_date();
 char *get_new_session_name();
-
+Date *parseDate(char *stringDate);
 void free_info_UI(char *info);
 
 #endif //LOGICIEL_KINE_CONNECT_STRUCT_UI_H
