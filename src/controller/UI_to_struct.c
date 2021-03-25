@@ -39,15 +39,14 @@ void saveSessionEntries(GtkWidget *save_button, SessionEntries *new_session){
     strcpy(new_session->session->observations, info_text_result);
 
     /* SAVE DATA IN MODEL */
-    if(new_session->origin == 1){
-        printf("\nEdit Session\n");
-        modifySession(new_session->session);
-    }
-    else{
+    if(new_session->origin == 0){
         printf("\nNew Session\n");
         addSession(new_session->session);
     }
-    launchWorkView(NULL, new_session->window_id);
+    else{
+        printf("\nEdit Session\n");
+        modifySession(new_session->session);
+    }
 }
 
 /*!
