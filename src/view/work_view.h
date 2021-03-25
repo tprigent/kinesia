@@ -18,6 +18,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient, int ses
 void fillFolderBox(GtkWidget *box);
 void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *session, int idPatient, int session_type);
 void launchWorkView(GtkWidget *but, Window_id *window_id);
+void addNewSessionUI(GtkWidget *button, GtkWidget *notebook);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);
