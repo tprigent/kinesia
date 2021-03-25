@@ -50,7 +50,6 @@ static int setup_patient(void **state) {
 static int setup_address(void **state) {
     Address * address = malloc(sizeof(Address));
     if(allocateAddress(address) != 0) return -1;
-    assert_non_null(address->number);
     assert_non_null(address->street);
     assert_non_null(address->postCode);
     assert_non_null(address->city);
@@ -84,7 +83,7 @@ static void test_setPatient(void **state) {
     Date date;
     setDate(&date, 12, 3, 2021);
 
-    Address address = {"15", "rue de la soif", "35000", "Rennes", "none"};
+    Address address = {"rue de la soif", "35000", "Rennes", "none"};
 
     assert_int_equal(0, setPatient(patient, "Claude", "Francois", date, "ici", 0, address, "0123456789", "mailAddress", "chanteur", "11111111", "68", "170", date, "test",1,0));
     assert_string_equal("Claude", patient->name);
@@ -108,9 +107,8 @@ static void test_setPatient(void **state) {
 */
 static void test_setAddress(void **state) {
     Address * address = (Address *) *state;
-    setAddress(address, "15", "rue de la soif", "35000", "Rennes", "APPT 30");
-    assert_string_equal("15", address->number);
-    assert_string_equal("rue de la soif", address->street);
+    setAddress(address, "15 rue de la soif", "35000", "Rennes", "APPT 30");
+    assert_string_equal("15 rue de la soif", address->street);
     assert_string_equal("35000", address->postCode);
     assert_string_equal("Rennes", address->city);
     assert_string_equal("APPT 30", address->other_info);
@@ -154,13 +152,13 @@ static void test_addPatient(void **state){
         fprintf(stderr,"Erreur setDate first consultation\n");
     }
 
-    setAddress(&adresse,"1","1","1","1","1");
+    setAddress(&adresse,"1","1","1","1");
 
     if(setPatient(p,"1","1",birthDate,"1",1,
                   adresse,"1",
                   "1","1",
-                  "1",1,
-                  1,firtsConsDate,"1",0,1) != 0) {
+                  "1","1",
+                  "1",firtsConsDate,"1",0,1) != 0) {
         fprintf(stderr, "Erreur setPatient");
         p = NULL;
     }
@@ -187,7 +185,7 @@ static void test_modifyPatient(void **state){
         fprintf(stderr,"Erreur setDate first consultation\n");
     }
 
-    setAddress(&adresse,"1","1","1","1","1");
+    setAddress(&adresse,"1","1","1","1");
 
     if(setPatient(p,"1","1",birthDate,"1",1,
                   adresse,"1",
