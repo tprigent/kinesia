@@ -93,8 +93,7 @@ void setWorkEnvironment(Window_id *window_id){
     gtk_widget_set_hexpand(boxPart[1], TRUE);
     gtk_widget_set_vexpand(boxPart[1], FALSE);
 
-    boxPart[2] = gtk_scrolled_window_new(NULL, NULL);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(boxPart[2]), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+    boxPart[2] = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     setStartMargin(boxPart[2]);
     setTopMargin(boxPart[2]);
     gtk_grid_attach_next_to(GTK_GRID(grid), boxPart[2],boxPart[1], GTK_POS_BOTTOM, 4, 1);
@@ -573,6 +572,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
     /* ASSIGN VARIABLES */
     notebook = gtk_notebook_new();
+    gtk_notebook_set_scrollable (GTK_NOTEBOOK(notebook), TRUE);
     grid_session_section = gtk_grid_new();
 
     session_list = getSessionList(1);
