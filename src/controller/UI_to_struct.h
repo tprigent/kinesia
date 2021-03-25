@@ -27,4 +27,14 @@ typedef struct{
 
 void saveNewSession(GtkWidget *save_button, NewSessionEntries *new_session);
 
+void saveFolderEntries(Folder *folder, GtkWidget *folder_name_entry,GtkWidget *pathology_entry,
+                       GtkTextBuffer *other_infos_buffer, GtkWidget *start_treatment_entry);
+
+void savePatientEntries(Patient *patient, int origin, GtkWidget *surname_entry, GtkWidget *name_entry,
+                        GtkWidget *birth_entry, GtkWidget *weight_entry, GtkWidget *height_entry,
+                        GtkWidget *first_consult_entry, GtkWidget *ssn_entry, GtkWidget *number_entry,
+                        GtkWidget *email_entry, GtkWidget *gender_combo_box, GtkWidget *address_entry,
+                        GtkWidget *city_entry, GtkWidget *postcode_entry, GtkWidget *job_entry,
+                        GtkWidget *info_text, GtkTextIter end);
+
 #endif //LOGICIEL_KINE_CONNECT_UI_STRUCT_H
