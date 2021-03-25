@@ -550,6 +550,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     GtkWidget *frame_add_session = NULL;
     GtkWidget *frame_session_note = NULL;
 
+    GtkWidget *notebook;
     GtkWidget *session_title_new = NULL;
     GtkWidget *entry_title_new = NULL;
     GtkWidget *session_date_new = NULL;
@@ -564,6 +565,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
     GtkTextIter end;
 
     /* ASSIGN VARIABLES */
+    notebook = gtk_notebook_new();
     grid_session_section = gtk_grid_new();
     grid_add_session = gtk_grid_new();
 
@@ -609,9 +611,16 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Session *currentSession, 
 
 
     /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
+    /* Manage to add a notebook */
+    gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), session_date_new, gtk_label_new("Patients actifs"));
+    gtk_widget_set_hexpand(notebook, TRUE);
+    gtk_widget_set_vexpand(notebook, TRUE);
+    gtk_widget_set_halign(notebook, GTK_ALIGN_FILL);
+
     /* Manage the frame and its grid to add a session */
     gtk_frame_set_label_align(GTK_FRAME(frame_add_session), 0.5, 0.5);
-    gtk_grid_attach(GTK_GRID(grid_session_section), frame_add_session, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_session_section), frame_add_session, notebook, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_add_session, TRUE);
     gtk_widget_set_vexpand(frame_add_session, TRUE);
     gtk_widget_set_halign(frame_add_session, GTK_ALIGN_FILL);
