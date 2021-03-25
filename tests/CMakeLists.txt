@@ -17,7 +17,7 @@ set(SOURCE_FILES
         UTest_BDD_session.c
         ../src/model/session_manager.c
         ../src/model/folder_manager.c
-        ../src/controller/struct_to_UI.c
+        ../src/controller/display_helpers.c
         ../src/model/patient_manager.c
         ../src/controller/UI_to_struct.c
         ../src/controller/BDD_to_struct_patient.c

@@ -3,7 +3,7 @@
 * \brief File with functions used to parse data from structures to be displayed on UI
 */
 
-#include "struct_to_UI.h"
+#include "display_helpers.h"
 
 /*!
  * \brief Write an integer into a given char
@@ -233,6 +233,24 @@ char *get_new_session_name(){
     strcat(new_session_name, "\0");
 
     return new_session_name;
+}
+
+/*!
+ * \brief Parse string date to Date format
+ *
+ * \param[in] stringDate source string date
+ * \param[out] destination Date structure
+*/
+Date *parseDate(char *stringDate){
+    Date *date = (Date *) malloc(sizeof(Date));
+    int yyyy;
+    int mm;
+    int dd;
+    sscanf(stringDate, "%d/%d/%d", &dd, &mm, &yyyy);
+    date->year = yyyy;
+    date->month = mm;
+    date->day = dd;
+    return date;
 }
 
 /*!
