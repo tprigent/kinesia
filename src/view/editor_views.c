@@ -713,11 +713,17 @@ void launchSettingsEditor(){
     GtkWidget *whiteImage= NULL;
     GdkPixbuf *darkPixbuf = NULL;
     GtkWidget *darkImage= NULL;
+    GtkWidget *mode_combo_box = NULL;
 
     /* ASSIGN VARIABLES */
     grid_dialog = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
     gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
+
+    mode_combo_box = gtk_combo_box_text_new();
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(mode_combo_box), NULL, "Mode clair");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(mode_combo_box), NULL, "Mode sombre");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(mode_combo_box), 0);
 
     whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/whiteMode.jpeg", 400, 300, TRUE, NULL);
     whiteImage = gtk_image_new_from_pixbuf(whitePixbuf);
@@ -733,8 +739,11 @@ void launchSettingsEditor(){
     gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
 
     /* MANAGE TO ORGANIZE THE VIEW */
-    gtk_grid_attach(GTK_GRID(grid_dialog), whiteImage, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, whiteImage, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid_dialog), whiteImage, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 2, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, whiteImage, GTK_POS_RIGHT, 2, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), mode_combo_box, darkImage, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_halign(mode_combo_box, GTK_ALIGN_START);
+    gtk_widget_set_hexpand(mode_combo_box, TRUE);
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
