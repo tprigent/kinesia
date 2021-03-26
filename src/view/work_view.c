@@ -622,6 +622,10 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient){
 
     /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
 
+    if(nb_session == 0){
+        addNewSessionUI(NULL, notebook);
+    }
+
     /* Manage to add a notebook */
     gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
     gtk_widget_set_hexpand(notebook, TRUE);
