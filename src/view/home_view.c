@@ -10,7 +10,7 @@
 #include "../controller/display_helpers.h"
 
 /*!
- * \brief Function that launch style.css to modify application style
+ * \brief Function that launch whiteMode.css to modify application style
  *
  * This function set necessary parameters to load css and use css file
  *
@@ -20,7 +20,7 @@ static void load_css(){
     GdkDisplay *display;
     GdkScreen *screen;
 
-    const gchar *css_style_file = "../src/view/style.css";
+    const gchar *css_style_file = "../src/view/whiteMode.css";
     GFile *css_fp = g_file_new_for_path(css_style_file);
     GError *error = 0;
 
