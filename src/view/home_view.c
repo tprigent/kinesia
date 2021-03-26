@@ -138,6 +138,8 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(button_parameters, FALSE);
     gtk_widget_set_halign(button_parameters, GTK_ALIGN_END);
+    g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), NULL);
+
 
     gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(calendar, TRUE);
