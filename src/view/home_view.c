@@ -92,6 +92,7 @@ void setHomeEnvironment(GtkWidget *window){
     GtkWidget *box_active_patient = NULL;
     GtkWidget *box_archived_patient = NULL;
 
+    GtkWidget *button_parameters = NULL;
     GtkWidget *calendar = NULL;
     GtkWidget *button_new_patient = NULL;
     GtkWidget *entry_research = NULL;
@@ -111,7 +112,8 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_active_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     box_archived_patient = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_archived_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-    
+
+    button_parameters = gtk_button_new_from_icon_name("emblem-system", GTK_ICON_SIZE_MENU);
     calendar = gtk_calendar_new();
     button_new_patient = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     entry_research = gtk_entry_new();
@@ -133,7 +135,11 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_container_add(GTK_CONTAINER(frame_test), grid_calendar);
     gtk_grid_set_row_spacing(GTK_GRID(grid_calendar), 5);
 
-    gtk_grid_attach(GTK_GRID(grid_calendar), calendar, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(button_parameters, FALSE);
+    gtk_widget_set_halign(button_parameters, GTK_ALIGN_END);
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(calendar, TRUE);
 
 
