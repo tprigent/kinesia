@@ -716,11 +716,13 @@ void launchSettingsEditor(){
 
     /* ASSIGN VARIABLES */
     grid_dialog = gtk_grid_new();
+    gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
 
-    whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
+    whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/whiteMode.jpeg", 400, 300, TRUE, NULL);
     whiteImage = gtk_image_new_from_pixbuf(whitePixbuf);
-    darkPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
-    darkImage = gtk_image_new_from_pixbuf(whitePixbuf);
+    darkPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/darkMode.jpeg", 400, 300, TRUE, NULL);
+    darkImage = gtk_image_new_from_pixbuf(darkPixbuf);
 
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Paramètres",NULL,GTK_DIALOG_MODAL,
