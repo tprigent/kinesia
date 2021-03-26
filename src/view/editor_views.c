@@ -702,3 +702,37 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     }
 
 }
+
+void launchSettingsEditor(){
+
+    /* DECLARE VARIABLES */
+    GtkWidget *dialog;
+    GtkWidget *content_area = NULL;
+    GtkWidget *grid_dialog = NULL;
+
+    grid_dialog = gtk_grid_new();
+
+    /* CREATE THE DIALOG BOX */
+    dialog = gtk_dialog_new_with_buttons ("Édition du dossier",NULL,GTK_DIALOG_MODAL,
+                                          "Annuler",GTK_RESPONSE_REJECT,
+                                          "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
+
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
+
+    /* SETUP THE VIEW PARAMETERS */
+    gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+    gtk_widget_show_all(dialog);
+
+    /* MANAGE THE USER ACTION */
+    int result = gtk_dialog_run (GTK_DIALOG (dialog));
+    /* Action on button */
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        printf("\n****** TEST ******\n");
+        gtk_widget_destroy(dialog);
+    } else {
+        gtk_widget_destroy(dialog);
+    }
+}
