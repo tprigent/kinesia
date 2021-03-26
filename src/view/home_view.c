@@ -9,6 +9,30 @@
 #include "editor_views.h"
 #include "../controller/display_helpers.h"
 
+/*!
+ * \brief Function that launch style.css to modify application style
+ *
+ * This function set necessary parameters to load css and use css file
+ *
+*/
+static void load_css(){
+    GtkCssProvider *provider;
+    GdkDisplay *display;
+    GdkScreen *screen;
+
+    const gchar *css_style_file = "../src/view/style.css";
+    GFile *css_fp = g_file_new_for_path(css_style_file);
+    GError *error = 0;
+
+    provider = gtk_css_provider_new();
+    display = gdk_display_get_default();
+    screen = gdk_display_get_default_screen(display);
+
+    gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    gtk_css_provider_load_from_file(provider, css_fp, &error);
+
+    g_object_unref(provider);
+}
 
 /*!
  * \brief Initiate patient window which shows a list of the patient
@@ -17,6 +41,9 @@
  * \todo change the name of the window once the software name found
 */
 GtkWidget *setHomeWindow(){
+
+    gtk_init(NULL, NULL);
+    load_css();
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
