@@ -709,16 +709,30 @@ void launchSettingsEditor(){
     GtkWidget *dialog;
     GtkWidget *content_area = NULL;
     GtkWidget *grid_dialog = NULL;
+    GdkPixbuf *whitePixbuf = NULL;
+    GtkWidget *whiteImage= NULL;
+    GdkPixbuf *darkPixbuf = NULL;
+    GtkWidget *darkImage= NULL;
 
+    /* ASSIGN VARIABLES */
     grid_dialog = gtk_grid_new();
 
+    whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
+    whiteImage = gtk_image_new_from_pixbuf(whitePixbuf);
+    darkPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
+    darkImage = gtk_image_new_from_pixbuf(whitePixbuf);
+
     /* CREATE THE DIALOG BOX */
-    dialog = gtk_dialog_new_with_buttons ("Édition du dossier",NULL,GTK_DIALOG_MODAL,
+    dialog = gtk_dialog_new_with_buttons ("Paramètres",NULL,GTK_DIALOG_MODAL,
                                           "Annuler",GTK_RESPONSE_REJECT,
                                           "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
 
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
+
+    /* MANAGE TO ORGANIZE THE VIEW */
+    gtk_grid_attach(GTK_GRID(grid_dialog), whiteImage, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, whiteImage, GTK_POS_RIGHT, 1, 1);
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
