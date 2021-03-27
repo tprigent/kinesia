@@ -1,6 +1,6 @@
 /*!
-* \file struct_to_UI.c
-* \brief File with functions used to parse data from structures to be displayed on UI
+* \file display_helpers.c
+* \brief File with functions used to format data for display
 */
 
 #include "display_helpers.h"

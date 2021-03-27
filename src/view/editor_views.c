@@ -170,14 +170,7 @@ void launchFolderEditor(Folder *folder){
     int result = gtk_dialog_run (GTK_DIALOG (dialog));
     /* Action on button */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        strcpy(folder->folderName, gtk_entry_get_text(GTK_ENTRY(folder_name_entry)));
-        strcpy(folder->pathology, gtk_entry_get_text(GTK_ENTRY(pathology_entry)));
-        strcpy(folder->details, gtk_entry_buffer_get_text(GTK_ENTRY_BUFFER(other_infos_buffer)));
-        folder->startOfTreatment.day = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->day;
-        folder->startOfTreatment.month = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->month;
-        folder->startOfTreatment.year = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment_entry)))->year;
-        // TODO: setFolder(folder);
-
+        saveFolderEntries(folder, folder_name_entry, pathology_entry, other_infos_buffer, start_treatment_entry);
         gtk_widget_destroy(dialog);
     } else {
         gtk_widget_destroy(dialog);
@@ -522,76 +515,21 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     /* MANAGE THE USER ACTION */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        /* NAME */
-        strcpy(patient->name, (char*)gtk_entry_get_text(GTK_ENTRY(surname_entry)));
-        strcpy(patient->firstname, (char*)gtk_entry_get_text(GTK_ENTRY(name_entry)));
 
-        /* BIRTHDAY */
-        patient->birthdate.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->day;
-        patient->birthdate.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->month;
-        patient->birthdate.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(birth_entry)))->year;
-
-        /* WEIGHT AND HEIGHT */
-        strcpy(patient->weight, (char*)gtk_entry_get_text(GTK_ENTRY(weight_entry)));
-        strcpy(patient->height, (char*)gtk_entry_get_text(GTK_ENTRY(height_entry)));
-        //patient->weight = convertToInt((char*) gtk_entry_get_text(GTK_ENTRY(weight_entry)));
-        //patient->height = convertToInt((char *) gtk_entry_get_text(GTK_ENTRY(height_entry)));
-
-        /* FIRST CONSULTATION */
-        patient->first_consultation.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->day;
-        patient->first_consultation.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->month;
-        patient->first_consultation.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(first_consult_entry)))->year;
-
-        /* SOCIAL SECURITY NUMBER */
-        strcpy(patient->ssn, (char*) gtk_entry_get_text(GTK_ENTRY(ssn_entry)));
-
-        /* CONTACT */
-        strcpy(patient->phone_number, (char*) gtk_entry_get_text(GTK_ENTRY(number_entry)));
-        strcpy(patient->mail_address, (char*) gtk_entry_get_text(GTK_ENTRY(email_entry)));
-
-        /* GENDER */
-        char *genderResult = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(gender_combo_box));
-        if(strcmp(genderResult, "Homme") == 0){
-            patient->gender = MAN;
-        } else if (strcmp(genderResult, "Femme") == 0){
-            patient->gender = WOMAN;
-        } else {
-            patient->gender = OTHER;
-        }
-
-        /* ADDRESS */
-        strcpy(patient->address.street, (char*) gtk_entry_get_text(GTK_ENTRY(address_entry)));
-        strcpy(patient->address.city, (char*) gtk_entry_get_text(GTK_ENTRY(city_entry)));
-        strcpy(patient->address.postCode, (char*) gtk_entry_get_text(GTK_ENTRY(postcode_entry)));
-        //other infos
-
-        /* JOB */
-        strcpy(patient->job, (char*) gtk_entry_get_text(GTK_ENTRY(job_entry)));
-
-        /* ADDITIONAL INFO */
-        GtkTextBuffer *info_result_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(info_text));
-        char *info_text_result;
-        gtk_text_buffer_get_bounds(info_result_buffer, &start, &end);
-        info_text_result = gtk_text_buffer_get_text (info_result_buffer, &start, &end, FALSE);
-        strcpy(patient->global_pathologies, info_text_result);
-
-        /* Print for debug */
-        //printPatient(patient, "saving data from user entries");
-
-        /* Save data in model */
-        if(origin == 1){
-            modifyPatient(patient);
-        } else {
-            addPatient(patient);
-        }
+        /* Save entries */
+        savePatientEntries(patient, origin, surname_entry, name_entry, birth_entry, weight_entry,
+                           height_entry, first_consult_entry, ssn_entry, number_entry, email_entry,
+                           gender_combo_box, address_entry, city_entry, postcode_entry, job_entry,
+                           info_text, end);
 
         /* Reload the session window */
         gtk_widget_destroy(dialog);
         gtk_widget_destroy(window);
 
+        /* Choose view to display: work_view if existing, home_view if new Patient */
         if(origin == 1){
             Session *session = createEmptySession();
-            setWorkWindow((int) patient->id, session, patient_window->session_type);
+            setWorkWindow((int) patient->id);
         }else{
             setHomeWindow();
         }
