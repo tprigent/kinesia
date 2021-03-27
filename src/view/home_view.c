@@ -15,12 +15,15 @@
  * This function set necessary parameters to load css and use css file
  *
 */
-static void load_css(){
+static void load_css(int cssMode){
     GtkCssProvider *provider;
     GdkDisplay *display;
     GdkScreen *screen;
 
-    const gchar *css_style_file = "../src/view/whiteMode.css";
+    const gchar *css_style_file = NULL;
+    if(cssMode == 0) css_style_file = "../src/view/whiteMode.css";
+    else css_style_file = "../src/view/darkMode.css";
+
     GFile *css_fp = g_file_new_for_path(css_style_file);
     GError *error = 0;
 
@@ -40,10 +43,12 @@ static void load_css(){
  * Focus, position, size, title and destroy callback are set.
  * \todo change the name of the window once the software name found
 */
-GtkWidget *setHomeWindow(){
+GtkWidget *setHomeWindow(int firstLoad, int cssMode){
 
-    gtk_init(NULL, NULL);
-    load_css();
+    if(firstLoad == 1) {
+        gtk_init(NULL, NULL);
+        load_css(cssMode);
+    }
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
@@ -138,7 +143,7 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(button_parameters, FALSE);
     gtk_widget_set_halign(button_parameters, GTK_ALIGN_END);
-    g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), NULL);
+    g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), window);
 
 
     gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 1, 1);
@@ -294,7 +299,7 @@ void setHomeEnvironment(GtkWidget *window){
 */
 void launchHomeView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
-    setHomeWindow();
+    setHomeWindow(0, 0);
 }
 
 /*!
