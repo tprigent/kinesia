@@ -531,7 +531,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
             Session *session = createEmptySession();
             setWorkWindow((int) patient->id);
         }else{
-            setHomeWindow();
+            setHomeWindow(0, 0);
         }
     } else {
         gtk_widget_destroy(dialog);
@@ -695,7 +695,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
         /* Reload the session window */
         gtk_widget_destroy(dialog);
         gtk_widget_destroy(warning->window);
-        setHomeWindow();
+        setHomeWindow(0, 0);
 
     } else {
         gtk_widget_destroy(dialog);
@@ -703,9 +703,10 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
 
 }
 
-void launchSettingsEditor(){
+void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
 
     /* DECLARE VARIABLES */
+    int cssMode;
     GtkWidget *dialog;
     GtkWidget *content_area = NULL;
     GtkWidget *grid_dialog = NULL;
@@ -752,11 +753,19 @@ void launchSettingsEditor(){
     gtk_widget_show_all(dialog);
 
     /* MANAGE THE USER ACTION */
-    int result = gtk_dialog_run (GTK_DIALOG (dialog));
+    int result = gtk_dialog_run(GTK_DIALOG(dialog));
     /* Action on button */
-    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        printf("\n****** TEST ******\n");
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT){
+
+        /* GET INFO FROM COMBO_BOX */
+        char *modeResult = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(mode_combo_box));
+        if(strcmp(modeResult, "Mode clair") == 0) cssMode = 0;
+        else cssMode = 1;
+
         gtk_widget_destroy(dialog);
+        gtk_widget_destroy(window);
+
+        setHomeWindow(1, cssMode);
     } else {
         gtk_widget_destroy(dialog);
     }
