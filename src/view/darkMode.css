@@ -1,0 +1,41 @@
+/*!
+* \file whiteMode.css
+* \brief File with defines background and widgets colors
+*/
+
+window {
+  background-color: #6B6969;
+}
+
+grid{
+  background-color: #6B6969;
+}
+
+notebook{
+  background-color: #4D4D4D;
+}
+
+frame{
+  background-color: #4D4D4D;
+
+}
+
+button {
+  background: #D8D8D8;
+}
+
+calendar{
+  background: #D8D8D8;
+}
+
+frame{
+  color: #FFFFFF;
+}
+
+entry{
+  background: #D8D8D8;
+}
+
+text{
+  background: #D8D8D8;
+}

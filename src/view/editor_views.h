@@ -41,5 +41,6 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, char *type);
 void launchPatientWarning(GtkWidget *button, WarningType *warning);
+void launchSettingsEditor(GtkWidget *button, GtkWidget *window);
 
 #endif

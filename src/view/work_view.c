@@ -539,7 +539,7 @@ void fillFolderBox(GtkWidget *box){
 void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient){
 
     /* DECLARE VARIABLES */
-    int nb_session = getNbSession(1);
+    int nb_session = getNbSession(2);
     int session_cursor;
 
     GtkWidget *grid_session_section = NULL;
@@ -621,6 +621,10 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient){
 
 
     /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
+
+    if(nb_session == 0){
+        addNewSessionUI(NULL, notebook);
+    }
 
     /* Manage to add a notebook */
     gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
@@ -851,7 +855,9 @@ void addNewSessionUI(GtkWidget *button, GtkWidget *notebook){
     gtk_widget_set_hexpand(text_session_note, TRUE);
     gtk_widget_set_vexpand(text_session_note, TRUE);
 
-    gtk_notebook_insert_page(GTK_NOTEBOOK(notebook), grid_add_session, gtk_label_new("TEST"), 0);
+    char *new_session_name = get_new_session_name();
+    gtk_notebook_insert_page(GTK_NOTEBOOK(notebook), grid_add_session, gtk_label_new(new_session_name), 0);
+    free(new_session_name);
 
     //freeSession(new_session);
     gtk_widget_show_all(notebook);
