@@ -9,6 +9,33 @@
 #include "editor_views.h"
 #include "../controller/display_helpers.h"
 
+/*!
+ * \brief Function that launch whiteMode.css to modify application style
+ *
+ * This function set necessary parameters to load css and use css file
+ *
+*/
+static void load_css(int cssMode){
+    GtkCssProvider *provider;
+    GdkDisplay *display;
+    GdkScreen *screen;
+
+    const gchar *css_style_file = NULL;
+    if(cssMode == 0) css_style_file = "../src/view/whiteMode.css";
+    else css_style_file = "../src/view/darkMode.css";
+
+    GFile *css_fp = g_file_new_for_path(css_style_file);
+    GError *error = 0;
+
+    provider = gtk_css_provider_new();
+    display = gdk_display_get_default();
+    screen = gdk_display_get_default_screen(display);
+
+    gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    gtk_css_provider_load_from_file(provider, css_fp, &error);
+
+    g_object_unref(provider);
+}
 
 /*!
  * \brief Initiate patient window which shows a list of the patient
@@ -16,7 +43,12 @@
  * Focus, position, size, title and destroy callback are set.
  * \todo change the name of the window once the software name found
 */
-GtkWidget *setHomeWindow(){
+GtkWidget *setHomeWindow(int firstLoad, int cssMode){
+
+    if(firstLoad == 1) {
+        gtk_init(NULL, NULL);
+        load_css(cssMode);
+    }
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
@@ -65,6 +97,7 @@ void setHomeEnvironment(GtkWidget *window){
     GtkWidget *box_active_patient = NULL;
     GtkWidget *box_archived_patient = NULL;
 
+    GtkWidget *button_parameters = NULL;
     GtkWidget *calendar = NULL;
     GtkWidget *button_new_patient = NULL;
     GtkWidget *entry_research = NULL;
@@ -84,7 +117,8 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_active_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     box_archived_patient = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_archived_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-    
+
+    button_parameters = gtk_button_new_from_icon_name("emblem-system", GTK_ICON_SIZE_MENU);
     calendar = gtk_calendar_new();
     button_new_patient = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     entry_research = gtk_entry_new();
@@ -106,7 +140,13 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_container_add(GTK_CONTAINER(frame_test), grid_calendar);
     gtk_grid_set_row_spacing(GTK_GRID(grid_calendar), 5);
 
-    gtk_grid_attach(GTK_GRID(grid_calendar), calendar, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(button_parameters, FALSE);
+    gtk_widget_set_halign(button_parameters, GTK_ALIGN_END);
+    g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), window);
+
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(calendar, TRUE);
 
 
@@ -259,7 +299,7 @@ void setHomeEnvironment(GtkWidget *window){
 */
 void launchHomeView(GtkWidget *but, GtkWidget *window){
     gtk_widget_destroy(window);
-    setHomeWindow();
+    setHomeWindow(0, 0);
 }
 
 /*!

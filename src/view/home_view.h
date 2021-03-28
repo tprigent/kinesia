@@ -20,7 +20,7 @@ typedef struct {
     int patientID;          /**< ID of the Patient to be edited */
 }Window_id;
 
-GtkWidget *setHomeWindow();
+GtkWidget *setHomeWindow(int firstLoad, int cssMode);
 void setHomeEnvironment(GtkWidget *window);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 

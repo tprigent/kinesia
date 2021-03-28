@@ -531,7 +531,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
             Session *session = createEmptySession();
             setWorkWindow((int) patient->id);
         }else{
-            setHomeWindow();
+            setHomeWindow(0, 0);
         }
     } else {
         gtk_widget_destroy(dialog);
@@ -695,10 +695,88 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
         /* Reload the session window */
         gtk_widget_destroy(dialog);
         gtk_widget_destroy(warning->window);
-        setHomeWindow();
+        setHomeWindow(0, 0);
 
     } else {
         gtk_widget_destroy(dialog);
     }
 
+}
+
+void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
+
+    /* DECLARE VARIABLES */
+    int cssMode;
+
+    GtkWidget *label_whiteMode = NULL;
+    GtkWidget *label_darkMode = NULL;
+
+    GtkWidget *dialog;
+    GtkWidget *content_area = NULL;
+    GtkWidget *grid_dialog = NULL;
+    GdkPixbuf *whitePixbuf = NULL;
+    GtkWidget *whiteImage= NULL;
+    GdkPixbuf *darkPixbuf = NULL;
+    GtkWidget *darkImage= NULL;
+    GtkWidget *mode_combo_box = NULL;
+
+    /* ASSIGN VARIABLES */
+    label_whiteMode = gtk_label_new("Mode clair :");
+    label_darkMode = gtk_label_new("Mode sombre :");
+
+    grid_dialog = gtk_grid_new();
+    gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
+
+    mode_combo_box = gtk_combo_box_text_new();
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(mode_combo_box), NULL, "Mode clair");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(mode_combo_box), NULL, "Mode sombre");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(mode_combo_box), 0);
+
+    whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/whiteMode.jpeg", 400, 300, TRUE, NULL);
+    whiteImage = gtk_image_new_from_pixbuf(whitePixbuf);
+    darkPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/darkMode.jpeg", 400, 300, TRUE, NULL);
+    darkImage = gtk_image_new_from_pixbuf(darkPixbuf);
+
+    /* CREATE THE DIALOG BOX */
+    dialog = gtk_dialog_new_with_buttons ("Paramètres",NULL,GTK_DIALOG_MODAL,
+                                          "Annuler",GTK_RESPONSE_REJECT,
+                                          "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
+
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
+
+    /* MANAGE TO ORGANIZE THE VIEW */
+    gtk_grid_attach(GTK_GRID(grid_dialog), label_whiteMode, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), label_darkMode, label_whiteMode, GTK_POS_RIGHT, 1, 1);
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), whiteImage, label_whiteMode, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, label_darkMode, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), mode_combo_box, whiteImage, GTK_POS_BOTTOM, 2, 1);
+    gtk_widget_set_halign(mode_combo_box, GTK_ALIGN_START);
+    gtk_widget_set_hexpand(mode_combo_box, TRUE);
+
+    /* SETUP THE VIEW PARAMETERS */
+    gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+    gtk_widget_show_all(dialog);
+
+    /* MANAGE THE USER ACTION */
+    int result = gtk_dialog_run(GTK_DIALOG(dialog));
+    /* Action on button */
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT){
+
+        /* GET INFO FROM COMBO_BOX */
+        char *modeResult = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(mode_combo_box));
+        if(strcmp(modeResult, "Mode clair") == 0) cssMode = 0;
+        else cssMode = 1;
+
+        gtk_widget_destroy(dialog);
+        gtk_widget_destroy(window);
+
+        setHomeWindow(1, cssMode);
+    } else {
+        gtk_widget_destroy(dialog);
+    }
 }
