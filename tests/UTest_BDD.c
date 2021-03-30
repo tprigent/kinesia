@@ -12,6 +12,8 @@
 #include "../src/model/patient_manager.h"
 #include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/controller/struct_to_BDD_patient.h"
+#include "../src/controller/struct_to_BDD_folder.h"
+#include "../src/controller/BDD_to_struct_folder.h"
 #include "../src/model/patient_manager.h"
 #include "../src/model/structures.h"
 
@@ -202,6 +204,93 @@ static void test_modifyPatient(void **state){
 
 }
 
+static void test_getNameFirstnamePatient(void **state){
+
+    assert_string_equal("Francois Claude",getNameFirstnamePatient(1));
+    assert_null(getNameFirstnamePatient(-1));
+
+}
+
+static void test_getArchivedPatientID(void **state){
+
+    assert_int_equal(1,getArchivedPatientID());
+
+}
+
+static void test_getActivePatientID(void **state){
+
+    int *tab;
+    tab = getActivePatientID();
+    assert_int_equal(2,tab[1]);
+    assert_int_equal(3,tab[2]);
+
+}
+
+static void test_getNbActivePatient(void **state){
+
+    assert_int_equal(5,getNbActivePatient());
+
+}
+
+static void test_getNbarchivedPatient(void **state){
+
+    assert_int_equal(1,getNbArchivedPatient());
+
+}
+
+static void test_getFolder(void **state){
+
+    Folder *f;
+    f = getFolder(1);
+
+    assert_int_equal(1,f->idFolder);
+    assert_string_equal("Entorse de la cheville",f->folderName);
+    assert_string_equal("Entorse",f->pathology);
+    assert_string_equal("Voir fichiers joints,  retour à la ligne automatique à gérer...",f->details);
+    assert_int_equal(2021,f->startOfTreatment.year);
+    assert_int_equal(3,f->startOfTreatment.month);
+    assert_int_equal(1,f->startOfTreatment.day);
+    assert_int_equal(1,f->numberOfFiles);
+    assert_int_equal(1,f->idPatient);
+
+}
+
+static void test_getNameFolder(void **state){
+
+    assert_string_equal("Entorse de la cheville",getNameFolder(1));
+
+}
+
+static void test_getIdFolder(1){
+
+int *t;
+t = getIdFolder(1);
+assert_int_equal(1,t[0]);
+
+}
+
+static void test_addFolder(void **state){
+
+    Folder *f;
+    if(allocateFolder(&folder) == -1){
+        fprintf(stderr,"Erreur alloc folder\n");
+        return NULL;
+    }
+
+    setFolder(folder,"Folder test","Test","Details",1,1,1,1,1,1);
+
+    assert_int_equal(1,addFolder(f));
+
+}
+
+static void test_modifyFolder(void **state){
+
+    Folder *f;
+    f = getFolder();
+
+
+}
+
 /*!
  * \brief Teardown function which desallocates the patient
  *
@@ -260,7 +349,16 @@ int main_BDD(void)
                     cmocka_unit_test_setup_teardown(test_setDate, setup_date, teardown_date),
                     cmocka_unit_test(test_getPatient),
                     cmocka_unit_test(test_addPatient),
-                    cmocka_unit_test(test_modifyPatient)
+                    cmocka_unit_test(test_modifyPatient),
+                    cmocka_unit_test(test_getNameFirstnamePatient),
+                    cmocka_unit_test(test_getArchivedPatientID),
+                    cmocka_unit_test(test_getNbActivePatient),
+                    cmocka_unit_test(test_getNbarchivedPatient),
+                    cmocka_unit_test(test_getFolder),
+                    cmocka_unit_test(test_getIdFolder),
+                    cmocka_unit_test(test_getNameFolder),
+                    cmocka_unit_test(test_addFolder),
+                    cmocka_unit_test(test_modifyFolder)
             };
     return cmocka_run_group_tests_name("Test counter module",tests_BDD,NULL,NULL);
 }
