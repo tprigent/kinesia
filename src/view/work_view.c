@@ -321,7 +321,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         }
     }
 
-    fillFolderBox(folderBox, idFolderTab[0]);
+    if(nb_folders>0) fillFolderBox(folderBox, idFolderTab[0]);
+    else fillFolderBox(folderBox, 0);
     fillSessionBox(window, sessionBox, (int) patient->id);
 
     /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
@@ -347,7 +348,24 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 void fillFolderBox(GtkWidget *box, int activeFolder){
 
     /* Getting folder  ************************************************************** */
-    Folder *folder = getFolder(activeFolder);
+    Folder *folder = NULL;
+    if(activeFolder != 0){
+        folder = getFolder(activeFolder);
+    }
+    else{
+        folder = (Folder*) malloc(sizeof(Folder));
+        folder->folderName = (char*) malloc(8*sizeof(char));
+        strcpy(folder->folderName, "Nouveau");
+        folder->details = (char*) malloc(2*sizeof(char));
+        strcpy(folder->details, " ");
+        folder->pathology = (char*) malloc(2*sizeof(char));
+        strcpy(folder->pathology, " ");
+        folder->numberOfFiles = 0;
+        folder->startOfTreatment.day = 1;
+        folder->startOfTreatment.month = 1;
+        folder->startOfTreatment.year = 1900;
+    }
+
     /* ****************************************************************************** */
 
     /* Create a grid which contains the different elements of the folder ************ */
