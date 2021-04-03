@@ -46,5 +46,22 @@ int setFolder(Folder *d, char * folderName, char * pathology, char * details, in
     return 0;
 }
 
+Folder *createEmptyFolder(int idPatient){
+    Folder *folder = (Folder*) malloc(sizeof(Folder));
 
+    folder->folderName = (char*) malloc(LG_MAX_INFO*sizeof(char));
+    strcpy(folder->folderName, "Nouveau dossier");
+    folder->details = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+    strcpy(folder->details, "Détails");
+    folder->pathology = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+    strcpy(folder->pathology, "Pathologie");
+    folder->numberOfFiles = 0;
+    folder->startOfTreatment.day = 1;
+    folder->startOfTreatment.month = 1;
+    folder->startOfTreatment.year = 1900;
+    folder->idPatient = idPatient;
+    folder->ListOfSessions = NULL;
 
+    return folder;
+
+}
