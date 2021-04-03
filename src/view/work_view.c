@@ -99,9 +99,7 @@ void setWorkEnvironment(Window_id *window_id){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    fillPatientBox(window, boxPart[0], boxPart[1], patient);
-    //fillFolderBox(boxPart[1]);
-    fillSessionBox(window, boxPart[2], window_id->patientID);
+    fillPatientBox(window, boxPart[0], boxPart[1], boxPart[2], patient);
 }
 
 
@@ -118,7 +116,7 @@ void setWorkEnvironment(Window_id *window_id){
  * \param[in] patient Current Patient
  * \param[in] patient Patient opened
 */
-void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, Patient *patient){
+void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient){
 
     /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
@@ -323,7 +321,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         }
     }
 
-    fillFolderBox(folderBox);
+    fillFolderBox(folderBox, 1);
+    fillSessionBox(window, sessionBox, (int) patient->id);
 
     /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
     gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
@@ -345,7 +344,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
  *
  * \param[in] box Existing Folder box
 */
-void fillFolderBox(GtkWidget *box){
+void fillFolderBox(GtkWidget *box, int activeFolder){
 
     /* Getting folder  ************************************************************** */
     Folder *folder = getFolder(1);
