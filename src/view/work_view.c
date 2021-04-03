@@ -99,8 +99,8 @@ void setWorkEnvironment(Window_id *window_id){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    fillPatientBox(window, boxPart[0], patient);
-    fillFolderBox(boxPart[1]);
+    fillPatientBox(window, boxPart[0], boxPart[1], patient);
+    //fillFolderBox(boxPart[1]);
     fillSessionBox(window, boxPart[2], window_id->patientID);
 }
 
@@ -118,7 +118,7 @@ void setWorkEnvironment(Window_id *window_id){
  * \param[in] patient Current Patient
  * \param[in] patient Patient opened
 */
-void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
+void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, Patient *patient){
 
     /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
@@ -186,7 +186,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
 
     /* MANAGE THE GRID WHICH ORGANIZES THE LEFT SECTION */
     gtk_grid_set_row_spacing(GTK_GRID(grid_left_section), 5);
-    gtk_box_pack_start(GTK_BOX(box), grid_left_section, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(patientBox), grid_left_section, TRUE, TRUE, 0);
 
 
     /* ******************************* FIRST PART : BUTTON "REVENIR A LA LISTE PATIENT" ******************************* */
@@ -323,6 +323,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
         }
     }
 
+    fillFolderBox(folderBox);
 
     /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
     gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
@@ -556,7 +557,7 @@ void fillFolderBox(GtkWidget *box){
 void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient){
 
     /* DECLARE VARIABLES */
-    int nb_session = getNbSession(2);
+    int nb_session = getNbSession(1);
     int session_cursor;
 
     GtkWidget *grid_session_section = NULL;

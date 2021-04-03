@@ -14,7 +14,7 @@
 GtkWidget *setWorkWindow(int id_patient);
 void setWorkEnvironment(Window_id *window_id);
 
-void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient);
+void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, Patient *patient);
 void fillFolderBox(GtkWidget *box);
 void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient);
 void launchWorkView(GtkWidget *but, Window_id *window_id);
