@@ -11,6 +11,7 @@
 #include "../controller/struct_to_BDD_patient.h"
 #include "../controller/display_helpers.h"
 #include "../controller/UI_to_struct.h"
+#include "../model/folder_manager.h"
 
 /*!
  * \brief Set up the edit Folder dialog box
@@ -22,7 +23,7 @@
  *
  * \param[in] folder Folder to be edited
 */
-void launchFolderEditor(Folder *folder){
+void launchFolderEditor(GtkWidget *button, Folder *folder){
 
     /* DECLARE VARIABLES */
     GtkWidget *dialog;
@@ -68,14 +69,13 @@ void launchFolderEditor(Folder *folder){
 
 
     /* FILL THE ENTRIES */
-    /*
     gtk_entry_set_text(GTK_ENTRY(folder_name_entry), folder->folderName);
     gtk_entry_set_text(GTK_ENTRY(start_treatment_entry), get_date_UI(&folder->startOfTreatment));
-    gtk_entry_set_text(GTK_ENTRY(pathology_label), folder->pathology);
-    gtk_text_buffer_get_end_iter(buffer, &end);
-    gtk_text_buffer_insert(buffer, &end, folder->details, -1);
-    gtk_text_view_set_buffer(GTK_TEXT_VIEW(other_infos_text), buffer);
-     */
+    gtk_entry_set_text(GTK_ENTRY(pathology_entry), folder->pathology);
+    gtk_text_buffer_get_end_iter(other_infos_buffer, &end);
+    gtk_text_buffer_insert(other_infos_buffer, &end, folder->details, -1);
+    gtk_text_view_set_buffer(GTK_TEXT_VIEW(other_infos_text), other_infos_buffer);
+
 
     name_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     treatment_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -175,6 +175,11 @@ void launchFolderEditor(Folder *folder){
     } else {
         gtk_widget_destroy(dialog);
     }
+}
+
+void launchNewFolderEditor(GtkWidget *button, int idPatient){
+    Folder *folder = createEmptyFolder(idPatient);
+    launchFolderEditor(button, folder);
 }
 
 /*!
