@@ -547,10 +547,15 @@ void fillFolderBox(GtkWidget *box, int activeFolder){
 
     /* BUTTON */
     GtkWidget *edit_folder_button = NULL;
+    GtkWidget *new_button = NULL;
     edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+    new_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), folder);
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
+    gtk_widget_set_hexpand(new_button, FALSE);
+    gtk_widget_set_vexpand(new_button, FALSE);
+    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), new_button, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
 
     /* ****************************************************************************** */
