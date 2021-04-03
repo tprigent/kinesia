@@ -7,6 +7,7 @@
 
 #include "../model/structures.h"
 
+int getNbFolder(int idPatient);
 Folder* getFolder(int idFolder);
 char* getNameFolder(int idFolder);
 int* getIdFolder(int idPatient);

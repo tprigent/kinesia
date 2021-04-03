@@ -301,7 +301,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     int *idFolderTab = getIdFolder((int) patient->id);
     int folder_cursor = 0;
 
-    int nb_folders = 1;
+    int nb_folders = getNbFolder((int) patient->id);
     printf("\n****** TEST %d ********\n", nb_folders);
     GtkWidget *folder_button[nb_folders];
     char *name_folder[nb_folders];
