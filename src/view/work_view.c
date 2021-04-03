@@ -286,6 +286,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
 
 
     /* ******************************* THIRD PART : SECTION WHICH CONTAINS THE FOLDERS ******************************** */
+
+    /* DECLARE VARIABLES */
     GtkWidget *folder_box = NULL;
     folder_box = gtk_scrolled_window_new(NULL, NULL);
     gtk_grid_attach_next_to(GTK_GRID(grid_left_section), folder_box, frame_info, GTK_POS_BOTTOM, 3, 1);
@@ -296,25 +298,39 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     folder_grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(folder_box), folder_grid);
 
-    int nb_folders = 3; // sere récupéré par une fonction
-    int i;
+    int *idFolderTab = getIdFolder((int) patient->id);
+    int folder_cursor = 0;
+
+    int nb_folders = 1;
+    printf("\n****** TEST %d ********\n", nb_folders);
     GtkWidget *folder_button[nb_folders];
     char *name_folder[nb_folders];
-    char name_folder1[] = "#Dossier1"; // sera récupéré par une fonction
-    char name_folder2[] = "#Dossier2";
-    char name_folder3[] = "#Dossier3";
-    name_folder[0] = name_folder1;
-    name_folder[1] = name_folder2;
-    name_folder[2] = name_folder3;
 
-    folder_button[0] = gtk_button_new_with_label(name_folder[0]);
+    /* ASSIGN VARIABLES */
+    for(folder_cursor = 0; folder_cursor < nb_folders; folder_cursor++){
+
+        name_folder[folder_cursor] = getNameFolder(idFolderTab[folder_cursor]);
+        folder_button[folder_cursor] = gtk_button_new_with_label(name_folder[folder_cursor]);
+        free(name_folder[folder_cursor]);
+    }
+
+    /* MANAGE TO DISPLAY BUTTONS */
+    gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(folder_button[0], TRUE);
+    for(folder_cursor = 1; folder_cursor < nb_folders; folder_cursor++){
+        gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[folder_cursor], folder_button[folder_cursor-1], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(folder_button[folder_cursor], TRUE);
+
+    }
+
+    /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
     gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(folder_button[0], TRUE);
     for(i = 1; i < nb_folders; i++){
         folder_button[i] = gtk_button_new_with_label(name_folder[i]);
         gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[i], folder_button[i-1], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(folder_button[i], TRUE);
-    }
+    }*/
 
 }
 
