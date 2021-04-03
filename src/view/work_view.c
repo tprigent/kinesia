@@ -321,8 +321,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         }
     }
 
-    if(nb_folders>0) fillFolderBox(folderBox, idFolderTab[0]);
-    else fillFolderBox(folderBox, 0);
+    if(nb_folders>0) fillFolderBox(folderBox, idFolderTab[0], patient);
+    else fillFolderBox(folderBox, 0, patient);
     fillSessionBox(window, sessionBox, (int) patient->id);
 
     /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
@@ -345,7 +345,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
  *
  * \param[in] box Existing Folder box
 */
-void fillFolderBox(GtkWidget *box, int activeFolder){
+void fillFolderBox(GtkWidget *box, int activeFolder, Patient *patient){
 
     /* Getting folder  ************************************************************** */
     Folder *folder = NULL;
@@ -551,6 +551,7 @@ void fillFolderBox(GtkWidget *box, int activeFolder){
     edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
     new_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), folder);
+    g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), &patient->id);
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_widget_set_hexpand(new_button, FALSE);

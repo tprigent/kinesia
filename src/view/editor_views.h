@@ -36,7 +36,8 @@ typedef struct {
 }WarningType;
 
 
-void launchFolderEditor(Folder *folder);
+void launchFolderEditor(GtkWidget *button, Folder *folder);
+void launchNewFolderEditor(GtkWidget *button, int idPatient);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, char *type);
