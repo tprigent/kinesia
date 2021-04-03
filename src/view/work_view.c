@@ -321,7 +321,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         }
     }
 
-    fillFolderBox(folderBox, 1);
+    fillFolderBox(folderBox, idFolderTab[0]);
     fillSessionBox(window, sessionBox, (int) patient->id);
 
     /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
@@ -347,7 +347,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 void fillFolderBox(GtkWidget *box, int activeFolder){
 
     /* Getting folder  ************************************************************** */
-    Folder *folder = getFolder(1);
+    Folder *folder = getFolder(activeFolder);
     /* ****************************************************************************** */
 
     /* Create a grid which contains the different elements of the folder ************ */
