@@ -302,7 +302,6 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     int folder_cursor = 0;
 
     int nb_folders = getNbFolder((int) patient->id);
-    printf("\n****** TEST %d ********\n", nb_folders);
     GtkWidget *folder_button[nb_folders];
     char *name_folder[nb_folders];
 
@@ -315,13 +314,15 @@ void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
     }
 
     /* MANAGE TO DISPLAY BUTTONS */
-    gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(folder_button[0], TRUE);
-    for(folder_cursor = 1; folder_cursor < nb_folders; folder_cursor++){
-        gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[folder_cursor], folder_button[folder_cursor-1], GTK_POS_BOTTOM, 1, 1);
-        gtk_widget_set_hexpand(folder_button[folder_cursor], TRUE);
-
+    if(nb_folders > 0){
+        gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+        gtk_widget_set_hexpand(folder_button[0], TRUE);
+        for(folder_cursor = 1; folder_cursor < nb_folders; folder_cursor++){
+            gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[folder_cursor], folder_button[folder_cursor-1], GTK_POS_BOTTOM, 1, 1);
+            gtk_widget_set_hexpand(folder_button[folder_cursor], TRUE);
+        }
     }
+
 
     /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
     gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
