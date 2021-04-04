@@ -321,8 +321,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         }
     }
 
-    if(nb_folders>0) fillFolderBox(folderBox, idFolderTab[0], patient);
-    else fillFolderBox(folderBox, 0, patient);
+    if(nb_folders>0) fillFolderBox(window, folderBox, idFolderTab[0], patient);
+    else fillFolderBox(window, folderBox, 0, patient);
     fillSessionBox(window, sessionBox, (int) patient->id);
 
     /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
@@ -345,7 +345,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
  *
  * \param[in] box Existing Folder box
 */
-void fillFolderBox(GtkWidget *box, int activeFolder, Patient *patient){
+void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient *patient){
 
     /* Getting folder  ************************************************************** */
     Folder *folder = NULL;
@@ -554,9 +554,11 @@ void fillFolderBox(GtkWidget *box, int activeFolder, Patient *patient){
     FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
     foldEditStruct->folder = folder;
     foldEditStruct->edit_new = 1;
+    foldEditStruct->window = window;
     g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
     IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
     idPatient->idPatient = (int) patient->id;
+    idPatient->window = window;
     g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
