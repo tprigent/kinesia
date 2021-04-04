@@ -35,8 +35,13 @@ typedef struct {
     GtkWidget *window;     /**< Parent window to be reload after changes */
 }WarningType;
 
+typedef struct{
+    Folder *folder;
+    int edit_new;
+}FolderEditorStruct;
 
-void launchFolderEditor(GtkWidget *button, Folder *folder);
+
+void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
 void launchNewFolderEditor(GtkWidget *button, int idPatient);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);

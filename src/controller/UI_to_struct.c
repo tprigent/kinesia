@@ -8,6 +8,7 @@
 #include "../view/work_view.h"
 #include "display_helpers.h"
 #include "struct_to_BDD_patient.h"
+#include "struct_to_BDD_folder.h"
 
 
 /*!
@@ -60,15 +61,31 @@ void saveSessionEntries(GtkWidget *save_button, SessionEntries *new_session){
  * \param[in] start_treatment    Date of the beginning of the treatment (text entry)
 */
 void saveFolderEntries(Folder *folder, GtkWidget *folder_name,GtkWidget *pathology,
-                       GtkTextBuffer *other_infos_buffer, GtkWidget *start_treatment){
+                       GtkWidget *other_infos_buffer, GtkWidget *start_treatment, int origin){
 
+    printf("\n******** TEST1 **********\n");
     strcpy(folder->folderName, gtk_entry_get_text(GTK_ENTRY(folder_name)));
     strcpy(folder->pathology, gtk_entry_get_text(GTK_ENTRY(pathology)));
-    strcpy(folder->details, gtk_entry_buffer_get_text(GTK_ENTRY_BUFFER(other_infos_buffer)));
+    printf("\n******** TEST2 **********\n");
+
+    GtkTextIter start, end;
+    GtkTextBuffer *info_result_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(other_infos_buffer));
+    char *info_text_result;
+    gtk_text_buffer_get_bounds(info_result_buffer, &start, &end);
+    info_text_result = gtk_text_buffer_get_text (info_result_buffer, &start, &end, FALSE);
+    strcpy(folder->details, info_text_result);
+
+    //strcpy(folder->details, gtk_entry_buffer_get_text(GTK_ENTRY_BUFFER(other_infos_buffer)));
+
     folder->startOfTreatment.day = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->day;
     folder->startOfTreatment.month = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->month;
     folder->startOfTreatment.year = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->year;
-    //setFolder();
+    printf("\n******** TEST3 **********\n");
+    if(origin == 1){
+        modifyFolder(folder);
+    } else {
+        addFolder(folder);
+    }
 
 }
 

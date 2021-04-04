@@ -550,7 +550,10 @@ void fillFolderBox(GtkWidget *box, int activeFolder, Patient *patient){
     GtkWidget *new_button = NULL;
     edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
     new_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
-    g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), folder);
+    FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
+    foldEditStruct->folder = folder;
+    foldEditStruct->edit_new = 1;
+    g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
     g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), &patient->id);
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
