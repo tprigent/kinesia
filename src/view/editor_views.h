@@ -38,10 +38,12 @@ typedef struct {
 typedef struct{
     Folder *folder;
     int edit_new;
+    GtkWidget *window;
 }FolderEditorStruct;
 
 typedef struct{
     int idPatient;
+    GtkWidget *window;
 }IdPatientCallback;
 
 void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);

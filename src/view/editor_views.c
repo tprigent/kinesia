@@ -177,7 +177,11 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
 
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         saveFolderEntries(folder, folder_name_entry, pathology_entry, other_infos_text, start_treatment_entry, edit_new);
+
         gtk_widget_destroy(dialog);
+
+        gtk_widget_destroy(foldEditStruct->window);
+        setWorkWindow((int) folder->idPatient);
     } else {
         gtk_widget_destroy(dialog);
     }
@@ -188,6 +192,7 @@ void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
     FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
     foldEditStruct->folder = folder;
     foldEditStruct->edit_new = 0;
+    foldEditStruct->window = idPatientCall->window;
     launchFolderEditor(button, foldEditStruct);
 }
 
