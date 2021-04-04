@@ -30,7 +30,7 @@ typedef struct{
 void saveSessionEntries(GtkWidget *save_button, SessionEntries *new_session);
 
 void saveFolderEntries(Folder *folder, GtkWidget *folder_name_entry,GtkWidget *pathology_entry,
-                       GtkTextBuffer *other_infos_buffer, GtkWidget *start_treatment_entry);
+                       GtkWidget *other_infos_buffer, GtkWidget *start_treatment_entry, int origin);
 
 void savePatientEntries(Patient *patient, int origin, GtkWidget *surname_entry, GtkWidget *name_entry,
                         GtkWidget *birth_entry, GtkWidget *weight_entry, GtkWidget *height_entry,

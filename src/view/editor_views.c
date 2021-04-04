@@ -12,6 +12,7 @@
 #include "../controller/display_helpers.h"
 #include "../controller/UI_to_struct.h"
 #include "../model/folder_manager.h"
+#include "../controller/struct_to_BDD_folder.h"
 
 /*!
  * \brief Set up the edit Folder dialog box
@@ -23,9 +24,12 @@
  *
  * \param[in] folder Folder to be edited
 */
-void launchFolderEditor(GtkWidget *button, Folder *folder){
+void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
 
     /* DECLARE VARIABLES */
+    Folder *folder = foldEditStruct->folder;
+    int edit_new = foldEditStruct->edit_new;
+
     GtkWidget *dialog;
     GtkWidget *folder_name_label;
     GtkWidget *start_treatment_label;
@@ -169,8 +173,9 @@ void launchFolderEditor(GtkWidget *button, Folder *folder){
     /* MANAGE THE USER ACTION */
     int result = gtk_dialog_run (GTK_DIALOG (dialog));
     /* Action on button */
+
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        saveFolderEntries(folder, folder_name_entry, pathology_entry, other_infos_buffer, start_treatment_entry);
+        saveFolderEntries(folder, folder_name_entry, pathology_entry, other_infos_text, start_treatment_entry, edit_new);
         gtk_widget_destroy(dialog);
     } else {
         gtk_widget_destroy(dialog);
@@ -179,7 +184,10 @@ void launchFolderEditor(GtkWidget *button, Folder *folder){
 
 void launchNewFolderEditor(GtkWidget *button, int idPatient){
     Folder *folder = createEmptyFolder(idPatient);
-    launchFolderEditor(button, folder);
+    FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
+    foldEditStruct->folder = folder;
+    foldEditStruct->edit_new = 0;
+    launchFolderEditor(button, foldEditStruct);
 }
 
 /*!
