@@ -63,10 +63,8 @@ void saveSessionEntries(GtkWidget *save_button, SessionEntries *new_session){
 void saveFolderEntries(Folder *folder, GtkWidget *folder_name,GtkWidget *pathology,
                        GtkWidget *other_infos_buffer, GtkWidget *start_treatment, int origin){
 
-    printf("\n******** TEST1 **********\n");
     strcpy(folder->folderName, gtk_entry_get_text(GTK_ENTRY(folder_name)));
     strcpy(folder->pathology, gtk_entry_get_text(GTK_ENTRY(pathology)));
-    printf("\n******** TEST2 **********\n");
 
     GtkTextIter start, end;
     GtkTextBuffer *info_result_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(other_infos_buffer));
@@ -75,12 +73,11 @@ void saveFolderEntries(Folder *folder, GtkWidget *folder_name,GtkWidget *patholo
     info_text_result = gtk_text_buffer_get_text (info_result_buffer, &start, &end, FALSE);
     strcpy(folder->details, info_text_result);
 
-    //strcpy(folder->details, gtk_entry_buffer_get_text(GTK_ENTRY_BUFFER(other_infos_buffer)));
 
     folder->startOfTreatment.day = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->day;
     folder->startOfTreatment.month = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->month;
     folder->startOfTreatment.year = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->year;
-    printf("\n******** TEST3 **********\n");
+
     if(origin == 1){
         modifyFolder(folder);
     } else {

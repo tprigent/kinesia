@@ -30,6 +30,7 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     Folder *folder = foldEditStruct->folder;
     int edit_new = foldEditStruct->edit_new;
 
+    printf("\n******* TEST %d ********\n", folder->idPatient);
     GtkWidget *dialog;
     GtkWidget *folder_name_label;
     GtkWidget *start_treatment_label;
@@ -182,8 +183,8 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     }
 }
 
-void launchNewFolderEditor(GtkWidget *button, int idPatient){
-    Folder *folder = createEmptyFolder(idPatient);
+void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
+    Folder *folder = createEmptyFolder(idPatientCall->idPatient);
     FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
     foldEditStruct->folder = folder;
     foldEditStruct->edit_new = 0;

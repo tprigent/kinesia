@@ -40,9 +40,12 @@ typedef struct{
     int edit_new;
 }FolderEditorStruct;
 
+typedef struct{
+    int idPatient;
+}IdPatientCallback;
 
 void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
-void launchNewFolderEditor(GtkWidget *button, int idPatient);
+void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, char *type);

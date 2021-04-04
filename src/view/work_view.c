@@ -364,6 +364,7 @@ void fillFolderBox(GtkWidget *box, int activeFolder, Patient *patient){
         folder->startOfTreatment.day = 1;
         folder->startOfTreatment.month = 1;
         folder->startOfTreatment.year = 1900;
+        folder->idPatient = patient->id;
     }
 
     /* ****************************************************************************** */
@@ -554,7 +555,9 @@ void fillFolderBox(GtkWidget *box, int activeFolder, Patient *patient){
     foldEditStruct->folder = folder;
     foldEditStruct->edit_new = 1;
     g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
-    g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), &patient->id);
+    IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
+    idPatient->idPatient = (int) patient->id;
+    g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
     gtk_widget_set_hexpand(edit_folder_button, FALSE);
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_widget_set_hexpand(new_button, FALSE);
