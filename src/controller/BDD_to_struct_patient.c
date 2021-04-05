@@ -181,18 +181,18 @@ Patient* getPatient(int id){
         fprintf(stderr,"Erreur setDate first RDV\n");
     }
 
-    setAddress(&adresse,(char*)sqlite3_column_text(stmt,18),
+    setAddress(&adresse,(char*)sqlite3_column_text(stmt,17),
+               (char*)sqlite3_column_text(stmt,18),
                (char*)sqlite3_column_text(stmt,19),
-               (char*)sqlite3_column_text(stmt,20),
-               (char*)sqlite3_column_text(stmt,21));
+               (char*)sqlite3_column_text(stmt,20));
 
     if(setPatient(patient,(char*)sqlite3_column_text(stmt,1),(char*)sqlite3_column_text(stmt,2),birthDate,
                   (char*)sqlite3_column_text(stmt,6),sqlite3_column_int(stmt,7),
                   adresse,(char*)sqlite3_column_text(stmt,8),
-                  (char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,22),
+                  (char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,21),
                   (char*)sqlite3_column_text(stmt,10),(char*)sqlite3_column_text(stmt,11),
                   (char*)sqlite3_column_text(stmt,12),firstRdDdate,
-                  (char*)sqlite3_column_text(stmt,16),(unsigned int)id,sqlite3_column_int(stmt,23)) != 0){
+                  (char*)sqlite3_column_text(stmt,16),(unsigned int)id,sqlite3_column_int(stmt,22)) != 0){
         fprintf(stderr,"Erreur setPatient");
         patient = NULL;}
 

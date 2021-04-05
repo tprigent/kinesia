@@ -623,6 +623,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     Patient *patient;
 
     patient = getPatient((int) warning->patientID);
+    printf("\n ******* TEST isArchived %s %d *********\n", patient->name, patient->isArchived);
     if(warning->actionType == 0){
         dialog = gtk_dialog_new_with_buttons ("Suppression d'une fiche patient",NULL,GTK_DIALOG_MODAL,
                                               "Annuler",GTK_RESPONSE_REJECT,
