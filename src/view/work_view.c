@@ -23,7 +23,7 @@
  * \param[in] id_patient ID of the patient file opened
  * \param[in] session Session to be opened
 */
-GtkWidget *setWorkWindow(int id_patient){
+GtkWidget *setWorkWindow(int id_patient, int id_folder){
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
@@ -47,6 +47,7 @@ GtkWidget *setWorkWindow(int id_patient){
     Window_id *window_id = (Window_id*) malloc(sizeof(Window_id));
     window_id->window = window;
     window_id->patientID = id_patient;
+    window_id->folderID = id_folder;
     setWorkEnvironment(window_id);
 
     gtk_widget_show_all(window);
@@ -99,7 +100,7 @@ void setWorkEnvironment(Window_id *window_id){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    fillPatientBox(window, boxPart[0], boxPart[1], boxPart[2], patient);
+    fillPatientBox(window, boxPart[0], boxPart[1], boxPart[2], patient, window_id->folderID);
 }
 
 
@@ -116,7 +117,7 @@ void setWorkEnvironment(Window_id *window_id){
  * \param[in] patient Current Patient
  * \param[in] patient Patient opened
 */
-void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient){
+void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient, int id_folder){
 
     /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
@@ -315,13 +316,26 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     if(nb_folders > 0){
         gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         gtk_widget_set_hexpand(folder_button[0], TRUE);
+        Window_id *window_id[nb_folders];
+        window_id[0] = (Window_id*) malloc(sizeof(Window_id));
+        window_id[0]->window = window;
+        window_id[0]->patientID = (int) patient->id;
+        window_id[0]->folderID = idFolderTab[0];
+        g_signal_connect(GTK_BUTTON(folder_button[0]), "clicked", G_CALLBACK(launchWorkView), window_id[0]);
+
         for(folder_cursor = 1; folder_cursor < nb_folders; folder_cursor++){
             gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[folder_cursor], folder_button[folder_cursor-1], GTK_POS_BOTTOM, 1, 1);
             gtk_widget_set_hexpand(folder_button[folder_cursor], TRUE);
+            window_id[folder_cursor] = (Window_id*) malloc(sizeof(Window_id));
+            window_id[folder_cursor]->window = window;
+            window_id[folder_cursor]->patientID = (int) patient->id;
+            window_id[folder_cursor]->folderID = idFolderTab[folder_cursor];
+            g_signal_connect(GTK_BUTTON(folder_button[folder_cursor]), "clicked", G_CALLBACK(launchWorkView), window_id[folder_cursor]);
         }
     }
 
-    if(nb_folders>0) fillFolderBox(window, folderBox, idFolderTab[0], patient);
+    if(nb_folders>0 && id_folder == 0) fillFolderBox(window, folderBox, idFolderTab[0], patient);
+    else if(nb_folders>0 && id_folder != 0) fillFolderBox(window, folderBox, id_folder, patient);
     else fillFolderBox(window, folderBox, 0, patient);
     fillSessionBox(window, sessionBox, (int) patient->id);
 
@@ -785,7 +799,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient){
 */
 void launchWorkView(GtkWidget *but, Window_id *window_id){
     gtk_widget_destroy(window_id->window);
-    setWorkWindow(window_id->patientID);
+    setWorkWindow(window_id->patientID, window_id->folderID);
 }
 
 void addNewSessionUI(GtkWidget *button, GtkWidget *notebook){

@@ -30,7 +30,6 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     Folder *folder = foldEditStruct->folder;
     int edit_new = foldEditStruct->edit_new;
 
-    printf("\n******* TEST %d ********\n", folder->idPatient);
     GtkWidget *dialog;
     GtkWidget *folder_name_label;
     GtkWidget *start_treatment_label;
@@ -181,7 +180,7 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
         gtk_widget_destroy(dialog);
 
         gtk_widget_destroy(foldEditStruct->window);
-        setWorkWindow((int) folder->idPatient);
+        setWorkWindow((int) folder->idPatient, 0);
     } else {
         gtk_widget_destroy(dialog);
     }
@@ -548,7 +547,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         /* Choose view to display: work_view if existing, home_view if new Patient */
         if(origin == 1){
             Session *session = createEmptySession();
-            setWorkWindow((int) patient->id);
+            setWorkWindow((int) patient->id, 0);
         }else{
             setHomeWindow(0, 0);
         }

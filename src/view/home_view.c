@@ -229,6 +229,7 @@ void setHomeEnvironment(GtkWidget *window){
         window_id_active[i] = (Window_id*) malloc(sizeof(Window_id));
         window_id_active[i]->window = window;
         window_id_active[i]->patientID = activePatient[i];
+        window_id_active[i]->folderID = 0;
         g_signal_connect(GTK_BUTTON(archive_button[i]), "clicked", G_CALLBACK(launchPatientWarning), archiveWarning[i]);
         g_signal_connect(GTK_BUTTON(active_delete_button[i]), "clicked", G_CALLBACK(launchPatientWarning), deleteActiveWarning[i]);
         g_signal_connect(GTK_BUTTON(active_patient_button[i]), "clicked", G_CALLBACK(launchWorkView), window_id_active[i]);
@@ -280,6 +281,7 @@ void setHomeEnvironment(GtkWidget *window){
         window_id_archived[i] = (Window_id*) malloc(sizeof(Window_id));
         window_id_archived[i]->window = window;
         window_id_archived[i]->patientID = archivedPatient[i];
+        window_id_archived[i]->folderID = 0;
         g_signal_connect(GTK_BUTTON(unarchive_button[i]), "clicked", G_CALLBACK(launchPatientWarning), unarchiveWarning[i]);
         g_signal_connect(GTK_BUTTON(archived_delete_button[i]), "clicked", G_CALLBACK(launchPatientWarning), deleteArchivedWarning[i]);
         g_signal_connect(GTK_BUTTON(archived_patient_button[i]), "clicked", G_CALLBACK(launchWorkView), window_id_archived[i]);
