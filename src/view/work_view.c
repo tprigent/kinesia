@@ -21,7 +21,6 @@
  * Focus, position, size, title and destroy callback are set.
  *
  * \param[in] id_patient ID of the patient file opened
- * \param[in] session Session to be opened
 */
 GtkWidget *setWorkWindow(int id_patient){
 
@@ -114,9 +113,9 @@ void setWorkEnvironment(Window_id *window_id){
  *
  * At the bottom a folder chooser is displayed.
  *
+ * \param[in] window Current window to enable refresh
  * \param[in] box Existing patient box
  * \param[in] patient Current Patient
- * \param[in] patient Patient opened
 */
 void fillPatientBox(GtkWidget *window, GtkWidget *box, Patient *patient){
 
@@ -532,8 +531,8 @@ void fillFolderBox(GtkWidget *box){
  *
  * The button to attach files is set up.
  *
- * \param[in] box Existing Session box
  * \param[in] window Current window to enable refresh
+ * \param[in] box Existing Session box
  * \param[in] idPatient ID of the current Patient
 */
 void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient){
@@ -736,6 +735,15 @@ void launchWorkView(GtkWidget *but, Window_id *window_id){
     setWorkWindow(window_id->patientID);
 }
 
+/*!
+ * \brief Add an empty session when creating a new one
+ *
+ * When the current folder contains no session, or when the user wants to create
+ * a new session, this function add an empty session to the notebook
+ *
+ * \param[in] but Button pressed to launch the work view
+ * \param[in] notebook The notebook which contains the sessions
+*/
 void addNewSessionUI(GtkWidget *button, GtkWidget *notebook){
     /* DECLARE VARIABLES */
     Session *new_session = createEmptySession();
