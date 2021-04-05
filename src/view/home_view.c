@@ -312,7 +312,7 @@ void launchHomeView(GtkWidget *but, GtkWidget *window){
  *
  * \param[out] Empty session
 */
-Session *createEmptySession(){
+Session *createEmptySession(int idFolder){
     Session *newSession = (Session*) malloc(sizeof(Session));
     newSession->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
     char *new_session_name = get_new_session_name();
@@ -331,8 +331,8 @@ Session *createEmptySession(){
     newSession->nextSessionDate.month = tm.tm_mon + 1;
     newSession->nextSessionDate.year = tm.tm_year + 1900;
 
-    newSession->idSession = 0; // METTRE ENSUITE LE NOMBRE DE SESSIONS EXISTANTES + 1
-    newSession->idFolder = 1; // METTRE ENSUITE L'ID DU DOSSIER LE PLUS RÉCENT POUR LE PATIENT CHOISI
+    newSession->idSession = 0;
+    newSession->idFolder = idFolder;
 
     return newSession;
 }

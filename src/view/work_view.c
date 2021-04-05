@@ -696,9 +696,11 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
 
 
     /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
-
+    AddNewSessionStruct *newSessionStruct = (AddNewSessionStruct*) malloc(sizeof(AddNewSessionStruct));
+    newSessionStruct->notebook = notebook;
+    newSessionStruct->folderID = idFolder;
     if(nb_session == 0){
-        addNewSessionUI(NULL, notebook);
+        addNewSessionUI(NULL, newSessionStruct);
     }
 
     /* Manage to add a notebook */
@@ -753,7 +755,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         gtk_widget_set_hexpand(new_session_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(new_session_button[session_cursor], FALSE);
         gtk_widget_set_halign(new_session_button[session_cursor], GTK_ALIGN_END);
-        g_signal_connect(GTK_BUTTON(new_session_button[session_cursor]), "clicked", G_CALLBACK(addNewSessionUI), notebook);
+        g_signal_connect(GTK_BUTTON(new_session_button[session_cursor]), "clicked", G_CALLBACK(addNewSessionUI), newSessionStruct);
 
 
         /* Manage to display the save button */
@@ -811,9 +813,10 @@ void launchWorkView(GtkWidget *but, Window_id *window_id){
     setWorkWindow(window_id->patientID, window_id->folderID);
 }
 
-void addNewSessionUI(GtkWidget *button, GtkWidget *notebook){
+void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     /* DECLARE VARIABLES */
-    Session *new_session = createEmptySession();
+    GtkWidget *notebook = newSessionStruct->notebook;
+    Session *new_session = createEmptySession(newSessionStruct->folderID);
     GtkWidget *grid_add_session;
     GtkWidget *frame_session_note;
 

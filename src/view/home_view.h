@@ -25,6 +25,6 @@ GtkWidget *setHomeWindow(int firstLoad, int cssMode);
 void setHomeEnvironment(GtkWidget *window);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 
-Session *createEmptySession();
+Session *createEmptySession(int idFolder);
 
 #endif //LOGICIEL_KINE_PATIENT_VIEW_H
