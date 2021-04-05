@@ -170,8 +170,6 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
     gtk_widget_show_all(dialog);
 
-    /* MANAGE THE USER ACTION */
-    int result = gtk_dialog_run (GTK_DIALOG (dialog));
     /* Action on button */
 
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
@@ -208,7 +206,6 @@ void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
  * \param[in] but_edit Edit button clicked to launch this view
  * \param[in] patient_window Structure (Patient_window) containing infos needed to modify Patient and reload the view
  *
- * \todo do a setPatient if "Enregistrer" button is clicked
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
@@ -218,9 +215,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *window = patient_window->window;
     int origin = patient_window->origin;
 
-
     printPatient(patient, "before being edited");
-    printf("\n\n**********TEST**********\n\n");
 
     /* DECLARE VARIABLES */
     char *mediaType = "profil";
@@ -722,6 +717,14 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
 
 }
 
+/*!
+ * \brief Set up the settings dialog box
+ *
+ * Bi-choice dialog box: "Annuler" that does nothing and "Enregistrer" that saves changes.
+ *
+ * \param[in] button Button clicked to launch this dialog box
+ * \param[in] window Current window to refresh the view
+*/
 void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
 
     /* DECLARE VARIABLES */
@@ -781,8 +784,7 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
     gtk_widget_show_all(dialog);
 
-    /* MANAGE THE USER ACTION */
-    int result = gtk_dialog_run(GTK_DIALOG(dialog));
+
     /* Action on button */
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT){
 

@@ -14,6 +14,7 @@
  *
  * This function set necessary parameters to load css and use css file
  *
+ * \param[in] cssMode to tell which mode to display (normal or dark mode)
 */
 static void load_css(int cssMode){
     GtkCssProvider *provider;
@@ -41,7 +42,9 @@ static void load_css(int cssMode){
  * \brief Initiate patient window which shows a list of the patient
  *
  * Focus, position, size, title and destroy callback are set.
- * \todo change the name of the window once the software name found
+ *
+ * \param[in] firstLoad to tell if css file has to be charged (1) or not (0)
+ * \param[in] cssMode to tell which mode to display (normal or dark mode)
 */
 GtkWidget *setHomeWindow(int firstLoad, int cssMode){
 
@@ -297,6 +300,7 @@ void setHomeEnvironment(GtkWidget *window){
  * When the user click on the back button from a session window, this function closes
  * the current session window and open the patient window.
  *
+ * \param[in] but clicked button which call this function
  * \param[in] window Window dedicated to the patient view
 */
 void launchHomeView(GtkWidget *but, GtkWidget *window){
