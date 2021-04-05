@@ -334,10 +334,19 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         }
     }
 
-    if(nb_folders>0 && id_folder == 0) fillFolderBox(window, folderBox, idFolderTab[0], patient);
-    else if(nb_folders>0 && id_folder != 0) fillFolderBox(window, folderBox, id_folder, patient);
-    else fillFolderBox(window, folderBox, 0, patient);
-    fillSessionBox(window, sessionBox, (int) patient->id);
+    if(nb_folders>0 && id_folder == 0){
+        fillFolderBox(window, folderBox, idFolderTab[0], patient);
+        fillSessionBox(window, sessionBox, (int) patient->id, idFolderTab[0]);
+    }
+    else if(nb_folders>0 && id_folder != 0){
+        fillFolderBox(window, folderBox, id_folder, patient);
+        fillSessionBox(window, sessionBox, (int) patient->id, id_folder);
+    }
+    else{
+        fillFolderBox(window, folderBox, 0, patient);
+        fillSessionBox(window, sessionBox, (int) patient->id, 0);
+    }
+
 
     /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
     gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
@@ -602,10 +611,10 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
  * \param[in] window Current window to enable refresh
  * \param[in] idPatient ID of the current Patient
 */
-void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient){
+void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFolder){
 
     /* DECLARE VARIABLES */
-    int nb_session = getNbSession(1);
+    int nb_session = getNbSession(idFolder);
     int session_cursor;
 
     GtkWidget *grid_session_section = NULL;
