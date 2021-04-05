@@ -190,7 +190,6 @@ void launchFolderEditor(Folder *folder){
  * \param[in] but_edit Edit button clicked to launch this view
  * \param[in] patient_window Structure (Patient_window) containing infos needed to modify Patient and reload the view
  *
- * \todo do a setPatient if "Enregistrer" button is clicked
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
@@ -704,6 +703,14 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
 
 }
 
+/*!
+ * \brief Set up the settings dialog box
+ *
+ * Bi-choice dialog box: "Annuler" that does nothing and "Enregistrer" that saves changes.
+ *
+ * \param[in] button Button clicked to launch this dialog box
+ * \param[in] window Current window to refresh the view
+*/
 void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
 
     /* DECLARE VARIABLES */
