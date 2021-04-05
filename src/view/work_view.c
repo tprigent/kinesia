@@ -547,26 +547,29 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     gtk_widget_set_valign(hbox_edit_folder, GTK_ALIGN_END);
 
     /* BUTTON */
-    GtkWidget *edit_folder_button = NULL;
     GtkWidget *new_button = NULL;
-    edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
     new_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
-    FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
-    foldEditStruct->folder = folder;
-    foldEditStruct->edit_new = 1;
-    foldEditStruct->window = window;
-    g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
+
     IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
     idPatient->idPatient = (int) patient->id;
     idPatient->window = window;
     g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
-    gtk_widget_set_hexpand(edit_folder_button, FALSE);
-    gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_widget_set_hexpand(new_button, FALSE);
     gtk_widget_set_vexpand(new_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), new_button, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
 
+    if(activeFolder != 0){
+        GtkWidget *edit_folder_button = NULL;
+        edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+        FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
+        foldEditStruct->folder = folder;
+        foldEditStruct->edit_new = 1;
+        foldEditStruct->window = window;
+        g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
+        gtk_widget_set_hexpand(edit_folder_button, FALSE);
+        gtk_widget_set_vexpand(edit_folder_button, FALSE);
+        gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
+    }
     /* ****************************************************************************** */
 
 }
