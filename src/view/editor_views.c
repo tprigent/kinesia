@@ -166,8 +166,6 @@ void launchFolderEditor(Folder *folder){
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
     gtk_widget_show_all(dialog);
 
-    /* MANAGE THE USER ACTION */
-    int result = gtk_dialog_run (GTK_DIALOG (dialog));
     /* Action on button */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         saveFolderEntries(folder, folder_name_entry, pathology_entry, other_infos_buffer, start_treatment_entry);
@@ -199,9 +197,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *window = patient_window->window;
     int origin = patient_window->origin;
 
-
     printPatient(patient, "before being edited");
-    printf("\n\n**********TEST**********\n\n");
 
     /* DECLARE VARIABLES */
     char *mediaType = "profil";
@@ -770,8 +766,7 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
     gtk_widget_show_all(dialog);
 
-    /* MANAGE THE USER ACTION */
-    int result = gtk_dialog_run(GTK_DIALOG(dialog));
+
     /* Action on button */
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT){
 
