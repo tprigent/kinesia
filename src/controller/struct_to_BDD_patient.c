@@ -67,7 +67,6 @@ int modifyPatient(Patient *gen){
     sqlite3_bind_int(stmt,i++,gen->first_consultation.month);
     sqlite3_bind_int(stmt,i++,gen->first_consultation.day);
     sqlite3_bind_text(stmt,i++,gen->global_pathologies,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,i++,"N/A",-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->address.street,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->address.postCode,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,i++,gen->address.city,-1,SQLITE_TRANSIENT);
