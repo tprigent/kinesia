@@ -18,6 +18,7 @@
 typedef struct {
     GtkWidget *window;      /**< Parent window to be reload after changes */
     int patientID;          /**< ID of the Patient to be edited */
+    int folderID;           /**< ID of the Folder to be edited */
 }Window_id;
 
 GtkWidget *setHomeWindow(int firstLoad, int cssMode);
