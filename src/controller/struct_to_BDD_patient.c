@@ -195,7 +195,7 @@ int deletePatient(int id){
     sqlite3_stmt *stmt3;
 
     //Opening database
-    rc1 = sqlite3_open("/home/paul/Bdd/TestBdd.db", &db);
+    rc1 = sqlite3_open(DB_PATH, &db);
 
     //Testing the opening
     if( rc1 ) {
@@ -206,16 +206,16 @@ int deletePatient(int id){
     }
 
 //Creating the request
-    sql1 = "DELETE FROM seance WHERE idFolder IN (SELECT idFolder FROM folder WHERE idPatient=?)";
+    sql1 = "DELETE FROM seance WHERE idDossier IN (SELECT idFolder FROM folder WHERE idPatient=?)";
     sql2 = "DELETE FROM folder WHERE idPatient=?";
-    sql3 = "DELETE FROM gens WHERE id=?";
+    sql3 = "DELETE FROM patient WHERE id=?";
 
     //Préparing the requests
     rc1 = sqlite3_prepare_v2(db,sql1,-1,&stmt1,NULL);
     rc2 = sqlite3_prepare_v2(db,sql2,-1,&stmt2,NULL);
     rc3 = sqlite3_prepare_v2(db,sql3,-1,&stmt3,NULL);
     if( rc1 != SQLITE_OK || rc2 != SQLITE_OK || rc3 != SQLITE_OK ){
-        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
+        fprintf(stderr, "Prepare error: %s , rc1 : %d, rc2 %d , rc3 %d\n", zErrMsg,rc1,rc2,rc3);
         sqlite3_free(zErrMsg);
         return 0;
     }
@@ -226,7 +226,7 @@ int deletePatient(int id){
     sqlite3_bind_int(stmt3,1,id);
 
     //Executing the request
-    while(sqlite3_step(stmt1) == SQLITE_ROW){}
+    sqlite3_step(stmt1);
     sqlite3_step(stmt2);
     sqlite3_step(stmt3);
 
