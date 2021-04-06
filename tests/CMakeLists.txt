@@ -19,7 +19,6 @@ set(SOURCE_FILES
         ../src/model/folder_manager.c
         ../src/controller/display_helpers.c
         ../src/model/patient_manager.c
-        ../src/controller/UI_to_struct.c
         ../src/controller/BDD_to_struct_patient.c
         ../src/controller/BDD_to_struct_session.c
         ../src/controller/struct_to_BDD_session.c
