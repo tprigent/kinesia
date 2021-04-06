@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <cmocka.h>
 #include "../src/controller/BDD_to_struct_session.h"
+#include "../src/controller/struct_to_BDD_session.h"
 #include "UTest_BDD_session.h"
 #include "../src/model/session_manager.h"
 
@@ -44,9 +45,18 @@ static void test_getSessionList(void **state) {
 }
 
 static void test_getNbSession(void **state) {
-    assert_int_equal(2, getNbSession(1));
-    assert_int_equal(0, getNbSession(2));
-    assert_int_equal(0, getNbSession(3));
+    assert_int_equal(4, getNbSession(1));
+}
+
+static void test_modifySession(void **state){
+
+    Session *s;
+    s = getSession(1);
+    s->sessionName = "New name";
+    assert_int_equal(1,modifySession(s));
+    s = getSession(s->idSession);
+    assert_string_equal("New name",s->sessionName);
+
 }
 
 int main_BDD_session(void) {
@@ -55,7 +65,8 @@ int main_BDD_session(void) {
                     cmocka_unit_test(test_getSession),
                     cmocka_unit_test(test_getSessionId),
                     cmocka_unit_test(test_getSessionList),
-                    cmocka_unit_test(test_getNbSession)
+                    cmocka_unit_test(test_getNbSession),
+                    cmocka_unit_test(test_modifySession)
             };
     return cmocka_run_group_tests_name("Test BDD_session module",tests_BDD_session,NULL,NULL);
 }
