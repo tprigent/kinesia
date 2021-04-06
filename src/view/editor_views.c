@@ -819,6 +819,7 @@ void launchAttachmentViewer(GtkWidget *button){
 
     /* Show all elements */
     gtk_widget_show_all(grid);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 
     /* Action on button */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_CANCEL){
