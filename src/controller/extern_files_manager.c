@@ -27,6 +27,7 @@ void copyToMedia(char *source_path, Patient *patient, char *type){
     tostring(stringID, (int) patient->id);
     strcat(dest_path, stringID);
     strcat(dest_path, "/");
+    mkdir(dest_path, 0700);         // create folder if doesn't exist
     strcat(dest_path, type);
     strcat(dest_path, ".");
     strcat(dest_path, getExtensionFromPath(source_path));
