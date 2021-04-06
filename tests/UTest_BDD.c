@@ -190,8 +190,8 @@ static void test_modifyPatient(void **state){
     if(setPatient(p,"1","1",birthDate,"1",1,
                   adresse,"1",
                   "1","1",
-                  "1",1,
-                  1,firtsConsDate,"1",0,0) != 0) {
+                  "1","1",
+                  "1",firtsConsDate,"1",0,0) != 0) {
         fprintf(stderr, "Erreur setPatient");
         p = NULL;
     }
