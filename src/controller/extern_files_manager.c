@@ -3,6 +3,7 @@
 * \brief File utilities to load, copy and move attachments to the software
 */
 
+#include <libc.h>
 #include "extern_files_manager.h"
 
 /*!
@@ -12,36 +13,54 @@
  * \param[in] patient To which Patient the file concerns
  * \param[in] type Type of the media : profil or attachment
 */
-void copyToMedia(char *from, Patient *patient, char *type){
+void copyToMedia(char *source_path, Patient *patient, char *type){
+
+    char *stringID;
+    FILE *source_stream, *dest_stream;
+    int c;
+    stringID = (char*) malloc(sizeof(char)*10);
 
     /* Build the destination path: media/name-firstname/ */
-    char *media_path = " ../media/patient-data/";
-    char *dest = (char *) malloc(sizeof(char)*(strlen(patient->firstname)+strlen(patient->name)+strlen(type)+2*strlen("-")+strlen("/")));
-    strcpy(dest, media_path);
-    strcat(dest, patient->firstname);
-    strcat(dest, "-");
-    strcat(dest, patient-> firstname);
-    strcat(dest, "/");
+    char *media_path = "../media/patient-data/";
+    char *dest_path = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen(type)+strlen(".xxxx")+10)+sizeof(int)*10);
+    strcpy(dest_path, media_path);
+    tostring(stringID, (int) patient->id);
+    strcat(dest_path, stringID);
+    strcat(dest_path, "/");
+    strcat(dest_path, type);
+    strcat(dest_path, ".");
+    strcat(dest_path, getExtensionFromPath(source_path));
 
-    /* Create directory media/name-firstname/ */
-    char *mkdir = "mkdir -p ";
-    char *mkdir_command = (char*) malloc(sizeof(char)*(strlen(dest)+strlen(mkdir)));
-    strcpy(mkdir_command, mkdir);   // command = <mkdir -p >
-    strcat(mkdir_command, dest);    // command = <mkdir -p media/name-firstname/>
-    system(mkdir_command);
+    /* Open source file for reading */
+    source_stream = fopen(source_path, "rb");
+    if (source_stream == NULL)
+    {
+        printf("Cannot open file %s\n", source_path);
+    }
 
-    /* Build the copy command: cp source_path/file media/name-firstname/ */
-    char *cp = "cp ";
-    char *cp_command = (char*) malloc(sizeof(char)*(strlen(cp)+strlen(dest)+strlen(from)+strlen(type)+strlen(getExtensionFromPath(from))+1));
-    strcpy(cp_command, cp);                             // command = <cp >
-    strcat(cp_command, "\"");                           // command = <cp ">
-    strcat(cp_command, from);                           // command = <cp "source_path/file>
-    strcat(cp_command, "\"");                           // command = <cp "source_path/file">
-    strcat(cp_command, dest);                           // command = <cp "source_path/file" media/name-firstname/>
-    strcat(cp_command, type);                           // command = <cp "source_path/file" media/name-firstname/type>
-    strcat(cp_command, ".");                            // command = <cp "source_path/file" media/name-firstname/type.>
-    strcat(cp_command, getExtensionFromPath(from));     // command = <cp "source_path/file" media/name-firstname/type.ext>
-    system(cp_command);
+    /* Open dest file for writing */
+    dest_stream = fopen(dest_path, "wb");
+    if (dest_stream == NULL)
+    {
+        printf("Cannot open file %s\n", dest_path);
+    }
+
+    /* Copy file */
+    c = fgetc(source_stream);
+    while (c != EOF)
+    {
+        fputc(c, dest_stream);
+        c = fgetc(dest_stream);
+    }
+
+    printf("Contents copied to %s\n", dest_path);
+
+    fclose(source_stream);
+    fclose(dest_stream);
+
+    /* Free chars */
+    free((char*) stringID);
+    free((char*) dest_path);
 
 }
 

@@ -35,11 +35,16 @@ typedef struct {
     GtkWidget *window;     /**< Parent window to be reload after changes */
 }WarningType;
 
+typedef struct {
+    Patient *patient;
+    char *mediaType;
+}MediaType;
+
 
 void launchFolderEditor(Folder *folder);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
-void launchFileChooser(GtkWidget *photo_button, char *type);
+void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser);
 void launchPatientWarning(GtkWidget *button, WarningType *warning);
 void launchSettingsEditor(GtkWidget *button, GtkWidget *window);
 void launchAttachmentViewer(GtkWidget *button);

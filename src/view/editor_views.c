@@ -205,7 +205,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     printf("\n\n**********TEST**********\n\n");
 
     /* DECLARE VARIABLES */
-    char *mediaType = "profil";
+    MediaType *photoChooser = (MediaType*) malloc(sizeof(MediaType));
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *name = NULL;
@@ -262,6 +262,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     height_entry = gtk_entry_new();
     first_consult_entry = gtk_entry_new();
     info_text = gtk_text_view_new();
+
+    photoChooser->patient = patient;
+    photoChooser->mediaType = "profil";
 
     // entry parameters
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
@@ -349,7 +352,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
-    g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), mediaType);
+    g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), photoChooser);
 
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
@@ -537,6 +540,8 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         gtk_widget_destroy(dialog);
     }
 
+    free((MediaType*) photoChooser);
+
 }
 
 /*!
@@ -580,9 +585,8 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
  * \param[in] photo_button Button that launches the dialog box
  * \param[in] type Type of media: "profil" or "attachment"
 */
-void launchFileChooser(GtkWidget *photo_button, char *type){
+void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
     GtkWidget *dialog;
-    Patient *patient = getPatient(1);                 //todo: make this dynamic
     dialog = gtk_file_chooser_dialog_new("Sélection du fichier",
                                       NULL,
                                       GTK_FILE_CHOOSER_ACTION_OPEN,
@@ -597,8 +601,8 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
         char *filename;
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
         printf("%s\n", filename);
-        copyToMedia(filename, patient , type);
-        getProfileExtension(patient);
+        copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
+        getProfileExtension(mediaChooser->patient);
     }
 
     gtk_widget_destroy (dialog);
