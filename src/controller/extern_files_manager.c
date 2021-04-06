@@ -20,7 +20,7 @@ void copyToMedia(char *source_path, Patient *patient, char *type){
     int c;
     stringID = (char*) malloc(sizeof(char)*10);
 
-    /* Build the destination path: media/name-firstname/ */
+    /* Build the destination path: media/patient-data/{patient_id}/ */
     char *media_path = "../media/patient-data/";
     char *dest_path = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen(type)+strlen(".xxxx")+10)+sizeof(int)*10);
     strcpy(dest_path, media_path);
@@ -120,14 +120,16 @@ char *getProfileExtension(Patient *patient){
 }
 
 char *getProfilePhotoPath(Patient *patient){
+    char *charID = (char*) malloc(sizeof(char)*10);
     char *photo_path = (char*) malloc(sizeof(char)*(strlen(patient->firstname)+strlen(patient->name)+100));
     strcpy(photo_path, "../media/patient-data/");
-    strcat(photo_path, patient->firstname);
-    strcat(photo_path, "-");
-    strcat(photo_path, patient->name);
+    tostring(charID, (int) patient->id);
+    strcat(photo_path, charID);
     strcat(photo_path, "/");
     strcat(photo_path, "profil.jpeg");
     //strcat(photo_path, getProfileExtension(patient));
     printf("%s\n", photo_path);
+
+    free((char*) charID);
     return(photo_path);
 }
