@@ -10,12 +10,15 @@
 #include <cmocka.h>
 #include "UTest_BDD.h"
 #include "../src/model/patient_manager.h"
+#include "../src/model/folder_manager.h"
 #include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/controller/struct_to_BDD_patient.h"
 #include "../src/controller/struct_to_BDD_folder.h"
 #include "../src/controller/BDD_to_struct_folder.h"
-#include "../src/model/patient_manager.h"
+#include "../src/controller/BDD_to_struct_session.h"
 #include "../src/model/structures.h"
+
+int idPatientTest;
 
 /*!
  * \brief Setup function which allocates a patient
@@ -167,53 +170,45 @@ static void test_addPatient(void **state){
 
     assert_int_equal(1,addPatient(p));
 
+    int* tabId = getArchivedPatientID();
+    int i;
+    idPatientTest = 0;
+    i=0;
+    while(tabId[i] != -1){
+        if(idPatientTest < tabId[i])
+            idPatientTest = tabId[i];
+        i++;
+    }
+
 }
 
 static void test_modifyPatient(void **state){
 
     Patient *p = NULL;
-    Address adresse;
-    Date birthDate;
-    Date firtsConsDate;
+    p = getPatient(idPatientTest);
 
-    if(allocatePatient(&p) == -1 || allocateAddress(&adresse) == -1 ){
-        fprintf(stderr,"Erreur d'allocation\n");
-    }
-
-    if(setDate(&birthDate,2,1,1) == -1 ){
-        fprintf(stderr,"Erreur setDate birthdate\n");
-    }
-    if(setDate(&firtsConsDate,12,1,1) == -1 ){
-        fprintf(stderr,"Erreur setDate first consultation\n");
-    }
-
-    setAddress(&adresse,"1","1","1","1");
-
-    if(setPatient(p,"1","1",birthDate,"1",1,
-                  adresse,"1",
-                  "1","1",
-                  "1","1",
-                  "1",firtsConsDate,"1",0,0) != 0) {
-        fprintf(stderr, "Erreur setPatient");
-        p = NULL;
-    }
-
-    p->id=2;
+    p->phone_number = "Nouveau num";
 
     assert_int_equal(1,modifyPatient(p));
+
+    p = getPatient(idPatientTest);
+
+    assert_string_equal(p->phone_number,"Nouveau num");
 
 }
 
 static void test_getNameFirstnamePatient(void **state){
 
-    assert_string_equal("Francois Claude",getNameFirstnamePatient(1));
-    assert_null(getNameFirstnamePatient(-1));
+    assert_string_equal("Claude François",getNameFirstnamePatient(1));
+    //assert_null(getNameFirstnamePatient(-1));
 
 }
 
 static void test_getArchivedPatientID(void **state){
 
-    assert_int_equal(1,getArchivedPatientID());
+    int *t;
+    t = getArchivedPatientID();
+    assert_int_equal(1,t[1]);
 
 }
 
@@ -221,8 +216,7 @@ static void test_getActivePatientID(void **state){
 
     int *tab;
     tab = getActivePatientID();
-    assert_int_equal(2,tab[1]);
-    assert_int_equal(3,tab[2]);
+    assert_int_equal(6,tab[0]);
 
 }
 
@@ -234,7 +228,7 @@ static void test_getNbActivePatient(void **state){
 
 static void test_getNbarchivedPatient(void **state){
 
-    assert_int_equal(1,getNbArchivedPatient());
+    assert_int_equal(2,getNbArchivedPatient());
 
 }
 
@@ -249,7 +243,7 @@ static void test_getFolder(void **state){
     assert_string_equal("Voir fichiers joints,  retour à la ligne automatique à gérer...",f->details);
     assert_int_equal(2021,f->startOfTreatment.year);
     assert_int_equal(3,f->startOfTreatment.month);
-    assert_int_equal(1,f->startOfTreatment.day);
+    assert_int_equal(22,f->startOfTreatment.day);
     assert_int_equal(1,f->numberOfFiles);
     assert_int_equal(1,f->idPatient);
 
@@ -261,33 +255,56 @@ static void test_getNameFolder(void **state){
 
 }
 
-static void test_getIdFolder(1){
+static void test_getIdFolder(void **state){
 
-int *t;
-t = getIdFolder(1);
-assert_int_equal(1,t[0]);
+    int *t;
+    t = getIdFolder(1);
+    assert_int_equal(1,t[0]);
 
 }
 
 static void test_addFolder(void **state){
 
-    Folder *f;
+    Folder *folder;
     if(allocateFolder(&folder) == -1){
         fprintf(stderr,"Erreur alloc folder\n");
         return NULL;
     }
 
-    setFolder(folder,"Folder test","Test","Details",1,1,1,1,1,1);
+    setFolder(folder,"Folder test","Test","Details",1,1,1,1,1,idPatientTest);
 
-    assert_int_equal(1,addFolder(f));
+    assert_int_equal(1,addFolder(folder));
 
 }
 
 static void test_modifyFolder(void **state){
 
     Folder *f;
-    f = getFolder();
+    f = getFolder(2);
+    f->details="New details";
+    assert_int_equal(1,modifyFolder(f));
+    f = getFolder(2);
+    assert_string_equal("New details",f->details);
+    f->details="Ici on peu ajouter des indications";
+    assert_int_equal(1,modifyFolder(f));
 
+}
+
+static void test_addSession(void **state){
+
+    Session *s;
+    int *t;
+    t = getIdFolder(idPatientTest);
+    s = getSession(1);
+    s->sessionName = "New session";
+    s->idFolder = t[0];
+    assert_int_equal(1,addSession(s));
+
+}
+
+static void test_deletePatient(void **state){
+
+    assert_int_equal(1,deletePatient(idPatientTest));
 
 }
 
@@ -353,12 +370,15 @@ int main_BDD(void)
                     cmocka_unit_test(test_getNameFirstnamePatient),
                     cmocka_unit_test(test_getArchivedPatientID),
                     cmocka_unit_test(test_getNbActivePatient),
+                    cmocka_unit_test(test_getActivePatientID),
                     cmocka_unit_test(test_getNbarchivedPatient),
                     cmocka_unit_test(test_getFolder),
                     cmocka_unit_test(test_getIdFolder),
+                    cmocka_unit_test(test_addSession),
                     cmocka_unit_test(test_getNameFolder),
                     cmocka_unit_test(test_addFolder),
-                    cmocka_unit_test(test_modifyFolder)
+                    cmocka_unit_test(test_modifyFolder),
+                    cmocka_unit_test(test_deletePatient)
             };
     return cmocka_run_group_tests_name("Test counter module",tests_BDD,NULL,NULL);
 }
