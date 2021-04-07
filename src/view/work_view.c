@@ -398,18 +398,18 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     /* ****************************************************************************** */
 
     /* Create a frame for the folder zone ******************************************* */
-    GtkWidget *cadre_folder = NULL;
-    cadre_folder = gtk_frame_new("Dossier");
-    gtk_frame_set_label_align(GTK_FRAME(cadre_folder), 0.5, 0.5);
-    gtk_grid_attach(GTK_GRID(grid_part2), cadre_folder, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(cadre_folder, TRUE);
-    gtk_widget_set_vexpand(cadre_folder, TRUE);
+    GtkWidget *frame_folder = NULL;
+    frame_folder = gtk_frame_new("Dossier");
+    gtk_frame_set_label_align(GTK_FRAME(frame_folder), 0.5, 0.5);
+    gtk_grid_attach(GTK_GRID(grid_part2), frame_folder, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_widget_set_hexpand(frame_folder, TRUE);
+    gtk_widget_set_vexpand(frame_folder, TRUE);
     /* ****************************************************************************** */
 
     /* Create a grid to display all the elements ************************************ */
     GtkWidget *grid_folder = NULL;
     grid_folder = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(cadre_folder), grid_folder);
+    gtk_container_add(GTK_CONTAINER(frame_folder), grid_folder);
     gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 0);
     /* ****************************************************************************** */
 
@@ -554,6 +554,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
+    g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentViewer), NULL);
     /* ****************************************************************************** */
 
     /* Edit button ****************************************************************** */

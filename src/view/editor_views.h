@@ -46,12 +46,23 @@ typedef struct{
     GtkWidget *window;
 }IdPatientCallback;
 
-void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
-void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall);
+/**
+ * \brief Structure to choose the type of media to open
+ *
+ * This structure enables the callback to know what type of media to process
+ * and which Patient it is to store it in the right place
+*/
+typedef struct {
+    Patient *patient;     /**< Patient concerned */
+    char *mediaType;      /**< Type of media to be stored in the software: "profile" or other */
+}MediaType;
+
+void launchFolderEditor(Folder *folder);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
-void launchFileChooser(GtkWidget *photo_button, char *type);
+void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser);
 void launchPatientWarning(GtkWidget *button, WarningType *warning);
 void launchSettingsEditor(GtkWidget *button, GtkWidget *window);
+void launchAttachmentViewer(GtkWidget *button);
 
 #endif
