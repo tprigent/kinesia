@@ -630,7 +630,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
     }
 
     int nb_session = getNbSession(idFolder);
-    if(nb_session ==0){
+    /*if(nb_session ==0){
         GtkWidget *label = gtk_label_new("Le dossier sélectionné ne contient aucune séance.\nAjouter une séance :");
         GtkWidget *frame = gtk_frame_new("");
         GtkWidget *grid = gtk_grid_new();
@@ -648,7 +648,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         gtk_widget_set_valign(label, GTK_ALIGN_CENTER);
 
         return ;
-    }
+    }*/
 
     /* DECLARE VARIABLES */
     int session_cursor;
