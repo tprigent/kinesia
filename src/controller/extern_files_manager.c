@@ -4,6 +4,7 @@
 */
 
 #include <libc.h>
+#include <regex.h>
 #include "extern_files_manager.h"
 
 /*!
@@ -94,15 +95,15 @@ char *getExtensionFromPath(char *path){
  * \param[out] Profile photo extension
 */
 char *getProfileExtension(Patient *patient){
+    char *stringID = (char*) malloc(sizeof(char)*strlen("000000"));
+
     char *path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
     char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
     char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
     char *pathJPG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    strcpy(path, "cat ");
     strcat(path, "../media/patient-data/");
-    strcat(path, patient->firstname);
-    strcat(path, "-");
-    strcat(path, patient->name);
+    tostring(stringID, (int) patient->id);
+    strcat(path, stringID);
     strcat(path, "/");
 
     strcat(pathJPEG, path);
@@ -112,10 +113,28 @@ char *getProfileExtension(Patient *patient){
     strcat(pathPNG, path);
     strcat(pathPNG, "profil.png");
 
-    if(system(pathJPEG) == 0) return ".jpeg";
-    else if(system(pathJPG) == 0) return ".jpg";
-    else if(system(pathPNG) == 0) return ".png";
-    else return ".error";
+    free((char*) path);
+    if(access(pathJPEG, F_OK) == 0 ) {
+        free((char*) pathJPEG);
+        free((char*) pathJPG);
+        free((char*) pathPNG);
+        return ".jpeg";
+    } else if (access(pathJPG, F_OK) == 0){
+        free((char*) pathJPEG);
+        free((char*) pathJPG);
+        free((char*) pathPNG);
+        return ".jpg";
+    } else if (access(pathPNG, F_OK) == 0){
+        free((char*) pathJPEG);
+        free((char*) pathJPG);
+        free((char*) pathPNG);
+        return ".png";
+    } else {
+        free((char*) pathJPEG);
+        free((char*) pathJPG);
+        free((char*) pathPNG);
+        return ".error";
+    }
 
 }
 
@@ -126,8 +145,8 @@ char *getProfilePhotoPath(Patient *patient){
     tostring(charID, (int) patient->id);
     strcat(photo_path, charID);
     strcat(photo_path, "/");
-    strcat(photo_path, "profil.jpeg");
-    //strcat(photo_path, getProfileExtension(patient));
+    strcat(photo_path, "profil");
+    strcat(photo_path, getProfileExtension(patient));
     printf("%s\n", photo_path);
 
     free((char*) charID);
