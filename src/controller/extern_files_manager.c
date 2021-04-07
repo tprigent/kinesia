@@ -149,6 +149,12 @@ char *getProfileExtension(Patient *patient){
 
 }
 
+/*!
+ * \brief Get the path of the profile photo from a given Patient
+ *
+ * \param[in] patient Patient concerned
+ * \param[out] Profile photo path
+*/
 char *getProfilePhotoPath(Patient *patient){
     char *charID = (char*) malloc(sizeof(char)*10);
     char *photo_path = (char*) malloc(sizeof(char)*(strlen(patient->firstname)+strlen(patient->name)+100));
@@ -164,6 +170,16 @@ char *getProfilePhotoPath(Patient *patient){
     return(photo_path);
 }
 
+/*!
+ * \brief Remove old profile picture if exists
+ *
+ * This function remove profile pictures with a different extension
+ * than the new one to avoid conflicts.
+ *
+ * \param[in] media_path Path of the media/ folder
+ * \param[in] dest_path Destination path of the profile picture
+ * \param[in] source_path Path of the source file (useful to know the extension of the new profile picture)
+*/
 void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path){
     char *dest_path_png = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
     char *dest_path_jpg = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
