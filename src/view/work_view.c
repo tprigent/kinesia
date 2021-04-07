@@ -613,6 +613,16 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
 */
 void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFolder){
 
+    if(idFolder == 0){
+        GtkWidget *label = gtk_label_new("Ce patient n'a pas de dossier associé");
+        GtkWidget *frame = gtk_frame_new("");
+        gtk_container_add(GTK_CONTAINER(box), frame);
+        gtk_container_add(GTK_CONTAINER(frame), label);
+        gtk_widget_set_hexpand(frame, TRUE);
+        gtk_widget_set_vexpand(frame, TRUE);
+        return ;
+    }
+
     /* DECLARE VARIABLES */
     int nb_session = getNbSession(idFolder);
     int session_cursor;
