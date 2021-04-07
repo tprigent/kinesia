@@ -629,8 +629,28 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         return ;
     }
 
-    /* DECLARE VARIABLES */
     int nb_session = getNbSession(idFolder);
+    if(nb_session ==0){
+        GtkWidget *label = gtk_label_new("Le dossier sélectionné ne contient aucune séance.\nAjouter une séance :");
+        GtkWidget *frame = gtk_frame_new("");
+        GtkWidget *grid = gtk_grid_new();
+        GtkWidget *button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+        gtk_container_add(GTK_CONTAINER(box), frame);
+        gtk_container_add(GTK_CONTAINER(frame), grid);
+        gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(frame, TRUE);
+        gtk_widget_set_hexpand(grid, TRUE);
+        gtk_widget_set_vexpand(grid, TRUE);
+        gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
+        gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
+        gtk_widget_set_halign(label, GTK_ALIGN_CENTER);
+        gtk_widget_set_valign(label, GTK_ALIGN_CENTER);
+
+        return ;
+    }
+
+    /* DECLARE VARIABLES */
     int session_cursor;
 
     GtkWidget *grid_session_section = NULL;
