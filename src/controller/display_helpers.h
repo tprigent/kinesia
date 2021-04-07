@@ -13,6 +13,7 @@
 #define LOGICIEL_KINE_CONNECT_STRUCT_UI_H
 
 
+void tostring(char *str, int num);
 char *get_name_UI(Patient *patient);
 char *get_date_UI(Date *date);
 char *get_height_weight_UI(Patient *patient);

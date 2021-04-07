@@ -218,7 +218,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     printPatient(patient, "before being edited");
 
     /* DECLARE VARIABLES */
-    char *mediaType = "profil";
+    MediaType *photoChooser = (MediaType*) malloc(sizeof(MediaType));
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *name = NULL;
@@ -275,6 +275,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     height_entry = gtk_entry_new();
     first_consult_entry = gtk_entry_new();
     info_text = gtk_text_view_new();
+
+    photoChooser->patient = patient;
+    photoChooser->mediaType = "profil";
 
     // entry parameters
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
@@ -362,7 +365,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
-    g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), mediaType);
+    g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), photoChooser);
 
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
@@ -550,6 +553,8 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
         gtk_widget_destroy(dialog);
     }
 
+    free((MediaType*) photoChooser);
+
 }
 
 /*!
@@ -593,9 +598,8 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
  * \param[in] photo_button Button that launches the dialog box
  * \param[in] type Type of media: "profil" or "attachment"
 */
-void launchFileChooser(GtkWidget *photo_button, char *type){
+void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
     GtkWidget *dialog;
-    Patient *patient = getPatient(1);                 //todo: make this dynamic
     dialog = gtk_file_chooser_dialog_new("Sélection du fichier",
                                       NULL,
                                       GTK_FILE_CHOOSER_ACTION_OPEN,
@@ -610,8 +614,8 @@ void launchFileChooser(GtkWidget *photo_button, char *type){
         char *filename;
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
         printf("%s\n", filename);
-        copyToMedia(filename, patient , type);
-        getProfileExtension(patient);
+        copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
+        getProfileExtension(mediaChooser->patient);
     }
 
     gtk_widget_destroy (dialog);
@@ -799,5 +803,51 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
         setHomeWindow(1, cssMode);
     } else {
         gtk_widget_destroy(dialog);
+    }
+}
+
+void launchAttachmentViewer(GtkWidget *button){
+    GtkWidget *dialog;
+    GtkWidget *grid = NULL;
+    GtkWidget *content_area = NULL;
+    GtkWidget *list = NULL;
+    GtkWidget *labelTest[10];
+
+
+    dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
+                                         NULL, GTK_DIALOG_MODAL,
+                                         "Fermer", GTK_RESPONSE_CANCEL, NULL);
+
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    /* Setup the main grid */
+    grid = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(content_area), grid);
+    gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
+
+    /* Setup the list */
+    list = gtk_list_box_new();
+    int i = 0;
+    while (i<10){
+        labelTest[i] = gtk_label_new("test.jpeg");
+        gtk_list_box_insert(GTK_LIST_BOX(list), labelTest[i], i+1);
+        gtk_widget_set_hexpand(labelTest[i], TRUE);
+        gtk_widget_set_size_request(labelTest[i], 200, 20);
+        i++;
+    }
+
+    /* Fill grid with all elements */
+    gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(list), 1, 1, 1, 1);
+
+    /* Show all elements */
+    gtk_widget_show_all(grid);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+
+    /* Action on button */
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_CANCEL){
+        gtk_widget_destroy (dialog);
     }
 }
