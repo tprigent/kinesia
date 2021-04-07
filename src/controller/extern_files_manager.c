@@ -3,7 +3,9 @@
 * \brief File utilities to load, copy and move attachments to the software
 */
 
-#include <libc.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <zconf.h>
 #include <regex.h>
 #include "extern_files_manager.h"
 
