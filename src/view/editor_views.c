@@ -599,26 +599,25 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
  * \param[in] type Type of media: "profil" or "attachment"
 */
 void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
-    GtkWidget *dialog;
-    dialog = gtk_file_chooser_dialog_new("Sélection du fichier",
-                                      NULL,
-                                      GTK_FILE_CHOOSER_ACTION_OPEN,
-                                      "Annuler", GTK_RESPONSE_CANCEL,
-                                      "Utiliser", GTK_RESPONSE_ACCEPT,
-                                      NULL);
+    GtkFileChooserNative *dialog;
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+    gint res;
 
-    gtk_window_set_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    dialog = gtk_file_chooser_native_new("Save File",
+                                         NULL,
+                                         action,
+                                         "_Save",
+                                         "_Cancel");
 
-    /* Action on button */
-    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+    if (gtk_native_dialog_run(GTK_NATIVE_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT){
         char *filename;
-        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (dialog));
+        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
         printf("%s\n", filename);
         copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
         getProfileExtension(mediaChooser->patient);
     }
+    gtk_native_dialog_destroy(GTK_NATIVE_DIALOG(dialog));
 
-    gtk_widget_destroy (dialog);
 }
 
 /*!
