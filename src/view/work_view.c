@@ -383,6 +383,8 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
         gtk_container_add(GTK_CONTAINER(frame), grid);
         gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 1, 1);
+        gtk_grid_set_row_spacing(GTK_GRID(grid), 15);
+        gtk_container_set_border_width(GTK_CONTAINER(frame), 5);
         gtk_widget_set_hexpand(frame, TRUE);
         gtk_widget_set_hexpand(label, TRUE);
         gtk_widget_set_hexpand(button, TRUE);
