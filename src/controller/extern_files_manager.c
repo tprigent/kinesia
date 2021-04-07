@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <zconf.h>
 #include <regex.h>
+#include <ftw.h>
 #include "extern_files_manager.h"
 
 /*!
