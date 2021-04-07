@@ -57,7 +57,8 @@ typedef struct {
     char *mediaType;      /**< Type of media to be stored in the software: "profile" or other */
 }MediaType;
 
-void launchFolderEditor(Folder *folder);
+void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
+void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser);
