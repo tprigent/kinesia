@@ -36,22 +36,22 @@ void copyToMedia(char *source_path, Patient *patient, char *type){
     source_stream = fopen(source_path, "rb");
     if (source_stream == NULL)
     {
-        printf("Cannot open file %s\n", source_path);
+        printf("Cannot open source file %s\n", source_path);
     }
 
     /* Open dest file for writing */
     dest_stream = fopen(dest_path, "wb");
     if (dest_stream == NULL)
     {
-        printf("Cannot open file %s\n", dest_path);
+        printf("Cannot open dest file %s\n", dest_path);
     }
 
     /* Copy file */
-    c = fgetc(source_stream);
-    while (c != EOF)
+    while(1)
     {
-        fputc(c, dest_stream);
-        c = fgetc(dest_stream);
+        c=fgetc(source_stream);
+        if(c==EOF) break;
+        fputc(c,dest_stream);
     }
 
     printf("Contents copied to %s\n", dest_path);
