@@ -31,6 +31,13 @@ void copyToMedia(char *source_path, Patient *patient, char *type){
     mkdir(dest_path, 0700);         // create folder if doesn't exist
     strcat(dest_path, type);
     strcat(dest_path, ".");
+
+    /* Check if old profile picture already exists */
+    if(strcmp(type, "profil") == 0){
+        removeExistingProfilePicture(media_path, dest_path, source_path);
+    }
+
+    /* Add original extension */
     strcat(dest_path, getExtensionFromPath(source_path));
 
     /* Open source file for reading */
@@ -40,12 +47,14 @@ void copyToMedia(char *source_path, Patient *patient, char *type){
         printf("Cannot open source file %s\n", source_path);
     }
 
+
     /* Open dest file for writing */
     dest_stream = fopen(dest_path, "wb");
     if (dest_stream == NULL)
     {
         printf("Cannot open dest file %s\n", dest_path);
     }
+
 
     /* Copy file */
     while(1)
@@ -57,13 +66,14 @@ void copyToMedia(char *source_path, Patient *patient, char *type){
 
     printf("Contents copied to %s\n", dest_path);
 
+    /* Close files */
     fclose(source_stream);
     fclose(dest_stream);
+
 
     /* Free chars */
     free((char*) stringID);
     free((char*) dest_path);
-
 }
 
 /*!
@@ -114,6 +124,7 @@ char *getProfileExtension(Patient *patient){
     strcat(pathPNG, "profil.png");
 
     free((char*) path);
+    free((char*) stringID);
     if(access(pathJPEG, F_OK) == 0 ) {
         free((char*) pathJPEG);
         free((char*) pathJPG);
@@ -151,4 +162,32 @@ char *getProfilePhotoPath(Patient *patient){
 
     free((char*) charID);
     return(photo_path);
+}
+
+void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path){
+    char *dest_path_png = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
+    char *dest_path_jpg = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
+    char *dest_path_jpeg = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
+
+    strcpy(dest_path_png, dest_path);
+    strcat(dest_path_png, "png");
+    strcpy(dest_path_jpg, dest_path);
+    strcat(dest_path_jpg, "jpg");
+    strcpy(dest_path_jpeg, dest_path);
+    strcat(dest_path_jpeg, "jpeg");
+
+    if(strcmp(getExtensionFromPath(source_path), "jpeg") == 0){
+        remove(dest_path_jpg);
+        remove(dest_path_png);
+    } else if(strcmp(getExtensionFromPath(source_path), "jpg") == 0){
+        remove(dest_path_jpeg);
+        remove(dest_path_png);
+    } else if(strcmp(getExtensionFromPath(source_path), "png") == 0){
+        remove(dest_path_jpeg);
+        remove(dest_path_jpg);
+    }
+
+    free((char*) dest_path_jpeg);
+    free((char*) dest_path_jpg);
+    free((char*) dest_path_png);
 }
