@@ -35,9 +35,16 @@ typedef struct {
     GtkWidget *window;     /**< Parent window to be reload after changes */
 }WarningType;
 
+
+/**
+ * \brief Structure to choose the type of media to open
+ *
+ * This structure enables the callback to know what type of media to process
+ * and which Patient it is to store it in the right place
+*/
 typedef struct {
-    Patient *patient;
-    char *mediaType;
+    Patient *patient;     /**< Patient concerned */
+    char *mediaType;      /**< Type of media to be stored in the software: "profile" or other */
 }MediaType;
 
 
