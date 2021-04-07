@@ -600,15 +600,27 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
 */
 void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
     GtkFileChooserNative *dialog;
+    GtkFileFilter *filter;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    gint res;
 
-    dialog = gtk_file_chooser_native_new("Save File",
+    dialog = gtk_file_chooser_native_new("Ouvrir un fichier",
                                          NULL,
                                          action,
-                                         "_Save",
-                                         "_Cancel");
+                                         "_Ouvrir",
+                                         "_Annuler");
+    /* Define filters */
+    filter = gtk_file_filter_new();
+    gtk_file_filter_add_pattern(filter, "*.jpg");
+    gtk_file_filter_add_pattern(filter, "*.jpeg");
+    gtk_file_filter_add_pattern(filter, "*.png");
+    if (strcmp(mediaChooser->mediaType, "profil") != 0){
+        gtk_file_filter_add_pattern(filter, "*.pdf");
+        gtk_file_filter_add_pattern(filter, "*.doc");
+        gtk_file_filter_add_pattern(filter, "*.docx");
+    }
+    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
 
+    /* Manage user action */
     if (gtk_native_dialog_run(GTK_NATIVE_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT){
         char *filename;
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
