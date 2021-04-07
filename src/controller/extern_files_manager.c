@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <regex.h>
 #include <ftw.h>
+#include <dirent.h>
 #include "extern_files_manager.h"
 
 /*!
@@ -160,7 +160,7 @@ char *getProfileExtension(Patient *patient){
 */
 char *getProfilePhotoPath(Patient *patient){
     char *charID = (char*) malloc(sizeof(char)*10);
-    char *photo_path = (char*) malloc(sizeof(char)*(strlen(patient->firstname)+strlen(patient->name)+100));
+    char *photo_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/profil.jpeg")+40));
     strcpy(photo_path, "../media/patient-data/");
     tostring(charID, (int) patient->id);
     strcat(photo_path, charID);
@@ -171,6 +171,18 @@ char *getProfilePhotoPath(Patient *patient){
 
     free((char*) charID);
     return(photo_path);
+}
+
+char *getMediaPath(Patient *patient){
+    char *charID = (char*) malloc(sizeof(char)*10);
+    char *media_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/")+40));
+    strcpy(media_path, "../media/patient-data/");
+    tostring(charID, (int) patient->id);
+    strcat(media_path, charID);
+    strcat(media_path, "/");
+
+    free((char*) charID);
+    return(media_path);
 }
 
 /*!
@@ -209,4 +221,22 @@ void removeExistingProfilePicture(char *media_path, char *dest_path, char *sourc
     free((char*) dest_path_jpeg);
     free((char*) dest_path_jpg);
     free((char*) dest_path_png);
+}
+
+char *getMediaDirectoryContent(Patient *patient){
+    DIR *d;
+    struct dirent *dir;
+    char *fileList = (char*) malloc(sizeof(char)*100*20);
+    d = opendir(getMediaPath(patient));
+    int i = 0;
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+            strcpy(&fileList[i], dir->d_name);
+            printf("%s\n", dir->d_name);
+        }
+        closedir(d);
+    }
+    return fileList;
 }
