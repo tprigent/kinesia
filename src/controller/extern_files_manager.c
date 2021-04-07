@@ -3,9 +3,9 @@
 * \brief File utilities to load, copy and move attachments to the software
 */
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <zconf.h>
 #include <regex.h>
 #include <ftw.h>
 #include "extern_files_manager.h"
@@ -114,16 +114,16 @@ char *getProfileExtension(Patient *patient){
     char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
     char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
     char *pathJPG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    strcat(path, "../media/patient-data/");
+    strcpy(path, "../media/patient-data/");
     tostring(stringID, (int) patient->id);
     strcat(path, stringID);
     strcat(path, "/");
 
-    strcat(pathJPEG, path);
+    strcpy(pathJPEG, path);
     strcat(pathJPEG, "profil.jpeg");
-    strcat(pathJPG, path);
+    strcpy(pathJPG, path);
     strcat(pathJPG, "profil.jpg");
-    strcat(pathPNG, path);
+    strcpy(pathPNG, path);
     strcat(pathPNG, "profil.png");
 
     free((char*) path);
