@@ -11,10 +11,9 @@
 #include "string.h"
 #include "patient_manager.h"
 
-
 void freeSession(Session *s) {
-    if(s->observations!=NULL) free((void *)s->observations);
-    if(s->sessionName!=NULL) free((void *)s->sessionName);
+    free((void *)s->observations);
+    free((void *)s->sessionName);
 }
 
 Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
@@ -161,5 +160,4 @@ void freeList(SessionList *l) {
         freeNodeList(l->current);
         l->current = temp;
     }
-    free(l);
 }
