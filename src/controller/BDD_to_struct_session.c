@@ -1,6 +1,7 @@
-//
-// Created by salome on 22/03/2021.
-//
+/*!
+* \file BDD_to_struct_session.c
+* \brief File to take data from BDD about Sessions and fill Session structures
+*/
 
 #include "BDD_to_struct_session.h"
 #include "../model/session_manager.h"
@@ -125,6 +126,13 @@ int * getSessionId(int idFolder){
 
 }
 
+/*!
+ * This function makes an SQL request, returns all the sessions associated with a Folder in a list of sessions.
+ *
+ * \param[in] int, the folder's id
+ *
+ * \param[out] SessionList *, the list filled with sessions.
+*/
 SessionList * getSessionList(int idF) {
     SessionList * l = (SessionList *) malloc(sizeof(SessionList));
     initList(l);

@@ -375,18 +375,25 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
         folder = getFolder(activeFolder);
     }
     else{
-        folder = (Folder*) malloc(sizeof(Folder));
-        folder->folderName = (char*) malloc(8*sizeof(char));
-        strcpy(folder->folderName, "Nouveau");
-        folder->details = (char*) malloc(2*sizeof(char));
-        strcpy(folder->details, " ");
-        folder->pathology = (char*) malloc(2*sizeof(char));
-        strcpy(folder->pathology, " ");
-        folder->numberOfFiles = 0;
-        folder->startOfTreatment.day = 1;
-        folder->startOfTreatment.month = 1;
-        folder->startOfTreatment.year = 1900;
-        folder->idPatient = patient->id;
+        GtkWidget *frame = gtk_frame_new("");
+        GtkWidget *label = gtk_label_new("Créer un premier dossier");
+        GtkWidget *grid = gtk_grid_new();
+        GtkWidget *button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+        gtk_container_add(GTK_CONTAINER(box), frame);
+        gtk_container_add(GTK_CONTAINER(frame), grid);
+        gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 1, 1);
+        gtk_grid_set_row_spacing(GTK_GRID(grid), 15);
+        gtk_container_set_border_width(GTK_CONTAINER(frame), 5);
+        gtk_widget_set_hexpand(frame, TRUE);
+        gtk_widget_set_hexpand(label, TRUE);
+        gtk_widget_set_hexpand(button, TRUE);
+
+        IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
+        idPatient->idPatient = (int) patient->id;
+        idPatient->window = window;
+        g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
+        return ;
     }
 
     /* ****************************************************************************** */
@@ -581,18 +588,17 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     gtk_widget_set_vexpand(new_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), new_button, FALSE, FALSE, 0);
 
-    if(activeFolder != 0){
-        GtkWidget *edit_folder_button = NULL;
-        edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-        FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
-        foldEditStruct->folder = folder;
-        foldEditStruct->edit_new = 1;
-        foldEditStruct->window = window;
-        g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
-        gtk_widget_set_hexpand(edit_folder_button, FALSE);
-        gtk_widget_set_vexpand(edit_folder_button, FALSE);
-        gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
-    }
+    GtkWidget *edit_folder_button = NULL;
+    edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+    FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
+    foldEditStruct->folder = folder;
+    foldEditStruct->edit_new = 1;
+    foldEditStruct->window = window;
+    g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
+    gtk_widget_set_hexpand(edit_folder_button, FALSE);
+    gtk_widget_set_vexpand(edit_folder_button, FALSE);
+    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
+
     /* ****************************************************************************** */
 
 }
@@ -623,8 +629,28 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         return ;
     }
 
-    /* DECLARE VARIABLES */
     int nb_session = getNbSession(idFolder);
+    /*if(nb_session ==0){
+        GtkWidget *label = gtk_label_new("Le dossier sélectionné ne contient aucune séance.\nAjouter une séance :");
+        GtkWidget *frame = gtk_frame_new("");
+        GtkWidget *grid = gtk_grid_new();
+        GtkWidget *button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+        gtk_container_add(GTK_CONTAINER(box), frame);
+        gtk_container_add(GTK_CONTAINER(frame), grid);
+        gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(frame, TRUE);
+        gtk_widget_set_hexpand(grid, TRUE);
+        gtk_widget_set_vexpand(grid, TRUE);
+        gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
+        gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
+        gtk_widget_set_halign(label, GTK_ALIGN_CENTER);
+        gtk_widget_set_valign(label, GTK_ALIGN_CENTER);
+
+        return ;
+    }*/
+
+    /* DECLARE VARIABLES */
     int session_cursor;
 
     GtkWidget *grid_session_section = NULL;
