@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 /*!
- * This function makes an SQL request, adds a folder in the database from a Folder struct.
+ * \brief This function makes an SQL request, adds a folder in the database from a Folder struct.
  *
  * \param[in] a Folder struct.
  *
@@ -74,7 +74,7 @@ int addFolder(Folder *folder){
 }
 
 /*!
- * This function makes an SQL request, changed the folder's entries in the database.
+ * \brief This function makes an SQL request, changed the folder's entries in the database.
  *
  * \param[in] a Folder struct.
  *
