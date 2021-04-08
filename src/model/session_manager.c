@@ -1,5 +1,5 @@
 /*!
-* \file seance.c
+* \file session_manager.c
 * \brief File with functions to allocate, fill from model requests, and free Session structure
 */
 
@@ -11,11 +11,32 @@
 #include "string.h"
 #include "patient_manager.h"
 
+/*!
+* This function frees the attributes of a session s.
+*
+* \param[in] Session s, the session to free.
+*/
 void freeSession(Session *s) {
     free((void *)s->observations);
     free((void *)s->sessionName);
 }
 
+/*!
+* This function initialises a Session s : allocates its attributes, and fills its attibutes.
+*
+* \param[in] Session *s, the pointer on the session to free.
+* \param[in] char *sName, the string to fill in sessionName.
+* \param[in] char *obs, the string to fill in observations.
+* \param[in] int sdDay, the day of the session.
+* \param[in] int sdMonth, the month of the session.
+* \param[in] int sdYear, the year of the session.
+* \param[in] int nsdDay, the day of the next session.
+* \param[in] int nsdMonth, the month of the next session.
+* \param[in] int nsdYear, the year of the next session.
+* \param[in] int idS, the id of the session.
+* \param[in] int idFolder, the id of the folder containing the session.
+* \param[out] Session *, the pointer on the session initialized.
+*/
 Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
 
     newS->sessionName = (char *) malloc(sizeof(char)*LG_MAX_INFO + 1);
@@ -47,6 +68,23 @@ Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMo
     return newS;
 }
 
+/*!
+* This function allocates and creates a Nodelist, and fills the session in this Nodelist.
+*
+* \param[in] char *sName, the string to fill in sessionName.
+* \param[in] char *obs, the string to fill in observations.
+* \param[in] int sdDay, the day of the session.
+* \param[in] int sdMonth, the month of the session.
+* \param[in] int sdYear, the year of the session.
+* \param[in] int nsdDay, the day of the next session.
+* \param[in] int nsdMonth, the month of the next session.
+* \param[in] int nsdYear, the year of the next session.
+* \param[in] int idS, the id of the session.
+* \param[in] int idFolder, the id of the folder containing the session.
+* \param[in] NodeList * nextNode, the next NodeList in the list.
+* \param[in] NodeList * prevNode, the previous NodeList in the list.
+* \param[out] NodeList *, the Nodelist created.
+*/
 static NodeList * newNodeList(char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder, NodeList *nextNode, NodeList *prevNode) {
     NodeList *newNode = (NodeList *) malloc(sizeof(NodeList));
 
@@ -58,22 +96,55 @@ static NodeList * newNodeList(char *sName, char *obs, int sdDay, int sdMonth, in
     return newNode;
 }
 
+/*!
+* This function frees the attributes of a NodeList, and frees this NodeList.
+*
+* \param[in] NodeList * node, the NodeList to free.
+*/
 static void freeNodeList(NodeList *node) {
     freeSession(&(node->session));
     free(node);
 }
 
+/*!
+* This function initializes the attributes of an allocated SessionList.
+*
+* \param[in] SessionList *l, the list to initialize.
+*/
 void initList(SessionList *l) {
     l->first = NULL;
     l->last = NULL;
     l->current = l->first;
 }
 
+/*!
+* This function tells if the list is empty or not.
+*
+* \param[in] SessionList *l, the list to test.
+* \param[out] int, 0 if the list isn't empty, -1 otherwise.
+*/
 int isEmpty(SessionList *l) {
     if(l->first == NULL) return -1;
     return 0;
 }
 
+
+/*!
+* This function creates and inserts a NodeList on the first position of the list.
+
+* \param[in] SessionList * l, the list where the NodeList has to be inserted.
+* \param[in] char *sName, the string to fill in sessionName.
+* \param[in] char *obs, the string to fill in observations.
+* \param[in] int sdDay, the day of the session.
+* \param[in] int sdMonth, the month of the session.
+* \param[in] int sdYear, the year of the session.
+* \param[in] int nsdDay, the day of the next session.
+* \param[in] int nsdMonth, the month of the next session.
+* \param[in] int nsdYear, the year of the next session.
+* \param[in] int idS, the id of the session.
+* \param[in] int idFolder, the id of the folder containing the session.
+* \param[out] int, 0 if the NodeList has been inserted, -1 otherwise.
+*/
 int insertFirst(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
     setOnFirst(l);
     NodeList * newNode = newNodeList(sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, idS, idFolder, l->first, NULL);
@@ -89,6 +160,22 @@ int insertFirst(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, 
     return 0;
 }
 
+/*!
+* This function creates and inserts a NodeList on the last position of the list.
+
+* \param[in] SessionList * l, the list where the NodeList has to be inserted.
+* \param[in] char *sName, the string to fill in sessionName.
+* \param[in] char *obs, the string to fill in observations.
+* \param[in] int sdDay, the day of the session.
+* \param[in] int sdMonth, the month of the session.
+* \param[in] int sdYear, the year of the session.
+* \param[in] int nsdDay, the day of the next session.
+* \param[in] int nsdMonth, the month of the next session.
+* \param[in] int nsdYear, the year of the next session.
+* \param[in] int idS, the id of the session.
+* \param[in] int idFolder, the id of the folder containing the session.
+* \param[out] int, 0 if the NodeList has been inserted, -1 otherwise.
+*/
 int insertLast(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
     setOnLast(l);
     NodeList * newNode = newNodeList(sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, idS, idFolder, NULL, l->last);
@@ -103,12 +190,22 @@ int insertLast(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, i
     return 0;
 }
 
+/*!
+* This function deletes and frees the first NodeList of the list.
+
+* \param[in] SessionList * l, the list where the first NodeList has to be deleted.
+*/
 void deleteFirst(SessionList *l) {
     NodeList * ptr = l->first;
     l->first = l->first->next;
     freeNodeList(ptr);
 }
 
+/*!
+* This function deletes and frees the current NodeList of the list.
+
+* \param[in] SessionList * l, the list where the current NodeList has to be deleted.
+*/
 void deleteCurrent(SessionList *l) {
     NodeList *ptr = l->current;
     if(l->current == l->last) l->last = l->current->previous;
@@ -119,6 +216,13 @@ void deleteCurrent(SessionList *l) {
     freeNodeList(ptr);
 }
 
+/*!
+* This function puts the list current pointer on the Nth element of the list.
+
+* \param[in] SessionList * l, the list where the Nth element has to become the current element.
+* \param[in] int n, the position of the element.
+* \param[out] int, 0 if the list has more than n elements, -1 otherwise.
+*/
 int pointNthElement(SessionList *l, int n) {
     int i;
     setOnFirst(l);
@@ -129,30 +233,63 @@ int pointNthElement(SessionList *l, int n) {
     return 0;
 }
 
+/*!
+* This function deletes the Nth element of the list.
+
+* \param[in] SessionList * l, the list where the Nth element has to be deleted.
+* \param[in] int n, the position of the element.
+* \param[out] int, 0 if the list has more than n elements and if the Nth has been correctly deleted, -1 otherwise.
+*/
 int deleteNthElement(SessionList *l, int n) {
     if(pointNthElement(l, n) !=0) return -1;
     deleteCurrent(l);
     return 0;
 }
 
+/*!
+* This function sets the list current pointer on the first node.
+
+* \param[in] SessionList * l, the list.
+*/
 void setOnFirst(SessionList *l) {
     l->current = l->first;
 }
 
+/*!
+* This function sets the list current pointer on the last node.
+
+* \param[in] SessionList * l, the list.
+*/
 void setOnLast(SessionList *l) {
     l->current = l->last;
 }
 
+/*!
+* This function sets the list current pointer on the next node.
+
+* \param[in] SessionList * l, the list.
+*/
 void setOnNext(SessionList *l) {
     if(l->current == NULL) l->current = NULL;
     l->current = l->current->next;
 }
 
+/*!
+* This function tells if the list current pointer is out of the list.
+
+* \param[in] SessionList * l, the list to test.
+* \param[out] int, -1 if the current pointer is out of the list, 0 otherwise.
+*/
 int isOutOfList(SessionList *l) {
     if(l->current == NULL) return -1;
     return 0;
 }
 
+/*!
+* This function frees the NodeLists of the list in parameter.
+
+* \param[in] SessionList * l, the list to free.
+*/
 void freeList(SessionList *l) {
     setOnFirst(l);
     while(isOutOfList(l) ==0) {
