@@ -180,6 +180,7 @@ static void test_deleteNthElement(void **state) {
 static int teardown(void **state) {
     SessionList *l = *state;
     freeList(l);
+    free(l);
     return 0;
 }
 
