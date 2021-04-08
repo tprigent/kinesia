@@ -1,5 +1,5 @@
 /*!
-* \file patient.h
+* \file patient_manager.h
 * \brief File with functions to allocate, fill from model requests, and free Patient structure
 */
 
