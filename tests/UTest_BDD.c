@@ -268,7 +268,6 @@ static void test_addFolder(void **state){
     Folder *folder;
     if(allocateFolder(&folder) == -1){
         fprintf(stderr,"Erreur alloc folder\n");
-        return NULL;
     }
 
     setFolder(folder,"Folder test","Test","Details",1,1,1,1,1,idPatientTest);
