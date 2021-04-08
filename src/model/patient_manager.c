@@ -1,5 +1,5 @@
 /*!
-* \file patient.c
+* \file patient_manager.c
 * \brief File with functions to allocate, fill from database requests, and free Patient structure
 */
 

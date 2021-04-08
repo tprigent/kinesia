@@ -1,6 +1,6 @@
 /*!
 * \file struct_to_BDD_patient.c
-* \brief File to put informations in BDD from Patient's structures.
+* \brief File to put data in BDD from Patient's structures.
 */
 
 #include "struct_to_BDD_patient.h"

@@ -1,6 +1,6 @@
 /*!
 * \file BDD_to_struct_session.c
-* \brief File to take informations from BDD about Sessions
+* \brief File to take data from BDD about Sessions and fill Session structures
 */
 
 #include "BDD_to_struct_session.h"

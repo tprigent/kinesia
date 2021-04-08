@@ -1,5 +1,5 @@
 /*!
-* \file seance.h
+* \file session_manager.h
 * \brief File with functions to allocate, fill from model requests, and free Session structure
 */
 

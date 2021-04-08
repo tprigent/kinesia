@@ -1,6 +1,6 @@
 /*!
 * \file struct_to_BDD_folder.c
-* \brief File to put informations in BDD from Folder's structures.
+* \brief File to put data in BDD from Folder's structures.
 */
 
 #include "struct_to_BDD_folder.h"

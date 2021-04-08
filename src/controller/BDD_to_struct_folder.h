@@ -1,6 +1,7 @@
-//
-// Created by salome on 22/03/2021.
-//
+/*!
+* \file BDD_to_struct_folder.h
+* \brief Functions with SQL requests to fill Folder structure.
+*/
 
 #ifndef LOGICIEL_KINE_BDD_TO_STRUCT_FOLDER_H
 #define LOGICIEL_KINE_BDD_TO_STRUCT_FOLDER_H
