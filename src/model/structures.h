@@ -87,7 +87,7 @@ typedef struct{
     /**
      * \name Database information
     */
-   unsigned int idSession;      /**< Session unique identifier to select it in model */
+    unsigned int idSession;      /**< Session unique identifier to select it in model */
     unsigned int idFolder;      /**< Related Folder identifier */
 }Session;
 
