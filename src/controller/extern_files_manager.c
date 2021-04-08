@@ -99,6 +99,12 @@ char *getProfileExtension(Patient *patient){
 
 }
 
+/*!
+ * \brief Get the profile photo path from a given Patient
+ *
+ * \param[in] patient Patient concerned
+ * \param[out] Profile photo extension
+*/
 char *getProfilePhotoPath(Patient *patient){
     char *photo_path = (char*) malloc(sizeof(char)*(strlen(patient->firstname)+strlen(patient->name)+100));
     strcpy(photo_path, "../media/patient-data/");
