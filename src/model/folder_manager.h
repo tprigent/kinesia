@@ -1,5 +1,5 @@
 /*!
-* \file folder.h
+* \file folder_manager.h
 * \brief File with functions to allocate, fill from database requests, and free Folder structure
 */
 
@@ -7,7 +7,6 @@
 #define LOGICIEL_KINE_FOLDER_H
 
 #include "structures.h"
-//#include "session.h"
 
 /*allocation's functions*/
 int allocateFolder(Folder **d);

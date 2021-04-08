@@ -1,6 +1,7 @@
-//
-// Created by salome on 22/03/2021.
-//
+/*!
+* \file struct_to_BDD_patient.h
+* \brief File to put data in BDD from Patient's structures.
+*/
 
 #include "../model/structures.h"
 
