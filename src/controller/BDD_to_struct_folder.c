@@ -1,6 +1,7 @@
-//
-// Created by salome on 22/03/2021.
-//
+/*!
+* \file BDD_to_struct_folder.c
+* \brief File take information from BDD about Folders.
+*/
 
 #include "BDD_to_struct_folder.h"
 #include <sqlite3.h>

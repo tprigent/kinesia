@@ -100,8 +100,8 @@ static void test_setPatient(void **state) {
     assert_string_equal("11111111", patient->ssn);
     assert_string_equal("test", patient->global_pathologies);
     assert_int_equal(0, patient->gender);
-    assert_int_equal(68, patient->weight);
-    assert_int_equal(170, patient->height);
+    assert_string_equal("68", patient->weight);
+    assert_string_equal("170", patient->height);
     assert_int_equal(1, patient->id);
 }
 

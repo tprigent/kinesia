@@ -1,6 +1,7 @@
-//
-// Created by salome on 22/03/2021.
-//
+/*!
+* \file struct_to_BDD_session.c
+* \brief File to put informations in BDD from Session's structures.
+*/
 
 #include "struct_to_BDD_session.h"
 #include <sqlite3.h>
