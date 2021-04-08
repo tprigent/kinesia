@@ -1,6 +1,6 @@
 /*!
 * \file BDD_to_struct_folder.c
-* \brief File take information from BDD about Folders.
+* \brief Functions with SQL requests to fill Folder structure.
 */
 
 #include "BDD_to_struct_folder.h"
@@ -14,7 +14,6 @@
  * This function makes an SQL request, return a Folder struct from the id of the folder.
  *
  * \param[in] id of the folder
- *
  * \param[out] a struct folder.
 */
 Folder* getFolder(int idFolder){
@@ -75,10 +74,9 @@ Folder* getFolder(int idFolder){
 }
 
 /*!
- * This function makes an SQL request, return the name of a folder from its id.
+ * This function makes an SQL request, return the name of a Folder from its id.
  *
  * \param[in] int, the id of the folder
- *
  * \param[out] char*, the name of the folder.
 */
 char* getNameFolder(int idFolder){
@@ -127,10 +125,9 @@ char* getNameFolder(int idFolder){
 }
 
 /*!
- * This function makes an SQL request, returns every Folder id from a patient's id.
+ * This function makes an SQL request, returns every Folder id from a Patient's id.
  *
  * \param[in] int, the id of the patient
- *
  * \param[out] int*, an array of every folder id of the patient.
 */
 int* getIdFolder(int idPatient){

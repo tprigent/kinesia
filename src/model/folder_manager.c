@@ -1,5 +1,5 @@
 /*!
-* \file folder.c
+* \file folder_manager.c
 * \brief File with functions to allocate, fill from database requests, and free Folder structure
 */
 
