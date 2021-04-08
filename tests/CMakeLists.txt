@@ -20,6 +20,8 @@ set(SOURCE_FILES
         ../src/controller/display_helpers.c
         ../src/model/patient_manager.c
         ../src/controller/BDD_to_struct_patient.c
+        ../src/controller/BDD_to_struct_folder.c
+        ../src/controller/struct_to_BDD_folder.c
         ../src/controller/BDD_to_struct_session.c
         ../src/controller/struct_to_BDD_session.c
         ../src/controller/struct_to_BDD_patient.c)

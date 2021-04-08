@@ -9,43 +9,43 @@
 #include "../src/model/session_manager.h"
 
 static void test_getSession(void **state){
-    Session * s = getSession(1);
+    Session * s = getSession(8);
     assert_non_null(s);
-    assert_string_equal("Séance du 18/3/2021", s->sessionName);
-    assert_int_equal(s->sessionDate.day, 18);
-    assert_int_equal(s->nextSessionDate.day, 22);
-    assert_int_equal(1, s->idSession);
+    assert_string_equal("TestS1", s->sessionName);
+    assert_int_equal(s->sessionDate.day, 3);
+    assert_int_equal(s->nextSessionDate.day, 5);
+    assert_int_equal(8, s->idSession);
     freeSession(s);
     free(s);
 }
 
 static void test_getSessionId(void **state){
-    int* tab_id = getSessionId(1);
-    assert_int_equal(2, tab_id[1]);
-    assert_int_equal(1, tab_id[0]);
+    int* tab_id = getSessionId(3);
+    assert_int_equal(8, tab_id[0]);
+    assert_int_equal(9, tab_id[1]);
     free(tab_id);
 }
 
 static void test_getSessionList(void **state) {
-    SessionList *l = getSessionList(1);
+    SessionList *l = getSessionList(3);
     assert_non_null(l);
 
-    assert_string_equal("Séance du 18/3/2021", l->last->session.sessionName);
-    assert_string_equal("Comme d'habitude, bonne progression", l->last->session.observations);
-    assert_int_equal(22, l->last->session.nextSessionDate.day);
-    assert_int_equal(18, l->last->session.sessionDate.day);
-    assert_int_equal(1, l->last->session.idSession);
+    assert_string_equal("TestS1", l->last->session.sessionName);
+    assert_string_equal("NoObs", l->last->session.observations);
+    assert_int_equal(5, l->last->session.nextSessionDate.day);
+    assert_int_equal(3, l->last->session.sessionDate.day);
+    assert_int_equal(8, l->last->session.idSession);
 
-    assert_string_equal("Séance du 22/3/2021", l->first->session.sessionName);
-    assert_string_equal("Comme d'habitude", l->first->session.observations);
-    assert_int_equal(30, l->first->session.nextSessionDate.day);
-    assert_int_equal(22, l->first->session.sessionDate.day);
-    assert_int_equal(2, l->first->session.idSession);
+    assert_string_equal("TestS2", l->first->session.sessionName);
+    assert_string_equal("NoObs2", l->first->session.observations);
+    assert_int_equal(15, l->first->session.nextSessionDate.day);
+    assert_int_equal(5, l->first->session.sessionDate.day);
+    assert_int_equal(9, l->first->session.idSession);
     freeList(l);
 }
 
 static void test_getNbSession(void **state) {
-    assert_int_equal(4, getNbSession(1));
+    assert_int_equal(2, getNbSession(3));
 }
 
 static void test_modifySession(void **state){
