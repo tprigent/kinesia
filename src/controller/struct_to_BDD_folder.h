@@ -1,6 +1,7 @@
-//
-// Created by salome on 22/03/2021.
-//
+/*!
+* \file struct_to_BDD_folder.h
+* \brief File to put data in BDD from Folder's structures.
+*/
 
 #ifndef LOGICIEL_KINE_STRUCT_TO_BDD_FOLDER_H
 #define LOGICIEL_KINE_STRUCT_TO_BDD_FOLDER_H

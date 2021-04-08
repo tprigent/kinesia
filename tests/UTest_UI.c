@@ -120,7 +120,7 @@ static void test_get_age_and_birthdate(void **state){
 */
 static void test_get_current_date(void **state){
     char * date = get_current_date();
-    assert_string_equal("22/3/2021", date);
+    assert_string_equal("6/4/2021", date);
     free(date);
 }
 
@@ -134,7 +134,7 @@ static void test_get_current_date(void **state){
 */
 static void test_get_new_session_name(void **state){
     char * session_name = get_new_session_name();
-    assert_string_equal("Séance du 22/3/2021", session_name);
+    assert_string_equal("Séance du 6/4/2021", session_name);
     free(session_name);
 }
 

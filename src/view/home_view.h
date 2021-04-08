@@ -1,5 +1,5 @@
 /*!
-* \file home_views.h
+* \file home_view.h
 * \brief File to initiate the homepage view (calendar, patient list, ...)
 */
 

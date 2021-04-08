@@ -1,6 +1,7 @@
-//
-// Created by salome on 22/03/2021.
-//
+/*!
+* \file BDD_to_struct_session.h
+* \brief File to take data from BDD about Sessions and fill Session structures
+*/
 
 #ifndef LOGICIEL_KINE_BDD_TO_STRUCT_SESSION_H
 #define LOGICIEL_KINE_BDD_TO_STRUCT_SESSION_H
