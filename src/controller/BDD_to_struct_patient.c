@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 /*!
- * This function makes an SQL request, returns the number of patient in the database.
+ * \brief This function makes an SQL request, returns the number of patient in the database.
  *
  * \param[out] int, the number of patient.
 */
@@ -57,7 +57,7 @@ int getNbPatient(){
 }
 
 /*!
- * This function makes an SQL request, returns the name and first name of a patient
+ * \brief This function makes an SQL request, returns the name and first name of a patient
  * from a patient's id.
  *
  * \param[in] int, the patient's id
@@ -121,7 +121,7 @@ char* getNameFirstnamePatient(int id){
 
 
 /*!
- * This function makes an SQL request, fills a Patient struct previously allocated
+ * \brief This function makes an SQL request, fills a Patient struct previously allocated
  * with the results of the request and return the addressof the Patient struct allcated.
  *
  * \param[in] int id of the Patient
@@ -207,7 +207,7 @@ Patient* getPatient(int id){
 }
 
 /*!
- * This function makes an SQL request, returns the patients archived's id sorted by name.
+ * \brief This function makes an SQL request, returns the patients archived's id sorted by name.
  *
  * \param[out] int*, an array of the id's, ending with the value -1.
 */
@@ -263,7 +263,7 @@ int* getArchivedPatientID(){
 }
 
 /*!
- * This function makes an SQL request, returns the patients active's id sorted by name.
+ * \brief This function makes an SQL request, returns the patients active's id sorted by name.
  *
  * \param[out] int*, an array of the id's, ending with the value -1.
 */
@@ -319,7 +319,7 @@ int* getActivePatientID(){
 }
 
 /*!
- * This function returns the number of archived patients.
+ * \brief This function returns the number of archived patients.
  *
  * \param[out] int, the number of archived patients.
 */

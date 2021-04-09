@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 /*!
- * This function makes an SQL request, returns a Session struct from the sesison's id.
+ * \brief This function makes an SQL request, returns a Session struct from the sesison's id.
  *
  * \param[in] int, the session's id
  *
@@ -65,7 +65,7 @@ Session * getSession(int idSession){
 }
 
 /*!
- * This function makes an SQL request, returns the session's id of a folder.
+ * \brief This function makes an SQL request, returns the session's id of a folder.
  *
  * \param[in] int, the folder's id
  *
@@ -155,7 +155,7 @@ SessionList * getSessionList(int idF) {
 }
 
 /*!
- * This function makes an SQL request, returns the number of sessions in a folder.
+ * \brief This function makes an SQL request, returns the number of sessions in a folder.
  *
  * \param[in] int, the folder's id
  *
