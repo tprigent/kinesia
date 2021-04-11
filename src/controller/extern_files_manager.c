@@ -111,42 +111,49 @@ char *getProfileExtension(Patient *patient){
     char *stringID = (char*) malloc(sizeof(char)*strlen("000000"));
 
     char *path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathJPG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path_jpeg = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path_JPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path_png = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path_jpg = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
     strcpy(path, "../media/patient-data/");
     tostring(stringID, (int) patient->id);
     strcat(path, stringID);
     strcat(path, "/");
 
-    strcpy(pathJPEG, path);
-    strcat(pathJPEG, "profil.jpeg");
-    strcpy(pathJPG, path);
-    strcat(pathJPG, "profil.jpg");
-    strcpy(pathPNG, path);
-    strcat(pathPNG, "profil.png");
+    strcpy(path_jpeg, path);
+    strcat(path_jpeg, "profil.jpeg");
+    strcpy(path_JPEG, path);
+    strcat(path_JPEG, "profil.JPEG");
+    strcpy(path_jpg, path);
+    strcat(path_jpg, "profil.jpg");
+    strcpy(path_png, path);
+    strcat(path_png, "profil.png");
 
     free((char*) path);
     free((char*) stringID);
-    if(access(pathJPEG, F_OK) == 0 ) {
-        free((char*) pathJPEG);
-        free((char*) pathJPG);
-        free((char*) pathPNG);
+    if(access(path_jpeg, F_OK) == 0 || access(path_JPEG, F_OK) == 0 ) {
+        free((char*) path_jpeg);
+        free((char*) path_JPEG);
+        free((char*) path_jpg);
+        free((char*) path_png);
         return ".jpeg";
-    } else if (access(pathJPG, F_OK) == 0){
-        free((char*) pathJPEG);
-        free((char*) pathJPG);
-        free((char*) pathPNG);
+    } else if (access(path_jpeg, F_OK) == 0){
+        free((char*) path_jpeg);
+        free((char*) path_JPEG);
+        free((char*) path_jpg);
+        free((char*) path_png);
         return ".jpg";
-    } else if (access(pathPNG, F_OK) == 0){
-        free((char*) pathJPEG);
-        free((char*) pathJPG);
-        free((char*) pathPNG);
+    } else if (access(path_png, F_OK) == 0){
+        free((char*) path_jpeg);
+        free((char*) path_JPEG);
+        free((char*) path_jpg);
+        free((char*) path_png);
         return ".png";
     } else {
-        free((char*) pathJPEG);
-        free((char*) pathJPG);
-        free((char*) pathPNG);
+        free((char*) path_jpeg);
+        free((char*) path_JPEG);
+        free((char*) path_jpg);
+        free((char*) path_png);
         return ".error";
     }
 
