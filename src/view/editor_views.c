@@ -255,6 +255,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *info_text = NULL;
     GtkTextBuffer *info_buffer = NULL;
     GtkTextIter start, end;
+    GtkCalendar *birth_calendar = NULL;
 
 
 
@@ -821,8 +822,7 @@ void launchAttachmentViewer(GtkWidget *button){
     GtkWidget *dialog;
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
-    GtkWidget *list = NULL;
-    GtkWidget *labelTest[10];
+    GtkWidget *buttonTest[10];
 
 
     dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
@@ -840,18 +840,18 @@ void launchAttachmentViewer(GtkWidget *button){
     gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
     /* Setup the list */
-    list = gtk_list_box_new();
     int i = 0;
     while (i<10){
-        labelTest[i] = gtk_label_new("test.jpeg");
-        gtk_list_box_insert(GTK_LIST_BOX(list), labelTest[i], i+1);
-        gtk_widget_set_hexpand(labelTest[i], TRUE);
-        gtk_widget_set_size_request(labelTest[i], 200, 20);
+        buttonTest[i] = gtk_button_new_with_label("radio.png");
+        if(i == 0) {
+            gtk_grid_attach(GTK_GRID(grid), buttonTest[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+        } else {
+            gtk_grid_attach_next_to(GTK_GRID(grid), buttonTest[i], buttonTest[i-1], GTK_POS_BOTTOM, 1, 1);
+        }
+        gtk_widget_set_hexpand(buttonTest[i], TRUE);
+        gtk_widget_set_size_request(buttonTest[i], 200, 20);
         i++;
     }
-
-    /* Fill grid with all elements */
-    gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(list), 1, 1, 1, 1);
 
     /* Show all elements */
     gtk_widget_show_all(grid);

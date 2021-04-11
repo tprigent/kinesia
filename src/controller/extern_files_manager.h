@@ -15,6 +15,7 @@
 void copyToMedia(char *source_path, Patient *patient, char *type);
 char *getExtensionFromPath(char *path);
 char *getProfileExtension(Patient *patient);
+char *getMediaPath(Patient *patient);
 char *getProfilePhotoPath(Patient *patient);
 void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path);
 
