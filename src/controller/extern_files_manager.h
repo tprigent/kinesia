@@ -18,5 +18,6 @@ char *getProfileExtension(Patient *patient);
 char *getMediaPath(Patient *patient);
 char *getProfilePhotoPath(Patient *patient);
 void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path);
+int deleteMediaFolder(Patient *patient);
 
 #endif //LOGICIEL_KINE_EXTERN_FILES_MANAGER_H
