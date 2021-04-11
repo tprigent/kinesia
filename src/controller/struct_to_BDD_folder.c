@@ -135,3 +135,53 @@ int modifyFolder(Folder *folder){
     return 1;
 
 }
+
+int deleteFoler(int id){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc1,rc2;
+    char *sql1;
+    char *sql2;
+    sqlite3_stmt *stmt1;
+    sqlite3_stmt *stmt2;
+
+    //Opening database
+    rc1 = sqlite3_open(DB_PATH, &db);
+
+    //Testing the opening
+    if( rc1 ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+//Creating the request
+    sql1 = "DELETE FROM seance WHERE idDossier IN (SELECT idFolder FROM folder WHERE idPatient=?)";
+    sql2 = "DELETE FROM folder WHERE idPatient=?";
+
+    //Préparing the requests
+    rc1 = sqlite3_prepare_v2(db,sql1,-1,&stmt1,NULL);
+    rc2 = sqlite3_prepare_v2(db,sql2,-1,&stmt2,NULL);
+    if( rc1 != SQLITE_OK || rc2 != SQLITE_OK){
+        fprintf(stderr, "Prepare error: %s , rc1 : %d, rc2 %d \n", zErrMsg,rc1,rc2);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+
+    //Adding values to the requests
+    sqlite3_bind_int(stmt1,1,id);
+    sqlite3_bind_int(stmt2,1,id);
+
+    //Executing the request
+    sqlite3_step(stmt1);
+    sqlite3_step(stmt2);
+
+    sqlite3_finalize(stmt1);
+    sqlite3_finalize(stmt2);
+
+    //Closing database
+    sqlite3_close(db);
+    return 1;
+}

@@ -137,3 +137,46 @@ int modifySession(Session *session){
     return 1;
 
 }
+
+int deleteSession(int id){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc1;
+    char *sql1;
+    sqlite3_stmt *stmt1;
+
+    //Opening database
+    rc1 = sqlite3_open(DB_PATH, &db);
+
+    //Testing the opening
+    if( rc1 ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+//Creating the request
+    sql1 = "DELETE FROM seance WHERE idSeance = ?";
+
+    //Préparing the requests
+    rc1 = sqlite3_prepare_v2(db,sql1,-1,&stmt1,NULL);
+    if( rc1 != SQLITE_OK){
+        fprintf(stderr, "Prepare error: %s , rc1 : %d\n", zErrMsg,rc1);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+
+    //Adding values to the requests
+    sqlite3_bind_int(stmt1,1,id);
+
+    //Executing the request
+    sqlite3_step(stmt1);
+
+    sqlite3_finalize(stmt1);
+
+    //Closing database
+    sqlite3_close(db);
+    return 1;
+}
