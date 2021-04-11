@@ -610,6 +610,7 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
     filter = gtk_file_filter_new();
     gtk_file_filter_add_pattern(filter, "*.jpg");
     gtk_file_filter_add_pattern(filter, "*.jpeg");
+    gtk_file_filter_add_pattern(filter, "*.JPEG");
     gtk_file_filter_add_pattern(filter, "*.png");
     if (strcmp(mediaChooser->mediaType, "profil") != 0){
         gtk_file_filter_add_pattern(filter, "*.pdf");
