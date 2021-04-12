@@ -38,10 +38,18 @@ while true; do
           exit;;
         [Mm]* )
           echo "*** Memory tests selected ***"
+          cd ..
+          mkdir build
+          cmake -g -S . -B ./build
+          cd build
           make
-          make mem_test
+          valgrind --log-file="memreport" --leak-check=full --track-origins=yes ./Kinesia
+          mv memreport ../tests
+          cd ..
+          rm -rf build
+          cd tests
           mv memreport memreport-${today}.log
-          make clean
+          cd ..
           echo "*** Memory tests done ***"
           exit;;
         * ) echo "Please answer u, c or m.";;
