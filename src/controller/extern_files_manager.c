@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <regex.h>
 #include <ftw.h>
+#include <dirent.h>
 #include "extern_files_manager.h"
 
 /*!
@@ -111,42 +111,49 @@ char *getProfileExtension(Patient *patient){
     char *stringID = (char*) malloc(sizeof(char)*strlen("000000"));
 
     char *path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathJPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathPNG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *pathJPG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path_jpeg = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path_JPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path_png = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path_jpg = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
     strcpy(path, "../media/patient-data/");
     tostring(stringID, (int) patient->id);
     strcat(path, stringID);
     strcat(path, "/");
 
-    strcpy(pathJPEG, path);
-    strcat(pathJPEG, "profil.jpeg");
-    strcpy(pathJPG, path);
-    strcat(pathJPG, "profil.jpg");
-    strcpy(pathPNG, path);
-    strcat(pathPNG, "profil.png");
+    strcpy(path_jpeg, path);
+    strcat(path_jpeg, "profil.jpeg");
+    strcpy(path_JPEG, path);
+    strcat(path_JPEG, "profil.JPEG");
+    strcpy(path_jpg, path);
+    strcat(path_jpg, "profil.jpg");
+    strcpy(path_png, path);
+    strcat(path_png, "profil.png");
 
     free((char*) path);
     free((char*) stringID);
-    if(access(pathJPEG, F_OK) == 0 ) {
-        free((char*) pathJPEG);
-        free((char*) pathJPG);
-        free((char*) pathPNG);
+    if(access(path_jpeg, F_OK) == 0 || access(path_JPEG, F_OK) == 0 ) {
+        free((char*) path_jpeg);
+        free((char*) path_JPEG);
+        free((char*) path_jpg);
+        free((char*) path_png);
         return ".jpeg";
-    } else if (access(pathJPG, F_OK) == 0){
-        free((char*) pathJPEG);
-        free((char*) pathJPG);
-        free((char*) pathPNG);
+    } else if (access(path_jpeg, F_OK) == 0){
+        free((char*) path_jpeg);
+        free((char*) path_JPEG);
+        free((char*) path_jpg);
+        free((char*) path_png);
         return ".jpg";
-    } else if (access(pathPNG, F_OK) == 0){
-        free((char*) pathJPEG);
-        free((char*) pathJPG);
-        free((char*) pathPNG);
+    } else if (access(path_png, F_OK) == 0){
+        free((char*) path_jpeg);
+        free((char*) path_JPEG);
+        free((char*) path_jpg);
+        free((char*) path_png);
         return ".png";
     } else {
-        free((char*) pathJPEG);
-        free((char*) pathJPG);
-        free((char*) pathPNG);
+        free((char*) path_jpeg);
+        free((char*) path_JPEG);
+        free((char*) path_jpg);
+        free((char*) path_png);
         return ".error";
     }
 
@@ -160,7 +167,7 @@ char *getProfileExtension(Patient *patient){
 */
 char *getProfilePhotoPath(Patient *patient){
     char *charID = (char*) malloc(sizeof(char)*10);
-    char *photo_path = (char*) malloc(sizeof(char)*(strlen(patient->firstname)+strlen(patient->name)+100));
+    char *photo_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/profil.jpeg")+40));
     strcpy(photo_path, "../media/patient-data/");
     tostring(charID, (int) patient->id);
     strcat(photo_path, charID);
@@ -171,6 +178,18 @@ char *getProfilePhotoPath(Patient *patient){
 
     free((char*) charID);
     return(photo_path);
+}
+
+char *getMediaPath(Patient *patient){
+    char *charID = (char*) malloc(sizeof(char)*10);
+    char *media_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/")+40));
+    strcpy(media_path, "../media/patient-data/");
+    tostring(charID, (int) patient->id);
+    strcat(media_path, charID);
+    strcat(media_path, "/");
+
+    free((char*) charID);
+    return(media_path);
 }
 
 /*!
@@ -209,4 +228,67 @@ void removeExistingProfilePicture(char *media_path, char *dest_path, char *sourc
     free((char*) dest_path_jpeg);
     free((char*) dest_path_jpg);
     free((char*) dest_path_png);
+}
+
+char *getMediaDirectoryContent(Patient *patient){
+    DIR *d;
+    struct dirent *dir;
+    char *fileList = (char*) malloc(sizeof(char)*100*20);
+    d = opendir(getMediaPath(patient));
+    int i = 0;
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+            strcpy(&fileList[i], dir->d_name);
+            printf("%s\n", dir->d_name);
+        }
+        closedir(d);
+    }
+    return fileList;
+}
+
+int deleteMediaFolder(Patient *patient) {
+    char *path = getMediaPath(patient);
+    DIR *d = opendir(path);
+    size_t path_len = strlen(path);
+    int r = -1;
+
+    if (d) {
+        struct dirent *p;
+
+        r = 0;
+        while (!r && (p=readdir(d))) {
+            int r2 = -1;
+            char *buf;
+            size_t len;
+
+            /* Skip the names "." and ".." as we don't want to recurse on them. */
+            if (!strcmp(p->d_name, ".") || !strcmp(p->d_name, ".."))
+                continue;
+
+            len = path_len + strlen(p->d_name) + 2;
+            buf = malloc(len);
+
+            if (buf) {
+                struct stat statbuf;
+
+                snprintf(buf, len, "%s/%s", path, p->d_name);
+                if (!stat(buf, &statbuf)) {
+                    if (S_ISDIR(statbuf.st_mode))
+                        r2 = deleteMediaFolder(patient);
+                    else
+                        r2 = unlink(buf);
+                }
+                free(buf);
+            }
+            r = r2;
+        }
+        closedir(d);
+    }
+
+    if (!r)
+        r = rmdir(path);
+
+    return r;
 }
