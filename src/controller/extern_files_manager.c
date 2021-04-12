@@ -276,7 +276,7 @@ int deleteMediaFolder(Patient *patient) {
                 snprintf(buf, len, "%s/%s", path, p->d_name);
                 if (!stat(buf, &statbuf)) {
                     if (S_ISDIR(statbuf.st_mode))
-                        r2 = deleteMediaFolder(buf);
+                        r2 = deleteMediaFolder(patient);
                     else
                         r2 = unlink(buf);
                 }
