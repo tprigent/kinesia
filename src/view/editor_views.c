@@ -12,7 +12,6 @@
 #include "../controller/display_helpers.h"
 #include "../controller/UI_to_struct.h"
 #include "../model/folder_manager.h"
-#include "../controller/struct_to_BDD_folder.h"
 
 /*!
  * \brief Set up the edit Folder dialog box
@@ -106,7 +105,7 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     /* FRAME WHICH CONTAINS IDENTITY INFORMATION */
     GtkWidget *frame_folder = NULL;
     frame_folder = gtk_frame_new("Dossier en cours");
-    gtk_frame_set_label_align(GTK_FRAME(frame_folder), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_folder), 0, (float) 0.5);
     gtk_grid_attach(GTK_GRID(grid_dialog), frame_folder, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(frame_folder, TRUE);
     gtk_widget_set_vexpand(frame_folder, TRUE);
@@ -254,7 +253,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *first_consult_entry = NULL;
     GtkWidget *info_text = NULL;
     GtkTextBuffer *info_buffer = NULL;
-    GtkTextIter start, end;
+    GtkTextIter end;
 
 
 
@@ -386,7 +385,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     /* FRAME WHICH CONTAINS IDENTITY INFORMATION */
     GtkWidget *frame_etat_civil = NULL;
     frame_etat_civil = gtk_frame_new("État civil");
-    gtk_frame_set_label_align(GTK_FRAME(frame_etat_civil), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_etat_civil), 0, (float) 0.5);
     gtk_grid_attach(GTK_GRID(grid_dialog), frame_etat_civil, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(frame_etat_civil, TRUE);
     gtk_widget_set_vexpand(frame_etat_civil, FALSE);
@@ -435,7 +434,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     /* FRAME WHICH CONTAINS CONTACT INFORMATION */
     GtkWidget *frame_contact = NULL;
     frame_contact = gtk_frame_new("Contact ");
-    gtk_frame_set_label_align(GTK_FRAME(frame_contact), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_contact), 0, (float) 0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), frame_contact, frame_etat_civil, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_contact, TRUE);
     gtk_widget_set_vexpand(frame_contact, FALSE);
@@ -478,7 +477,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     /* FRAME WHICH CONTAINS MEDICAL INFORMATION */
     GtkWidget *frame_medical_info = NULL;
     frame_medical_info = gtk_frame_new("Informations médicales");
-    gtk_frame_set_label_align(GTK_FRAME(frame_medical_info), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_medical_info), 0, (float) 0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), frame_medical_info, frame_etat_civil, GTK_POS_RIGHT, 1, 2);
     gtk_widget_set_hexpand(frame_medical_info, TRUE);
     gtk_widget_set_vexpand(frame_medical_info, FALSE);
@@ -544,7 +543,6 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
         /* Choose view to display: work_view if existing, home_view if new Patient */
         if(origin == 1){
-            Session *session = createEmptySession(0);
             setWorkWindow((int) patient->id, 0);
         }else{
             setHomeWindow(0, 0);
@@ -612,6 +610,7 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
     filter = gtk_file_filter_new();
     gtk_file_filter_add_pattern(filter, "*.jpg");
     gtk_file_filter_add_pattern(filter, "*.jpeg");
+    gtk_file_filter_add_pattern(filter, "*.JPEG");
     gtk_file_filter_add_pattern(filter, "*.png");
     if (strcmp(mediaChooser->mediaType, "profil") != 0){
         gtk_file_filter_add_pattern(filter, "*.pdf");
@@ -713,8 +712,8 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     /* MANAGE THE USER ACTION */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         if(warning->actionType == 0){
-            //deletePatient
-            //modifyPatient
+            deletePatient((int) patient->id);
+            deleteMediaFolder(patient);
         } else {
             if(patient->isArchived == 1) patient->isArchived = 0;
             else if(patient->isArchived == 0) patient->isArchived = 1;
@@ -821,8 +820,7 @@ void launchAttachmentViewer(GtkWidget *button){
     GtkWidget *dialog;
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
-    GtkWidget *list = NULL;
-    GtkWidget *labelTest[10];
+    GtkWidget *buttonTest[10];
 
 
     dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
@@ -840,18 +838,18 @@ void launchAttachmentViewer(GtkWidget *button){
     gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
     /* Setup the list */
-    list = gtk_list_box_new();
     int i = 0;
     while (i<10){
-        labelTest[i] = gtk_label_new("test.jpeg");
-        gtk_list_box_insert(GTK_LIST_BOX(list), labelTest[i], i+1);
-        gtk_widget_set_hexpand(labelTest[i], TRUE);
-        gtk_widget_set_size_request(labelTest[i], 200, 20);
+        buttonTest[i] = gtk_button_new_with_label("radio.png");
+        if(i == 0) {
+            gtk_grid_attach(GTK_GRID(grid), buttonTest[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+        } else {
+            gtk_grid_attach_next_to(GTK_GRID(grid), buttonTest[i], buttonTest[i-1], GTK_POS_BOTTOM, 1, 1);
+        }
+        gtk_widget_set_hexpand(buttonTest[i], TRUE);
+        gtk_widget_set_size_request(buttonTest[i], 200, 20);
         i++;
     }
-
-    /* Fill grid with all elements */
-    gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(list), 1, 1, 1, 1);
 
     /* Show all elements */
     gtk_widget_show_all(grid);

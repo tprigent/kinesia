@@ -23,10 +23,6 @@ cov_test: main
     lcov --capture --directory . --output-file coverage.info ; \
     genhtml coverage.info --output-directory covreport ; \
 
-mem_test: main
-	./main ; \
-    valgrind --log-file="memreport" --leak-check=full --track-origins=yes ./$^
-
 clean:
 	rm -f *.o
 	rm -f *.gcno
