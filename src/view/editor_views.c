@@ -816,7 +816,7 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
     }
 }
 
-void launchAttachmentViewer(GtkWidget *button){
+void launchAttachmentListViewer(GtkWidget *button){
     GtkWidget *dialog;
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
@@ -825,7 +825,7 @@ void launchAttachmentViewer(GtkWidget *button){
 
     dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
                                          NULL, GTK_DIALOG_MODAL,
-                                         "Fermer", GTK_RESPONSE_CANCEL, NULL);
+                                         "Annuler", GTK_RESPONSE_CANCEL, "Ouvrir", GTK_RESPONSE_ACCEPT, NULL);
 
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -856,7 +856,9 @@ void launchAttachmentViewer(GtkWidget *button){
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 
     /* Action on button */
-    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_CANCEL){
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        setFileWindow("radio.png");
         gtk_widget_destroy (dialog);
     }
+    gtk_widget_destroy (dialog);
 }

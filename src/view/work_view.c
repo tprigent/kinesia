@@ -561,7 +561,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
-    g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentViewer), NULL);
+    g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentListViewer), NULL);
     /* ****************************************************************************** */
 
     /* Edit button ****************************************************************** */
