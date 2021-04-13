@@ -40,6 +40,8 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     GtkWidget *pathology_entry;
     GtkWidget *other_infos_text;
 
+    GtkWidget *calendar_start_treatment_button = NULL;
+
     GtkTextIter end;
     GtkTextBuffer *other_infos_buffer;
 
@@ -78,6 +80,10 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     gtk_text_buffer_get_end_iter(other_infos_buffer, &end);
     gtk_text_buffer_insert(other_infos_buffer, &end, folder->details, -1);
     gtk_text_view_set_buffer(GTK_TEXT_VIEW(other_infos_text), other_infos_buffer);
+
+    /* BUTTON TO SELECT DATE */
+    calendar_start_treatment_button = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
+    g_signal_connect(GTK_BUTTON(calendar_start_treatment_button), "clicked", G_CALLBACK(launchCalendar), start_treatment_entry);
 
 
     name_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -131,13 +137,20 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
 
 
     /* Start treatment date */
-    gtk_box_pack_start(GTK_BOX(treatment_box), start_treatment_label, FALSE, FALSE, 0);
+    GtkWidget *treatment_grid = gtk_grid_new();
+    gtk_box_pack_start(GTK_BOX(treatment_box), treatment_grid, FALSE, FALSE, 0);
+    gtk_grid_attach(GTK_GRID(treatment_grid), start_treatment_label, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(treatment_grid), start_treatment_entry, start_treatment_label, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(treatment_grid), calendar_start_treatment_button, start_treatment_entry, GTK_POS_RIGHT, 1, 1);
+    /*gtk_box_pack_start(GTK_BOX(treatment_box), start_treatment_label, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(treatment_box), start_treatment_entry, FALSE, FALSE, 0);
-    gtk_widget_set_halign(start_treatment_label, GTK_ALIGN_START);
+    gtk_widget_set_halign(start_treatment_label, GTK_ALIGN_START);*/
     gtk_grid_attach_next_to(GTK_GRID(grid_folder), treatment_box, name_box, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_margin_bottom(treatment_box, 5);
     gtk_widget_set_hexpand(treatment_box, FALSE);
     gtk_widget_set_vexpand(treatment_box, TRUE);
+
+
 
 
     /* Pathology name */
