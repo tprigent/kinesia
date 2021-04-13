@@ -242,7 +242,6 @@ char **getMediaDirectoryContent(Patient *patient){
             if(strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0){
                 fileList[i] = (char*) malloc(sizeof(char)*100);
                 strcpy(fileList[i], dir->d_name);
-                printf("%s\n", fileList[i]);
                 i++;
             }
         }

@@ -335,15 +335,15 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
     if(nb_folders>0 && id_folder == 0){
         fillFolderBox(window, folderBox, idFolderTab[0], patient);
-        fillSessionBox(window, sessionBox, idFolderTab[0]);
+        fillSessionBox(window, sessionBox, idFolderTab[0], patient);
     }
     else if(nb_folders>0 && id_folder != 0){
         fillFolderBox(window, folderBox, id_folder, patient);
-        fillSessionBox(window, sessionBox, id_folder);
+        fillSessionBox(window, sessionBox, id_folder, patient);
     }
     else{
         fillFolderBox(window, folderBox, 0, patient);
-        fillSessionBox(window, sessionBox, 0);
+        fillSessionBox(window, sessionBox, 0, patient);
     }
 
 
@@ -617,7 +617,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
  * \param[in] box Existing Session box
  * \param[in] idPatient ID of the current Patient
 */
-void fillSessionBox(GtkWidget *window, GtkWidget *box, int idFolder){
+void fillSessionBox(GtkWidget *window, GtkWidget *box, int idFolder, Patient *patient){
 
     if(idFolder == 0){
         GtkWidget *label = gtk_label_new("Ce patient n'a pas de dossier associé");
@@ -741,7 +741,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idFolder){
     newSessionStruct->folderID = idFolder;
 
     if(nb_session == 0){
-        addNewSessionUI(NULL, newSessionStruct);
+        addNewSessionUI(NULL, newSessionStruct, patient);
     }
 
     /* Manage to add a notebook */
@@ -865,7 +865,7 @@ void launchWorkView(GtkWidget *but, Window_id *window_id){
  * \param[in] but Button pressed to launch the work view
  * \param[in] notebook The notebook which contains the sessions
 */
-void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
+void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, Patient *patient){
     /* DECLARE VARIABLES */
     GtkWidget *notebook = newSessionStruct->notebook;
     Session *new_session = createEmptySession(newSessionStruct->folderID);
