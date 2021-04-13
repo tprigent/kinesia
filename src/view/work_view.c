@@ -632,13 +632,13 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
 
     int nb_session = getNbSession(idFolder);
     if(nb_session ==0){
-        GtkWidget *label = gtk_label_new("Le dossier sélectionné ne contient aucune séance.\nAjouter une séance :");
-        GtkWidget *frame = gtk_frame_new("");
+        GtkWidget *label = gtk_label_new("Créer une première séance pour ce dossier :");
+        GtkWidget *frame = gtk_frame_new("Séances");
         GtkWidget *grid = gtk_grid_new();
         GtkWidget *button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
         gtk_container_add(GTK_CONTAINER(box), frame);
         gtk_container_add(GTK_CONTAINER(frame), grid);
-        gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 1, 1);
 
         /* CONNECT BUTTON TO CREATE FIRST SESSION */
@@ -649,13 +649,16 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(addFirstSessionUI), firstSession);
 
         /* SET VISUAL ATTRIBUTES */
+        gtk_grid_set_row_spacing(GTK_GRID(grid), 15);
+        gtk_container_set_border_width(GTK_CONTAINER(frame), 5);
         gtk_widget_set_hexpand(frame, TRUE);
-        gtk_widget_set_hexpand(grid, TRUE);
+        gtk_widget_set_hexpand(label, TRUE);
+        gtk_widget_set_hexpand(button, TRUE);
+
+        gtk_widget_set_vexpand(box, TRUE);
         gtk_widget_set_vexpand(grid, TRUE);
-        gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
-        gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
-        gtk_widget_set_halign(label, GTK_ALIGN_CENTER);
-        gtk_widget_set_valign(label, GTK_ALIGN_CENTER);
+
+        gtk_frame_set_label_align(GTK_FRAME(frame), 0.5, 0.5);
 
         return ;
     }
