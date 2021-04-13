@@ -820,14 +820,17 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idFolder, Patient *pa
             gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_attach_button[session_cursor], entry_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
             gtk_widget_set_hexpand(session_attach_button[session_cursor], FALSE);
             gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
-            //gtk_widget_set_halign(session_attach_button, GTK_ALIGN_CENTER);
+            MediaType *mediaChooser = (MediaType *) malloc(sizeof(MediaType));
+            mediaChooser->patient = patient;
+            mediaChooser->mediaType = "attachment";
+            g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
 
             /* Manage the frame and its entry to add informations about the session */
             gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, (float)0.5);
             gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 10, 3);
             gtk_widget_set_hexpand(frame_session_note[session_cursor], TRUE);
             gtk_widget_set_vexpand(frame_session_note[session_cursor], TRUE);
-            //gtk_widget_set_halign(frame_session_note, GTK_ALIGN_START);
+
 
             gtk_container_add(GTK_CONTAINER(frame_session_note[session_cursor]), text_session_note[session_cursor]);
             gtk_widget_set_hexpand(text_session_note[session_cursor], TRUE);

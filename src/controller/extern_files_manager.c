@@ -33,7 +33,7 @@ void copyToMedia(char *source_path, Patient *patient, char *type){
     strcat(dest_path, "/");
     mkdir(dest_path, 0700);         // create folder if doesn't exist
     strcat(dest_path, type);
-    strcat(dest_path, ".");
+    if(strcmp(type, "profil") == 0) strcat(dest_path, ".");
 
     /* Check if old profile picture already exists */
     if(strcmp(type, "profil") == 0){
@@ -41,7 +41,7 @@ void copyToMedia(char *source_path, Patient *patient, char *type){
     }
 
     /* Add original extension */
-    strcat(dest_path, getExtensionFromPath(source_path));
+    if(strcmp(type, "profil") == 0) strcat(dest_path, getExtensionFromPath(source_path));
 
     /* Open source file for reading */
     source_stream = fopen(source_path, "rb");

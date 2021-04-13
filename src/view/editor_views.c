@@ -5,6 +5,7 @@
 
 
 #include <gtk/gtk.h>
+#include <libgen.h>
 #include "work_view.h"
 #include "home_view.h"
 #include "editor_views.h"
@@ -627,7 +628,7 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
         if(strcmp(mediaChooser->mediaType, "profil") == 0){
             copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
         } else {
-            copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
+            copyToMedia(filename, mediaChooser->patient , basename(filename));
         }
     }
     gtk_native_dialog_destroy(GTK_NATIVE_DIALOG(dialog));
