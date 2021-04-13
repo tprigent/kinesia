@@ -696,12 +696,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
     gtk_notebook_set_scrollable (GTK_NOTEBOOK(notebook), TRUE);
     grid_session_section = gtk_grid_new();
 
-
-    if(nb_session>0){
-        session_list = getSessionList(idFolder);
-        setOnFirst(session_list);
-    }
-
+    session_list = getSessionList(idFolder);
+    setOnFirst(session_list);
 
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         grid_add_session[session_cursor] = gtk_grid_new();
@@ -753,19 +749,14 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
     newSessionStruct->notebook = notebook;
     newSessionStruct->folderID = idFolder;
 
-    if(nb_session == 0){
-        addNewSessionUI(NULL, newSessionStruct);
-    }
-
     /* Manage to add a notebook */
     gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
     gtk_widget_set_hexpand(notebook, TRUE);
     gtk_widget_set_vexpand(notebook, TRUE);
     gtk_widget_set_halign(notebook, GTK_ALIGN_FILL);
 
-    if(nb_session>0){
-        setOnFirst(session_list);
-        for(session_cursor=0; session_cursor<nb_session; session_cursor++){
+    setOnFirst(session_list);
+    for(session_cursor=0; session_cursor<nb_session; session_cursor++){
             /* Manage the entry to add a title */
             gtk_grid_attach(GTK_GRID(grid_add_session[session_cursor]), session_title_new[session_cursor], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
             gtk_widget_set_hexpand(session_title_new[session_cursor], FALSE);
@@ -799,11 +790,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
             gtk_widget_set_vexpand(entry_next_meeting[session_cursor], FALSE);
             gtk_widget_set_halign(entry_next_meeting[session_cursor], GTK_ALIGN_START);
 
-            /* Manage to display the save button */
-            /*gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), save_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 6, 1);
-            gtk_widget_set_hexpand(save_button[session_cursor], FALSE);
-            gtk_widget_set_vexpand(save_button[session_cursor], FALSE);
-            gtk_widget_set_halign(save_button[session_cursor], GTK_ALIGN_END);*/
 
             /* Manage to display the new session button */
             gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 7, 1);
@@ -850,7 +836,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
             setOnNext(session_list);
 
         }
-    }
 
 }
 
