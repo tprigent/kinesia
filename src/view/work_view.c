@@ -557,7 +557,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
 
     /* BUTTON */
     GtkWidget *attachments_button = NULL;
-    attachments_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
+    attachments_button = gtk_button_new_from_icon_name("system-file-manager", GTK_ICON_SIZE_MENU);
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
