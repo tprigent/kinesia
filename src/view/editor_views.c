@@ -872,6 +872,8 @@ void launchAttachmentListViewer(GtkWidget *button, Patient *patient){
 
                 system(command);
 
+                free((char*) mediaPath);
+                free((char*) command);
 
             }
         }
