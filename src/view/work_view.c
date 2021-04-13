@@ -100,6 +100,7 @@ void setWorkEnvironment(Window_id *window_id){
 
     /* Fill in the 3 spaces */
     fillPatientBox(window, boxPart[0], boxPart[1], boxPart[2], patient, window_id->folderID);
+    free(window_id);
 }
 
 
