@@ -661,6 +661,7 @@ void launchCalendar(GtkWidget *button, GtkWidget *entry){
                                           "Annuler",GTK_RESPONSE_REJECT,
                                           "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
 
     /* ADD A CALENDAR IN THE BOX */
     GtkWidget *calendar = gtk_calendar_new();
