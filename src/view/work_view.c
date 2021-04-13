@@ -198,7 +198,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
     /* ************************** SECOND PART : SECTION WHICH CONTAINS PATIENT INFORMATION **************************** */
     /* Manage the frame global and its grid */
-    gtk_frame_set_label_align(GTK_FRAME(frame_info), 0.5, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_info), (float)0.5, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_left_section), frame_info, back_button, GTK_POS_BOTTOM, 1, 3);
     gtk_widget_set_hexpand(frame_info, TRUE);
     gtk_widget_set_vexpand(frame_info, TRUE);
@@ -220,7 +220,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER);
 
     /* Manage the frame which contains identity informations and its grid */
-    gtk_frame_set_label_align(GTK_FRAME(frame_etat_civil), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_etat_civil), 0, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_etat_civil, patient_photo, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_etat_civil, TRUE);
     gtk_widget_set_vexpand(frame_etat_civil, FALSE);
@@ -250,7 +250,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_halign(patient_job, GTK_ALIGN_CENTER);
 
     /* Manage the frame which contains medical informations and its grid */
-    gtk_frame_set_label_align(GTK_FRAME(frame_medical_info), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_medical_info), 0, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_medical_info, frame_etat_civil, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_medical_info, TRUE);
     gtk_widget_set_vexpand(frame_medical_info, FALSE);
@@ -271,7 +271,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_halign(patient_first_consultation, GTK_ALIGN_CENTER);
 
     /* Manage the frame which contains other informations */
-    gtk_frame_set_label_align(GTK_FRAME(frame_other_info), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_other_info), 0, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_other_info, frame_medical_info, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_other_info, TRUE);
     gtk_widget_set_vexpand(frame_other_info, FALSE);
@@ -297,7 +297,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_container_add(GTK_CONTAINER(folder_box), folder_grid);
 
     int *idFolderTab = getIdFolder((int) patient->id);
-    int folder_cursor = 0;
+    int folder_cursor;
 
     int nb_folders = getNbFolder((int) patient->id);
     GtkWidget *folder_button[nb_folders];
@@ -335,15 +335,15 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
     if(nb_folders>0 && id_folder == 0){
         fillFolderBox(window, folderBox, idFolderTab[0], patient);
-        fillSessionBox(window, sessionBox, (int) patient->id, idFolderTab[0]);
+        fillSessionBox(window, sessionBox, idFolderTab[0]);
     }
     else if(nb_folders>0 && id_folder != 0){
         fillFolderBox(window, folderBox, id_folder, patient);
-        fillSessionBox(window, sessionBox, (int) patient->id, id_folder);
+        fillSessionBox(window, sessionBox, id_folder);
     }
     else{
         fillFolderBox(window, folderBox, 0, patient);
-        fillSessionBox(window, sessionBox, (int) patient->id, 0);
+        fillSessionBox(window, sessionBox, 0);
     }
 
 
@@ -407,7 +407,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     /* Create a frame for the folder zone ******************************************* */
     GtkWidget *frame_folder = NULL;
     frame_folder = gtk_frame_new("Dossier");
-    gtk_frame_set_label_align(GTK_FRAME(frame_folder), 0.5, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_folder), (float)0.5, (float) 0.5);
     gtk_grid_attach(GTK_GRID(grid_part2), frame_folder, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(frame_folder, TRUE);
     gtk_widget_set_vexpand(frame_folder, TRUE);
@@ -617,7 +617,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
  * \param[in] box Existing Session box
  * \param[in] idPatient ID of the current Patient
 */
-void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFolder){
+void fillSessionBox(GtkWidget *window, GtkWidget *box, int idFolder){
 
     if(idFolder == 0){
         GtkWidget *label = gtk_label_new("Ce patient n'a pas de dossier associé");
@@ -823,7 +823,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
             //gtk_widget_set_halign(session_attach_button, GTK_ALIGN_CENTER);
 
             /* Manage the frame and its entry to add informations about the session */
-            gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, 0.5);
+            gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, (float)0.5);
             gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 10, 3);
             gtk_widget_set_hexpand(frame_session_note[session_cursor], TRUE);
             gtk_widget_set_vexpand(frame_session_note[session_cursor], TRUE);
@@ -877,7 +877,6 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     GtkWidget *session_date_new;
     GtkWidget *entry_date_new;
     GtkWidget *save_button;
-    GtkWidget *new_session_button;
     GtkWidget *session_next_meeting;
     GtkWidget *entry_next_meeting;
     GtkWidget *session_attach_button;
@@ -906,7 +905,6 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     free_info_UI(next_session_date_char);
 
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
-    new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
 
     text_session_note = gtk_text_view_new();
@@ -975,11 +973,10 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     gtk_widget_set_vexpand(session_attach_button, FALSE);
 
     /* Manage the frame and its entry to add informations about the session */
-    gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, (float) 0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 10, 3);
     gtk_widget_set_hexpand(frame_session_note, TRUE);
     gtk_widget_set_vexpand(frame_session_note, TRUE);
-    //gtk_widget_set_halign(frame_session_note, GTK_ALIGN_START);
 
     gtk_container_add(GTK_CONTAINER(frame_session_note), text_session_note);
     gtk_widget_set_hexpand(text_session_note, TRUE);
