@@ -548,7 +548,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     /* LABEL */
     GtkWidget *attachments_label = NULL;
     GtkWidget *attachments_count = NULL;
-    char *indicator = get_indicator_files_UI(folder);
+    char *indicator = get_indicator_files_UI(patient);
     attachments_label = gtk_label_new("Pièces jointes:    ");
     attachments_count = gtk_label_new(indicator);
     free_info_UI(indicator);
