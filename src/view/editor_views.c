@@ -631,6 +631,34 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
 
 }
 
+void launchCalendar(GtkWidget *button, GtkWidget *window){
+
+    /* CREATE THE DIALOG BOX */
+    GtkWidget *dialog = NULL;
+    GtkWidget *content_area = NULL;
+    dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
+                                          "Annuler",GTK_RESPONSE_REJECT,
+                                          "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    /* ASSIGN VARIABLES */
+    //GtkWidget *grid = NULL;
+    GtkWidget *calendar = NULL;
+
+    /* ASSIGN VARIABLES */
+    //grid = gtk_grid_new();
+    calendar = gtk_calendar_new();
+
+    /* SET WIDGETS POSITION */
+    gtk_container_add(GTK_CONTAINER(content_area), calendar);
+
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        gtk_widget_destroy(dialog);
+    } else {
+        gtk_widget_destroy(dialog);
+    }
+}
+
 /*!
  * \brief Set up the warning when the user tries to delete/archive a Patient
  *
