@@ -430,3 +430,57 @@ int getNameFirstnameIdActivePatient(int* tabId, char** nom,int nbP){
 
     return 1;
 }
+
+int getNameFirstnameIdArchivedPatient(int* tabId, char** nom,int nbP){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc,i;
+    char *sql;
+    sqlite3_stmt *stmt;
+
+    //Ouverture de la bdd
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT firstname,name,id FROM patient where isArchived=1";
+
+    //Préparation de la requête
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+
+    //Execution de la requête
+    i=0;
+    while(sqlite3_step(stmt)== SQLITE_ROW) {
+
+        if (allocateStringPatient(&nom[i], LG_MAX_INFO * 2) == -1) {
+            fprintf(stderr, "Erreur allocation getNomPrenom");
+            return 0;
+        }
+
+        strcpy(nom[i], (char *) sqlite3_column_text(stmt, 0));
+        char *space = " ";
+        strcat(nom[i], space);
+        strcat(nom[i], (char *) sqlite3_column_text(stmt, 1));
+        tabId[i] = sqlite3_column_int(stmt,2);
+        i++;
+    }
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+
+    return 1;
+}
