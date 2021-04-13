@@ -222,6 +222,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *surname = NULL;
     GtkWidget *patient_photo = NULL;    //photo
     GtkWidget *birth = NULL;
+    GtkWidget *calendar_birth_button = NULL;
     GtkWidget *gender = NULL;
     GtkWidget *job = NULL;
     GtkWidget *address = NULL;
@@ -229,10 +230,11 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *city = NULL;
     GtkWidget *number = NULL;
     GtkWidget *email = NULL;
-    GtkWidget *patient_ssn = NULL;      //ssn
+    GtkWidget *patient_ssn = NULL;
     GtkWidget *weight = NULL;
     GtkWidget *height = NULL;
     GtkWidget *first_consult = NULL;
+    GtkWidget *calendar_first_consult_button = NULL;
     GtkWidget *patient_info = NULL;
     GtkWidget *name_entry = NULL;
     GtkWidget *surname_entry = NULL;
@@ -361,8 +363,13 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
 
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
+    calendar_birth_button = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
+    calendar_first_consult_button = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
+
 
     g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), photoChooser);
+    g_signal_connect(GTK_BUTTON(calendar_birth_button), "clicked", G_CALLBACK(launchCalendar), birth_entry);
+    g_signal_connect(GTK_BUTTON(calendar_first_consult_button), "clicked", G_CALLBACK(launchCalendar), first_consult_entry);
 
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
@@ -398,36 +405,37 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     /* FILL THE IDENTITY INFORMATION */
     // Name
-    gtk_grid_attach(GTK_GRID(grid_etat_civil), name, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid_etat_civil), name, GTK_ALIGN_START, GTK_ALIGN_START, 2, 1);
     gtk_widget_set_halign(name, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), name_entry, name, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), name_entry, name, GTK_POS_BOTTOM, 2, 1);
 
     // Surname
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), surname, name, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), surname, name, GTK_POS_RIGHT, 2, 1);
     gtk_widget_set_halign(surname, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), surname_entry, surname, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), surname_entry, surname, GTK_POS_BOTTOM, 2, 1);
 
     // Birthdate
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), birth, name_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), birth, name_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(birth, GTK_ALIGN_START);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), birth_entry, birth, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), calendar_birth_button, birth_entry, GTK_POS_RIGHT, 1, 1);
 
     // Gender
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender, surname_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender, surname_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(gender, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender_combo_box, gender, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), gender_combo_box, gender, GTK_POS_BOTTOM, 2, 1);
 
     // Job
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), job, birth_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), job, birth_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(job, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), job_entry, job, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), job_entry, job, GTK_POS_BOTTOM, 2, 1);
 
     // Picture
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_photo, gender_combo_box, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_photo, gender_combo_box, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_hexpand(patient_photo, TRUE);
     gtk_widget_set_vexpand(patient_photo, FALSE);
     gtk_widget_set_halign(patient_photo, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), photo_button, patient_photo, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), photo_button, patient_photo, GTK_POS_BOTTOM, 2, 1);
 
     /* FRAME WHICH CONTAINS CONTACT INFORMATION */
     GtkWidget *frame_contact = NULL;
