@@ -19,7 +19,7 @@ char *getProfileExtension(Patient *patient);
 char *getMediaPath(Patient *patient);
 char *getProfilePhotoPath(Patient *patient);
 void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path);
-char *getMediaDirectoryContent(Patient *patient);
+char **getMediaDirectoryContent(Patient *patient);
 int getNbOfAttachments(Patient *patient);
 int deleteMediaFolder(Patient *patient);
 
