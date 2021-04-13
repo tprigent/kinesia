@@ -11,6 +11,7 @@
 #include <sqlite3.h>
 
 /*session's allocation's functions*/
+void createNewSession(int idFolder);
 void freeSession(Session *s);
 Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder);
 

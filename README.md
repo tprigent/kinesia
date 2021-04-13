@@ -52,6 +52,13 @@ if needed, add the path `/usr/lib` at the end of ld.so.conf file by doing :
 sudo gedit /etc/ld.so.conf
 ```
 
+You can now run the program by typing the following command at the root of the project:
+```bash
+chmod +x run
+./run
+```
+
+
 #### For macOS
 
 Firstly, if it has never been done before, you will need to install Xcode Command Line Tools to get ```gcc``` compiler and ```git```:
@@ -76,8 +83,15 @@ brew install cmake                      #for compilation
 brew install sqlite                     #for model
 brew install gtk+3                      #for UI
 brew install lcov                       #for coverage test reports
+brew install adwaita-icon-theme         #for gtk icons if they don't appear while running Kinesia
 ```
 Valgrind is unfortunately not available for macOS. If you want to execute memory tests please use a Linux VM.
+
+You can now run the program by typing the following command at the root of the project:
+```bash
+chmod +x run
+./run
+```
 
 ### Testing
 ***

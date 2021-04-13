@@ -10,6 +10,41 @@
 #include <stdlib.h>
 #include "string.h"
 #include "patient_manager.h"
+#include "../controller/display_helpers.h"
+#include "../controller/struct_to_BDD_session.h"
+
+/*!
+* This function creates a new session with default attributes in BDD.
+*
+* \param[in] idFolder, the folder id to attach the session.
+*/
+void createNewSession(int idFolder){
+    /* ALLOCATION */
+    Session *session = (Session*) malloc(sizeof(Session));
+    session->idFolder = idFolder;
+    session->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
+    session->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+
+    char *date = get_current_date();
+
+    /* SESSION NAME */
+    strcpy(session->sessionName, "Séance du ");
+    strcat(session->sessionName, date);
+
+    /* SESSION OBSERVATIONS */
+    strcpy(session->observations, "Remarques");
+
+    /*SESSION DATES */
+    session->sessionDate = *parseDate(date);
+    session->nextSessionDate = *parseDate(date);
+
+    /* ADD SESSION IN BDD */
+    addSession(session);
+
+    /* FREE */
+    free(date);
+    freeSession(session);
+}
 
 /*!
 * This function frees the attributes of a session s.
