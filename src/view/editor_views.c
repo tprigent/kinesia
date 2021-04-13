@@ -821,8 +821,7 @@ void launchAttachmentListViewer(GtkWidget *button, Patient *patient){
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *checkList[getNbOfAttachments(patient)];
-    char *fileList = getMediaDirectoryContent(patient);
-
+    char **fileList = getMediaDirectoryContent(patient);
 
     dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
                                          NULL, GTK_DIALOG_MODAL,
@@ -841,7 +840,7 @@ void launchAttachmentListViewer(GtkWidget *button, Patient *patient){
     /* Setup the list */
     int i;
     for(i=0; i< getNbOfAttachments(patient); i++){
-        checkList[i] = gtk_check_button_new_with_label(&fileList[i]);
+        checkList[i] = gtk_check_button_new_with_label(fileList[i]);
         if(i == 0) {
             gtk_grid_attach(GTK_GRID(grid), checkList[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         } else {

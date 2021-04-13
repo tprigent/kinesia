@@ -230,20 +230,24 @@ void removeExistingProfilePicture(char *media_path, char *dest_path, char *sourc
     free((char*) dest_path_png);
 }
 
-char *getMediaDirectoryContent(Patient *patient){
+char **getMediaDirectoryContent(Patient *patient){
     DIR *d;
     struct dirent *dir;
-    char *fileList = (char*) malloc(sizeof(char)*100*20);
-    d = opendir(getMediaPath(patient));
+    char **fileList;
+    fileList = (char**) malloc(sizeof(char*)*getNbOfAttachments(patient));
     int i = 0;
-    if (d)
-    {
-        while ((dir = readdir(d)) != NULL)
-        {
-            strcpy(&fileList[i], dir->d_name);
+    d = opendir(getMediaPath(patient));
+    if (d){
+        while ((dir = readdir(d)) != NULL){
+            if(strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0){
+                fileList[i] = (char*) malloc(sizeof(char)*100);
+                strcpy(fileList[i], dir->d_name);
+                printf("%s\n", fileList[i]);
+                i++;
+            }
         }
-        closedir(d);
     }
+    rewinddir(d);
     return fileList;
 }
 
