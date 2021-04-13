@@ -8,7 +8,7 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget *setFileWindow(char *filename);
+GtkWidget *setFileWindow(GtkWidget *parentDialog, char *filename);
 void setFileViewerEnvironment(GtkWidget *window);
 
 #endif //LOGICIEL_KINE_FILE_VIEW_H

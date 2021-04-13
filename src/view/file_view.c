@@ -5,7 +5,7 @@
 
 #include "file_view.h"
 
-GtkWidget *setFileWindow(char *filename){
+GtkWidget *setFileWindow(GtkWidget *parentDialog, char *filename){
     GtkWidget *window = NULL;
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -13,6 +13,7 @@ GtkWidget *setFileWindow(char *filename){
     gtk_window_activate_focus(GTK_WINDOW(window));
     gtk_window_set_title(GTK_WINDOW(window), filename);
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
+    gtk_widget_destroy(parentDialog);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_window_set_destroy_with_parent(GTK_WINDOW(window), TRUE);
@@ -26,9 +27,12 @@ GtkWidget *setFileWindow(char *filename){
 
 void setFileViewerEnvironment(GtkWidget *window){
     GtkWidget *grid = NULL;
-    grid = gtk_grid_new();
+    GtkWidget *file = NULL;
+    GdkPixbuf *file_pixbuf = NULL;
 
-    GtkWidget *button = gtk_button_new_with_label("test");
+    grid = gtk_grid_new();
+    file_pixbuf = gdk_pixbuf_new_from_file("../media/graphic-assets/undo_512.png", NULL);
+    file = gtk_image_new_from_pixbuf(GDK_PIXBUF(file_pixbuf));
 
     /* GRID WHICH ORGANIZES THE WINDOW */
     gtk_container_add(GTK_CONTAINER(window), grid);
@@ -36,7 +40,7 @@ void setFileViewerEnvironment(GtkWidget *window){
     gtk_widget_set_hexpand(grid, TRUE);
     gtk_widget_set_vexpand(grid, TRUE);
 
-    gtk_grid_attach(GTK_GRID(grid), button, GTK_ALIGN_START, GTK_ALIGN_START, 1, 14);
-    gtk_widget_set_hexpand(button, TRUE);
-    gtk_widget_set_vexpand(button, TRUE);
+    gtk_grid_attach(GTK_GRID(grid), file, GTK_ALIGN_START, GTK_ALIGN_START, 1, 14);
+    gtk_widget_set_hexpand(file, TRUE);
+    gtk_widget_set_vexpand(file, TRUE);
 }

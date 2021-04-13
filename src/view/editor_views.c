@@ -840,14 +840,14 @@ void launchAttachmentListViewer(GtkWidget *button){
     /* Setup the list */
     int i = 0;
     while (i<10){
-        buttonTest[i] = gtk_button_new_with_label("radio.png");
+        buttonTest[i] = gtk_check_button_new_with_label("radio.png");
         if(i == 0) {
             gtk_grid_attach(GTK_GRID(grid), buttonTest[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         } else {
             gtk_grid_attach_next_to(GTK_GRID(grid), buttonTest[i], buttonTest[i-1], GTK_POS_BOTTOM, 1, 1);
         }
         gtk_widget_set_hexpand(buttonTest[i], TRUE);
-        gtk_widget_set_size_request(buttonTest[i], 200, 20);
+        gtk_widget_set_size_request(buttonTest[i], 100, 20);
         i++;
     }
 
@@ -857,8 +857,7 @@ void launchAttachmentListViewer(GtkWidget *button){
 
     /* Action on button */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        setFileWindow("radio.png");
-        gtk_widget_destroy (dialog);
+        setFileWindow(dialog, "radio.png");
     }
-    gtk_widget_destroy (dialog);
+    gtk_widget_destroy(dialog);
 }
