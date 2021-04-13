@@ -185,18 +185,25 @@ void setHomeEnvironment(GtkWidget *window){
 
     /* ADD PATIENTS */
     int i;
-    char *patient_name;
+    //char *patient_name;
+    char** nameActivePatient;
+    int* idActivePatient;
 
     /* ACTIVE PATIENTS */
-    int *activePatient = getActivePatientID();
+    //int *activePatient = getActivePatientID();
     int nbActivePatient = getNbActivePatient();
     GtkWidget *active_patient_button[getNbActivePatient()];
     GtkWidget *archive_button[getNbActivePatient()];
     GtkWidget *active_delete_button[getNbActivePatient()];
 
+    idActivePatient = (int*)calloc(nbActivePatient,sizeof(int));
+    nameActivePatient = (char**)calloc(nbActivePatient,sizeof(void *));
+
+    getNameFirstnameIdActivePatient(idActivePatient,nameActivePatient,nbActivePatient);
+
     for(i=0; i < nbActivePatient; i++){
-        patient_name = getNameFirstnamePatient(activePatient[i]);
-        active_patient_button[i] = gtk_button_new_with_label(patient_name);
+        //patient_name = getNameFirstnamePatient(activePatient[i]);
+        active_patient_button[i] = gtk_button_new_with_label(nameActivePatient[i]);
         archive_button[i] = gtk_button_new_from_icon_name("user-trash", GTK_ICON_SIZE_MENU);
         active_delete_button[i] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
 
@@ -215,39 +222,55 @@ void setHomeEnvironment(GtkWidget *window){
             gtk_widget_set_margin_top(archive_button[i], 5);
             gtk_widget_set_margin_top(active_delete_button[i], 5);
         }
-        
+
         WarningType *deleteActiveWarning[nbActivePatient];
         deleteActiveWarning[i] = (WarningType*) malloc(sizeof(WarningType));
-        deleteActiveWarning[i]->patientID = activePatient[i];
+        deleteActiveWarning[i]->patientID = idActivePatient[i];
         deleteActiveWarning[i]->window = window;
         deleteActiveWarning[i]->actionType = 0;
 
         WarningType *archiveWarning[nbActivePatient];
         archiveWarning[i] = (WarningType*) malloc(sizeof(WarningType));
-        archiveWarning[i]->patientID = activePatient[i];
+        archiveWarning[i]->patientID = idActivePatient[i];
         archiveWarning[i]->window = window;
         archiveWarning[i]->actionType = 1;
 
         Window_id *window_id_active[nbActivePatient];
         window_id_active[i] = (Window_id*) malloc(sizeof(Window_id));
         window_id_active[i]->window = window;
-        window_id_active[i]->patientID = activePatient[i];
+        window_id_active[i]->patientID = idActivePatient[i];
         window_id_active[i]->folderID = 0;
         g_signal_connect(GTK_BUTTON(archive_button[i]), "clicked", G_CALLBACK(launchPatientWarning), archiveWarning[i]);
         g_signal_connect(GTK_BUTTON(active_delete_button[i]), "clicked", G_CALLBACK(launchPatientWarning), deleteActiveWarning[i]);
         g_signal_connect(GTK_BUTTON(active_patient_button[i]), "clicked", G_CALLBACK(launchWorkView), window_id_active[i]);
     }
 
+    free(idActivePatient);
+
+    for(i=0;i<nbActivePatient;i++)
+        free(nameActivePatient[i]);
+
+    free(nameActivePatient);
+
     /* ARCHIVED PATIENTS */
-    int *archivedPatient = getArchivedPatientID();
+    //int *archivedPatient = getArchivedPatientID();
     int nbArchivedPatient = getNbArchivedPatient();
+    int* idArchivePatient = NULL;
+    char** nomArchivePatient = NULL;
+
     GtkWidget *archived_patient_button[getNbArchivedPatient()];
     GtkWidget *unarchive_button[getNbArchivedPatient()];
     GtkWidget *archived_delete_button[getNbArchivedPatient()];
 
+    idArchivePatient = (int*)calloc(nbArchivedPatient,sizeof(int));
+    nomArchivePatient = (char**)calloc(nbArchivedPatient,sizeof(void *));
+
+    getNameFirstnameIdArchivedPatient(idArchivePatient,nomArchivePatient,nbArchivedPatient);
+
     for(i=0; i < nbArchivedPatient; i++){
-        patient_name = getNameFirstnamePatient(archivedPatient[i]);
-        archived_patient_button[i] = gtk_button_new_with_label(patient_name);
+        //patient_name = getNameFirstnamePatient(archivedPatient[i]);
+        //archived_patient_button[i] = gtk_button_new_with_label(patient_name);
+        archived_patient_button[i] = gtk_button_new_with_label(nomArchivePatient[i]);
         unarchive_button[i] = gtk_button_new_from_icon_name("edit-undo", GTK_ICON_SIZE_MENU);
         archived_delete_button[i] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
 
@@ -259,36 +282,43 @@ void setHomeEnvironment(GtkWidget *window){
         }
         gtk_widget_set_hexpand(archived_patient_button[i], TRUE);
         gtk_widget_set_vexpand(archived_patient_button[i], FALSE);
-        
+
         gtk_grid_attach_next_to(GTK_GRID(grid_archived_patient), unarchive_button[i], archived_patient_button[i], GTK_POS_RIGHT, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(grid_archived_patient), archived_delete_button[i], unarchive_button[i], GTK_POS_RIGHT, 1, 1);
-        
+
         if (i == 0){
             gtk_widget_set_margin_top(unarchive_button[i], 5);
             gtk_widget_set_margin_top(archived_delete_button[i], 5);
         }
-        
+
         WarningType *deleteArchivedWarning[nbArchivedPatient];
         deleteArchivedWarning[i] = (WarningType*) malloc(sizeof(WarningType));
-        deleteArchivedWarning[i]->patientID = archivedPatient[i];
+        deleteArchivedWarning[i]->patientID = idArchivePatient[i];
         deleteArchivedWarning[i]->window = window;
         deleteArchivedWarning[i]->actionType = 0;
 
         WarningType *unarchiveWarning[nbArchivedPatient];
         unarchiveWarning[i] = (WarningType*) malloc(sizeof(WarningType));
-        unarchiveWarning[i]->patientID = archivedPatient[i];
+        unarchiveWarning[i]->patientID = idArchivePatient[i];
         unarchiveWarning[i]->window = window;
         unarchiveWarning[i]->actionType = 1;
 
         Window_id *window_id_archived[nbArchivedPatient];
         window_id_archived[i] = (Window_id*) malloc(sizeof(Window_id));
         window_id_archived[i]->window = window;
-        window_id_archived[i]->patientID = archivedPatient[i];
+        window_id_archived[i]->patientID = idArchivePatient[i];
         window_id_archived[i]->folderID = 0;
         g_signal_connect(GTK_BUTTON(unarchive_button[i]), "clicked", G_CALLBACK(launchPatientWarning), unarchiveWarning[i]);
         g_signal_connect(GTK_BUTTON(archived_delete_button[i]), "clicked", G_CALLBACK(launchPatientWarning), deleteArchivedWarning[i]);
         g_signal_connect(GTK_BUTTON(archived_patient_button[i]), "clicked", G_CALLBACK(launchWorkView), window_id_archived[i]);
     }
+
+    free(idArchivePatient);
+
+    for(i=0;i<nbArchivedPatient;i++)
+        free(nomArchivePatient[i]);
+
+    free(nomArchivePatient);
 
     //Have to free window_id tabb (can't be done here)*/
 
