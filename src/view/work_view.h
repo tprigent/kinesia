@@ -16,6 +16,12 @@ typedef struct {
     int folderID;           /**< ID of the Folder to be edited */
 }AddNewSessionStruct;
 
+typedef struct {
+    GtkWidget *window;      /**< window to refresh view */
+    int folderID;           /**< ID of the Folder to be edited */
+    int patientID;          /**< ID of the current Patient to refresh view */
+}AddFirstSessionStruct;
+
 GtkWidget *setWorkWindow(int id_patient, int id_folder);
 void setWorkEnvironment(Window_id *window_id);
 
@@ -24,6 +30,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
 void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFolder);
 void launchWorkView(GtkWidget *but, Window_id *window_id);
 void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct);
+void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);
