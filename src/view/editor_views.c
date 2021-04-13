@@ -497,35 +497,37 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     /* FILL THE MEDICAL INFORMATION */
     // Height
-    gtk_grid_attach(GTK_GRID(grid_medical_info), height, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid_medical_info), height, GTK_ALIGN_START, GTK_ALIGN_START, 2, 1);
     gtk_widget_set_hexpand(height, FALSE);
     gtk_widget_set_vexpand(height, FALSE);
     gtk_widget_set_halign(height, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), height_entry, height, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), height_entry, height, GTK_POS_BOTTOM, 2, 1);
 
     // Weight
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight, height, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight, height, GTK_POS_RIGHT, 2, 1);
     gtk_widget_set_hexpand(weight, FALSE);
     gtk_widget_set_vexpand(weight, FALSE);
     gtk_widget_set_halign(weight, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight_entry, weight, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), weight_entry, weight, GTK_POS_BOTTOM, 2, 1);
 
     // First consultation date
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consult, height_entry, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consult, height_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(first_consult, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consult_entry, first_consult, GTK_POS_BOTTOM, 2, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), first_consult_entry, first_consult, GTK_POS_BOTTOM, 3, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), calendar_first_consult_button, first_consult_entry, GTK_POS_RIGHT, 1, 1);
+
 
     // ssn
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_ssn, first_consult_entry, GTK_POS_BOTTOM, 2, 1);
     gtk_widget_set_halign(patient_ssn, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), ssn_entry, patient_ssn, GTK_POS_BOTTOM, 2, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), ssn_entry, patient_ssn, GTK_POS_BOTTOM, 4, 1);
 
     // Important information
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_info, ssn_entry, GTK_POS_BOTTOM, 2, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_info, ssn_entry, GTK_POS_BOTTOM, 4, 1);
     gtk_widget_set_hexpand(patient_info, TRUE);
     gtk_widget_set_vexpand(patient_info, FALSE);
     gtk_widget_set_halign(patient_info, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), info_text, patient_info, GTK_POS_BOTTOM, 2, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), info_text, patient_info, GTK_POS_BOTTOM, 4, 1);
     gtk_widget_set_vexpand(info_text, TRUE);
 
     /* SETUP THE VIEW PARAMETERS */
@@ -659,7 +661,7 @@ void launchCalendar(GtkWidget *button, GtkWidget *entry){
         gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 
         date.year = (int) year;
-        date.month = (int) month;
+        date.month = (int) month + 1;
         date.day = (int) day;
         char *date_char = get_date_UI(&date);
 
