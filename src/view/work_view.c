@@ -640,6 +640,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         gtk_container_add(GTK_CONTAINER(frame), grid);
         gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 1, 1);
+        //g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(addNewSessionUI), newSessionStruct);
         gtk_widget_set_hexpand(frame, TRUE);
         gtk_widget_set_hexpand(grid, TRUE);
         gtk_widget_set_vexpand(grid, TRUE);
@@ -995,6 +996,11 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
 
 }
 
+void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct){
+    gtk_widget_destroy(firstSessionStruct->window);
+    createNewSession(firstSessionStruct->folderID);
+    setWorkWindow(firstSessionStruct->patientID, firstSessionStruct->folderID);
+}
 
 /* HELPERS */
 
