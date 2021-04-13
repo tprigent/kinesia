@@ -624,8 +624,11 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
         char *filename;
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
         printf("%s\n", filename);
-        copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
-        getProfileExtension(mediaChooser->patient);
+        if(strcmp(mediaChooser->mediaType, "profil") == 0){
+            copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
+        } else {
+            copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
+        }
     }
     gtk_native_dialog_destroy(GTK_NATIVE_DIALOG(dialog));
 
@@ -839,7 +842,7 @@ void launchAttachmentListViewer(GtkWidget *button, Patient *patient){
 
     /* Setup the list */
     int i;
-    for(i=0; i< getNbOfAttachments(patient); i++){
+    for(i=0; i<getNbOfAttachments(patient); i++){
         checkList[i] = gtk_check_button_new_with_label(fileList[i]);
         if(i == 0) {
             gtk_grid_attach(GTK_GRID(grid), checkList[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
@@ -856,7 +859,22 @@ void launchAttachmentListViewer(GtkWidget *button, Patient *patient){
 
     /* Action on button */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        setFileWindow(dialog, "radio.png");
+        int j;
+        for(j=0; j<getNbOfAttachments(patient); j++){
+            if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
+                char *mediaPath = getMediaPath(patient);
+                char *command = (char*) malloc(sizeof(char)*(strlen(fileList[j])+strlen(mediaPath)+strlen("open ")));
+
+                /* Build open command with file path */
+                strcpy(command, "open ");
+                strcat(command, mediaPath);
+                strcat(command, fileList[j]);
+
+                system(command);
+
+
+            }
+        }
     }
     gtk_widget_destroy(dialog);
 }
