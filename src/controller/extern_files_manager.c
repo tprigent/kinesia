@@ -241,11 +241,28 @@ char *getMediaDirectoryContent(Patient *patient){
         while ((dir = readdir(d)) != NULL)
         {
             strcpy(&fileList[i], dir->d_name);
-            printf("%s\n", dir->d_name);
         }
         closedir(d);
     }
     return fileList;
+}
+
+int getNbOfAttachments(Patient *patient){
+    DIR *d;
+    struct dirent *dir;
+    int number = 0;
+    d = opendir(getMediaPath(patient));
+    int i = 0;
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+            number++;
+        }
+        closedir(d);
+    }
+    number -=2;     // Don't want to count . and .. files
+    return number;
 }
 
 int deleteMediaFolder(Patient *patient) {
