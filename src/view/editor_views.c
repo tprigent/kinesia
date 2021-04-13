@@ -161,8 +161,6 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     gtk_widget_set_hexpand(infos_box, TRUE);
     gtk_widget_set_vexpand(infos_box, TRUE);
 
-
-
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
@@ -631,28 +629,35 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
 
 }
 
-void launchCalendar(GtkWidget *button, GtkWidget *window){
+void launchCalendar(GtkWidget *button, GtkWidget *entry){
 
     /* CREATE THE DIALOG BOX */
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
-    dialog = gtk_dialog_new_with_buttons ("Édition de la fiche patient",NULL,GTK_DIALOG_MODAL,
+    dialog = gtk_dialog_new_with_buttons ("Calendrier",NULL,GTK_DIALOG_MODAL,
                                           "Annuler",GTK_RESPONSE_REJECT,
                                           "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-    /* ASSIGN VARIABLES */
-    //GtkWidget *grid = NULL;
-    GtkWidget *calendar = NULL;
-
-    /* ASSIGN VARIABLES */
-    //grid = gtk_grid_new();
-    calendar = gtk_calendar_new();
-
-    /* SET WIDGETS POSITION */
+    /* ADD A CALENDAR IN THE BOX */
+    GtkWidget *calendar = gtk_calendar_new();
     gtk_container_add(GTK_CONTAINER(content_area), calendar);
 
+    gtk_widget_show_all(dialog);
+
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        Date date;
+        unsigned int year, month, day;
+        gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+
+        date.year = (int) year;
+        date.month = (int) month;
+        date.day = (int) day;
+        char *date_char = get_date_UI(&date);
+
+        gtk_entry_set_text(GTK_ENTRY(entry), date_char);
+        free(date_char);
+
         gtk_widget_destroy(dialog);
     } else {
         gtk_widget_destroy(dialog);
