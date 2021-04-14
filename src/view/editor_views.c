@@ -920,7 +920,7 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
         int j;
         for(j=0; j<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); j++){
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
-                char *mediaPath = getPatientMediaPath(attachmentProperties->patient);
+                char *mediaPath = getFolderMediaPath(attachmentProperties->patient, attachmentProperties->folderID);
                 char *command = (char*) malloc(sizeof(char)*(strlen(fileList[j])+strlen(mediaPath)+strlen("open ")));
 
                 /* Build open command with file path */
