@@ -396,6 +396,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
         return ;
     }
 
+
     /* ****************************************************************************** */
 
     /* Create a grid which contains the different elements of the folder ************ */
@@ -548,7 +549,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     /* LABEL */
     GtkWidget *attachments_label = NULL;
     GtkWidget *attachments_count = NULL;
-    char *indicator = get_indicator_files_UI(patient);
+    char *indicator = get_indicator_files_UI(patient, activeFolder);
     attachments_label = gtk_label_new("Pièces jointes:    ");
     attachments_count = gtk_label_new(indicator);
     free_info_UI(indicator);
@@ -561,7 +562,12 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
-    g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentListViewer), patient);
+
+    MediaType *attachment_properties = (MediaType*) malloc(sizeof(Patient)+sizeof(char)*10+sizeof(int));
+    attachment_properties->patient = patient;
+    attachment_properties->folderID = (int) folder->idFolder;
+    attachment_properties->mediaType = 1;
+    g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentListViewer), attachment_properties);
     /* ****************************************************************************** */
 
     /* Edit button ****************************************************************** */
@@ -822,7 +828,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idFolder, Patient *pa
             gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
             MediaType *mediaChooser = (MediaType *) malloc(sizeof(MediaType));
             mediaChooser->patient = patient;
-            mediaChooser->mediaType = "attachment";
+            mediaChooser->folderID = idFolder;
+            mediaChooser->mediaType = 1;
             g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
 
             /* Manage the frame and its entry to add informations about the session */
