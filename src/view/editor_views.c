@@ -5,6 +5,7 @@
 
 
 #include <gtk/gtk.h>
+#include <libgen.h>
 #include "work_view.h"
 #include "home_view.h"
 #include "editor_views.h"
@@ -289,7 +290,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     info_text = gtk_text_view_new();
 
     photoChooser->patient = patient;
-    photoChooser->mediaType = "profil";
+    photoChooser->mediaType = 0;
 
     // entry parameters
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
@@ -633,7 +634,7 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
     gtk_file_filter_add_pattern(filter, "*.jpeg");
     gtk_file_filter_add_pattern(filter, "*.JPEG");
     gtk_file_filter_add_pattern(filter, "*.png");
-    if (strcmp(mediaChooser->mediaType, "profil") != 0){
+    if (mediaChooser->mediaType != 0){
         gtk_file_filter_add_pattern(filter, "*.pdf");
         gtk_file_filter_add_pattern(filter, "*.doc");
         gtk_file_filter_add_pattern(filter, "*.docx");
@@ -645,8 +646,11 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
         char *filename;
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
         printf("%s\n", filename);
-        copyToMedia(filename, mediaChooser->patient , mediaChooser->mediaType);
-        getProfileExtension(mediaChooser->patient);
+        if(mediaChooser->mediaType == 0){
+            copyToMedia(filename, mediaChooser->patient , mediaChooser->folderID, "profil");
+        } else {
+            copyToMedia(filename, mediaChooser->patient , mediaChooser->folderID, basename(filename));
+        }
     }
     gtk_native_dialog_destroy(GTK_NATIVE_DIALOG(dialog));
 
@@ -873,16 +877,16 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
     }
 }
 
-void launchAttachmentViewer(GtkWidget *button){
+void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperties){
     GtkWidget *dialog;
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
-    GtkWidget *buttonTest[10];
-
+    GtkWidget *checkList[getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID)];
+    char **fileList = getMediaDirectoryContent(attachmentProperties->patient, attachmentProperties->folderID);
 
     dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
                                          NULL, GTK_DIALOG_MODAL,
-                                         "Fermer", GTK_RESPONSE_CANCEL, NULL);
+                                         "Annuler", GTK_RESPONSE_CANCEL, "Ouvrir", GTK_RESPONSE_ACCEPT, NULL);
 
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -895,17 +899,16 @@ void launchAttachmentViewer(GtkWidget *button){
     gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
     /* Setup the list */
-    int i = 0;
-    while (i<10){
-        buttonTest[i] = gtk_button_new_with_label("radio.png");
+    int i;
+    for(i=0; i<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); i++){
+        checkList[i] = gtk_check_button_new_with_label(fileList[i]);
         if(i == 0) {
-            gtk_grid_attach(GTK_GRID(grid), buttonTest[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+            gtk_grid_attach(GTK_GRID(grid), checkList[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
         } else {
-            gtk_grid_attach_next_to(GTK_GRID(grid), buttonTest[i], buttonTest[i-1], GTK_POS_BOTTOM, 1, 1);
+            gtk_grid_attach_next_to(GTK_GRID(grid), checkList[i], checkList[i-1], GTK_POS_BOTTOM, 1, 1);
         }
-        gtk_widget_set_hexpand(buttonTest[i], TRUE);
-        gtk_widget_set_size_request(buttonTest[i], 200, 20);
-        i++;
+        gtk_widget_set_hexpand(checkList[i], TRUE);
+        gtk_widget_set_size_request(checkList[i], 100, 20);
     }
 
     /* Show all elements */
@@ -913,7 +916,25 @@ void launchAttachmentViewer(GtkWidget *button){
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 
     /* Action on button */
-    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_CANCEL){
-        gtk_widget_destroy (dialog);
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        int j;
+        for(j=0; j<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); j++){
+            if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
+                char *mediaPath = getPatientMediaPath(attachmentProperties->patient);
+                char *command = (char*) malloc(sizeof(char)*(strlen(fileList[j])+strlen(mediaPath)+strlen("open ")));
+
+                /* Build open command with file path */
+                strcpy(command, "open ");
+                strcat(command, mediaPath);
+                strcat(command, fileList[j]);
+
+                system(command);
+
+                free((char*) mediaPath);
+                free((char*) command);
+
+            }
+        }
     }
+    gtk_widget_destroy(dialog);
 }

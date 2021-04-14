@@ -27,10 +27,10 @@ void setWorkEnvironment(Window_id *window_id);
 
 void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient, int id_folder);
 void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient *patient);
-void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFolder);
+void fillSessionBox(GtkWidget *window, GtkWidget *box, Patient *patient, int folderID);
 void launchWorkView(GtkWidget *but, Window_id *window_id);
-void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct);
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct);
+void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, Patient *patient);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);

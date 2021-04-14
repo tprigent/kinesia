@@ -199,7 +199,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
     /* ************************** SECOND PART : SECTION WHICH CONTAINS PATIENT INFORMATION **************************** */
     /* Manage the frame global and its grid */
-    gtk_frame_set_label_align(GTK_FRAME(frame_info), 0.5, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_info), (float)0.5, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_left_section), frame_info, back_button, GTK_POS_BOTTOM, 1, 3);
     gtk_widget_set_hexpand(frame_info, TRUE);
     gtk_widget_set_vexpand(frame_info, TRUE);
@@ -221,7 +221,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_halign(patient_photo, GTK_ALIGN_CENTER);
 
     /* Manage the frame which contains identity informations and its grid */
-    gtk_frame_set_label_align(GTK_FRAME(frame_etat_civil), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_etat_civil), 0, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_etat_civil, patient_photo, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_etat_civil, TRUE);
     gtk_widget_set_vexpand(frame_etat_civil, FALSE);
@@ -251,7 +251,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_halign(patient_job, GTK_ALIGN_CENTER);
 
     /* Manage the frame which contains medical informations and its grid */
-    gtk_frame_set_label_align(GTK_FRAME(frame_medical_info), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_medical_info), 0, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_medical_info, frame_etat_civil, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_medical_info, TRUE);
     gtk_widget_set_vexpand(frame_medical_info, FALSE);
@@ -272,7 +272,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_halign(patient_first_consultation, GTK_ALIGN_CENTER);
 
     /* Manage the frame which contains other informations */
-    gtk_frame_set_label_align(GTK_FRAME(frame_other_info), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_other_info), 0, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_info), frame_other_info, frame_medical_info, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(frame_other_info, TRUE);
     gtk_widget_set_vexpand(frame_other_info, FALSE);
@@ -297,8 +297,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     folder_grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(folder_box), folder_grid);
 
-    int *idFolderTab = getIdFolder((int) patient->id);
-    int folder_cursor = 0;
+    int *folderIDTab = getIdFolder((int) patient->id);
+    int folder_cursor;
 
     int nb_folders = getNbFolder((int) patient->id);
     GtkWidget *folder_button[nb_folders];
@@ -307,7 +307,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     /* ASSIGN VARIABLES */
     for(folder_cursor = 0; folder_cursor < nb_folders; folder_cursor++){
 
-        name_folder[folder_cursor] = getNameFolder(idFolderTab[folder_cursor]);
+        name_folder[folder_cursor] = getNameFolder(folderIDTab[folder_cursor]);
         folder_button[folder_cursor] = gtk_button_new_with_label(name_folder[folder_cursor]);
         free(name_folder[folder_cursor]);
     }
@@ -320,7 +320,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         window_id[nb_folders - 1] = (Window_id*) malloc(sizeof(Window_id));
         window_id[nb_folders - 1]->window = window;
         window_id[nb_folders - 1]->patientID = (int) patient->id;
-        window_id[nb_folders - 1]->folderID = idFolderTab[nb_folders - 1];
+        window_id[nb_folders - 1]->folderID = folderIDTab[nb_folders - 1];
         g_signal_connect(GTK_BUTTON(folder_button[nb_folders - 1]), "clicked", G_CALLBACK(launchWorkView), window_id[nb_folders - 1]);
 
         for(folder_cursor = nb_folders - 2; folder_cursor >= 0; folder_cursor--){
@@ -329,22 +329,22 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
             window_id[folder_cursor] = (Window_id*) malloc(sizeof(Window_id));
             window_id[folder_cursor]->window = window;
             window_id[folder_cursor]->patientID = (int) patient->id;
-            window_id[folder_cursor]->folderID = idFolderTab[folder_cursor];
+            window_id[folder_cursor]->folderID = folderIDTab[folder_cursor];
             g_signal_connect(GTK_BUTTON(folder_button[folder_cursor]), "clicked", G_CALLBACK(launchWorkView), window_id[folder_cursor]);
         }
     }
 
     if(nb_folders>0 && id_folder == 0){
-        fillFolderBox(window, folderBox, idFolderTab[nb_folders - 1], patient);
-        fillSessionBox(window, sessionBox, (int) patient->id, idFolderTab[nb_folders - 1]);
+        fillFolderBox(window, folderBox, folderIDTab[nb_folders - 1], patient);
+        fillSessionBox(window, sessionBox, patient, folderIDTab[nb_folders - 1]);
     }
     else if(nb_folders>0 && id_folder != 0){
         fillFolderBox(window, folderBox, id_folder, patient);
-        fillSessionBox(window, sessionBox, (int) patient->id, id_folder);
+        fillSessionBox(window, sessionBox, patient, id_folder);
     }
     else{
         fillFolderBox(window, folderBox, 0, patient);
-        fillSessionBox(window, sessionBox, (int) patient->id, 0);
+        fillSessionBox(window, sessionBox, patient, 0);
     }
 
 
@@ -397,6 +397,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
         return ;
     }
 
+
     /* ****************************************************************************** */
 
     /* Create a grid which contains the different elements of the folder ************ */
@@ -408,7 +409,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     /* Create a frame for the folder zone ******************************************* */
     GtkWidget *frame_folder = NULL;
     frame_folder = gtk_frame_new("Dossier");
-    gtk_frame_set_label_align(GTK_FRAME(frame_folder), 0.5, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_folder), (float)0.5, (float) 0.5);
     gtk_grid_attach(GTK_GRID(grid_part2), frame_folder, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(frame_folder, TRUE);
     gtk_widget_set_vexpand(frame_folder, TRUE);
@@ -549,7 +550,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
     /* LABEL */
     GtkWidget *attachments_label = NULL;
     GtkWidget *attachments_count = NULL;
-    char *indicator = get_indicator_files_UI(folder);
+    char *indicator = get_indicator_files_UI(patient, activeFolder);
     attachments_label = gtk_label_new("Pièces jointes:    ");
     attachments_count = gtk_label_new(indicator);
     free_info_UI(indicator);
@@ -558,11 +559,16 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
 
     /* BUTTON */
     GtkWidget *attachments_button = NULL;
-    attachments_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
+    attachments_button = gtk_button_new_from_icon_name("folder-documents", GTK_ICON_SIZE_MENU);
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
-    g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentViewer), NULL);
+
+    MediaType *attachment_properties = (MediaType*) malloc(sizeof(Patient)+sizeof(char)*10+sizeof(int));
+    attachment_properties->patient = patient;
+    attachment_properties->folderID = (int) folder->idFolder;
+    attachment_properties->mediaType = 1;
+    g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentListViewer), attachment_properties);
     /* ****************************************************************************** */
 
     /* Edit button ****************************************************************** */
@@ -618,9 +624,9 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, int activeFolder, Patient 
  * \param[in] box Existing Session box
  * \param[in] idPatient ID of the current Patient
 */
-void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFolder){
+void fillSessionBox(GtkWidget *window, GtkWidget *box, Patient *patient, int folderID){
 
-    if(idFolder == 0){
+    if(folderID == 0){
         GtkWidget *label = gtk_label_new("Ce patient n'a pas de dossier associé");
         GtkWidget *frame = gtk_frame_new("");
         gtk_container_add(GTK_CONTAINER(box), frame);
@@ -630,7 +636,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         return ;
     }
 
-    int nb_session = getNbSession(idFolder);
+    int nb_session = getNbSession(folderID);
     if(nb_session ==0){
         GtkWidget *label = gtk_label_new("Créer une première séance pour ce dossier :");
         GtkWidget *frame = gtk_frame_new("Séances");
@@ -644,8 +650,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         /* CONNECT BUTTON TO CREATE FIRST SESSION */
         AddFirstSessionStruct *firstSession = (AddFirstSessionStruct*) malloc(sizeof(AddFirstSessionStruct));
         firstSession->window = window;
-        firstSession->patientID = idPatient;
-        firstSession->folderID = idFolder;
+        firstSession->patientID = (int) patient->id;
+        firstSession->folderID = folderID;
         g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(addFirstSessionUI), firstSession);
 
         /* SET VISUAL ATTRIBUTES */
@@ -658,7 +664,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
         gtk_widget_set_vexpand(box, TRUE);
         gtk_widget_set_vexpand(grid, TRUE);
 
-        gtk_frame_set_label_align(GTK_FRAME(frame), 0.5, 0.5);
+        gtk_frame_set_label_align(GTK_FRAME(frame), (float) 0.5, (float) 0.5);
 
         return ;
     }
@@ -698,7 +704,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
     gtk_notebook_set_scrollable (GTK_NOTEBOOK(notebook), TRUE);
     grid_session_section = gtk_grid_new();
 
-    session_list = getSessionList(idFolder);
+    session_list = getSessionList(folderID);
     setOnFirst(session_list);
 
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
@@ -752,7 +758,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
     /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
     AddNewSessionStruct *newSessionStruct = (AddNewSessionStruct*) malloc(sizeof(AddNewSessionStruct));
     newSessionStruct->notebook = notebook;
-    newSessionStruct->folderID = idFolder;
+    newSessionStruct->folderID = folderID;
 
     /* Manage to add a notebook */
     gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
@@ -831,14 +837,18 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, int idPatient, int idFold
             gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_attach_button[session_cursor], entry_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
             gtk_widget_set_hexpand(session_attach_button[session_cursor], FALSE);
             gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
-            //gtk_widget_set_halign(session_attach_button, GTK_ALIGN_CENTER);
+            MediaType *mediaChooser = (MediaType *) malloc(sizeof(MediaType));
+            mediaChooser->patient = patient;
+            mediaChooser->folderID = folderID;
+            mediaChooser->mediaType = 1;
+            g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
 
             /* Manage the frame and its entry to add informations about the session */
-            gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, 0.5);
+            gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, (float)0.5);
             gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 11, 3);
             gtk_widget_set_hexpand(frame_session_note[session_cursor], TRUE);
             gtk_widget_set_vexpand(frame_session_note[session_cursor], TRUE);
-            //gtk_widget_set_halign(frame_session_note, GTK_ALIGN_START);
+
 
             gtk_container_add(GTK_CONTAINER(frame_session_note[session_cursor]), text_session_note[session_cursor]);
             gtk_widget_set_hexpand(text_session_note[session_cursor], TRUE);
@@ -875,7 +885,7 @@ void launchWorkView(GtkWidget *but, Window_id *window_id){
  * \param[in] but Button pressed to launch the work view
  * \param[in] notebook The notebook which contains the sessions
 */
-void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
+void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, Patient *patient){
     /* DECLARE VARIABLES */
     GtkWidget *notebook = newSessionStruct->notebook;
     Session *new_session = createEmptySession(newSessionStruct->folderID);
@@ -1006,11 +1016,10 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     gtk_widget_set_vexpand(session_attach_button, FALSE);
 
     /* Manage the frame and its entry to add informations about the session */
-    gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, 0.5);
+    gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, (float) 0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), frame_session_note, session_attach_button, GTK_POS_RIGHT, 11, 3);
     gtk_widget_set_hexpand(frame_session_note, TRUE);
     gtk_widget_set_vexpand(frame_session_note, TRUE);
-    //gtk_widget_set_halign(frame_session_note, GTK_ALIGN_START);
 
     gtk_container_add(GTK_CONTAINER(frame_session_note), text_session_note);
     gtk_widget_set_hexpand(text_session_note, TRUE);
