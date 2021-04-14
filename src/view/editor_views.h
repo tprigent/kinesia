@@ -55,7 +55,8 @@ typedef struct{
 */
 typedef struct {
     Patient *patient;     /**< Patient concerned */
-    char *mediaType;      /**< Type of media to be stored in the software: "profile" or other */
+    int folderID;         /**< Identifier of the concerned Folder */
+    int mediaType;      /**< Type of media to be stored in the software: 0 = "profile" 1 = other */
 }MediaType;
 
 void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
@@ -65,6 +66,6 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser);
 void launchPatientWarning(GtkWidget *button, WarningType *warning);
 void launchSettingsEditor(GtkWidget *button, GtkWidget *window);
-void launchAttachmentListViewer(GtkWidget *button, Patient *patient);
+void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperties);
 
 #endif

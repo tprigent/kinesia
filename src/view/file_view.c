@@ -29,7 +29,7 @@ void setFileViewerEnvironment(GtkWidget *window, char *filename, Patient *patien
     GtkWidget *grid = NULL;
     GtkWidget *file = NULL;
     GdkPixbuf *file_pixbuf = NULL;
-    char *mediaPath = getMediaPath(patient);
+    char *mediaPath = getPatientMediaPath(patient);
     char *filePath = (char*) malloc(sizeof(char)*(strlen(filename)+strlen(mediaPath)));
 
     /* Rebuild file path */
