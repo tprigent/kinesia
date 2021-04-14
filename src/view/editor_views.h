@@ -6,6 +6,7 @@
 #ifndef SESSION_CONTROLLER_H
 #define SESSION_CONTROLLER_H
 
+#include "file_view.h"
 #include "../model/structures.h"
 #include "../model/patient_manager.h"
 #include "../controller/BDD_to_struct_patient.h"
@@ -54,7 +55,8 @@ typedef struct{
 */
 typedef struct {
     Patient *patient;     /**< Patient concerned */
-    char *mediaType;      /**< Type of media to be stored in the software: "profile" or other */
+    int folderID;         /**< Identifier of the concerned Folder */
+    int mediaType;      /**< Type of media to be stored in the software: 0 = "profile" 1 = other */
 }MediaType;
 
 void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
@@ -65,6 +67,6 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser);
 void launchCalendar(GtkWidget *button, GtkWidget *entry);
 void launchPatientWarning(GtkWidget *button, WarningType *warning);
 void launchSettingsEditor(GtkWidget *button, GtkWidget *window);
-void launchAttachmentViewer(GtkWidget *button);
+void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperties);
 
 #endif

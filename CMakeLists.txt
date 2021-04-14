@@ -29,7 +29,7 @@ set(SOURCE_FILES
         src/controller/BDD_to_struct_patient.c
         src/controller/struct_to_BDD_folder.c
         src/controller/struct_to_BDD_session.c src/controller/BDD_to_struct_session.c
-        src/controller/BDD_to_struct_folder.c)
+        src/controller/BDD_to_struct_folder.c src/view/file_view.c src/view/file_view.h)
 
 add_executable(Kinesia ${SOURCE_FILES})
 

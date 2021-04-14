@@ -95,7 +95,7 @@ void setHomeEnvironment(GtkWidget *window){
     GtkWidget *grid_active_patient = NULL;
     GtkWidget *grid_archived_patient = NULL;
 
-    GtkWidget *frame_test = NULL;
+    GtkWidget *frame_calendar = NULL;
 
     GtkWidget *box_active_patient = NULL;
     GtkWidget *box_archived_patient = NULL;
@@ -114,7 +114,7 @@ void setHomeEnvironment(GtkWidget *window){
     grid_archived_patient = gtk_grid_new();
     grid_calendar = gtk_grid_new();
 
-    frame_test = gtk_frame_new("CALENDRIER");
+    frame_calendar = gtk_frame_new("CALENDRIER");
 
     box_active_patient = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_active_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -136,11 +136,11 @@ void setHomeEnvironment(GtkWidget *window){
 
     /* FILL THE GRID */
     /* Left part */
-    gtk_grid_attach(GTK_GRID(grid), frame_test, GTK_ALIGN_START, GTK_ALIGN_START, 1, 14);
-    gtk_widget_set_hexpand(frame_test, TRUE);
-    gtk_widget_set_vexpand(frame_test, TRUE);
+    gtk_grid_attach(GTK_GRID(grid), frame_calendar, GTK_ALIGN_START, GTK_ALIGN_START, 1, 14);
+    gtk_widget_set_hexpand(frame_calendar, TRUE);
+    gtk_widget_set_vexpand(frame_calendar, TRUE);
 
-    gtk_container_add(GTK_CONTAINER(frame_test), grid_calendar);
+    gtk_container_add(GTK_CONTAINER(frame_calendar), grid_calendar);
     gtk_grid_set_row_spacing(GTK_GRID(grid_calendar), 5);
 
     gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
@@ -154,7 +154,7 @@ void setHomeEnvironment(GtkWidget *window){
 
 
     /* Search a patient */
-    gtk_grid_attach_next_to(GTK_GRID(grid), entry_research, frame_test, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid), entry_research, frame_calendar, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_valign(entry_research, GTK_ALIGN_START);
     gtk_widget_set_hexpand(entry_research, TRUE);
     gtk_grid_attach_next_to(GTK_GRID(grid), button_research, entry_research, GTK_POS_RIGHT, 3, 1);

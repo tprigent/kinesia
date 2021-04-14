@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <ftw.h>
 #include <dirent.h>
+#include <libgen.h>
 #include "extern_files_manager.h"
 
 /*!
@@ -17,31 +18,24 @@
  * \param[in] patient To which Patient the file concerns
  * \param[in] type Type of the media : profil or attachment
 */
-void copyToMedia(char *source_path, Patient *patient, char *type){
+void copyToMedia(char *source_path, Patient *patient, int folderID, char *type){
 
-    char *stringID;
     FILE *source_stream, *dest_stream;
     int c;
-    stringID = (char*) malloc(sizeof(char)*10);
+    char *patientMediaPath = getPatientMediaPath(patient);
+    char *folderMediaPath = getFolderMediaPath(patient, folderID);
+    char *stringID = (char*) malloc(sizeof(char)*10);
+    char *dest_path = (char*) malloc(sizeof(char)*(strlen(patientMediaPath)+100));
 
-    /* Build the destination path: media/patient-data/{patient_id}/ */
-    char *media_path = "../media/patient-data/";
-    char *dest_path = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen(type)+strlen(".xxxx")+10)+sizeof(int)*10);
-    strcpy(dest_path, media_path);
-    tostring(stringID, (int) patient->id);
-    strcat(dest_path, stringID);
-    strcat(dest_path, "/");
-    mkdir(dest_path, 0700);         // create folder if doesn't exist
-    strcat(dest_path, type);
-    strcat(dest_path, ".");
-
-    /* Check if old profile picture already exists */
     if(strcmp(type, "profil") == 0){
-        removeExistingProfilePicture(media_path, dest_path, source_path);
+        strcpy(dest_path, patientMediaPath);
+        strcat(dest_path, "profil.");
+        removeExistingProfilePicture(patientMediaPath, dest_path, source_path);
+        strcat(dest_path, getExtensionFromPath(source_path));
+    } else {
+        strcpy(dest_path, folderMediaPath);
+        strcat(dest_path, basename(source_path));
     }
-
-    /* Add original extension */
-    strcat(dest_path, getExtensionFromPath(source_path));
 
     /* Open source file for reading */
     source_stream = fopen(source_path, "rb");
@@ -180,16 +174,32 @@ char *getProfilePhotoPath(Patient *patient){
     return(photo_path);
 }
 
-char *getMediaPath(Patient *patient){
+char *getPatientMediaPath(Patient *patient){
     char *charID = (char*) malloc(sizeof(char)*10);
     char *media_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/")+40));
     strcpy(media_path, "../media/patient-data/");
     tostring(charID, (int) patient->id);
     strcat(media_path, charID);
     strcat(media_path, "/");
+    mkdir(media_path, 0700);
 
     free((char*) charID);
     return(media_path);
+}
+
+char *getFolderMediaPath(Patient *patient, int folderID){
+    char *charID = (char*) malloc(sizeof(char)*10);
+    char *patientMediaPath = getPatientMediaPath(patient);
+
+    char *folderMediaPath = (char*) malloc(sizeof(char)*(strlen(patientMediaPath)+100));
+
+    strcpy(folderMediaPath, patientMediaPath);
+    tostring(charID, folderID);
+    strcat(folderMediaPath, charID);
+    strcat(folderMediaPath, "/");
+    mkdir(folderMediaPath, 0700);
+
+    return folderMediaPath;
 }
 
 /*!
@@ -230,26 +240,47 @@ void removeExistingProfilePicture(char *media_path, char *dest_path, char *sourc
     free((char*) dest_path_png);
 }
 
-char *getMediaDirectoryContent(Patient *patient){
+char **getMediaDirectoryContent(Patient *patient, int folderID){
     DIR *d;
     struct dirent *dir;
-    char *fileList = (char*) malloc(sizeof(char)*100*20);
-    d = opendir(getMediaPath(patient));
+    char **fileList;
+    fileList = (char**) malloc(sizeof(char*)*getNbOfAttachments(patient, folderID));
+    int i = 0;
+    printf("DEBUG: %s\n",getFolderMediaPath(patient, folderID));
+    d = opendir(getFolderMediaPath(patient, folderID));
+    if (d){
+        while ((dir = readdir(d)) != NULL){
+            if(strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0){
+                fileList[i] = (char*) malloc(sizeof(char)*100);
+                strcpy(fileList[i], dir->d_name);
+                i++;
+            }
+        }
+    }
+    rewinddir(d);
+    return fileList;
+}
+
+int getNbOfAttachments(Patient *patient, int folderID){
+    DIR *d;
+    struct dirent *dir;
+    int number = 0;
+    d = opendir(getFolderMediaPath(patient, folderID));
     int i = 0;
     if (d)
     {
         while ((dir = readdir(d)) != NULL)
         {
-            strcpy(&fileList[i], dir->d_name);
-            printf("%s\n", dir->d_name);
+            number++;
         }
         closedir(d);
     }
-    return fileList;
+    number -=2;     // Don't want to count . and .. files
+    return number;
 }
 
 int deleteMediaFolder(Patient *patient) {
-    char *path = getMediaPath(patient);
+    char *path = getPatientMediaPath(patient);
     DIR *d = opendir(path);
     size_t path_len = strlen(path);
     int r = -1;
