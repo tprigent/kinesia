@@ -631,14 +631,11 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
                                          "_Annuler");
     /* Define filters */
     filter = gtk_file_filter_new();
-    gtk_file_filter_add_pattern(filter, "*.jpg");
-    gtk_file_filter_add_pattern(filter, "*.jpeg");
-    gtk_file_filter_add_pattern(filter, "*.JPEG");
-    gtk_file_filter_add_pattern(filter, "*.png");
-    if (mediaChooser->mediaType != 0){
-        gtk_file_filter_add_pattern(filter, "*.pdf");
-        gtk_file_filter_add_pattern(filter, "*.doc");
-        gtk_file_filter_add_pattern(filter, "*.docx");
+    if (mediaChooser->mediaType == 0){
+        gtk_file_filter_add_pattern(filter, "*.jpg");
+        gtk_file_filter_add_pattern(filter, "*.jpeg");
+        gtk_file_filter_add_pattern(filter, "*.JPEG");
+        gtk_file_filter_add_pattern(filter, "*.png");
     }
     gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
 
