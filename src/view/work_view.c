@@ -696,6 +696,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
     GtkWidget *text_session_note[nb_session];
     GtkTextBuffer *session_buffer[nb_session];
     GtkTextIter end[nb_session];
+    GtkWidget *text_box[nb_session];
+
 
     char *session_date_char[nb_session];
     char *next_session_date_char[nb_session];
@@ -744,6 +746,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_text_buffer_get_end_iter(session_buffer[session_cursor], &end[session_cursor]);
         gtk_text_buffer_insert(session_buffer[session_cursor], &end[session_cursor], session_list->current->session.observations, -1);
         gtk_text_view_set_buffer(GTK_TEXT_VIEW(text_session_note[session_cursor]), session_buffer[session_cursor]);
+        text_box[session_cursor] = gtk_scrolled_window_new(NULL, NULL);
 
         gtk_text_view_set_left_margin(GTK_TEXT_VIEW(text_session_note[session_cursor]), 5);
         gtk_text_view_set_right_margin(GTK_TEXT_VIEW(text_session_note[session_cursor]), 5);
@@ -849,13 +852,16 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
 
             /* Manage the frame and its entry to add informations about the session */
+
+
             gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, (float)0.5);
             gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 11, 3);
             gtk_widget_set_hexpand(frame_session_note[session_cursor], TRUE);
             gtk_widget_set_vexpand(frame_session_note[session_cursor], TRUE);
 
 
-            gtk_container_add(GTK_CONTAINER(frame_session_note[session_cursor]), text_session_note[session_cursor]);
+            gtk_container_add(GTK_CONTAINER(frame_session_note[session_cursor]), text_box[session_cursor]);
+            gtk_container_add(GTK_CONTAINER(text_box[session_cursor]), text_session_note[session_cursor]);
             gtk_widget_set_hexpand(text_session_note[session_cursor], TRUE);
             gtk_widget_set_vexpand(text_session_note[session_cursor], TRUE);
 
@@ -911,6 +917,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     GtkWidget *text_session_note;
     GtkTextBuffer *session_buffer;
     GtkTextIter end;
+    GtkWidget *text_box = NULL;
 
     /* ASSIGN VARIABLES */
     grid_add_session = gtk_grid_new();
@@ -945,6 +952,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     gtk_text_buffer_get_end_iter(session_buffer, &end);
     gtk_text_buffer_insert(session_buffer, &end, new_session->observations, -1);
     gtk_text_view_set_buffer(GTK_TEXT_VIEW(text_session_note), session_buffer);
+    text_box = gtk_scrolled_window_new(NULL, NULL);
 
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(text_session_note), 5);
     gtk_text_view_set_right_margin(GTK_TEXT_VIEW(text_session_note), 5);
@@ -1026,7 +1034,8 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     gtk_widget_set_hexpand(frame_session_note, TRUE);
     gtk_widget_set_vexpand(frame_session_note, TRUE);
 
-    gtk_container_add(GTK_CONTAINER(frame_session_note), text_session_note);
+    gtk_container_add(GTK_CONTAINER(frame_session_note), text_box);
+    gtk_container_add(GTK_CONTAINER(text_box), text_session_note);
     gtk_widget_set_hexpand(text_session_note, TRUE);
     gtk_widget_set_vexpand(text_session_note, TRUE);
 
