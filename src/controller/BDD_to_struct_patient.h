@@ -8,14 +8,9 @@
 
 #include "../model/structures.h"
 
-int getNbPatient();
+int getNbPatient(Archived a);
 char* getNameFirstnamePatient(int id);
 Patient* getPatient(int id);
-int* getArchivedPatientID();
-int* getActivePatientID();
-int getNbArchivedPatient();
-int getNbActivePatient();
-int getNameFirstnameIdActivePatient(int* tabId, char** nom,int nbP);
-int getNameFirstnameIdArchivedPatient(int* tabId, char** nom,int nbP);
+int getNameFirstnameIdPatient(int* tabId, char** nom, Archived a,Sort s);
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_PATIENT_H
