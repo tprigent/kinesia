@@ -53,6 +53,7 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     GtkWidget *treatment_box;
     GtkWidget *pathology_box;
     GtkWidget *infos_box;
+    GtkWidget *scroll_info_box = NULL;
 
 
     /* DECLARE ELEMENTS OF THE DIALOG BOX */
@@ -92,6 +93,7 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     treatment_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     pathology_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     infos_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    scroll_info_box = gtk_scrolled_window_new(NULL, NULL);
 
 
 
@@ -166,7 +168,8 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
 
     /* Other infos */
     gtk_box_pack_start(GTK_BOX(infos_box), other_infos_label, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(infos_box), other_infos_text, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(infos_box), scroll_info_box, TRUE, TRUE, 0);
+    gtk_container_add(GTK_CONTAINER(scroll_info_box), other_infos_text);
     gtk_widget_set_vexpand(other_infos_text, TRUE);
     gtk_widget_set_hexpand(other_infos_text, TRUE);
     gtk_widget_set_size_request(infos_box, 350,1);
@@ -269,6 +272,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *info_text = NULL;
     GtkTextBuffer *info_buffer = NULL;
     GtkTextIter end;
+    GtkWidget *text_box = NULL;
 
 
 
@@ -320,6 +324,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(info_text), 5);
     gtk_text_view_set_top_margin(GTK_TEXT_VIEW(info_text), 5);
     gtk_text_buffer_get_end_iter(info_buffer, &end);
+    text_box = gtk_scrolled_window_new(NULL, NULL);
 
     name = gtk_label_new("Prénom : ");
     gtk_entry_set_text(GTK_ENTRY(name_entry), patient->firstname);
@@ -542,7 +547,8 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_widget_set_hexpand(patient_info, TRUE);
     gtk_widget_set_vexpand(patient_info, FALSE);
     gtk_widget_set_halign(patient_info, GTK_ALIGN_START);
-    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), info_text, patient_info, GTK_POS_BOTTOM, 4, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), text_box, patient_info, GTK_POS_BOTTOM, 4, 1);
+    gtk_container_add(GTK_CONTAINER(text_box), info_text);
     gtk_widget_set_vexpand(info_text, TRUE);
 
     /* SETUP THE VIEW PARAMETERS */
