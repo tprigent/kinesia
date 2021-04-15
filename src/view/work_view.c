@@ -335,13 +335,13 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     }
 
     if(nb_folders>0 && id_folder == 0){
-        fillFolderBox(window, folderBox, sessionBox,folderIDTab[nb_folders - 1], patient);
+        fillFolderBox(window, folderBox, sessionBox, NULL, folderIDTab[nb_folders - 1], patient);
     }
     else if(nb_folders>0 && id_folder != 0){
-        fillFolderBox(window, folderBox, sessionBox, id_folder, patient);
+        fillFolderBox(window, folderBox, NULL, sessionBox, id_folder, patient);
     }
     else{
-        fillFolderBox(window, folderBox, sessionBox,0, patient);
+        fillFolderBox(window, folderBox, NULL, sessionBox,0, patient);
     }
 
 
@@ -365,7 +365,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
  *
  * \param[in] box Existing Folder box
 */
-void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int activeFolder, Patient *patient){
+void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, GtkWidget *attachmentCounterLabel, int activeFolder, Patient *patient){
 
     /* Getting folder  ************************************************************** */
     Folder *folder = NULL;
@@ -392,7 +392,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
         idPatient->window = window;
         g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
 
-        fillSessionBox(window, sessionBox, patient, 0);
+        fillSessionBox(window, sessionBox, attachmentCounterLabel, patient, 0);
         return ;
     }
 
@@ -607,7 +607,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
 
     /* ****************************************************************************** */
 
-    fillSessionBox(window, sessionBox, patient, activeFolder);
+    fillSessionBox(window, sessionBox, attachments_count, patient, activeFolder);
 
 
 }
@@ -626,7 +626,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
  * \param[in] box Existing Session box
  * \param[in] idPatient ID of the current Patient
 */
-void fillSessionBox(GtkWidget *window, GtkWidget *box, Patient *patient, int folderID){
+void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCounterLabel, Patient *patient, int folderID){
 
     if(folderID == 0){
         GtkWidget *label = gtk_label_new("Ce patient n'a pas de dossier associé");
@@ -843,6 +843,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, Patient *patient, int fol
             mediaChooser->patient = patient;
             mediaChooser->folderID = folderID;
             mediaChooser->mediaType = 1;
+            mediaChooser->counterLabel = attachmentCounterLabel;
             g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
 
             /* Manage the frame and its entry to add informations about the session */

@@ -54,9 +54,10 @@ typedef struct{
  * and which Patient it is to store it in the right place
 */
 typedef struct {
-    Patient *patient;     /**< Patient concerned */
-    int folderID;         /**< Identifier of the concerned Folder */
-    int mediaType;      /**< Type of media to be stored in the software: 0 = "profile" 1 = other */
+    Patient *patient;             /**< Patient concerned */
+    int folderID;                 /**< Identifier of the concerned Folder */
+    int mediaType;                /**< Type of media to be stored in the software: 0 = "profile" 1 = other */
+    GtkWidget *counterLabel;      /**< Label containing the number of files */
 }MediaType;
 
 void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
