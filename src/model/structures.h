@@ -20,6 +20,17 @@ typedef struct{
 }Date;
 
 
+/**
+ * \brief The enumeration of archived type
+*/
+typedef enum {ACTIVE,ARCHIVED,ALL}Archived;
+
+
+/**
+ * \brief The enumeration of sort
+*/
+typedef enum {NAME_ASC,NAME_DESC,FIRSTNAME_ASC,FIRSTNAME_DESC,HEIGHT}Sort;
+
 
 /**
  * \brief The enumeration of human genders
