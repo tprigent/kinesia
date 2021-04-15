@@ -919,18 +919,21 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
         for(j=0; j<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); j++){
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
                 char *mediaPath = getFolderMediaPath(attachmentProperties->patient, attachmentProperties->folderID);
-                char *command = (char*) malloc(sizeof(char)*(strlen(fileList[j])+strlen(mediaPath)+strlen("open ")));
+                char *command = (char*) malloc(sizeof(char)*(strlen(fileList[j])+strlen(mediaPath)+strlen("xdg-open ")));
 
                 /* Build open command with file path */
                 if(strcmp(OS, "macOS") == 0) strcpy(command, "open ");
                 if(strcmp(OS, "linux") == 0) strcpy(command, "xdg-open ");
                 strcat(command, mediaPath);
                 strcat(command, fileList[j]);
+                printf("\n ***** TEST : %s *******\n", command);
 
                 system(command);
 
-                free((char*) mediaPath);
-                free((char*) command);
+                printf("\n ******* TEST editor_views l933 ********\n");
+                free(mediaPath);
+                free(command);
+                printf("\n ******* TEST editor_views l936 ********\n");
 
             }
         }
