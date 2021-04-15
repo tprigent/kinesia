@@ -630,14 +630,14 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
                                          "_Ouvrir",
                                          "_Annuler");
     /* Define filters */
-    filter = gtk_file_filter_new();
     if (mediaChooser->mediaType == 0){
+        filter = gtk_file_filter_new();
         gtk_file_filter_add_pattern(filter, "*.jpg");
         gtk_file_filter_add_pattern(filter, "*.jpeg");
         gtk_file_filter_add_pattern(filter, "*.JPEG");
         gtk_file_filter_add_pattern(filter, "*.png");
+        gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
     }
-    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
 
     /* Manage user action */
     if (gtk_native_dialog_run(GTK_NATIVE_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT){
