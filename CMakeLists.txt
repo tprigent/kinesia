@@ -36,6 +36,19 @@ add_executable(Kinesia ${SOURCE_FILES})
 # Code constants
 target_compile_definitions(Kinesia PRIVATE DB_PATH="../src/model/data.db")
 
+# Define OS macro
+if(APPLE)
+    target_compile_definitions(Kinesia PRIVATE OS="macOS")
+endif(APPLE)
+
+if(UNIX AND NOT APPLE)
+    target_compile_definitions(Kinesia PRIVATE OS="linux")
+endif (UNIX AND NOT APPLE)
+
+if(WIN32)
+    target_compile_definitions(Kinesia PRIVATE OS="Windows")
+endif(WIN32)
+
 # Linked libraries
 target_link_libraries(Kinesia sqlite3)
 

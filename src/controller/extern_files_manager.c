@@ -246,7 +246,6 @@ char **getMediaDirectoryContent(Patient *patient, int folderID){
     char **fileList;
     fileList = (char**) malloc(sizeof(char*)*getNbOfAttachments(patient, folderID));
     int i = 0;
-    printf("DEBUG: %s\n",getFolderMediaPath(patient, folderID));
     d = opendir(getFolderMediaPath(patient, folderID));
     if (d){
         while ((dir = readdir(d)) != NULL){

@@ -924,7 +924,8 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
                 char *command = (char*) malloc(sizeof(char)*(strlen(fileList[j])+strlen(mediaPath)+strlen("open ")));
 
                 /* Build open command with file path */
-                strcpy(command, "open ");
+                if(strcmp(OS, "macOS") == 0) strcpy(command, "open ");
+                if(strcmp(OS, "linux") == 0) strcpy(command, "xdg-open ");
                 strcat(command, mediaPath);
                 strcat(command, fileList[j]);
 
