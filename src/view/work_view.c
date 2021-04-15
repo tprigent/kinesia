@@ -593,6 +593,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, Gtk
     g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
     gtk_widget_set_hexpand(new_button, FALSE);
     gtk_widget_set_vexpand(new_button, FALSE);
+    gtk_widget_set_margin_end(new_button, 17);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), new_button, FALSE, FALSE, 0);
 
     GtkWidget *edit_folder_button = NULL;
@@ -813,7 +814,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
 
         /* Manage to display the new session button */
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 8, 1);
+            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 7, 1);
             gtk_widget_set_hexpand(new_session_button[session_cursor], FALSE);
             gtk_widget_set_vexpand(new_session_button[session_cursor], FALSE);
             gtk_widget_set_halign(new_session_button[session_cursor], GTK_ALIGN_END);
