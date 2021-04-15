@@ -567,6 +567,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, Gtk
     attachment_properties->patient = patient;
     attachment_properties->folderID = (int) folder->idFolder;
     attachment_properties->mediaType = 1;
+    attachment_properties->counterLabel = attachments_count;
     g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentListViewer), attachment_properties);
     /* ****************************************************************************** */
 
