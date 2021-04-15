@@ -648,6 +648,7 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
             copyToMedia(filename, mediaChooser->patient , mediaChooser->folderID, "profil");
         } else {
             copyToMedia(filename, mediaChooser->patient , mediaChooser->folderID, basename(filename));
+            gtk_label_set_text(GTK_LABEL(mediaChooser->counterLabel), get_indicator_files_UI(mediaChooser->patient, mediaChooser->folderID));
         }
     }
     gtk_native_dialog_destroy(GTK_NATIVE_DIALOG(dialog));
