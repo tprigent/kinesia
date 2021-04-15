@@ -885,7 +885,9 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
 
     dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
                                          NULL, GTK_DIALOG_MODAL,
-                                         "Annuler", GTK_RESPONSE_CANCEL, "Ouvrir", GTK_RESPONSE_ACCEPT, NULL);
+                                         "Annuler", GTK_RESPONSE_CANCEL,
+                                         "Supprimer", GTK_RESPONSE_DELETE_EVENT,
+                                         "Ouvrir", GTK_RESPONSE_ACCEPT, NULL);
 
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -915,27 +917,38 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 
     /* Action on button */
-    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         int j;
         for(j=0; j<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); j++){
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
                 char *mediaPath = getFolderMediaPath(attachmentProperties->patient, attachmentProperties->folderID);
-                char *command = (char*) malloc(sizeof(char)*(strlen(fileList[j])+strlen(mediaPath)+strlen("xdg-open ")));
+                char *command = (char*) malloc(sizeof(char) * (strlen(fileList[j]) + strlen(mediaPath) + strlen("xdg-open ")));
 
                 /* Build open command with file path */
                 if(strcmp(OS, "macOS") == 0) strcpy(command, "open ");
                 if(strcmp(OS, "linux") == 0) strcpy(command, "xdg-open ");
                 strcat(command, mediaPath);
                 strcat(command, fileList[j]);
-                printf("\n ***** TEST : %s *******\n", command);
 
                 system(command);
 
-                printf("\n ******* TEST editor_views l933 ********\n");
                 free(mediaPath);
                 free(command);
-                printf("\n ******* TEST editor_views l936 ********\n");
+            }
+        }
+    } else if(gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_DELETE_EVENT) {
+        int j;
+        for(j=0; j<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); j++) {
+            if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
+                char *mediaPath = getFolderMediaPath(attachmentProperties->patient, attachmentProperties->folderID);
+                char *filePath = (char *) malloc(sizeof(char) * (strlen(fileList[j]) + strlen(mediaPath) + 5));
 
+                strcpy(filePath, mediaPath);
+                strcat(filePath, fileList[j]);
+
+
+                free(mediaPath);
+                free(filePath);
             }
         }
     }
