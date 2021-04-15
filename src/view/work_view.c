@@ -813,7 +813,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
 
         /* Manage to display the new session button */
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 7, 1);
+            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 8, 1);
             gtk_widget_set_hexpand(new_session_button[session_cursor], FALSE);
             gtk_widget_set_vexpand(new_session_button[session_cursor], FALSE);
             gtk_widget_set_halign(new_session_button[session_cursor], GTK_ALIGN_END);
