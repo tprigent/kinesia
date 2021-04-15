@@ -9,6 +9,7 @@
 #include <ftw.h>
 #include <dirent.h>
 #include <libgen.h>
+#include <ctype.h>
 #include "extern_files_manager.h"
 
 /*!
@@ -34,7 +35,7 @@ void copyToMedia(char *source_path, Patient *patient, int folderID, char *type){
         strcat(dest_path, getExtensionFromPath(source_path));
     } else {
         strcpy(dest_path, folderMediaPath);
-        strcat(dest_path, basename(source_path));
+        strcat(dest_path, replaceWhitespaces(basename(source_path)));
     }
 
     /* Open source file for reading */
@@ -321,4 +322,15 @@ int deleteMediaFolder(Patient *patient) {
         r = rmdir(path);
 
     return r;
+}
+
+char *replaceWhitespaces(char *filename){
+    int i=0;
+    while(filename[i])
+    {
+        if (isspace(filename[i]))
+            filename[i]='_';
+        i++;
+    }
+    return filename;
 }

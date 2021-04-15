@@ -23,5 +23,6 @@ void removeExistingProfilePicture(char *media_path, char *dest_path, char *sourc
 char **getMediaDirectoryContent(Patient *patient, int folderID);
 int getNbOfAttachments(Patient *patient, int folderID);
 int deleteMediaFolder(Patient *patient);
+char *replaceWhitespaces(char *filename);
 
 #endif //LOGICIEL_KINE_EXTERN_FILES_MANAGER_H

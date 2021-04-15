@@ -6,6 +6,7 @@
 
 #include <gtk/gtk.h>
 #include <libgen.h>
+#include <ctype.h>
 #include "work_view.h"
 #include "home_view.h"
 #include "editor_views.h"
