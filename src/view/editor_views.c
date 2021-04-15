@@ -589,7 +589,7 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
     Patient *patient = NULL;
     Address address;
     Date date;
-    int id = getNbPatient();
+    int id = getNbPatient(ALL);
     id++;
 
     allocateAddress(&address);

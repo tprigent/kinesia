@@ -191,15 +191,15 @@ void setHomeEnvironment(GtkWidget *window){
 
     /* ACTIVE PATIENTS */
     //int *activePatient = getActivePatientID();
-    int nbActivePatient = getNbActivePatient();
-    GtkWidget *active_patient_button[getNbActivePatient()];
-    GtkWidget *archive_button[getNbActivePatient()];
-    GtkWidget *active_delete_button[getNbActivePatient()];
+    int nbActivePatient = getNbPatient(ACTIVE);
+    GtkWidget *active_patient_button[nbActivePatient];
+    GtkWidget *archive_button[nbActivePatient];
+    GtkWidget *active_delete_button[nbActivePatient];
 
     idActivePatient = (int*)calloc(nbActivePatient,sizeof(int));
     nameActivePatient = (char**)calloc(nbActivePatient,sizeof(void *));
 
-    getNameFirstnameIdActivePatient(idActivePatient,nameActivePatient,nbActivePatient);
+    getNameFirstnameIdPatient(idActivePatient,nameActivePatient,ACTIVE,NAME_DESC);
 
     for(i=0; i < nbActivePatient; i++){
         //patient_name = getNameFirstnamePatient(activePatient[i]);
@@ -254,18 +254,18 @@ void setHomeEnvironment(GtkWidget *window){
 
     /* ARCHIVED PATIENTS */
     //int *archivedPatient = getArchivedPatientID();
-    int nbArchivedPatient = getNbArchivedPatient();
+    int nbArchivedPatient = getNbPatient(ARCHIVED);
     int* idArchivePatient = NULL;
     char** nomArchivePatient = NULL;
 
-    GtkWidget *archived_patient_button[getNbArchivedPatient()];
-    GtkWidget *unarchive_button[getNbArchivedPatient()];
-    GtkWidget *archived_delete_button[getNbArchivedPatient()];
+    GtkWidget *archived_patient_button[nbArchivedPatient];
+    GtkWidget *unarchive_button[nbArchivedPatient];
+    GtkWidget *archived_delete_button[nbArchivedPatient];
 
     idArchivePatient = (int*)calloc(nbArchivedPatient,sizeof(int));
     nomArchivePatient = (char**)calloc(nbArchivedPatient,sizeof(void *));
 
-    getNameFirstnameIdArchivedPatient(idArchivePatient,nomArchivePatient,nbArchivedPatient);
+    getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED,NAME_ASC);
 
     for(i=0; i < nbArchivedPatient; i++){
         //patient_name = getNameFirstnamePatient(archivedPatient[i]);
