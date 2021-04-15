@@ -946,6 +946,8 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
                 strcpy(filePath, mediaPath);
                 strcat(filePath, fileList[j]);
 
+                remove(filePath);
+                gtk_label_set_text(GTK_LABEL(attachmentProperties->counterLabel), get_indicator_files_UI(attachmentProperties->patient, attachmentProperties->folderID));
 
                 free(mediaPath);
                 free(filePath);
