@@ -105,6 +105,7 @@ brew install adwaita-icon-theme
 See this specific [```README```](tests/README.md).
 
 ### Documentation
+***
 See this specific [```README```](doc/README.md).
 
 ## Credits
