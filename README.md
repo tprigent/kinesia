@@ -8,6 +8,7 @@ It allows them to easily manage patient information and consultation notes.
 2. [Join the project](#join-the-project)
     1. [Installation](#installation)
     2. [Testing](#testing)
+    3. [Documentation](#documentation)
 3. [Credits](#credits)
 
 ## For users
@@ -102,5 +103,8 @@ brew install adwaita-icon-theme
 ### Testing
 ***
 See this specific [```README```](tests/README.md).
+
+### Documentation
+See this specific [```README```](doc/README.md).
 
 ## Credits
