@@ -79,7 +79,7 @@ Install ```homebrew``` if necessary:
 ```
 Then install the following packages:
 ```bash
-brew install cmake                      #for compilation
+brew install make cmake                 #for compilation
 brew install sqlite                     #for model
 brew install gtk+3                      #for UI
 brew install lcov                       #for coverage test reports
