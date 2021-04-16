@@ -46,6 +46,7 @@ sudo apt-get install sqlite3 libsqlite3-dev #for model
 sudo apt-get install libgtk-3-dev           #for UI
 sudo apt-get install lcov                   #for coverage test reports
 sudo apt-get install valgrind               #for memory tests
+sudo apt-get install doxygen                #for documentation generation
 ```
 if needed, add the path `/usr/lib` at the end of ld.so.conf file by doing :
 ```bash
@@ -83,6 +84,7 @@ brew install make cmake                 #for compilation
 brew install sqlite                     #for model
 brew install gtk+3                      #for UI
 brew install lcov                       #for coverage test reports
+brew install doxygen                    #for documentation generation
 brew install adwaita-icon-theme         #for gtk icons if they don't appear while running Kinesia
 ```
 Valgrind is unfortunately not available for macOS. If you want to execute memory tests please use a Linux VM.
