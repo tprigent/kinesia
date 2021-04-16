@@ -85,7 +85,6 @@ brew install sqlite                     #for model
 brew install gtk+3                      #for UI
 brew install lcov                       #for coverage test reports
 brew install doxygen                    #for documentation generation
-brew install adwaita-icon-theme         #for gtk icons if they don't appear while running Kinesia
 ```
 Valgrind is unfortunately not available for macOS. If you want to execute memory tests please use a Linux VM.
 
@@ -93,6 +92,11 @@ You can now run the program by typing the following command at the root of the p
 ```bash
 chmod +x run
 ./run
+```
+
+If you notice that some icons are missing, just install the missing ```gtk``` theme:
+```bash
+brew install adwaita-icon-theme
 ```
 
 ### Testing
