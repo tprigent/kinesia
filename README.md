@@ -8,6 +8,7 @@ It allows them to easily manage patient information and consultation notes.
 2. [Join the project](#join-the-project)
     1. [Installation](#installation)
     2. [Testing](#testing)
+    3. [Documentation](#documentation)
 3. [Credits](#credits)
 
 ## For users
@@ -46,6 +47,7 @@ sudo apt-get install sqlite3 libsqlite3-dev #for model
 sudo apt-get install libgtk-3-dev           #for UI
 sudo apt-get install lcov                   #for coverage test reports
 sudo apt-get install valgrind               #for memory tests
+sudo apt-get install doxygen                #for documentation generation
 ```
 if needed, add the path `/usr/lib` at the end of ld.so.conf file by doing :
 ```bash
@@ -79,11 +81,11 @@ Install ```homebrew``` if necessary:
 ```
 Then install the following packages:
 ```bash
-brew install cmake                      #for compilation
+brew install make cmake                 #for compilation
 brew install sqlite                     #for model
 brew install gtk+3                      #for UI
 brew install lcov                       #for coverage test reports
-brew install adwaita-icon-theme         #for gtk icons if they don't appear while running Kinesia
+brew install doxygen                    #for documentation generation
 ```
 Valgrind is unfortunately not available for macOS. If you want to execute memory tests please use a Linux VM.
 
@@ -93,8 +95,17 @@ chmod +x run
 ./run
 ```
 
+If you notice that some icons are missing, just install the missing ```gtk``` theme:
+```bash
+brew install adwaita-icon-theme
+```
+
 ### Testing
 ***
 See this specific [```README```](tests/README.md).
+
+### Documentation
+***
+See this specific [```README```](doc/README.md).
 
 ## Credits

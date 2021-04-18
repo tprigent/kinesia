@@ -4,7 +4,7 @@ main_UI
 .DS_Store
 .idea/
 cmake-build-debug/
-doc/
+doc/html/
 tests/*.log
 tests/covreport*/
 build/
