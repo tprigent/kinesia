@@ -321,3 +321,78 @@ int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
 
     return 1;
 }
+
+int searchPatient(char* search,char** result,int lenRes){
+
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc1,rc2,i;
+    char *sql1;
+    char *sql2;
+    sqlite3_stmt *stmt1;
+    sqlite3_stmt *stmt2;
+    char *searchStr;
+
+    searchStr = malloc(strlen(search)* sizeof(char)+2);
+
+    rc1 = sqlite3_open(DB_PATH, &db);
+
+    if( rc1 ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    sql1 = "SELECT name,firstname FROM patient WHERE name LIKE ?";
+    sql2 = "SELECT name,firstname FROM patient WHERE firstname LIKE ?";
+
+    rc1 = sqlite3_prepare_v2(db,sql1,-1,&stmt1,NULL);
+    rc2 = sqlite3_prepare_v2(db,sql2,-1,&stmt2,NULL);
+    if( rc1 != SQLITE_OK || rc2 != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    strcpy(searchStr,"%");
+    strcat(searchStr,search);
+    strcat(searchStr,"%");
+
+    sqlite3_bind_text(stmt1,1,searchStr,(int)strlen(searchStr),NULL);
+    sqlite3_bind_text(stmt2,1,searchStr,(int)strlen(searchStr),NULL);
+
+    i=0;
+    while(sqlite3_step(stmt1) == SQLITE_ROW && i<lenRes) {
+
+        if (allocateStringPatient(&result[i], LG_MAX_INFO * 2) == -1) {
+            fprintf(stderr, "Erreur allocation getNomPrenom");
+            return 0;
+        }
+
+        strcpy(result[i], (char *) sqlite3_column_text(stmt1, 0));
+        char *space = " ";
+        strcat(result[i], space);
+        strcat(result[i], (char *) sqlite3_column_text(stmt1, 1));
+        i++;
+
+    }
+    while(sqlite3_step(stmt2)== SQLITE_ROW && i<lenRes) {
+
+        if (allocateStringPatient(&result[i], LG_MAX_INFO * 2) == -1) {
+            fprintf(stderr, "Erreur allocation getNomPrenom");
+            return 0;
+        }
+
+        strcpy(result[i], (char *) sqlite3_column_text(stmt2, 0));
+        char *space = " ";
+        strcat(result[i], space);
+        strcat(result[i], (char *) sqlite3_column_text(stmt2, 1));
+        i++;
+    }
+
+    free(searchStr);
+
+    sqlite3_close(db);
+
+    return 1;
+}

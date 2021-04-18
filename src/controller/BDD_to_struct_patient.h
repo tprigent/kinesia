@@ -12,5 +12,6 @@ int getNbPatient(Archived a);
 char* getNameFirstnamePatient(int id);
 Patient* getPatient(int id);
 int getNameFirstnameIdPatient(int* tabId, char** nom, Archived a,Sort s);
+int searchPatient(char* search,char** result,int lenRes);
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_PATIENT_H
