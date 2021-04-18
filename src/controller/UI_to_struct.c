@@ -19,6 +19,11 @@
  * \param[in] new_session SessionEntries containing all of the data of the Session to be saved
 */
 void saveSessionEntries(GtkWidget *save_button, SessionEntries *new_session){
+    /* CHANGE NOTEBOOK PAGE NAME */
+    GtkWidget *label = gtk_label_new((char*)gtk_entry_get_text(GTK_ENTRY(new_session->sessionName)));
+    GtkWidget *currentPage = gtk_notebook_get_nth_page(GTK_NOTEBOOK(new_session->notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(new_session->notebook)));
+    gtk_notebook_set_tab_label(GTK_NOTEBOOK(new_session->notebook), currentPage, label);
+
     /* SESSION NAME */
     strcpy(new_session->session->sessionName, (char*)gtk_entry_get_text(GTK_ENTRY(new_session->sessionName)));
 
