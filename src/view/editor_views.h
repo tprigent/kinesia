@@ -6,7 +6,6 @@
 #ifndef SESSION_CONTROLLER_H
 #define SESSION_CONTROLLER_H
 
-#include "file_view.h"
 #include "../model/structures.h"
 #include "../model/patient_manager.h"
 #include "../controller/BDD_to_struct_patient.h"
