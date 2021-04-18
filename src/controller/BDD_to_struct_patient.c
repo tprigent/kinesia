@@ -322,7 +322,7 @@ int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
     return 1;
 }
 
-int searchPatient(char* search,char** result,int lenRes){
+int searchPatient(char* search,char** result,int* ids,int lenRes){
 
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -344,8 +344,8 @@ int searchPatient(char* search,char** result,int lenRes){
         fprintf(stderr,"Opened database successfully\n");
     }
 
-    sql1 = "SELECT name,firstname FROM patient WHERE name LIKE ?";
-    sql2 = "SELECT name,firstname FROM patient WHERE firstname LIKE ?";
+    sql1 = "SELECT name,firstname,id FROM patient WHERE name LIKE ?";
+    sql2 = "SELECT name,firstname,id FROM patient WHERE firstname LIKE ?";
 
     rc1 = sqlite3_prepare_v2(db,sql1,-1,&stmt1,NULL);
     rc2 = sqlite3_prepare_v2(db,sql2,-1,&stmt2,NULL);
@@ -373,6 +373,7 @@ int searchPatient(char* search,char** result,int lenRes){
         char *space = " ";
         strcat(result[i], space);
         strcat(result[i], (char *) sqlite3_column_text(stmt1, 1));
+        ids[i] = sqlite3_column_int(stmt1,2);
         i++;
 
     }
@@ -387,6 +388,7 @@ int searchPatient(char* search,char** result,int lenRes){
         char *space = " ";
         strcat(result[i], space);
         strcat(result[i], (char *) sqlite3_column_text(stmt2, 1));
+        ids[i] = sqlite3_column_int(stmt2,2);
         i++;
     }
 
