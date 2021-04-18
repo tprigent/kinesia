@@ -7,7 +7,9 @@ project(Logiciel_Kine C)
 
 # Modules included
 include(FindPkgConfig)
+find_package(PkgConfig)
 find_package(SQLite3)
+find_package(gtk)
 pkg_check_modules(GTK3 REQUIRED "gtk+-3.0")
 include_directories(${GTK3_INCLUDE_DIRS})
 link_directories(${GTK3_LIBRARY_DIRS})
@@ -50,7 +52,7 @@ if(WIN32)
 endif(WIN32)
 
 # Linked libraries
-target_link_libraries(Kinesia sqlite3)
+target_link_libraries(Kinesia sqlite3 )
 
 # Threads
 find_package(Threads REQUIRED)

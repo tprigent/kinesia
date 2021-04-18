@@ -5,6 +5,7 @@
 
 #include <gtk/gtk.h>
 #include "home_view.h"
+#include <stdlib.h>
 
 
 /*!

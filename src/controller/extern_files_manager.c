@@ -182,7 +182,7 @@ char *getPatientMediaPath(Patient *patient){
     tostring(charID, (int) patient->id);
     strcat(media_path, charID);
     strcat(media_path, "/");
-    mkdir(media_path, 0700);
+    //mkdir(media_path, 0700);
 
     free((char*) charID);
     return(media_path);
@@ -198,7 +198,7 @@ char *getFolderMediaPath(Patient *patient, int folderID){
     tostring(charID, folderID);
     strcat(folderMediaPath, charID);
     strcat(folderMediaPath, "/");
-    mkdir(folderMediaPath, 0700);
+    //mkdir(folderMediaPath, 0700);
 
     return folderMediaPath;
 }
