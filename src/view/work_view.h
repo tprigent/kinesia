@@ -22,6 +22,13 @@ typedef struct {
     int patientID;          /**< ID of the current Patient to refresh view */
 }AddFirstSessionStruct;
 
+typedef struct {
+    GtkWidget *window;      /**< window to refresh view */
+    int folderID;           /**< ID of the Folder to be deleted */
+    int sessionID;          /**< ID of the Session to be deleted */
+    int isFolder;           /**< Determines if it's a folder */
+}DeleteElements;
+
 GtkWidget *setWorkWindow(int id_patient, int id_folder);
 void setWorkEnvironment(Window_id *window_id);
 
@@ -31,6 +38,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 void launchWorkView(GtkWidget *but, Window_id *window_id);
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct);
 void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, Patient *patient);
+void launchDeleteWarning(GtkWidget *button, char *title);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);

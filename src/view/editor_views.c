@@ -11,6 +11,10 @@
 #include "home_view.h"
 #include "editor_views.h"
 #include "../controller/struct_to_BDD_patient.h"
+#include "../controller/struct_to_BDD_session.h"
+#include "../controller/struct_to_BDD_folder.h"
+#include "../controller/BDD_to_struct_folder.h"
+#include "../controller/BDD_to_struct_session.h"
 #include "../controller/display_helpers.h"
 #include "../controller/UI_to_struct.h"
 #include "../model/folder_manager.h"
@@ -716,7 +720,6 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     Patient *patient;
 
     patient = getPatient((int) warning->patientID);
-    printf("\n ******* TEST isArchived %s %d *********\n", patient->name, patient->isArchived);
     if(warning->actionType == 0){
         dialog = gtk_dialog_new_with_buttons ("Suppression d'une fiche patient",NULL,GTK_DIALOG_MODAL,
                                               "Annuler",GTK_RESPONSE_REJECT,
@@ -961,4 +964,65 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
         }
     }
     gtk_widget_destroy(dialog);
+}
+
+void launchDeleteElement(GtkWidget *button, DeleteElements *element){
+    GtkWidget *dialog;
+    GtkWidget *content_area;
+    GtkWidget *title;
+    GtkWidget *explanations;
+    GtkWidget *elementName;
+    GdkPixbuf *symbolPixbuf;
+    GtkWidget *symbol;
+
+    dialog = gtk_dialog_new_with_buttons ("Suppression d'un élément du dossier",NULL,GTK_DIALOG_MODAL,
+                                          "Annuler",GTK_RESPONSE_REJECT,
+                                          "Supprimer", GTK_RESPONSE_ACCEPT,NULL);
+
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    /* CREATE A GRID IN THE DIALOG BOX */
+    GtkWidget *grid_dialog = NULL;
+    grid_dialog = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_dialog), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
+
+    title = gtk_label_new(NULL);
+    gtk_label_set_markup(GTK_LABEL(title), "<b><big>Attention, vous êtes sur le point de supprimer un élément.</big></b>");
+    explanations = gtk_label_new("Toutes les informations relatives seront également supprimées.");
+    symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
+    if(element->isFolder){
+        elementName = gtk_label_new(getFolder(element->folderID)->folderName);
+    } else {
+        elementName = gtk_label_new(getSession(element->sessionID)->sessionName);
+    }
+    symbol = gtk_image_new_from_pixbuf(symbolPixbuf);
+
+    /* FILL THE GRID */
+    gtk_grid_attach(GTK_GRID(grid_dialog), title, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), explanations, title, GTK_POS_BOTTOM, 5,1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), elementName, explanations, GTK_POS_BOTTOM, 5, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), GTK_WIDGET(symbol), elementName, GTK_POS_BOTTOM, 5,1);
+
+    /* SETUP THE VIEW PARAMETERS */
+    gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 300, 125);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    gtk_widget_show_all(dialog);
+
+    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        if(element->isFolder){
+            //deleteFoler(element->folderID);
+        } else {
+            //deleteSession(element->sessionID);
+        }
+        gtk_widget_destroy(dialog);
+        gtk_widget_destroy(element->window);
+    } else {
+        gtk_widget_destroy(dialog);
+    }
+
 }
