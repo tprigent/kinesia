@@ -68,5 +68,6 @@ void launchCalendar(GtkWidget *button, GtkWidget *entry);
 void launchPatientWarning(GtkWidget *button, WarningType *warning);
 void launchSettingsEditor(GtkWidget *button, GtkWidget *window);
 void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperties);
+void launchDeleteElement(GtkWidget *button, DeleteElements *element);
 
 #endif
