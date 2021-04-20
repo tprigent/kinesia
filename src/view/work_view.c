@@ -338,10 +338,10 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         fillFolderBox(window, folderBox, sessionBox, NULL, folderIDTab[nb_folders - 1], patient);
     }
     else if(nb_folders>0 && id_folder != 0){
-        fillFolderBox(window, folderBox, NULL, sessionBox, id_folder, patient);
+        fillFolderBox(window, folderBox, sessionBox, NULL, id_folder, patient);
     }
     else{
-        fillFolderBox(window, folderBox, NULL, sessionBox,0, patient);
+        fillFolderBox(window, folderBox, sessionBox, NULL,0, patient);
     }
 
 
@@ -713,7 +713,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
     session_list = getSessionList(folderID);
     setOnFirst(session_list);
-
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         grid_add_session[session_cursor] = gtk_grid_new();
 
@@ -757,7 +756,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
         setOnNext(session_list);
     }
-
 
     /* MANAGE GRID WHICH ORGANIZES THE SESSION SECTION */
     gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 0);
@@ -853,7 +851,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
 
         /* Manage to display the delete session button */
-        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), delete_button[session_cursor], session_attach_button[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        /*gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), delete_button[session_cursor], session_attach_button[session_cursor], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(delete_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(delete_button[session_cursor], TRUE);
         gtk_widget_set_valign(delete_button[session_cursor], GTK_ALIGN_END);
@@ -861,14 +859,13 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         sessionDelete->isFolder = 0;
         sessionDelete->sessionID = (int) session_list[session_cursor].current->session.idSession;
         g_signal_connect(GTK_BUTTON(delete_button[session_cursor]), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete);
-
+*/
 
         /* Manage the frame and its entry to add informations about the session */
         gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, (float)0.5);
         gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 11, 3);
         gtk_widget_set_hexpand(frame_session_note[session_cursor], TRUE);
         gtk_widget_set_vexpand(frame_session_note[session_cursor], TRUE);
-
 
         gtk_container_add(GTK_CONTAINER(frame_session_note[session_cursor]), text_box[session_cursor]);
         gtk_container_add(GTK_CONTAINER(text_box[session_cursor]), text_session_note[session_cursor]);
