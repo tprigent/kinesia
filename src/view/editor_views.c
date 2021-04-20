@@ -1020,7 +1020,7 @@ void launchDeleteElement(GtkWidget *button, DeleteElements *element){
             //deleteSession(element->sessionID);
         }
         gtk_widget_destroy(dialog);
-        gtk_widget_destroy(element->window);
+        //gtk_widget_destroy(element->window);
     } else {
         gtk_widget_destroy(dialog);
     }
