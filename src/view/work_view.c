@@ -12,6 +12,7 @@
 #include "../controller/display_helpers.h"
 #include "../controller/BDD_to_struct_folder.h"
 #include "../controller/BDD_to_struct_session.h"
+#include "../controller/struct_to_BDD_session.h"
 #include "../model/session_manager.h"
 
 
@@ -851,7 +852,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
 
         /* Manage to display the delete session button */
-        /*gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), delete_button[session_cursor], session_attach_button[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), delete_button[session_cursor], session_attach_button[session_cursor], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(delete_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(delete_button[session_cursor], TRUE);
         gtk_widget_set_valign(delete_button[session_cursor], GTK_ALIGN_END);
@@ -859,7 +860,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         sessionDelete->isFolder = 0;
         sessionDelete->sessionID = (int) session_list[session_cursor].current->session.idSession;
         g_signal_connect(GTK_BUTTON(delete_button[session_cursor]), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete);
-*/
+
 
         /* Manage the frame and its entry to add informations about the session */
         gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, (float)0.5);
@@ -1049,7 +1050,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     gtk_notebook_insert_page(GTK_NOTEBOOK(notebook), grid_add_session, gtk_label_new(new_session_name), 0);
     free(new_session_name);
 
-    //freeSession(new_session);
+    addSession(new_session);
     gtk_widget_show_all(notebook);
 
 }
