@@ -1015,9 +1015,11 @@ void launchDeleteElement(GtkWidget *button, DeleteElements *element){
 
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         if(element->isFolder){
-            //deleteFoler(element->folderID);
-            //gtk_widget_destroy(element->window);
+            deleteFoler(element->folderID);
             gtk_widget_destroy(dialog);
+            gtk_widget_destroy(element->window);
+            setWorkWindow(element->patientID, 0);
+
         } else {
             deleteSession(element->sessionID);
             gtk_notebook_remove_page(GTK_NOTEBOOK(element->notebook), gtk_notebook_get_current_page (GTK_NOTEBOOK(element->notebook)));
