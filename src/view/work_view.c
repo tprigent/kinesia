@@ -833,14 +833,15 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_widget_set_vexpand(save_button[session_cursor], FALSE);
         gtk_widget_set_halign(save_button[session_cursor], GTK_ALIGN_END);
 
-        saveSession[session_cursor] = (SessionEntries*) malloc(sizeof(SessionEntries));
-        saveSession[session_cursor]->session = &session_list->current->session;
-        saveSession[session_cursor]->origin = (int) session_list->current->session.idSession;
-        saveSession[session_cursor]->sessionName = entry_title_new[session_cursor];
-        saveSession[session_cursor]->sessionDate = entry_date_new[session_cursor];
-        saveSession[session_cursor]->nextSessionDate = entry_next_meeting[session_cursor];
-        saveSession[session_cursor]->observations = text_session_note[session_cursor];
-        g_signal_connect(GTK_BUTTON(save_button[session_cursor]), "clicked", G_CALLBACK(saveSessionEntries), saveSession[session_cursor]);
+            saveSession[session_cursor] = (SessionEntries*) malloc(sizeof(SessionEntries));
+            saveSession[session_cursor]->session = &session_list->current->session;
+            saveSession[session_cursor]->origin = (int) session_list->current->session.idSession;
+            saveSession[session_cursor]->sessionName = entry_title_new[session_cursor];
+            saveSession[session_cursor]->sessionDate = entry_date_new[session_cursor];
+            saveSession[session_cursor]->nextSessionDate = entry_next_meeting[session_cursor];
+            saveSession[session_cursor]->observations = text_session_note[session_cursor];
+            saveSession[session_cursor]->notebook = notebook;
+            g_signal_connect(GTK_BUTTON(save_button[session_cursor]), "clicked", G_CALLBACK(saveSessionEntries), saveSession[session_cursor]);
 
 
         /* Manage the button to attach items */
@@ -1037,6 +1038,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     saveSession->sessionDate = entry_date_new;
     saveSession->nextSessionDate = entry_next_meeting;
     saveSession->observations = text_session_note;
+    saveSession->notebook = notebook;
     g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveSessionEntries), saveSession);
 
     /* Manage the button to attach items */
