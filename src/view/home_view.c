@@ -104,8 +104,7 @@ void setHomeEnvironment(GtkWidget *window){
     GtkWidget *button_parameters = NULL;
     GtkWidget *calendar = NULL;
     GtkWidget *button_new_patient = NULL;
-    GtkWidget *entry_research = NULL;
-    GtkWidget *button_research = NULL;
+    GtkWidget *entry_search = NULL;
     GtkWidget *tabs = NULL;
 
 
@@ -125,8 +124,7 @@ void setHomeEnvironment(GtkWidget *window){
     button_parameters = gtk_button_new_from_icon_name("emblem-system", GTK_ICON_SIZE_MENU);
     calendar = gtk_calendar_new();
     button_new_patient = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
-    entry_research = gtk_entry_new();
-    button_research = gtk_button_new_from_icon_name("system-search", GTK_ICON_SIZE_MENU);
+    entry_search = gtk_search_entry_new();
     tabs = gtk_notebook_new();
 
     /* GRID WHICH ORGANIZES THE WINDOW */
@@ -155,23 +153,24 @@ void setHomeEnvironment(GtkWidget *window){
 
 
     /* Search a patient */
-    gtk_grid_attach_next_to(GTK_GRID(grid), entry_research, frame_calendar, GTK_POS_RIGHT, 1, 1);
-    gtk_widget_set_valign(entry_research, GTK_ALIGN_START);
-    gtk_widget_set_hexpand(entry_research, TRUE);
-    gtk_grid_attach_next_to(GTK_GRID(grid), button_research, entry_research, GTK_POS_RIGHT, 3, 1);
-    gtk_widget_set_halign(button_research, GTK_ALIGN_START);
-    gtk_widget_set_valign(button_research, GTK_ALIGN_START);
-    gtk_widget_set_hexpand(button_research, TRUE);
+    gtk_grid_attach_next_to(GTK_GRID(grid), entry_search, frame_calendar, GTK_POS_RIGHT, 2, 1);
+    gtk_widget_set_valign(entry_search, GTK_ALIGN_START);
+    gtk_widget_set_hexpand(entry_search, TRUE);
+    SearchParam *patientSearchParam = (SearchParam *) malloc(sizeof(SearchParam));
+    patientSearchParam->entry = entry_search;
+    patientSearchParam->notebook = tabs;
+    patientSearchParam->window = window;
+    g_signal_connect(entry_search, "activate", G_CALLBACK(processSearch), patientSearchParam);
 
     /* Add a new patient */
     g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), window);
-    gtk_grid_attach_next_to(GTK_GRID(grid), button_new_patient, button_research, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid), button_new_patient, entry_search, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_halign(button_new_patient, GTK_ALIGN_END);
     gtk_widget_set_valign(button_new_patient, GTK_ALIGN_START);
     gtk_widget_set_hexpand(button_new_patient, TRUE);
 
     /* Box patient */
-    gtk_grid_attach_next_to(GTK_GRID(grid), tabs, entry_research, GTK_POS_BOTTOM, 6,1);
+    gtk_grid_attach_next_to(GTK_GRID(grid), tabs, entry_search, GTK_POS_BOTTOM, 6,1);
     gtk_widget_set_hexpand(tabs, TRUE);
     gtk_widget_set_vexpand(tabs, TRUE);
     gtk_widget_set_margin_top(tabs, 15);
@@ -186,12 +185,10 @@ void setHomeEnvironment(GtkWidget *window){
 
     /* ADD PATIENTS */
     int i;
-    //char *patient_name;
     char** nameActivePatient;
     int* idActivePatient;
 
     /* ACTIVE PATIENTS */
-    //int *activePatient = getActivePatientID();
     int nbActivePatient = getNbPatient(ACTIVE);
     GtkWidget *active_patient_button[nbActivePatient];
     GtkWidget *archive_button[nbActivePatient];
@@ -203,7 +200,6 @@ void setHomeEnvironment(GtkWidget *window){
     getNameFirstnameIdPatient(idActivePatient,nameActivePatient,ACTIVE,NAME_DESC);
 
     for(i=0; i < nbActivePatient; i++){
-        //patient_name = getNameFirstnamePatient(activePatient[i]);
         active_patient_button[i] = gtk_button_new_with_label(nameActivePatient[i]);
         archive_button[i] = gtk_button_new_from_icon_name("user-trash", GTK_ICON_SIZE_MENU);
         active_delete_button[i] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
@@ -254,7 +250,6 @@ void setHomeEnvironment(GtkWidget *window){
     free(nameActivePatient);
 
     /* ARCHIVED PATIENTS */
-    //int *archivedPatient = getArchivedPatientID();
     int nbArchivedPatient = getNbPatient(ARCHIVED);
     int* idArchivePatient = NULL;
     char** nomArchivePatient = NULL;
@@ -269,8 +264,6 @@ void setHomeEnvironment(GtkWidget *window){
     getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED,NAME_ASC);
 
     for(i=0; i < nbArchivedPatient; i++){
-        //patient_name = getNameFirstnamePatient(archivedPatient[i]);
-        //archived_patient_button[i] = gtk_button_new_with_label(patient_name);
         archived_patient_button[i] = gtk_button_new_with_label(nomArchivePatient[i]);
         unarchive_button[i] = gtk_button_new_from_icon_name("edit-undo", GTK_ICON_SIZE_MENU);
         archived_delete_button[i] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
@@ -372,4 +365,80 @@ Session *createEmptySession(int idFolder){
     newSession->idFolder = idFolder;
 
     return newSession;
+}
+
+void processSearch(GtkWidget *button, SearchParam *search){
+
+    /* Check if entry is null */
+    char *searchEntry = (char*) gtk_entry_get_text(GTK_ENTRY(search->entry));
+    if(strcmp(searchEntry, "") == 0) return;
+
+    /* Initialise variables */
+    GtkWidget *grid_searched_patient;
+    GtkWidget *box_searched_patient;
+    GtkWidget *no_patient_found_label;
+
+    char *tabTitle = (char*) malloc(sizeof(char)*(strlen(searchEntry)+strlen("Recherche: \" \"")));
+
+    char **searchResult = (char**) malloc(sizeof(char)*1000);
+    int *idResult = (int*) malloc(sizeof(int));
+
+    int nbOfResults = searchPatient(searchEntry, searchResult, idResult, 500);
+
+    /* Define containers */
+    grid_searched_patient = gtk_grid_new();
+    box_searched_patient = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_searched_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+
+
+    gtk_grid_set_row_spacing(GTK_GRID(grid_searched_patient), 5);
+    gtk_container_add(GTK_CONTAINER(box_searched_patient), grid_searched_patient);
+
+    /* Set tab content */
+    int i;
+    GtkWidget *searched_patient_button[nbOfResults];
+
+    if(nbOfResults == 0){
+        no_patient_found_label = gtk_label_new("<big><i>Aucun patient correspondant à la recherche...</i></big>");
+        gtk_label_set_use_markup(GTK_LABEL(no_patient_found_label), TRUE);
+        gtk_grid_attach(GTK_GRID(grid_searched_patient), no_patient_found_label, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_widget_set_hexpand(no_patient_found_label, TRUE);
+        gtk_widget_set_vexpand(no_patient_found_label, TRUE);
+    }
+
+    for(i=0; i < nbOfResults ; i++) {
+        searched_patient_button[i] = gtk_button_new_with_label(searchResult[i]);
+
+        if (i == 0) {
+            gtk_grid_attach(GTK_GRID(grid_searched_patient), searched_patient_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
+            gtk_widget_set_margin_top(searched_patient_button[0], 5);
+        } else {
+            gtk_grid_attach_next_to(GTK_GRID(grid_searched_patient), searched_patient_button[i], searched_patient_button[i - 1],
+                                    GTK_POS_BOTTOM, 5, 1);
+        }
+        gtk_widget_set_hexpand(searched_patient_button[i], TRUE);
+        gtk_widget_set_vexpand(searched_patient_button[i], FALSE);
+
+        Window_id *window_id_searched[nbOfResults];
+        window_id_searched[i] = (Window_id*) malloc(sizeof(Window_id));
+        window_id_searched[i]->window = search->window;
+        window_id_searched[i]->patientID = idResult[i];
+        window_id_searched[i]->folderID = 0;
+        g_signal_connect(GTK_BUTTON(searched_patient_button[i]), "clicked", G_CALLBACK(launchWorkView), window_id_searched[i]);
+
+
+    }
+
+    /* Refresh the notebook */
+    strcpy(tabTitle, "Recherche: \"");
+    strcat(tabTitle, searchEntry);
+    strcat(tabTitle, "\"");
+    if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(search->notebook))) {
+        gtk_notebook_remove_page(GTK_NOTEBOOK(search->notebook), 2);
+    }
+    gtk_notebook_insert_page(GTK_NOTEBOOK(search->notebook), box_searched_patient, gtk_label_new(tabTitle), -1);
+
+    gtk_widget_show_all(search->notebook);
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(search->notebook), -1);
+    gtk_widget_show_all(search->notebook);
 }

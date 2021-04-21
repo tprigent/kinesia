@@ -71,8 +71,6 @@ char* getNameFirstnamePatient(int id){
 
 }
 
-
-
 /*!
  * \brief This function makes an SQL request, fills a Patient struct previously allocated
  * with the results of the request and return the addressof the Patient struct allcated.
@@ -322,7 +320,7 @@ int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
     return 1;
 }
 
-int searchPatient(char* search,char** result,int* ids,int lenRes){
+int searchPatient(char* search,char** result, int* ids, int lenRes){
 
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -337,7 +335,7 @@ int searchPatient(char* search,char** result,int* ids,int lenRes){
 
     if( rc1 ) {
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-        return 0;
+        return -1;
     } else {
         fprintf(stderr,"Opened database successfully\n");
     }
@@ -361,13 +359,13 @@ int searchPatient(char* search,char** result,int* ids,int lenRes){
 
         if (allocateStringPatient(&result[i], LG_MAX_INFO * 2) == -1) {
             fprintf(stderr, "Erreur allocation getNomPrenom");
-            return 0;
+            return -1;
         }
 
-        strcpy(result[i], (char *) sqlite3_column_text(stmt1, 0));
+        strcpy(result[i], (char *) sqlite3_column_text(stmt1, 1));
         char *space = " ";
         strcat(result[i], space);
-        strcat(result[i], (char *) sqlite3_column_text(stmt1, 1));
+        strcat(result[i], (char *) sqlite3_column_text(stmt1, 0));
         ids[i] = sqlite3_column_int(stmt1,2);
         i++;
 
@@ -377,5 +375,5 @@ int searchPatient(char* search,char** result,int* ids,int lenRes){
 
     sqlite3_close(db);
 
-    return 1;
+    return i;
 }
