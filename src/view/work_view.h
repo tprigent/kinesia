@@ -12,9 +12,10 @@
 #include "home_view.h"
 
 typedef struct {
-    GtkWidget *notebook;      /**< notebook in which sessions are added */
-    int folderID;           /**< ID of the Folder to be edited */
-    int patientID;          /**< ID of the current patient */
+    GtkWidget *notebook;             /**< notebook in which sessions are added */
+    GtkWidget *attachmentLabel;      /**< Label to increment number of attachments */
+    int folderID;                    /**< ID of the Folder to be edited */
+    int patientID;                   /**< ID of the current patient */
 }AddNewSessionStruct;
 
 typedef struct {
@@ -40,7 +41,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
 void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCounterLabel, Patient *patient, int folderID);
 void launchWorkView(GtkWidget *but, Window_id *window_id);
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct);
-void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, Patient *patient);
+void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct);
 void launchDeleteWarning(GtkWidget *button, char *title);
 
 void setStartMargin(GtkWidget *widget);
