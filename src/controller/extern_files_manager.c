@@ -102,16 +102,16 @@ char *getExtensionFromPath(char *path){
  * \param[in] patient Patient concerned
  * \param[out] Profile photo extension
 */
-char *getProfileExtension(Patient *patient){
+char *getProfileExtension(int patientID){
     char *stringID = (char*) malloc(sizeof(char)*strlen("000000"));
 
-    char *path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *path_jpeg = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *path_JPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *path_png = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
-    char *path_jpg = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+strlen(patient->firstname)+strlen(patient->name)+strlen("profil")+10));
+    char *path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+10+strlen("profil")+10));
+    char *path_jpeg = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+10+strlen("profil")+10));
+    char *path_JPEG = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+10+strlen("profil")+10));
+    char *path_png = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+10+strlen("profil")+10));
+    char *path_jpg = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/")+10+strlen("profil")+10));
     strcpy(path, "../media/patient-data/");
-    tostring(stringID, (int) patient->id);
+    tostring(stringID, patientID);
     strcat(path, stringID);
     strcat(path, "/");
 
@@ -160,15 +160,15 @@ char *getProfileExtension(Patient *patient){
  * \param[in] patient Patient concerned
  * \param[out] Profile photo path
 */
-char *getProfilePhotoPath(Patient *patient){
+char *getProfilePhotoPath(int patientID){
     char *charID = (char*) malloc(sizeof(char)*10);
     char *photo_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/profil.jpeg")+40));
     strcpy(photo_path, "../media/patient-data/");
-    tostring(charID, (int) patient->id);
+    tostring(charID, (int) patientID);
     strcat(photo_path, charID);
     strcat(photo_path, "/");
     strcat(photo_path, "profil");
-    strcat(photo_path, getProfileExtension(patient));
+    strcat(photo_path, getProfileExtension(patientID));
     printf("%s\n", photo_path);
 
     free((char*) charID);
@@ -280,7 +280,7 @@ int getNbOfAttachments(int patientID, int folderID){
 }
 
 int deleteMediaFolder(int patientID) {
-    char *path = getPatientMediaPath(patientID);
+    char *path = getProfilePhotoPath(patientID);
     DIR *d = opendir(path);
     size_t path_len = strlen(path);
     int r = -1;
