@@ -336,13 +336,13 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     }
 
     if(nb_folders>0 && id_folder == 0){
-        fillFolderBox(window, folderBox, sessionBox, NULL, folderIDTab[nb_folders - 1], patient);
+        fillFolderBox(window, folderBox, sessionBox, folderIDTab[nb_folders - 1], patient);
     }
     else if(nb_folders>0 && id_folder != 0){
-        fillFolderBox(window, folderBox, sessionBox, NULL, id_folder, patient);
+        fillFolderBox(window, folderBox, sessionBox, id_folder, patient);
     }
     else{
-        fillFolderBox(window, folderBox, sessionBox, NULL,0, patient);
+        fillFolderBox(window, folderBox, sessionBox, 0, patient);
     }
 
 
@@ -366,7 +366,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
  *
  * \param[in] box Existing Folder box
 */
-void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, GtkWidget *attachmentCounterLabel, int activeFolder, Patient *patient){
+void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int activeFolder, Patient *patient){
 
     /* Getting folder  ************************************************************** */
     Folder *folder = NULL;
@@ -393,7 +393,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, Gtk
         idPatient->window = window;
         g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
 
-        fillSessionBox(window, sessionBox, attachmentCounterLabel, patient, 0);
+        fillSessionBox(window, sessionBox, NULL, patient, 0);
         return ;
     }
 
