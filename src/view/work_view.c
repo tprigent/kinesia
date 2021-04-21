@@ -859,6 +859,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         DeleteElements *sessionDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
         sessionDelete->isFolder = 0;
         sessionDelete->sessionID = (int) session_list[session_cursor].current->session.idSession;
+        sessionDelete->notebook = notebook;
         g_signal_connect(GTK_BUTTON(delete_button[session_cursor]), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete);
 
 
