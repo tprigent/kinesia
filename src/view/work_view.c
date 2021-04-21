@@ -921,6 +921,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     GtkWidget *entry_next_meeting;
     GtkWidget *calendar_next_meeting_button = NULL;
     GtkWidget *session_attach_button;
+    GtkWidget *delete_button = NULL;
     GtkWidget *text_session_note;
     GtkTextBuffer *session_buffer;
     GtkTextIter end;
@@ -953,6 +954,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
+    delete_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
 
     text_session_note = gtk_text_view_new();
     session_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_session_note));
@@ -1034,6 +1036,17 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, entry_title_new, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session_attach_button, FALSE);
     gtk_widget_set_vexpand(session_attach_button, FALSE);
+
+    /* Manage to display the delete session button */
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), delete_button, session_attach_button, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(delete_button, FALSE);
+    gtk_widget_set_vexpand(delete_button, TRUE);
+    gtk_widget_set_valign(delete_button, GTK_ALIGN_END);
+    DeleteElements *sessionDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
+    sessionDelete->isFolder = 0;
+    sessionDelete->sessionID = (int) newSessionStruct->folderID;
+    g_signal_connect(GTK_BUTTON(delete_button), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete);
+
 
     /* Manage the frame and its entry to add informations about the session */
     gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, (float) 0.5);
