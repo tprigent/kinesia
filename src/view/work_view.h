@@ -24,6 +24,7 @@ typedef struct {
 
 typedef struct {
     GtkWidget *window;      /**< window to refresh view */
+    GtkWidget *notebook;    /**< notebook to remove session */
     int folderID;           /**< ID of the Folder to be deleted */
     int sessionID;          /**< ID of the Session to be deleted */
     int isFolder;           /**< Determines if it's a folder */
