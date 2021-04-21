@@ -368,7 +368,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 */
 void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int activeFolder, Patient *patient){
 
-    /* Getting folder  ************************************************************** */
+    /* GETTING FOLDER (SPECIAL VIEW IF NO FOLDER) */
     Folder *folder = NULL;
     if(activeFolder != 0){
         folder = getFolder(activeFolder);
@@ -397,8 +397,6 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
         return ;
     }
 
-
-    /* ****************************************************************************** */
 
     /* Create a grid which contains the different elements of the folder ************ */
     GtkWidget *grid_part2 = NULL;
@@ -608,6 +606,19 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
 
+    GtkWidget *delete_folder_button = NULL;
+    delete_folder_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+    DeleteElements *folderDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
+    folderDelete->window = window;
+    folderDelete->isFolder = 1;
+    folderDelete->folderID = activeFolder;
+    folderDelete->notebook = NULL;
+    folderDelete->patientID = (int) patient->id;
+    g_signal_connect(GTK_BUTTON(delete_folder_button), "clicked", G_CALLBACK(launchDeleteElement), folderDelete);
+
+    gtk_widget_set_hexpand(delete_folder_button, FALSE);
+    gtk_widget_set_vexpand(delete_folder_button, FALSE);
+    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), delete_folder_button, FALSE, FALSE, 0);
     /* ****************************************************************************** */
 
     fillSessionBox(window, sessionBox, attachments_count, patient, activeFolder);
