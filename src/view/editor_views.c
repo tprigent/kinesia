@@ -1017,15 +1017,16 @@ void launchDeleteElement(GtkWidget *button, DeleteElements *element){
         if(element->isFolder){
             //deleteFoler(element->folderID);
             //gtk_widget_destroy(element->window);
+            gtk_widget_destroy(dialog);
         } else {
             deleteSession(element->sessionID);
             gtk_notebook_remove_page(GTK_NOTEBOOK(element->notebook), gtk_notebook_get_current_page (GTK_NOTEBOOK(element->notebook)));
+            gtk_widget_destroy(dialog);
             if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(element->notebook)) == 0){
                 gtk_widget_destroy(element->window);
                 setWorkWindow(element->patientID, element->folderID);
             }
         }
-        gtk_widget_destroy(dialog);
 
     } else {
         gtk_widget_destroy(dialog);
