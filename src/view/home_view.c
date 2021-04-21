@@ -46,7 +46,7 @@ static void load_css(int cssMode){
  * \param[in] firstLoad to tell if css file has to be charged (1) or not (0)
  * \param[in] cssMode to tell which mode to display (normal or dark mode)
 */
-GtkWidget *setHomeWindow(int firstLoad, int cssMode){
+GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
 
     if(firstLoad == 1) {
         gtk_init(NULL, NULL);
@@ -64,8 +64,9 @@ GtkWidget *setHomeWindow(int firstLoad, int cssMode){
     symbolPixbuf = gdk_pixbuf_new_from_file("../media/graphic-assets/logo.jpg", NULL);
     gtk_window_set_icon(GTK_WINDOW(window), symbolPixbuf);
 
-    gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
-    gtk_window_maximize(GTK_WINDOW(window));
+    //gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
+    if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
+    else gtk_window_unmaximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -334,8 +335,10 @@ void setHomeEnvironment(GtkWidget *window){
  * \param[in] window Window dedicated to the patient view
 */
 void launchHomeView(GtkWidget *but, GtkWidget *window){
+    int fullScreen = 0;
+    if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
     gtk_widget_destroy(window);
-    setHomeWindow(0, 0);
+    setHomeWindow(0, fullScreen, 0);
 }
 
 /*!

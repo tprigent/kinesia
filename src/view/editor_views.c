@@ -196,8 +196,10 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
 
         gtk_widget_destroy(dialog);
 
+        int fullScreen = 0;
+        if(gtk_window_is_maximized(GTK_WINDOW(foldEditStruct->window))==TRUE) fullScreen = 1;
         gtk_widget_destroy(foldEditStruct->window);
-        setWorkWindow((int) folder->idPatient, 0);
+        setWorkWindow(fullScreen, (int) folder->idPatient, 0);
     } else {
         gtk_widget_destroy(dialog);
     }
@@ -298,7 +300,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     first_consult_entry = gtk_entry_new();
     info_text = gtk_text_view_new();
 
-    photoChooser->patientID = patient->id;
+    photoChooser->patientID = (int) patient->id;
     photoChooser->mediaType = 0;
 
     // entry parameters
@@ -576,9 +578,13 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
         /* Choose view to display: work_view if existing, home_view if new Patient */
         if(origin == 1){
-            setWorkWindow((int) patient->id, 0);
+            int fullScreen = 0;
+            if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
+            setWorkWindow(fullScreen, (int) patient->id, 0);
         }else{
-            setHomeWindow(0, 0);
+            int fullScreen = 0;
+            if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
+            setHomeWindow(0, fullScreen, 0);
         }
     } else {
         gtk_widget_destroy(dialog);
@@ -782,7 +788,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         if(warning->actionType == 0){
             deletePatient((int) patient->id);
-            deleteMediaFolder(patient->id);
+            deleteMediaFolder((int) patient->id);
         } else {
             if(patient->isArchived == 1) patient->isArchived = 0;
             else if(patient->isArchived == 0) patient->isArchived = 1;
@@ -791,8 +797,11 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
         printPatient(patient, "just after archiving\n");
         /* Reload the session window */
         gtk_widget_destroy(dialog);
+
+        int fullScreen = 0;
+        if(gtk_window_is_maximized(GTK_WINDOW(warning->window))==TRUE) fullScreen = 1;
         gtk_widget_destroy(warning->window);
-        setHomeWindow(0, 0);
+        setHomeWindow(0, fullScreen, 0);
 
     } else {
         gtk_widget_destroy(dialog);
@@ -877,9 +886,11 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
         else cssMode = 1;
 
         gtk_widget_destroy(dialog);
-        gtk_widget_destroy(window);
 
-        setHomeWindow(1, cssMode);
+        int fullScreen = 0;
+        if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
+        gtk_widget_destroy(window);
+        setHomeWindow(1, fullScreen, cssMode);
     } else {
         gtk_widget_destroy(dialog);
     }
@@ -1017,16 +1028,21 @@ void launchDeleteElement(GtkWidget *button, DeleteElements *element){
         if(element->isFolder){
             deleteFoler(element->folderID);
             gtk_widget_destroy(dialog);
+
+            int fullScreen = 0;
+            if(gtk_window_is_maximized(GTK_WINDOW(element->window))==TRUE) fullScreen = 1;
             gtk_widget_destroy(element->window);
-            setWorkWindow(element->patientID, 0);
+            setWorkWindow(fullScreen, element->patientID, 0);
 
         } else {
             deleteSession(element->sessionID);
             gtk_notebook_remove_page(GTK_NOTEBOOK(element->notebook), gtk_notebook_get_current_page (GTK_NOTEBOOK(element->notebook)));
             gtk_widget_destroy(dialog);
             if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(element->notebook)) == 0){
+                int fullScreen = 0;
+                if(gtk_window_is_maximized(GTK_WINDOW(element->window))==TRUE) fullScreen = 1;
                 gtk_widget_destroy(element->window);
-                setWorkWindow(element->patientID, element->folderID);
+                setWorkWindow(fullScreen, element->patientID, element->folderID);
             }
         }
 

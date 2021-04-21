@@ -21,7 +21,7 @@ typedef struct {
     int folderID;           /**< ID of the Folder to be edited */
 }Window_id;
 
-GtkWidget *setHomeWindow(int firstLoad, int cssMode);
+GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
 void setHomeEnvironment(GtkWidget *window);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 

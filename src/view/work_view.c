@@ -23,7 +23,7 @@
  *
  * \param[in] id_patient ID of the patient file opened
 */
-GtkWidget *setWorkWindow(int id_patient, int id_folder){
+GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder){
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
@@ -36,8 +36,9 @@ GtkWidget *setWorkWindow(int id_patient, int id_folder){
     symbolPixbuf = gdk_pixbuf_new_from_file("../media/graphic-assets/logo.jpg", NULL);
     gtk_window_set_icon(GTK_WINDOW(window), symbolPixbuf);
 
-    gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
-    gtk_window_maximize(GTK_WINDOW(window));
+    //gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
+    if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
+    else gtk_window_unmaximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -910,8 +911,11 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
  * \param[in] but Button pressed to launch the work view
 */
 void launchWorkView(GtkWidget *but, Window_id *window_id){
+    int fullScreen = 0;
+    if(gtk_window_is_maximized(GTK_WINDOW(window_id->window))==TRUE) fullScreen = 1;
     gtk_widget_destroy(window_id->window);
-    setWorkWindow(window_id->patientID, window_id->folderID);
+    setWorkWindow(fullScreen, window_id->patientID, window_id->folderID);
+
 }
 
 /*!
@@ -1100,9 +1104,11 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
 }
 
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct){
+    int fullScreen = 0;
+    if(gtk_window_is_maximized(GTK_WINDOW(firstSessionStruct->window))==TRUE) fullScreen = 1;
     gtk_widget_destroy(firstSessionStruct->window);
     createNewSession(firstSessionStruct->folderID);
-    setWorkWindow(firstSessionStruct->patientID, firstSessionStruct->folderID);
+    setWorkWindow(fullScreen, firstSessionStruct->patientID, firstSessionStruct->folderID);
 }
 
 /* HELPERS */
