@@ -548,7 +548,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     /* LABEL */
     GtkWidget *attachments_label = NULL;
     GtkWidget *attachments_count = NULL;
-    char *indicator = get_indicator_files_UI(patient, activeFolder);
+    char *indicator = get_indicator_files_UI((int) patient->id, activeFolder);
     attachments_label = gtk_label_new("Pièces jointes:    ");
     attachments_count = gtk_label_new(indicator);
     free_info_UI(indicator);
@@ -563,7 +563,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
 
     MediaType *attachment_properties = (MediaType*) malloc(sizeof(Patient)+sizeof(char)*10+sizeof(int));
-    attachment_properties->patient = patient;
+    attachment_properties->patientID = (int) patient->id;
     attachment_properties->folderID = (int) folder->idFolder;
     attachment_properties->mediaType = 1;
     attachment_properties->counterLabel = attachments_count;
@@ -779,6 +779,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
     /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
     AddNewSessionStruct *newSessionStruct = (AddNewSessionStruct*) malloc(sizeof(AddNewSessionStruct));
     newSessionStruct->notebook = notebook;
+    newSessionStruct->attachmentLabel = attachmentCounterLabel;
     newSessionStruct->folderID = folderID;
     newSessionStruct->patientID = (int) patient->id;
 
@@ -860,7 +861,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_widget_set_hexpand(session_attach_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
         mediaChooser[session_cursor] = (MediaType *) malloc(sizeof(MediaType));
-        mediaChooser[session_cursor]->patient = patient;
+        mediaChooser[session_cursor]->patientID = (int) patient->id;
         mediaChooser[session_cursor]->folderID = folderID;
         mediaChooser[session_cursor]->mediaType = 1;
         mediaChooser[session_cursor]->counterLabel = attachmentCounterLabel;
@@ -922,7 +923,7 @@ void launchWorkView(GtkWidget *but, Window_id *window_id){
  * \param[in] but Button pressed to launch the work view
  * \param[in] notebook The notebook which contains the sessions
 */
-void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, Patient *patient){
+void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     /* DECLARE VARIABLES */
     GtkWidget *notebook = newSessionStruct->notebook;
     Session *new_session = createEmptySession(newSessionStruct->folderID);
@@ -1056,6 +1057,13 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, entry_title_new, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session_attach_button, FALSE);
     gtk_widget_set_vexpand(session_attach_button, FALSE);
+    MediaType *mediaChooser = (MediaType *) malloc(sizeof(MediaType));
+    mediaChooser->patientID = newSessionStruct->patientID;
+    mediaChooser->folderID = newSessionStruct->folderID;
+    mediaChooser->mediaType = 1;
+    mediaChooser->counterLabel = newSessionStruct->attachmentLabel;
+    g_signal_connect(GTK_BUTTON(session_attach_button), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
+
 
     /* Manage to display the delete session button */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), delete_button, session_attach_button, GTK_POS_BOTTOM, 1, 1);

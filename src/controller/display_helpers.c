@@ -162,10 +162,10 @@ char *get_formatted_folder_infos_UI(Folder *folder){
  * \param[in] folder Concerned Folder
  * \param[out] Char pointer containing the formatted counter
 */
-char *get_indicator_files_UI(Patient *patient, int folderID){
+char *get_indicator_files_UI(int patientID, int folderID){
     char *indicator = (char*) malloc(20*sizeof(char));
     char *buffer = (char*) malloc(5*sizeof(char));
-    sprintf(buffer, "%d", getNbOfAttachments(patient, folderID));
+    sprintf(buffer, "%d", getNbOfAttachments(patientID, folderID));
     strcpy(indicator, "   (");
     strcat(indicator, buffer);
     strcat(indicator, ")");
