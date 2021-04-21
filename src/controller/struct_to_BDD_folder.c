@@ -159,8 +159,8 @@ int deleteFoler(int id){
     }
 
 //Creating the request
-    sql1 = "DELETE FROM seance WHERE idDossier IN (SELECT idFolder FROM folder WHERE idPatient=?)";
-    sql2 = "DELETE FROM folder WHERE idPatient=?";
+    sql1 = "DELETE FROM seance WHERE idDossier IN (SELECT idFolder FROM folder WHERE idFolder=?)";
+    sql2 = "DELETE FROM folder WHERE idFolder=?";
 
     //Préparing the requests
     rc1 = sqlite3_prepare_v2(db,sql1,-1,&stmt1,NULL);

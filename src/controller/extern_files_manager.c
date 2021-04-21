@@ -19,12 +19,12 @@
  * \param[in] patient To which Patient the file concerns
  * \param[in] type Type of the media : profil or attachment
 */
-void copyToMedia(char *source_path, Patient *patient, int folderID, char *type){
+void copyToMedia(char *source_path, int patientID, int folderID, char *type){
 
     FILE *source_stream, *dest_stream;
     int c;
-    char *patientMediaPath = getPatientMediaPath(patient);
-    char *folderMediaPath = getFolderMediaPath(patient, folderID);
+    char *patientMediaPath = getPatientMediaPath(patientID);
+    char *folderMediaPath = getFolderMediaPath(patientID, folderID);
     char *stringID = (char*) malloc(sizeof(char)*10);
     char *dest_path = (char*) malloc(sizeof(char)*(strlen(patientMediaPath)+100));
 
@@ -175,11 +175,11 @@ char *getProfilePhotoPath(Patient *patient){
     return(photo_path);
 }
 
-char *getPatientMediaPath(Patient *patient){
+char *getPatientMediaPath(int patientID){
     char *charID = (char*) malloc(sizeof(char)*10);
     char *media_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/")+40));
     strcpy(media_path, "../media/patient-data/");
-    tostring(charID, (int) patient->id);
+    tostring(charID, (int) patientID);
     strcat(media_path, charID);
     strcat(media_path, "/");
     mkdir(media_path, 0700);
@@ -188,9 +188,9 @@ char *getPatientMediaPath(Patient *patient){
     return(media_path);
 }
 
-char *getFolderMediaPath(Patient *patient, int folderID){
+char *getFolderMediaPath(int patientID, int folderID){
     char *charID = (char*) malloc(sizeof(char)*10);
-    char *patientMediaPath = getPatientMediaPath(patient);
+    char *patientMediaPath = getPatientMediaPath(patientID);
 
     char *folderMediaPath = (char*) malloc(sizeof(char)*(strlen(patientMediaPath)+100));
 
@@ -241,13 +241,13 @@ void removeExistingProfilePicture(char *media_path, char *dest_path, char *sourc
     free((char*) dest_path_png);
 }
 
-char **getMediaDirectoryContent(Patient *patient, int folderID){
+char **getMediaDirectoryContent(int patientID, int folderID){
     DIR *d;
     struct dirent *dir;
     char **fileList;
-    fileList = (char**) malloc(sizeof(char*)*getNbOfAttachments(patient, folderID));
+    fileList = (char**) malloc(sizeof(char*)*getNbOfAttachments(patientID, folderID));
     int i = 0;
-    d = opendir(getFolderMediaPath(patient, folderID));
+    d = opendir(getFolderMediaPath(patientID, folderID));
     if (d){
         while ((dir = readdir(d)) != NULL){
             if(strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0){
@@ -261,11 +261,11 @@ char **getMediaDirectoryContent(Patient *patient, int folderID){
     return fileList;
 }
 
-int getNbOfAttachments(Patient *patient, int folderID){
+int getNbOfAttachments(int patientID, int folderID){
     DIR *d;
     struct dirent *dir;
     int number = 0;
-    d = opendir(getFolderMediaPath(patient, folderID));
+    d = opendir(getFolderMediaPath(patientID, folderID));
     int i = 0;
     if (d)
     {
@@ -279,8 +279,8 @@ int getNbOfAttachments(Patient *patient, int folderID){
     return number;
 }
 
-int deleteMediaFolder(Patient *patient) {
-    char *path = getPatientMediaPath(patient);
+int deleteMediaFolder(int patientID) {
+    char *path = getPatientMediaPath(patientID);
     DIR *d = opendir(path);
     size_t path_len = strlen(path);
     int r = -1;
@@ -307,7 +307,7 @@ int deleteMediaFolder(Patient *patient) {
                 snprintf(buf, len, "%s/%s", path, p->d_name);
                 if (!stat(buf, &statbuf)) {
                     if (S_ISDIR(statbuf.st_mode))
-                        r2 = deleteMediaFolder(patient);
+                        r2 = deleteMediaFolder(patientID);
                     else
                         r2 = unlink(buf);
                 }
