@@ -11,6 +11,10 @@
 #include "home_view.h"
 #include "editor_views.h"
 #include "../controller/struct_to_BDD_patient.h"
+#include "../controller/struct_to_BDD_session.h"
+#include "../controller/struct_to_BDD_folder.h"
+#include "../controller/BDD_to_struct_folder.h"
+#include "../controller/BDD_to_struct_session.h"
 #include "../controller/display_helpers.h"
 #include "../controller/UI_to_struct.h"
 #include "../model/folder_manager.h"
@@ -294,7 +298,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     first_consult_entry = gtk_entry_new();
     info_text = gtk_text_view_new();
 
-    photoChooser->patient = patient;
+    photoChooser->patientID = patient->id;
     photoChooser->mediaType = 0;
 
     // entry parameters
@@ -651,10 +655,10 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
         printf("%s\n", filename);
         if(mediaChooser->mediaType == 0){
-            copyToMedia(filename, mediaChooser->patient , mediaChooser->folderID, "profil");
+            copyToMedia(filename, mediaChooser->patientID , mediaChooser->folderID, "profil");
         } else {
-            copyToMedia(filename, mediaChooser->patient , mediaChooser->folderID, basename(filename));
-            gtk_label_set_text(GTK_LABEL(mediaChooser->counterLabel), get_indicator_files_UI(mediaChooser->patient, mediaChooser->folderID));
+            copyToMedia(filename, mediaChooser->patientID , mediaChooser->folderID, basename(filename));
+            gtk_label_set_text(GTK_LABEL(mediaChooser->counterLabel), get_indicator_files_UI(mediaChooser->patientID, mediaChooser->folderID));
         }
     }
     gtk_native_dialog_destroy(GTK_NATIVE_DIALOG(dialog));
@@ -716,7 +720,6 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     Patient *patient;
 
     patient = getPatient((int) warning->patientID);
-    printf("\n ******* TEST isArchived %s %d *********\n", patient->name, patient->isArchived);
     if(warning->actionType == 0){
         dialog = gtk_dialog_new_with_buttons ("Suppression d'une fiche patient",NULL,GTK_DIALOG_MODAL,
                                               "Annuler",GTK_RESPONSE_REJECT,
@@ -779,7 +782,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         if(warning->actionType == 0){
             deletePatient((int) patient->id);
-            deleteMediaFolder(patient);
+            deleteMediaFolder(patient->id);
         } else {
             if(patient->isArchived == 1) patient->isArchived = 0;
             else if(patient->isArchived == 0) patient->isArchived = 1;
@@ -886,8 +889,8 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     GtkWidget *dialog;
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
-    GtkWidget *checkList[getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID)];
-    char **fileList = getMediaDirectoryContent(attachmentProperties->patient, attachmentProperties->folderID);
+    GtkWidget *checkList[getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID)];
+    char **fileList = getMediaDirectoryContent(attachmentProperties->patientID, attachmentProperties->folderID);
 
     dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
                                          NULL, GTK_DIALOG_MODAL,
@@ -907,7 +910,7 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
 
     /* Setup the list */
     int i;
-    for(i=0; i<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); i++){
+    for(i=0; i<getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID); i++){
         checkList[i] = gtk_check_button_new_with_label(fileList[i]);
         if(i == 0) {
             gtk_grid_attach(GTK_GRID(grid), checkList[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
@@ -925,9 +928,9 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     /* Action on button */
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         int j;
-        for(j=0; j<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); j++){
+        for(j=0; j<getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID); j++){
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
-                char *mediaPath = getFolderMediaPath(attachmentProperties->patient, attachmentProperties->folderID);
+                char *mediaPath = getFolderMediaPath(attachmentProperties->patientID, attachmentProperties->folderID);
                 char *command = (char*) malloc(sizeof(char) * (strlen(fileList[j]) + strlen(mediaPath) + strlen("xdg-open ")));
 
                 /* Build open command with file path */
@@ -944,16 +947,16 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
         }
     } else if(gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_DELETE_EVENT) {
         int j;
-        for(j=0; j<getNbOfAttachments(attachmentProperties->patient, attachmentProperties->folderID); j++) {
+        for(j=0; j<getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID); j++) {
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
-                char *mediaPath = getFolderMediaPath(attachmentProperties->patient, attachmentProperties->folderID);
+                char *mediaPath = getFolderMediaPath(attachmentProperties->patientID, attachmentProperties->folderID);
                 char *filePath = (char *) malloc(sizeof(char) * (strlen(fileList[j]) + strlen(mediaPath) + 5));
 
                 strcpy(filePath, mediaPath);
                 strcat(filePath, fileList[j]);
 
                 remove(filePath);
-                gtk_label_set_text(GTK_LABEL(attachmentProperties->counterLabel), get_indicator_files_UI(attachmentProperties->patient, attachmentProperties->folderID));
+                gtk_label_set_text(GTK_LABEL(attachmentProperties->counterLabel), get_indicator_files_UI(attachmentProperties->patientID, attachmentProperties->folderID));
 
                 free(mediaPath);
                 free(filePath);
@@ -961,4 +964,74 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
         }
     }
     gtk_widget_destroy(dialog);
+}
+
+void launchDeleteElement(GtkWidget *button, DeleteElements *element){
+    GtkWidget *dialog;
+    GtkWidget *content_area;
+    GtkWidget *title;
+    GtkWidget *explanations;
+    GtkWidget *elementName;
+    GdkPixbuf *symbolPixbuf;
+    GtkWidget *symbol;
+
+    dialog = gtk_dialog_new_with_buttons ("Suppression d'un élément du dossier",NULL,GTK_DIALOG_MODAL,
+                                          "Annuler",GTK_RESPONSE_REJECT,
+                                          "Supprimer", GTK_RESPONSE_ACCEPT,NULL);
+
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    /* CREATE A GRID IN THE DIALOG BOX */
+    GtkWidget *grid_dialog = NULL;
+    grid_dialog = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_dialog), 5);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
+    gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
+
+    title = gtk_label_new(NULL);
+    gtk_label_set_markup(GTK_LABEL(title), "<b><big>Attention, vous êtes sur le point de supprimer un élément.</big></b>");
+    explanations = gtk_label_new("Toutes les informations relatives seront également supprimées.");
+    symbolPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/delete_512.png", 128, 128, TRUE, NULL);
+    if(element->isFolder){
+        elementName = gtk_label_new(getFolder(element->folderID)->folderName);
+    } else {
+        elementName = gtk_label_new(getSession(element->sessionID)->sessionName);
+    }
+    symbol = gtk_image_new_from_pixbuf(symbolPixbuf);
+
+    /* FILL THE GRID */
+    gtk_grid_attach(GTK_GRID(grid_dialog), title, GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), explanations, title, GTK_POS_BOTTOM, 5,1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), elementName, explanations, GTK_POS_BOTTOM, 5, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), GTK_WIDGET(symbol), elementName, GTK_POS_BOTTOM, 5,1);
+
+    /* SETUP THE VIEW PARAMETERS */
+    gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 300, 125);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+    gtk_widget_show_all(dialog);
+
+    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+        if(element->isFolder){
+            deleteFoler(element->folderID);
+            gtk_widget_destroy(dialog);
+            gtk_widget_destroy(element->window);
+            setWorkWindow(element->patientID, 0);
+
+        } else {
+            deleteSession(element->sessionID);
+            gtk_notebook_remove_page(GTK_NOTEBOOK(element->notebook), gtk_notebook_get_current_page (GTK_NOTEBOOK(element->notebook)));
+            gtk_widget_destroy(dialog);
+            if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(element->notebook)) == 0){
+                gtk_widget_destroy(element->window);
+                setWorkWindow(element->patientID, element->folderID);
+            }
+        }
+
+    } else {
+        gtk_widget_destroy(dialog);
+    }
+
 }

@@ -21,7 +21,7 @@ char *get_height_weight_UI(Patient *patient);
 char *get_first_consultation_UI(Patient *patient);
 char *get_formatted_folder_title_UI(Folder *folder);
 char *get_formatted_folder_infos_UI(Folder *folder);
-char *get_indicator_files_UI(Patient *patient, int folderID);
+char *get_indicator_files_UI(int patientID, int folderID);
 char *get_age_and_birthdate(Patient *patient);
 char *get_current_date();
 char *get_new_session_name();
