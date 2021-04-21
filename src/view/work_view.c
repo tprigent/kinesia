@@ -706,6 +706,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
     SessionList *session_list = NULL;
     SessionEntries *saveSession[nb_session];
+    DeleteElements *sessionDelete[nb_session];
+    MediaType *mediaChooser[nb_session];
 
     /* ASSIGN VARIABLES */
     notebook = gtk_notebook_new();
@@ -845,25 +847,26 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_attach_button[session_cursor], entry_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(session_attach_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
-        MediaType *mediaChooser = (MediaType *) malloc(sizeof(MediaType));
-        mediaChooser->patient = patient;
-        mediaChooser->folderID = folderID;
-        mediaChooser->mediaType = 1;
-        mediaChooser->counterLabel = attachmentCounterLabel;
-        g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
+        mediaChooser[session_cursor] = (MediaType *) malloc(sizeof(MediaType));
+        mediaChooser[session_cursor]->patient = patient;
+        mediaChooser[session_cursor]->folderID = folderID;
+        mediaChooser[session_cursor]->mediaType = 1;
+        mediaChooser[session_cursor]->counterLabel = attachmentCounterLabel;
+        g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser[session_cursor]);
 
         /* Manage to display the delete session button */
         gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), delete_button[session_cursor], session_attach_button[session_cursor], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(delete_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(delete_button[session_cursor], TRUE);
         gtk_widget_set_valign(delete_button[session_cursor], GTK_ALIGN_END);
-        DeleteElements *sessionDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
-        sessionDelete->isFolder = 0;
-        sessionDelete->sessionID = (int) session_list[session_cursor].current->session.idSession;
-        sessionDelete->notebook = notebook;
-        sessionDelete->patientID = (int) patient->id;
-        sessionDelete->folderID = folderID;
-        g_signal_connect(GTK_BUTTON(delete_button[session_cursor]), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete);
+        sessionDelete[session_cursor] = (DeleteElements *) malloc(sizeof(DeleteElements));
+        sessionDelete[session_cursor]->window = window;
+        sessionDelete[session_cursor]->isFolder = 0;
+        sessionDelete[session_cursor]->sessionID = (int) session_list->current->session.idSession;
+        sessionDelete[session_cursor]->notebook = notebook;
+        sessionDelete[session_cursor]->patientID = (int) patient->id;
+        sessionDelete[session_cursor]->folderID = folderID;
+        g_signal_connect(GTK_BUTTON(delete_button[session_cursor]), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete[session_cursor]);
 
 
         /* Manage the frame and its entry to add informations about the session */
