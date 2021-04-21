@@ -170,7 +170,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath(patient), NULL);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath((int) patient->id), NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 145, 193, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
     patient_name = gtk_label_new(patient_name_char);
