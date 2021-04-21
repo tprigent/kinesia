@@ -14,6 +14,7 @@
 typedef struct {
     GtkWidget *notebook;      /**< notebook in which sessions are added */
     int folderID;           /**< ID of the Folder to be edited */
+    int patientID;          /**< ID of the current patient */
 }AddNewSessionStruct;
 
 typedef struct {
@@ -25,6 +26,7 @@ typedef struct {
 typedef struct {
     GtkWidget *window;      /**< window to refresh view */
     GtkWidget *notebook;    /**< notebook to remove session */
+    int patientID;          /**< ID of the patient to refresh view */
     int folderID;           /**< ID of the Folder to be deleted */
     int sessionID;          /**< ID of the Session to be deleted */
     int isFolder;           /**< Determines if it's a folder */

@@ -767,6 +767,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
     AddNewSessionStruct *newSessionStruct = (AddNewSessionStruct*) malloc(sizeof(AddNewSessionStruct));
     newSessionStruct->notebook = notebook;
     newSessionStruct->folderID = folderID;
+    newSessionStruct->patientID = (int) patient->id;
 
     /* Manage to add a notebook */
     gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
@@ -860,6 +861,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         sessionDelete->isFolder = 0;
         sessionDelete->sessionID = (int) session_list[session_cursor].current->session.idSession;
         sessionDelete->notebook = notebook;
+        sessionDelete->patientID = (int) patient->id;
+        sessionDelete->folderID = folderID;
         g_signal_connect(GTK_BUTTON(delete_button[session_cursor]), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete);
 
 
@@ -1046,6 +1049,9 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     DeleteElements *sessionDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
     sessionDelete->isFolder = 0;
     sessionDelete->sessionID = (int) newSessionStruct->folderID;
+    sessionDelete->notebook = notebook;
+    sessionDelete->patientID = (int) newSessionStruct->patientID;
+    sessionDelete->folderID = newSessionStruct->folderID;
     g_signal_connect(GTK_BUTTON(delete_button), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete);
 
 
