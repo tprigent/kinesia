@@ -151,11 +151,13 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     GtkWidget *patient_height_weight = NULL;
     GtkWidget *patient_first_consultation = NULL;
     GtkWidget *patient_other_info = NULL;
+    GtkWidget *patient_mail_link = NULL;
 
     char *patient_name_char = get_name_UI(patient);
     char *patient_birth_char = get_age_and_birthdate(patient);
     char *patient_height_weight_char = get_height_weight_UI(patient);
     char *patient_first_consultation_char = get_first_consultation_UI(patient);
+    char *contact_link = (char*) malloc(sizeof(char)*(strlen("mailto:")+strlen(patient->mail_address)));
 
     /* ASSIGN VARIABLES */
     frame_info = gtk_frame_new("Informations patient");
@@ -184,6 +186,10 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     patient_first_consultation = gtk_label_new(patient_first_consultation_char);
     free_info_UI(patient_first_consultation_char);
     patient_other_info = gtk_label_new(patient->global_pathologies);
+    strcpy(contact_link, "mailto:");
+    strcat(contact_link, patient->mail_address);
+    patient_mail_link = gtk_link_button_new_with_label(contact_link, "Contacter");
+
 
 
     /* MANAGE THE GRID WHICH ORGANIZES THE LEFT SECTION */
@@ -286,6 +292,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_hexpand(grid_other_info, TRUE);
     gtk_grid_attach(GTK_GRID(grid_other_info), patient_other_info, GTK_ALIGN_CENTER, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(patient_other_info, TRUE);
+    if(strcmp(patient->mail_address, "") != 0) gtk_grid_attach_next_to(GTK_GRID(grid_other_info), patient_mail_link, patient_other_info, GTK_POS_BOTTOM, 1, 1);
+
 
 
     /* ******************************* THIRD PART : SECTION WHICH CONTAINS THE FOLDERS ******************************** */
