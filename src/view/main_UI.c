@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     gtk_init(&argc, &argv);
 
     /* Launch the home window*/
-    setHomeWindow(1, 0);
+    setHomeWindow(1, 1, 0);
 
     return EXIT_SUCCESS;
 }

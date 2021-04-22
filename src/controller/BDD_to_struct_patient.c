@@ -10,53 +10,6 @@
 #include <stdlib.h>
 
 /*!
- * \brief This function makes an SQL request, returns the number of patient in the database.
- *
- * \param[out] int, the number of patient.
-*/
-int getNbPatient(){
-    sqlite3 *db;
-    char *zErrMsg = 0;
-    int rc;
-    char *sql;
-    sqlite3_stmt *stmt;
-
-    //Ouverture de la bdd
-    rc = sqlite3_open(DB_PATH, &db);
-
-    //Test de l'ouverture
-    if( rc ) {
-        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
-        return 0;
-    } else {
-        fprintf(stderr,"Opened database successfully\n");
-    }
-
-    //Creation de la requête
-    sql = "SELECT * FROM patient";
-
-    //Préparation de la requête
-    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
-    if( rc != SQLITE_OK ){
-        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
-        sqlite3_free(zErrMsg);
-        return 0;
-    }
-
-    //Execution de la requête
-    rc=0;
-    while(sqlite3_step(stmt) == SQLITE_ROW) {
-        rc++;
-    }
-
-    sqlite3_finalize(stmt);
-
-    //Fermeture de la bdd
-    sqlite3_close(db);
-    return rc;
-}
-
-/*!
  * \brief This function makes an SQL request, returns the name and first name of a patient
  * from a patient's id.
  *
@@ -117,8 +70,6 @@ char* getNameFirstnamePatient(int id){
     return nom;
 
 }
-
-
 
 /*!
  * \brief This function makes an SQL request, fills a Patient struct previously allocated
@@ -207,22 +158,17 @@ Patient* getPatient(int id){
 }
 
 /*!
- * \brief This function makes an SQL request, returns the patients archived's id sorted by name.
+ * \brief This function makes an SQL request, returns the number of patient in the database.
  *
- * \param[out] int*, an array of the id's, ending with the value -1.
+ * \param[out] int, the number of patient.
 */
-int* getArchivedPatientID(){
+int getNbPatient(Archived a){
 
     sqlite3 *db;
     char *zErrMsg = 0;
-    int rc;
+    int rc,nb;
     char *sql;
     sqlite3_stmt *stmt;
-    int *tab_id;
-
-    if((tab_id = (int*)malloc(sizeof(int)*NB_MAX_SESSION)) == NULL ){
-        return NULL;
-    }
 
     //Opening database
     rc = sqlite3_open(DB_PATH, &db);
@@ -230,118 +176,43 @@ int* getArchivedPatientID(){
     //Testing opening
     if( rc ) {
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-        return NULL;
+        return 0;
     } else {
         fprintf(stdout,"Opened database successfully\n");
     }
 
     //Creating te request
-    sql = "SELECT id FROM patient WHERE isArchived=1 ORDER BY name ASC";
-
+    switch(a) {
+        case ACTIVE :
+            sql = "SELECT COUNT(*) FROM patient WHERE isArchived=0";
+            break;
+        case ARCHIVED :
+            sql = "SELECT COUNT(*) FROM patient WHERE isArchived=1";
+            break;
+        case ALL :
+            sql = "SELECT COUNT(*) FROM patient";
+            break;
+        default:
+            sqlite3_close(db);
+            return 0;
+    }
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     if( rc != SQLITE_OK ){
         fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);
-        return NULL;
+        return 0;
     }
 
-    int nbArchivedPatient;
-    nbArchivedPatient=0;
-    while(sqlite3_step(stmt) == SQLITE_ROW){
-        tab_id[nbArchivedPatient] = sqlite3_column_int(stmt,0);
-        nbArchivedPatient++;
-    }
+    sqlite3_step(stmt);
 
-    tab_id[nbArchivedPatient] = -1;
+    nb = sqlite3_column_int(stmt,0);
 
     sqlite3_finalize(stmt);
 
     //Closing database
     sqlite3_close(db);
-    return tab_id;
+    return nb;
 
-}
-
-/*!
- * \brief This function makes an SQL request, returns the patients active's id sorted by name.
- *
- * \param[out] int*, an array of the id's, ending with the value -1.
-*/
-int* getActivePatientID(){
-
-    sqlite3 *db;
-    char *zErrMsg = 0;
-    int rc;
-    char *sql;
-    sqlite3_stmt *stmt;
-    int *tab_id;
-
-    if((tab_id = (int*)calloc(NB_MAX_SESSION,sizeof(int))) == NULL ){
-        return NULL;
-    }
-
-    //Opening database
-    rc = sqlite3_open(DB_PATH, &db);
-
-    //Testing opening
-    if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-        return NULL;
-    } else {
-        fprintf(stdout,"Opened database successfully\n");
-    }
-
-    //Creating te request
-    sql = "SELECT id FROM patient WHERE isArchived=0 ORDER BY name ASC";
-
-    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
-    if( rc != SQLITE_OK ){
-        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
-        sqlite3_free(zErrMsg);
-        return NULL;
-    }
-
-    int nbArchivedPatient;
-    nbArchivedPatient=0;
-    while(sqlite3_step(stmt) == SQLITE_ROW){
-        tab_id[nbArchivedPatient] = sqlite3_column_int(stmt,0);
-        nbArchivedPatient++;
-    }
-
-    tab_id[nbArchivedPatient] = -1;
-
-    sqlite3_finalize(stmt);
-
-    //Closing database
-    sqlite3_close(db);
-    return tab_id;
-
-}
-
-/*!
- * \brief This function returns the number of archived patients.
- *
- * \param[out] int, the number of archived patients.
-*/
-int getNbActivePatient(){
-
-    int* nb;
-    int i = 0;
-    nb = getActivePatientID();
-    while(nb[i] != -1){
-        i++;
-    }
-    return i;
-
-}
-
-/*!
- * This function returns the number of archived patients.
- *
- * \param[out] int, the number of archived patients.
-*/
-int getNbArchivedPatient(){
-    return (getNbPatient()-getNbActivePatient());
 }
 
 /*!
@@ -377,7 +248,7 @@ int getNbArchivedPatient(){
  *
 */
 
-int getNameFirstnameIdActivePatient(int* tabId, char** nom,int nbP){
+int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
 
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -397,7 +268,23 @@ int getNameFirstnameIdActivePatient(int* tabId, char** nom,int nbP){
     }
 
     //Creation de la requête
-    sql = "SELECT firstname,name,id FROM patient where isArchived=0";
+    switch(s) {
+        case NAME_ASC :
+            sql = "SELECT firstname,name,id FROM patient where isArchived=? ORDER BY name ASC";
+            break;
+        case NAME_DESC :
+            sql = "SELECT firstname,name,id FROM patient where isArchived=? ORDER BY name DESC";
+            break;
+        case FIRSTNAME_ASC :
+            sql = "SELECT firstname,name,id FROM patient where isArchived=? ORDER BY firstname ASC";
+            break;
+        case FIRSTNAME_DESC :
+            sql = "SELECT firstname,name,id FROM patient where isArchived=? ORDER BY firstname DESC";
+            break;
+        default :
+            sql = "SELECT firstname,name,id FROM patient where isArchived=? ORDER BY height ASC";
+            break;
+    }
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
@@ -406,6 +293,8 @@ int getNameFirstnameIdActivePatient(int* tabId, char** nom,int nbP){
         sqlite3_free(zErrMsg);
         return 0;
     }
+
+    sqlite3_bind_int(stmt,1,a);
 
     //Execution de la requête
     i=0;
@@ -431,56 +320,61 @@ int getNameFirstnameIdActivePatient(int* tabId, char** nom,int nbP){
     return 1;
 }
 
-int getNameFirstnameIdArchivedPatient(int* tabId, char** nom,int nbP){
+int searchPatient(char* search,char** result, int* ids, int lenRes){
 
     sqlite3 *db;
     char *zErrMsg = 0;
-    int rc,i;
-    char *sql;
-    sqlite3_stmt *stmt;
+    int rc1,i;
+    char *sql1;
+    sqlite3_stmt *stmt1;
+    char *searchStr;
 
-    //Ouverture de la bdd
-    rc = sqlite3_open(DB_PATH, &db);
+    searchStr = malloc(strlen(search)* sizeof(char)+2);
 
-    //Test de l'ouverture
-    if( rc ) {
-        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
-        return 0;
+    rc1 = sqlite3_open(DB_PATH, &db);
+
+    if( rc1 ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return -1;
     } else {
         fprintf(stderr,"Opened database successfully\n");
     }
 
-    //Creation de la requête
-    sql = "SELECT firstname,name,id FROM patient where isArchived=1";
+    sql1 = "SELECT name,firstname,id FROM patient WHERE name LIKE ? OR firstname LIKE ?";
 
-    //Préparation de la requête
-    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
-    if( rc != SQLITE_OK ){
-        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
+    rc1 = sqlite3_prepare_v2(db,sql1,-1,&stmt1,NULL);
+    if( rc1 != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);
-        return 0;
     }
 
-    //Execution de la requête
-    i=0;
-    while(sqlite3_step(stmt)== SQLITE_ROW) {
+    strcpy(searchStr,"%");
+    strcat(searchStr,search);
+    strcat(searchStr,"%");
 
-        if (allocateStringPatient(&nom[i], LG_MAX_INFO * 2) == -1) {
+    sqlite3_bind_text(stmt1,1,searchStr,(int)strlen(searchStr),NULL);
+    sqlite3_bind_text(stmt1,2,searchStr,(int)strlen(searchStr),NULL);
+
+    i=0;
+    while(sqlite3_step(stmt1) == SQLITE_ROW && i<lenRes) {
+
+        if (allocateStringPatient(&result[i], LG_MAX_INFO * 2) == -1) {
             fprintf(stderr, "Erreur allocation getNomPrenom");
-            return 0;
+            return -1;
         }
 
-        strcpy(nom[i], (char *) sqlite3_column_text(stmt, 0));
+        strcpy(result[i], (char *) sqlite3_column_text(stmt1, 1));
         char *space = " ";
-        strcat(nom[i], space);
-        strcat(nom[i], (char *) sqlite3_column_text(stmt, 1));
-        tabId[i] = sqlite3_column_int(stmt,2);
+        strcat(result[i], space);
+        strcat(result[i], (char *) sqlite3_column_text(stmt1, 0));
+        ids[i] = sqlite3_column_int(stmt1,2);
         i++;
-    }
-    sqlite3_finalize(stmt);
 
-    //Fermeture de la bdd
+    }
+
+    free(searchStr);
+
     sqlite3_close(db);
 
-    return 1;
+    return i;
 }

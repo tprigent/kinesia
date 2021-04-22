@@ -12,8 +12,10 @@
 #include "home_view.h"
 
 typedef struct {
-    GtkWidget *notebook;      /**< notebook in which sessions are added */
-    int folderID;           /**< ID of the Folder to be edited */
+    GtkWidget *notebook;             /**< notebook in which sessions are added */
+    GtkWidget *attachmentLabel;      /**< Label to increment number of attachments */
+    int folderID;                    /**< ID of the Folder to be edited */
+    int patientID;                   /**< ID of the current patient */
 }AddNewSessionStruct;
 
 typedef struct {
@@ -22,15 +24,25 @@ typedef struct {
     int patientID;          /**< ID of the current Patient to refresh view */
 }AddFirstSessionStruct;
 
-GtkWidget *setWorkWindow(int id_patient, int id_folder);
+typedef struct {
+    GtkWidget *window;      /**< window to refresh view */
+    GtkWidget *notebook;    /**< notebook to remove session */
+    int patientID;          /**< ID of the patient to refresh view */
+    int folderID;           /**< ID of the Folder to be deleted */
+    int sessionID;          /**< ID of the Session to be deleted */
+    int isFolder;           /**< Determines if it's a folder */
+}DeleteElements;
+
+GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder);
 void setWorkEnvironment(Window_id *window_id);
 
 void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient, int id_folder);
-void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, GtkWidget *attachmentCounterLabel, int activeFolder, Patient *patient);
+void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int activeFolder, Patient *patient);
 void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCounterLabel, Patient *patient, int folderID);
 void launchWorkView(GtkWidget *but, Window_id *window_id);
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct);
-void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, Patient *patient);
+void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct);
+void launchDeleteWarning(GtkWidget *button, char *title);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);

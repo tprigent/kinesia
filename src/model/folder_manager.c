@@ -5,6 +5,7 @@
 
 #include "folder_manager.h"
 #include "patient_manager.h"
+#include "../controller/display_helpers.h"
 #include <sqlite3.h>
 #include "structures.h"
 #include <stdio.h>
@@ -83,9 +84,7 @@ Folder *createEmptyFolder(int idPatient){
     folder->pathology = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
     strcpy(folder->pathology, "Pathologie");
     folder->numberOfFiles = 0;
-    folder->startOfTreatment.day = 1;
-    folder->startOfTreatment.month = 1;
-    folder->startOfTreatment.year = 1900;
+    folder->startOfTreatment = *parseDate(get_current_date());
     folder->idPatient = idPatient;
     folder->ListOfSessions = NULL;
 

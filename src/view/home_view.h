@@ -21,10 +21,17 @@ typedef struct {
     int folderID;           /**< ID of the Folder to be edited */
 }Window_id;
 
-GtkWidget *setHomeWindow(int firstLoad, int cssMode);
+typedef struct {
+    GtkWidget *notebook;
+    GtkWidget *entry;
+    GtkWidget *window;
+}SearchParam;
+
+GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
 void setHomeEnvironment(GtkWidget *window);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 
 Session *createEmptySession(int idFolder);
+void processSearch(GtkWidget *button, SearchParam *search);
 
 #endif //LOGICIEL_KINE_PATIENT_VIEW_H
