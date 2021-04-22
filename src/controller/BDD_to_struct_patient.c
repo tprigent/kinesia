@@ -355,6 +355,7 @@ int searchPatient(char* search,char** result,int* ids,int lenRes){
     strcat(searchStr,"%");
 
     sqlite3_bind_text(stmt1,1,searchStr,(int)strlen(searchStr),NULL);
+    sqlite3_bind_text(stmt1,2,searchStr,(int)strlen(searchStr),NULL);
 
     i=0;
     while(sqlite3_step(stmt1) == SQLITE_ROW && i<lenRes) {
