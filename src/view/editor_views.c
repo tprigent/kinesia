@@ -900,14 +900,22 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     GtkWidget *dialog;
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
+    GtkWidget *noAttachmentLabel = NULL;
     GtkWidget *checkList[getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID)];
     char **fileList = getMediaDirectoryContent(attachmentProperties->patientID, attachmentProperties->folderID);
+    int nbOfAttachments = getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID);
 
-    dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
-                                         NULL, GTK_DIALOG_MODAL,
-                                         "Annuler", GTK_RESPONSE_CANCEL,
-                                         "Supprimer", GTK_RESPONSE_DELETE_EVENT,
-                                         "Ouvrir", GTK_RESPONSE_ACCEPT, NULL);
+    if(nbOfAttachments == 0){
+        dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
+                                             NULL, GTK_DIALOG_MODAL,
+                                             "Annuler", GTK_RESPONSE_CANCEL, NULL);
+    } else {
+        dialog = gtk_dialog_new_with_buttons("Pièces-jointes",
+                                             NULL, GTK_DIALOG_MODAL,
+                                             "Annuler", GTK_RESPONSE_CANCEL,
+                                             "Supprimer", GTK_RESPONSE_DELETE_EVENT,
+                                             "Ouvrir", GTK_RESPONSE_ACCEPT, NULL);
+    }
 
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -919,9 +927,17 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     gtk_grid_set_row_spacing(GTK_GRID(grid), 5);
     gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
+    /* Message if no attachment */
+    if(nbOfAttachments == 0){
+        noAttachmentLabel = gtk_label_new("<i>Il n'y a aucune pièce-jointe associée à ce dossier</i>");
+        gtk_label_set_use_markup(GTK_LABEL(noAttachmentLabel), TRUE);
+        gtk_grid_attach(GTK_GRID(grid), noAttachmentLabel, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_widget_set_hexpand(noAttachmentLabel, TRUE);
+    }
+
     /* Setup the list */
     int i;
-    for(i=0; i<getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID); i++){
+    for(i=0; i < nbOfAttachments; i++){
         checkList[i] = gtk_check_button_new_with_label(fileList[i]);
         if(i == 0) {
             gtk_grid_attach(GTK_GRID(grid), checkList[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
@@ -939,7 +955,7 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     /* Action on button */
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         int j;
-        for(j=0; j<getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID); j++){
+        for(j=0; j < nbOfAttachments; j++){
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
                 char *mediaPath = getFolderMediaPath(attachmentProperties->patientID, attachmentProperties->folderID);
                 char *command = (char*) malloc(sizeof(char) * (strlen(fileList[j]) + strlen(mediaPath) + strlen("xdg-open ")));

@@ -132,7 +132,7 @@ char *getProfileExtension(int patientID){
         free((char*) path_jpg);
         free((char*) path_png);
         return ".jpeg";
-    } else if (access(path_jpeg, F_OK) == 0){
+    } else if (access(path_jpg, F_OK) == 0){
         free((char*) path_jpeg);
         free((char*) path_JPEG);
         free((char*) path_jpg);
@@ -160,15 +160,17 @@ char *getProfileExtension(int patientID){
  * \param[in] patient Patient concerned
  * \param[out] Profile photo path
 */
-char *getProfilePhotoPath(int patientID){
+char *getProfilePhotoPath(int patientID ,int folder){
     char *charID = (char*) malloc(sizeof(char)*10);
     char *photo_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/profil.jpeg")+40));
     strcpy(photo_path, "../media/patient-data/");
     tostring(charID, (int) patientID);
     strcat(photo_path, charID);
     strcat(photo_path, "/");
-    strcat(photo_path, "profil");
-    strcat(photo_path, getProfileExtension(patientID));
+    if(folder == 0){
+        strcat(photo_path, "profil");
+        strcat(photo_path, getProfileExtension(patientID));
+    }
     printf("%s\n", photo_path);
 
     free((char*) charID);
@@ -279,49 +281,18 @@ int getNbOfAttachments(int patientID, int folderID){
     return number;
 }
 
-int deleteMediaFolder(int patientID) {
-    char *path = getProfilePhotoPath(patientID);
-    DIR *d = opendir(path);
-    size_t path_len = strlen(path);
-    int r = -1;
+void deleteMediaFolder(int patientID) {
+    char *path = getProfilePhotoPath(patientID, 1);
 
-    if (d) {
-        struct dirent *p;
-
-        r = 0;
-        while (!r && (p=readdir(d))) {
-            int r2 = -1;
-            char *buf;
-            size_t len;
-
-            /* Skip the names "." and ".." as we don't want to recurse on them. */
-            if (!strcmp(p->d_name, ".") || !strcmp(p->d_name, ".."))
-                continue;
-
-            len = path_len + strlen(p->d_name) + 2;
-            buf = malloc(len);
-
-            if (buf) {
-                struct stat statbuf;
-
-                snprintf(buf, len, "%s/%s", path, p->d_name);
-                if (!stat(buf, &statbuf)) {
-                    if (S_ISDIR(statbuf.st_mode))
-                        r2 = deleteMediaFolder(patientID);
-                    else
-                        r2 = unlink(buf);
-                }
-                free(buf);
-            }
-            r = r2;
-        }
-        closedir(d);
+    if(strcmp(OS, "linux") == 0 || strcmp(OS, "macOS") == 0) {
+        char *cmd = (char*) malloc(50*sizeof(char));
+        strcpy(cmd, "rm -R ");
+        strcat(cmd, path);
+        printf("\n **** TEST : %s l.291 ****** \n", cmd);
+        system(cmd);
     }
+    else if(strcmp(OS, "Windows") == 0){}
 
-    if (!r)
-        r = rmdir(path);
-
-    return r;
 }
 
 char *replaceWhitespaces(char *filename){

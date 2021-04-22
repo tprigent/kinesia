@@ -441,4 +441,7 @@ void processSearch(GtkWidget *button, SearchParam *search){
     gtk_widget_show_all(search->notebook);
     gtk_notebook_set_current_page(GTK_NOTEBOOK(search->notebook), -1);
     gtk_widget_show_all(search->notebook);
+
+    free(searchResult);
+    free(idResult);
 }
