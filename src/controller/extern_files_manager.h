@@ -18,11 +18,11 @@ char *getExtensionFromPath(char *path);
 char *getProfileExtension(int patientID);
 char *getPatientMediaPath(int patientID);
 char *getFolderMediaPath(int patientID, int folderID);
-char *getProfilePhotoPath(int patientID);
+char *getProfilePhotoPath(int patientID, int folder);
 void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path);
 char **getMediaDirectoryContent(int patientID, int folderID);
 int getNbOfAttachments(int patientID, int folderID);
-int deleteMediaFolder(int patientID);
+void deleteMediaFolder(int patientID);
 char *replaceWhitespaces(char *filename);
 
 #endif //LOGICIEL_KINE_EXTERN_FILES_MANAGER_H
