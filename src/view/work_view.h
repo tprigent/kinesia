@@ -33,7 +33,7 @@ typedef struct {
     int isFolder;           /**< Determines if it's a folder */
 }DeleteElements;
 
-GtkWidget *setWorkWindow(int id_patient, int id_folder);
+GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder);
 void setWorkEnvironment(Window_id *window_id);
 
 void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient, int id_folder);
