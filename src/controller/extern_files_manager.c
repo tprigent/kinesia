@@ -184,7 +184,12 @@ char *getPatientMediaPath(int patientID){
     tostring(charID, (int) patientID);
     strcat(media_path, charID);
     strcat(media_path, "/");
-    //mkdir(media_path, 0700);
+
+    #if defined(_WIN32)
+        mkdir(media_path);
+    #else
+        mkdir(media_path, 0700);
+    #endif
 
     free((char*) charID);
     return(media_path);
@@ -200,7 +205,12 @@ char *getFolderMediaPath(int patientID, int folderID){
     tostring(charID, folderID);
     strcat(folderMediaPath, charID);
     strcat(folderMediaPath, "/");
-    //mkdir(folderMediaPath, 0700);
+
+    #if defined(_WIN32)
+        mkdir(folderMediaPath);
+    #else
+        mkdir(folderMediaPath, 0700);
+    #endif
 
     return folderMediaPath;
 }
