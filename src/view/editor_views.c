@@ -817,7 +817,7 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
  * \param[in] button Button clicked to launch this dialog box
  * \param[in] window Current window to refresh the view
 */
-void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
+void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
 
     /* DECLARE VARIABLES */
     int cssMode;
@@ -832,7 +832,8 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
     GtkWidget *whiteImage= NULL;
     GdkPixbuf *darkPixbuf = NULL;
     GtkWidget *darkImage= NULL;
-    GtkWidget *mode_combo_box = NULL;
+    GtkWidget *toggle_switch = NULL;
+    GtkWidget *darkModeLabel = NULL;
 
     /* ASSIGN VARIABLES */
     label_whiteMode = gtk_label_new("Mode clair :");
@@ -842,10 +843,9 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
     gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
     gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
 
-    mode_combo_box = gtk_combo_box_text_new();
-    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(mode_combo_box), NULL, "Mode clair");
-    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(mode_combo_box), NULL, "Mode sombre");
-    gtk_combo_box_set_active(GTK_COMBO_BOX(mode_combo_box), 0);
+    darkModeLabel = gtk_label_new("Mode sombre ");
+    toggle_switch = gtk_switch_new();
+    if(settings->cssMode == 1) gtk_switch_set_active(GTK_SWITCH(toggle_switch), TRUE);
 
     whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/whiteMode.jpeg", 400, 300, TRUE, NULL);
     whiteImage = gtk_image_new_from_pixbuf(whitePixbuf);
@@ -861,14 +861,13 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
     gtk_container_add(GTK_CONTAINER(content_area), grid_dialog);
 
     /* MANAGE TO ORGANIZE THE VIEW */
-    gtk_grid_attach(GTK_GRID(grid_dialog), label_whiteMode, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), label_darkMode, label_whiteMode, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid_dialog), label_whiteMode, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 14, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), label_darkMode, label_whiteMode, GTK_POS_RIGHT, 14, 1);
 
-    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), whiteImage, label_whiteMode, GTK_POS_BOTTOM, 1, 1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, label_darkMode, GTK_POS_BOTTOM, 1, 1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), mode_combo_box, whiteImage, GTK_POS_BOTTOM, 2, 1);
-    gtk_widget_set_halign(mode_combo_box, GTK_ALIGN_START);
-    gtk_widget_set_hexpand(mode_combo_box, TRUE);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), whiteImage, label_whiteMode, GTK_POS_BOTTOM, 14, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, label_darkMode, GTK_POS_BOTTOM, 14, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkModeLabel, whiteImage, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), toggle_switch, darkModeLabel, GTK_POS_RIGHT, 1, 1);
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
@@ -880,16 +879,15 @@ void launchSettingsEditor(GtkWidget *button, GtkWidget *window){
     /* Action on button */
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT){
 
-        /* GET INFO FROM COMBO_BOX */
-        char *modeResult = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(mode_combo_box));
-        if(strcmp(modeResult, "Mode clair") == 0) cssMode = 0;
-        else cssMode = 1;
+        /* GET INFO FROM SWITCH */
+        if(gtk_switch_get_active(GTK_SWITCH(toggle_switch))) cssMode = 1;
+        else cssMode = 0;
 
         gtk_widget_destroy(dialog);
 
         int fullScreen = 0;
-        if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
-        gtk_widget_destroy(window);
+        if(gtk_window_is_maximized(GTK_WINDOW(settings->window))==TRUE) fullScreen = 1;
+        gtk_widget_destroy(settings->window);
         setHomeWindow(1, fullScreen, cssMode);
     } else {
         gtk_widget_destroy(dialog);

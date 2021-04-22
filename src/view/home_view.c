@@ -73,7 +73,7 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_window_set_destroy_with_parent(GTK_WINDOW(window), FALSE);
-    setHomeEnvironment(window);
+    setHomeEnvironment(window, cssMode);
     gtk_widget_show_all(window);
     gtk_main();
 
@@ -90,7 +90,7 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
  *
  * \param[in] window Patient window to fill
 */
-void setHomeEnvironment(GtkWidget *window){
+void setHomeEnvironment(GtkWidget *window, int cssMode){
 
     /* DECLARE VARIABLES */
     GtkWidget *grid = NULL;
@@ -148,7 +148,10 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_widget_set_hexpand(button_parameters, FALSE);
     gtk_widget_set_halign(button_parameters, GTK_ALIGN_END);
     gtk_widget_set_tooltip_text(button_parameters, "Réglages");
-    g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), window);
+    SoftwareSettings *settings = (SoftwareSettings*) malloc(sizeof(SoftwareSettings));
+    settings->window = window;
+    settings->cssMode = cssMode;
+    g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), settings);
 
 
     gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 1, 1);
