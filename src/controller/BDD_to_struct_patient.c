@@ -216,36 +216,15 @@ int getNbPatient(Archived a){
 }
 
 /*!
- * \brief This function makes an SQL request, returns the patients active's id sorted by name.
+ * \brief This function makes an SQL request, returns the patients ids and names
+ * sorted by name and archived status
  *
- * \param[in]
+ * \param[in] array where the result ids will be stored
+ * \param[in] array of string where the names will be stored
+ * \param[in] value of the Enum Archived to sort the result
+ * \param[in] value of the Enum Sort to define how to sort the result
  *
- * \param[out] int*, an array of the id's, ending with the value -1.
- *
- * Exemple d'utilisation :
- *
- * char** nom=NULL;
-    int* ids=NULL;
-    int nbP,i;
-
-    nbP=getNbActivePatient();
-    ids = (int*)calloc(500,sizeof(int));
-    nom = (char**)calloc(nbP, sizeof(char));
-
-    getNameFirstnameIdActivePatient(ids,nom,nbP);
-
-    for(i=0;i<nbP;i++){
-        printf("Nom : %s, id : %d",nom[i],ids[i]);
-        printf("\n");
-    }
-
-    free(ids);
-
-    for(i=0;i<nbP;i++){
-        free(nom[i]);
-    }
- *
- *
+ * \param[out] int, 0 if an error occurred, 1 otherwise
 */
 
 int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
@@ -319,6 +298,18 @@ int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
 
     return 1;
 }
+
+/*!
+ * \brief This function makes an SQL request, returns the patients names and ids
+ * if their name contains the stirng search
+ *
+ * \param[in] string of the string to be searched
+ * \param[in] array of string where the names will be stored
+ * \param[in] array where the result ids will be stored
+ * \param[in] value of the length of ids and result
+ *
+ * \param[out] int, 0 if an error occurred, 1 otherwise
+*/
 
 int searchPatient(char* search,char** result, int* ids, int lenRes){
 
