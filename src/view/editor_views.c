@@ -967,8 +967,6 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
                 strcat(command, mediaPath);
                 strcat(command, fileList[j]);
 
-                printf("\nTest %s l.970\n", command);
-
                 system(command);
 
                 free(mediaPath);
