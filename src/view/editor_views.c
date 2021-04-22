@@ -963,8 +963,11 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
                 /* Build open command with file path */
                 if(strcmp(OS, "macOS") == 0) strcpy(command, "open ");
                 if(strcmp(OS, "linux") == 0) strcpy(command, "xdg-open ");
+                if(strcmp(OS, "Windows") == 0) strcpy(command, "start ");
                 strcat(command, mediaPath);
                 strcat(command, fileList[j]);
+
+                printf("\nTest %s l.970\n", command);
 
                 system(command);
 
