@@ -36,8 +36,9 @@ GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder){
     symbolPixbuf = gdk_pixbuf_new_from_file("../media/graphic-assets/logo.jpg", NULL);
     gtk_window_set_icon(GTK_WINDOW(window), symbolPixbuf);
 
-    //gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
-    if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
+    if(strcmp(OS, "macOS") == 0){
+        gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
+    } else if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
     else gtk_window_unmaximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -215,6 +216,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_hexpand(edit_button, TRUE);
     gtk_widget_set_vexpand(edit_button, FALSE);
     gtk_widget_set_halign(edit_button, GTK_ALIGN_END);
+    gtk_widget_set_tooltip_text(edit_button, "Modifier la fiche");
 
     /* Include the picture of the patient */
     gtk_grid_attach_next_to(GTK_GRID(grid_info), patient_photo, edit_button, GTK_POS_BOTTOM, 1, 1);
@@ -347,14 +349,6 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     }
 
 
-    /*folder_button[0] = gtk_button_new_with_label(name_folder[0]);
-    gtk_grid_attach(GTK_GRID(folder_grid), folder_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(folder_button[0], TRUE);
-    for(i = 1; i < nb_folders; i++){
-        folder_button[i] = gtk_button_new_with_label(name_folder[i]);
-        gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[i], folder_button[i-1], GTK_POS_BOTTOM, 1, 1);
-        gtk_widget_set_hexpand(folder_button[i], TRUE);
-    }*/
 
 }
 
@@ -388,6 +382,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
         gtk_widget_set_hexpand(frame, TRUE);
         gtk_widget_set_hexpand(label, TRUE);
         gtk_widget_set_hexpand(button, TRUE);
+        gtk_widget_set_tooltip_text(button, "Ajouter le premier dossier");
 
         IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
         idPatient->idPatient = (int) patient->id;
@@ -562,6 +557,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     gtk_widget_set_hexpand(attachments_button, FALSE);
     gtk_widget_set_vexpand(attachments_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
+    gtk_widget_set_tooltip_text(attachments_button, "Pièces-jointes");
 
     MediaType *attachment_properties = (MediaType*) malloc(sizeof(Patient)+sizeof(char)*10+sizeof(int));
     attachment_properties->patientID = (int) patient->id;
@@ -586,6 +582,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     /* BUTTON */
     GtkWidget *new_button = NULL;
     new_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(new_button, "Créer un nouveau dossier");
 
     IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
     idPatient->idPatient = (int) patient->id;
@@ -598,6 +595,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
 
     GtkWidget *edit_folder_button = NULL;
     edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(edit_folder_button, "Modifier le dossier");
     FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
     foldEditStruct->folder = folder;
     foldEditStruct->edit_new = 1;
@@ -609,6 +607,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
 
     GtkWidget *delete_folder_button = NULL;
     delete_folder_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(delete_folder_button, "Supprimer le dossier");
     DeleteElements *folderDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
     folderDelete->window = window;
     folderDelete->isFolder = 1;
@@ -659,6 +658,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         GtkWidget *frame = gtk_frame_new("Séances");
         GtkWidget *grid = gtk_grid_new();
         GtkWidget *button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+        gtk_widget_set_tooltip_text(button, "Ajouter une première séance");
         gtk_container_add(GTK_CONTAINER(box), frame);
         gtk_container_add(GTK_CONTAINER(frame), grid);
         gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
@@ -753,9 +753,13 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         calendar_next_meeting_button[session_cursor] = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
         save_button[session_cursor] = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
+        gtk_widget_set_tooltip_text(save_button[session_cursor], "Enregistrer");
         delete_button[session_cursor] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+        gtk_widget_set_tooltip_text(delete_button[session_cursor], "Supprimer la séance");
         new_session_button[session_cursor] = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+        gtk_widget_set_tooltip_text(new_session_button[session_cursor], "Nouvelle séance");
         session_attach_button[session_cursor] = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
+        gtk_widget_set_tooltip_text(session_attach_button[session_cursor], "Joindre un élément");
 
         text_session_note[session_cursor] = gtk_text_view_new();
         session_buffer[session_cursor] = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_session_note[session_cursor]));
@@ -976,9 +980,13 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
 
 
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
-    new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(save_button, "Enregistrer");
+    session_attach_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(session_attach_button, "Nouvelle séance");
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(session_attach_button, "Joindre un élément");
     delete_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(delete_button, "Supprimer la séance");
 
     text_session_note = gtk_text_view_new();
     session_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_session_note));
