@@ -66,8 +66,7 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
 
     if(strcmp(OS, "macOS") == 0){
         gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
-    }
-    if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
+    } else if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
     else gtk_window_unmaximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
