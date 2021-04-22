@@ -64,7 +64,9 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
     symbolPixbuf = gdk_pixbuf_new_from_file("../media/graphic-assets/logo.jpg", NULL);
     gtk_window_set_icon(GTK_WINDOW(window), symbolPixbuf);
 
-    //gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
+    if(strcmp(OS, "macOS") == 0){
+        gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
+    }
     if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
     else gtk_window_unmaximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
