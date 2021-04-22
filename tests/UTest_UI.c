@@ -48,7 +48,7 @@ static int setup_patient(void **state){
 static void test_get_name_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char * temp = get_name_UI(patient);
-    assert_string_equal("Claude François", temp);
+    assert_string_equal("<b>Claude François</b>", temp);
     free(temp);
 }
 
