@@ -12,6 +12,7 @@
 #include "../controller/display_helpers.h"
 #include "../controller/BDD_to_struct_folder.h"
 #include "../controller/BDD_to_struct_session.h"
+#include "../controller/struct_to_BDD_session.h"
 #include "../model/session_manager.h"
 
 
@@ -22,7 +23,7 @@
  *
  * \param[in] id_patient ID of the patient file opened
 */
-GtkWidget *setWorkWindow(int id_patient, int id_folder){
+GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder){
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
@@ -35,8 +36,9 @@ GtkWidget *setWorkWindow(int id_patient, int id_folder){
     symbolPixbuf = gdk_pixbuf_new_from_file("../media/graphic-assets/logo.jpg", NULL);
     gtk_window_set_icon(GTK_WINDOW(window), symbolPixbuf);
 
-    gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
-    gtk_window_maximize(GTK_WINDOW(window));
+    //gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
+    if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
+    else gtk_window_unmaximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -168,7 +170,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath(patient), NULL);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath((int) patient->id, 0), NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 145, 193, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
     patient_name = gtk_label_new(patient_name_char);
@@ -335,13 +337,13 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     }
 
     if(nb_folders>0 && id_folder == 0){
-        fillFolderBox(window, folderBox, sessionBox, NULL, folderIDTab[nb_folders - 1], patient);
+        fillFolderBox(window, folderBox, sessionBox, folderIDTab[nb_folders - 1], patient);
     }
     else if(nb_folders>0 && id_folder != 0){
-        fillFolderBox(window, folderBox, NULL, sessionBox, id_folder, patient);
+        fillFolderBox(window, folderBox, sessionBox, id_folder, patient);
     }
     else{
-        fillFolderBox(window, folderBox, NULL, sessionBox,0, patient);
+        fillFolderBox(window, folderBox, sessionBox, 0, patient);
     }
 
 
@@ -365,9 +367,9 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
  *
  * \param[in] box Existing Folder box
 */
-void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, GtkWidget *attachmentCounterLabel, int activeFolder, Patient *patient){
+void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int activeFolder, Patient *patient){
 
-    /* Getting folder  ************************************************************** */
+    /* GETTING FOLDER (SPECIAL VIEW IF NO FOLDER) */
     Folder *folder = NULL;
     if(activeFolder != 0){
         folder = getFolder(activeFolder);
@@ -392,12 +394,10 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, Gtk
         idPatient->window = window;
         g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
 
-        fillSessionBox(window, sessionBox, attachmentCounterLabel, patient, 0);
+        fillSessionBox(window, sessionBox, NULL, patient, 0);
         return ;
     }
 
-
-    /* ****************************************************************************** */
 
     /* Create a grid which contains the different elements of the folder ************ */
     GtkWidget *grid_part2 = NULL;
@@ -549,7 +549,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, Gtk
     /* LABEL */
     GtkWidget *attachments_label = NULL;
     GtkWidget *attachments_count = NULL;
-    char *indicator = get_indicator_files_UI(patient, activeFolder);
+    char *indicator = get_indicator_files_UI((int) patient->id, activeFolder);
     attachments_label = gtk_label_new("Pièces jointes:    ");
     attachments_count = gtk_label_new(indicator);
     free_info_UI(indicator);
@@ -564,7 +564,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, Gtk
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
 
     MediaType *attachment_properties = (MediaType*) malloc(sizeof(Patient)+sizeof(char)*10+sizeof(int));
-    attachment_properties->patient = patient;
+    attachment_properties->patientID = (int) patient->id;
     attachment_properties->folderID = (int) folder->idFolder;
     attachment_properties->mediaType = 1;
     attachment_properties->counterLabel = attachments_count;
@@ -607,6 +607,19 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, Gtk
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
     gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
 
+    GtkWidget *delete_folder_button = NULL;
+    delete_folder_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+    DeleteElements *folderDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
+    folderDelete->window = window;
+    folderDelete->isFolder = 1;
+    folderDelete->folderID = activeFolder;
+    folderDelete->notebook = NULL;
+    folderDelete->patientID = (int) patient->id;
+    g_signal_connect(GTK_BUTTON(delete_folder_button), "clicked", G_CALLBACK(launchDeleteElement), folderDelete);
+
+    gtk_widget_set_hexpand(delete_folder_button, FALSE);
+    gtk_widget_set_vexpand(delete_folder_button, FALSE);
+    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), delete_folder_button, FALSE, FALSE, 0);
     /* ****************************************************************************** */
 
     fillSessionBox(window, sessionBox, attachments_count, patient, activeFolder);
@@ -688,6 +701,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
     GtkWidget *entry_date_new[nb_session];
     GtkWidget *calendar_session_date_button[nb_session];
     GtkWidget *save_button[nb_session];
+    GtkWidget *delete_button[nb_session];
     GtkWidget *new_session_button[nb_session];
     GtkWidget *session_next_meeting[nb_session];
     GtkWidget *entry_next_meeting[nb_session];
@@ -704,6 +718,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
     SessionList *session_list = NULL;
     SessionEntries *saveSession[nb_session];
+    DeleteElements *sessionDelete[nb_session];
+    MediaType *mediaChooser[nb_session];
 
     /* ASSIGN VARIABLES */
     notebook = gtk_notebook_new();
@@ -712,7 +728,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
     session_list = getSessionList(folderID);
     setOnFirst(session_list);
-
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
         grid_add_session[session_cursor] = gtk_grid_new();
 
@@ -738,6 +753,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         calendar_next_meeting_button[session_cursor] = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
         save_button[session_cursor] = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
+        delete_button[session_cursor] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
         new_session_button[session_cursor] = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
         session_attach_button[session_cursor] = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
 
@@ -756,7 +772,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         setOnNext(session_list);
     }
 
-
     /* MANAGE GRID WHICH ORGANIZES THE SESSION SECTION */
     gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 0);
     gtk_container_add(GTK_CONTAINER(box), grid_session_section);
@@ -765,7 +780,9 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
     /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
     AddNewSessionStruct *newSessionStruct = (AddNewSessionStruct*) malloc(sizeof(AddNewSessionStruct));
     newSessionStruct->notebook = notebook;
+    newSessionStruct->attachmentLabel = attachmentCounterLabel;
     newSessionStruct->folderID = folderID;
+    newSessionStruct->patientID = (int) patient->id;
 
     /* Manage to add a notebook */
     gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
@@ -775,60 +792,59 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
     setOnFirst(session_list);
     for(session_cursor=0; session_cursor<nb_session; session_cursor++){
-            /* Manage the entry to add a title */
-            gtk_grid_attach(GTK_GRID(grid_add_session[session_cursor]), session_title_new[session_cursor], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-            gtk_widget_set_hexpand(session_title_new[session_cursor], FALSE);
-            gtk_widget_set_vexpand(session_title_new[session_cursor], FALSE);
-            gtk_widget_set_halign(session_title_new[session_cursor], GTK_ALIGN_START);
+        /* Manage the entry to add a title */
+        gtk_grid_attach(GTK_GRID(grid_add_session[session_cursor]), session_title_new[session_cursor], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+        gtk_widget_set_hexpand(session_title_new[session_cursor], FALSE);
+        gtk_widget_set_vexpand(session_title_new[session_cursor], FALSE);
+        gtk_widget_set_halign(session_title_new[session_cursor], GTK_ALIGN_START);
 
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), entry_title_new[session_cursor], session_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
-            gtk_widget_set_hexpand(entry_title_new[session_cursor], FALSE);
-            gtk_widget_set_vexpand(entry_title_new[session_cursor], FALSE);
-            gtk_widget_set_halign(entry_title_new[session_cursor], GTK_ALIGN_START);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), entry_title_new[session_cursor], session_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(entry_title_new[session_cursor], FALSE);
+        gtk_widget_set_vexpand(entry_title_new[session_cursor], FALSE);
+        gtk_widget_set_halign(entry_title_new[session_cursor], GTK_ALIGN_START);
 
-            /* Manage to display the date of the session */
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_date_new[session_cursor], session_title_new[session_cursor], GTK_POS_RIGHT, 1, 1);
-            gtk_widget_set_hexpand(session_date_new[session_cursor], FALSE);
-            gtk_widget_set_vexpand(session_date_new[session_cursor], FALSE);
-            gtk_widget_set_halign(session_date_new[session_cursor], GTK_ALIGN_START);
+        /* Manage to display the date of the session */
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_date_new[session_cursor], session_title_new[session_cursor], GTK_POS_RIGHT, 1, 1);
+        gtk_widget_set_hexpand(session_date_new[session_cursor], FALSE);
+        gtk_widget_set_vexpand(session_date_new[session_cursor], FALSE);
+        gtk_widget_set_halign(session_date_new[session_cursor], GTK_ALIGN_START);
 
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), entry_date_new[session_cursor], session_date_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
-            gtk_widget_set_hexpand(entry_date_new[session_cursor], FALSE);
-            gtk_widget_set_vexpand(entry_date_new[session_cursor], FALSE);
-            gtk_widget_set_halign(entry_date_new[session_cursor], GTK_ALIGN_START);
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), calendar_session_date_button[session_cursor], entry_date_new[session_cursor], GTK_POS_RIGHT, 1, 1);
-            gtk_widget_set_hexpand(calendar_session_date_button[session_cursor], FALSE);
-            gtk_widget_set_halign(calendar_session_date_button[session_cursor], GTK_ALIGN_START);
-            g_signal_connect(GTK_BUTTON(calendar_session_date_button[session_cursor]), "clicked", G_CALLBACK(launchCalendar), entry_date_new[session_cursor]);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), entry_date_new[session_cursor], session_date_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(entry_date_new[session_cursor], FALSE);
+        gtk_widget_set_vexpand(entry_date_new[session_cursor], FALSE);
+        gtk_widget_set_halign(entry_date_new[session_cursor], GTK_ALIGN_START);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), calendar_session_date_button[session_cursor], entry_date_new[session_cursor], GTK_POS_RIGHT, 1, 1);
+        gtk_widget_set_hexpand(calendar_session_date_button[session_cursor], FALSE);
+        gtk_widget_set_halign(calendar_session_date_button[session_cursor], GTK_ALIGN_START);
+        g_signal_connect(GTK_BUTTON(calendar_session_date_button[session_cursor]), "clicked", G_CALLBACK(launchCalendar), entry_date_new[session_cursor]);
 
         /* Manage to display the next appointment */
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_next_meeting[session_cursor], entry_date_new[session_cursor], GTK_POS_RIGHT, 1, 1);
-            gtk_widget_set_hexpand(session_next_meeting[session_cursor], TRUE);
-            gtk_widget_set_vexpand(session_next_meeting[session_cursor], FALSE);
-            gtk_widget_set_halign(session_next_meeting[session_cursor], GTK_ALIGN_END);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_next_meeting[session_cursor], entry_date_new[session_cursor], GTK_POS_RIGHT, 1, 1);
+        gtk_widget_set_hexpand(session_next_meeting[session_cursor], TRUE);
+        gtk_widget_set_vexpand(session_next_meeting[session_cursor], FALSE);
+        gtk_widget_set_halign(session_next_meeting[session_cursor], GTK_ALIGN_END);
 
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), entry_next_meeting[session_cursor], session_next_meeting[session_cursor], GTK_POS_RIGHT, 8, 1);
-            gtk_widget_set_hexpand(entry_next_meeting[session_cursor], FALSE);
-            gtk_widget_set_vexpand(entry_next_meeting[session_cursor], FALSE);
-            gtk_widget_set_halign(entry_next_meeting[session_cursor], GTK_ALIGN_START);
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), calendar_next_meeting_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_RIGHT, 8, 1);
-            g_signal_connect(GTK_BUTTON(calendar_next_meeting_button[session_cursor]), "clicked", G_CALLBACK(launchCalendar), entry_next_meeting[session_cursor]);
-
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), entry_next_meeting[session_cursor], session_next_meeting[session_cursor], GTK_POS_RIGHT, 8, 1);
+        gtk_widget_set_hexpand(entry_next_meeting[session_cursor], FALSE);
+        gtk_widget_set_vexpand(entry_next_meeting[session_cursor], FALSE);
+        gtk_widget_set_halign(entry_next_meeting[session_cursor], GTK_ALIGN_START);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), calendar_next_meeting_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_RIGHT, 8, 1);
+        g_signal_connect(GTK_BUTTON(calendar_next_meeting_button[session_cursor]), "clicked", G_CALLBACK(launchCalendar), entry_next_meeting[session_cursor]);
 
 
         /* Manage to display the new session button */
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 7, 1);
-            gtk_widget_set_hexpand(new_session_button[session_cursor], FALSE);
-            gtk_widget_set_vexpand(new_session_button[session_cursor], FALSE);
-            gtk_widget_set_halign(new_session_button[session_cursor], GTK_ALIGN_END);
-            g_signal_connect(GTK_BUTTON(new_session_button[session_cursor]), "clicked", G_CALLBACK(addNewSessionUI), newSessionStruct);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 7, 1);
+        gtk_widget_set_hexpand(new_session_button[session_cursor], FALSE);
+        gtk_widget_set_vexpand(new_session_button[session_cursor], FALSE);
+        gtk_widget_set_halign(new_session_button[session_cursor], GTK_ALIGN_END);
+        g_signal_connect(GTK_BUTTON(new_session_button[session_cursor]), "clicked", G_CALLBACK(addNewSessionUI), newSessionStruct);
 
 
-            /* Manage to display the save button */
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), save_button[session_cursor], calendar_next_meeting_button[session_cursor], GTK_POS_TOP, 1, 1);
-            gtk_widget_set_hexpand(save_button[session_cursor], FALSE);
-            gtk_widget_set_vexpand(save_button[session_cursor], FALSE);
-            gtk_widget_set_halign(save_button[session_cursor], GTK_ALIGN_END);
+        /* Manage to display the save button */
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), save_button[session_cursor], calendar_next_meeting_button[session_cursor], GTK_POS_TOP, 1, 1);
+        gtk_widget_set_hexpand(save_button[session_cursor], FALSE);
+        gtk_widget_set_vexpand(save_button[session_cursor], FALSE);
+        gtk_widget_set_halign(save_button[session_cursor], GTK_ALIGN_END);
 
             saveSession[session_cursor] = (SessionEntries*) malloc(sizeof(SessionEntries));
             saveSession[session_cursor]->session = &session_list->current->session;
@@ -837,38 +853,50 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             saveSession[session_cursor]->sessionDate = entry_date_new[session_cursor];
             saveSession[session_cursor]->nextSessionDate = entry_next_meeting[session_cursor];
             saveSession[session_cursor]->observations = text_session_note[session_cursor];
+            saveSession[session_cursor]->notebook = notebook;
             g_signal_connect(GTK_BUTTON(save_button[session_cursor]), "clicked", G_CALLBACK(saveSessionEntries), saveSession[session_cursor]);
 
 
-            /* Manage the button to attach items */
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_attach_button[session_cursor], entry_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
-            gtk_widget_set_hexpand(session_attach_button[session_cursor], FALSE);
-            gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
-            MediaType *mediaChooser = (MediaType *) malloc(sizeof(MediaType));
-            mediaChooser->patient = patient;
-            mediaChooser->folderID = folderID;
-            mediaChooser->mediaType = 1;
-            mediaChooser->counterLabel = attachmentCounterLabel;
-            g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
+        /* Manage the button to attach items */
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_attach_button[session_cursor], entry_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(session_attach_button[session_cursor], FALSE);
+        gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
+        mediaChooser[session_cursor] = (MediaType *) malloc(sizeof(MediaType));
+        mediaChooser[session_cursor]->patientID = (int) patient->id;
+        mediaChooser[session_cursor]->folderID = folderID;
+        mediaChooser[session_cursor]->mediaType = 1;
+        mediaChooser[session_cursor]->counterLabel = attachmentCounterLabel;
+        g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser[session_cursor]);
 
-            /* Manage the frame and its entry to add informations about the session */
+        /* Manage to display the delete session button */
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), delete_button[session_cursor], session_attach_button[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(delete_button[session_cursor], FALSE);
+        gtk_widget_set_vexpand(delete_button[session_cursor], TRUE);
+        gtk_widget_set_valign(delete_button[session_cursor], GTK_ALIGN_END);
+        sessionDelete[session_cursor] = (DeleteElements *) malloc(sizeof(DeleteElements));
+        sessionDelete[session_cursor]->window = window;
+        sessionDelete[session_cursor]->isFolder = 0;
+        sessionDelete[session_cursor]->sessionID = (int) session_list->current->session.idSession;
+        sessionDelete[session_cursor]->notebook = notebook;
+        sessionDelete[session_cursor]->patientID = (int) patient->id;
+        sessionDelete[session_cursor]->folderID = folderID;
+        g_signal_connect(GTK_BUTTON(delete_button[session_cursor]), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete[session_cursor]);
 
 
-            gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, (float)0.5);
-            gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 11, 3);
-            gtk_widget_set_hexpand(frame_session_note[session_cursor], TRUE);
-            gtk_widget_set_vexpand(frame_session_note[session_cursor], TRUE);
+        /* Manage the frame and its entry to add informations about the session */
+        gtk_frame_set_label_align(GTK_FRAME(frame_session_note[session_cursor]), 0, (float)0.5);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), frame_session_note[session_cursor], session_attach_button[session_cursor], GTK_POS_RIGHT, 11, 3);
+        gtk_widget_set_hexpand(frame_session_note[session_cursor], TRUE);
+        gtk_widget_set_vexpand(frame_session_note[session_cursor], TRUE);
 
+        gtk_container_add(GTK_CONTAINER(frame_session_note[session_cursor]), text_box[session_cursor]);
+        gtk_container_add(GTK_CONTAINER(text_box[session_cursor]), text_session_note[session_cursor]);
+        gtk_widget_set_hexpand(text_session_note[session_cursor], TRUE);
+        gtk_widget_set_vexpand(text_session_note[session_cursor], TRUE);
 
-            gtk_container_add(GTK_CONTAINER(frame_session_note[session_cursor]), text_box[session_cursor]);
-            gtk_container_add(GTK_CONTAINER(text_box[session_cursor]), text_session_note[session_cursor]);
-            gtk_widget_set_hexpand(text_session_note[session_cursor], TRUE);
-            gtk_widget_set_vexpand(text_session_note[session_cursor], TRUE);
-
-            gtk_notebook_append_page(GTK_NOTEBOOK(notebook), grid_add_session[session_cursor], gtk_label_new(session_list->current->session.sessionName));
-            setOnNext(session_list);
-
-        }
+        gtk_notebook_append_page(GTK_NOTEBOOK(notebook), grid_add_session[session_cursor], gtk_label_new(session_list->current->session.sessionName));
+        setOnNext(session_list);
+    }
 
 }
 
@@ -883,8 +911,11 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
  * \param[in] but Button pressed to launch the work view
 */
 void launchWorkView(GtkWidget *but, Window_id *window_id){
+    int fullScreen = 0;
+    if(gtk_window_is_maximized(GTK_WINDOW(window_id->window))==TRUE) fullScreen = 1;
     gtk_widget_destroy(window_id->window);
-    setWorkWindow(window_id->patientID, window_id->folderID);
+    setWorkWindow(fullScreen, window_id->patientID, window_id->folderID);
+
 }
 
 /*!
@@ -896,7 +927,7 @@ void launchWorkView(GtkWidget *but, Window_id *window_id){
  * \param[in] but Button pressed to launch the work view
  * \param[in] notebook The notebook which contains the sessions
 */
-void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, Patient *patient){
+void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     /* DECLARE VARIABLES */
     GtkWidget *notebook = newSessionStruct->notebook;
     Session *new_session = createEmptySession(newSessionStruct->folderID);
@@ -914,6 +945,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     GtkWidget *entry_next_meeting;
     GtkWidget *calendar_next_meeting_button = NULL;
     GtkWidget *session_attach_button;
+    GtkWidget *delete_button = NULL;
     GtkWidget *text_session_note;
     GtkTextBuffer *session_buffer;
     GtkTextIter end;
@@ -946,6 +978,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
+    delete_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
 
     text_session_note = gtk_text_view_new();
     session_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_session_note));
@@ -1021,12 +1054,34 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     saveSession->sessionDate = entry_date_new;
     saveSession->nextSessionDate = entry_next_meeting;
     saveSession->observations = text_session_note;
+    saveSession->notebook = notebook;
     g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveSessionEntries), saveSession);
 
     /* Manage the button to attach items */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, entry_title_new, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session_attach_button, FALSE);
     gtk_widget_set_vexpand(session_attach_button, FALSE);
+    MediaType *mediaChooser = (MediaType *) malloc(sizeof(MediaType));
+    mediaChooser->patientID = newSessionStruct->patientID;
+    mediaChooser->folderID = newSessionStruct->folderID;
+    mediaChooser->mediaType = 1;
+    mediaChooser->counterLabel = newSessionStruct->attachmentLabel;
+    g_signal_connect(GTK_BUTTON(session_attach_button), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
+
+
+    /* Manage to display the delete session button */
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), delete_button, session_attach_button, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(delete_button, FALSE);
+    gtk_widget_set_vexpand(delete_button, TRUE);
+    gtk_widget_set_valign(delete_button, GTK_ALIGN_END);
+    DeleteElements *sessionDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
+    sessionDelete->isFolder = 0;
+    sessionDelete->sessionID = (int) newSessionStruct->folderID;
+    sessionDelete->notebook = notebook;
+    sessionDelete->patientID = (int) newSessionStruct->patientID;
+    sessionDelete->folderID = newSessionStruct->folderID;
+    g_signal_connect(GTK_BUTTON(delete_button), "clicked", G_CALLBACK(launchDeleteElement), sessionDelete);
+
 
     /* Manage the frame and its entry to add informations about the session */
     gtk_frame_set_label_align(GTK_FRAME(frame_session_note), 0, (float) 0.5);
@@ -1043,15 +1098,17 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct, P
     gtk_notebook_insert_page(GTK_NOTEBOOK(notebook), grid_add_session, gtk_label_new(new_session_name), 0);
     free(new_session_name);
 
-    //freeSession(new_session);
+    addSession(new_session);
     gtk_widget_show_all(notebook);
 
 }
 
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct){
+    int fullScreen = 0;
+    if(gtk_window_is_maximized(GTK_WINDOW(firstSessionStruct->window))==TRUE) fullScreen = 1;
     gtk_widget_destroy(firstSessionStruct->window);
     createNewSession(firstSessionStruct->folderID);
-    setWorkWindow(firstSessionStruct->patientID, firstSessionStruct->folderID);
+    setWorkWindow(fullScreen, firstSessionStruct->patientID, firstSessionStruct->folderID);
 }
 
 /* HELPERS */
