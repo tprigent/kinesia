@@ -132,7 +132,7 @@ char *getProfileExtension(int patientID){
         free((char*) path_jpg);
         free((char*) path_png);
         return ".jpeg";
-    } else if (access(path_jpeg, F_OK) == 0){
+    } else if (access(path_jpg, F_OK) == 0){
         free((char*) path_jpeg);
         free((char*) path_JPEG);
         free((char*) path_jpg);
