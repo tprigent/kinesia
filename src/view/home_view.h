@@ -28,7 +28,7 @@ typedef struct {
 }SearchParam;
 
 GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
-void setHomeEnvironment(GtkWidget *window);
+void setHomeEnvironment(GtkWidget *window, int cssMode);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 
 Session *createEmptySession(int idFolder);

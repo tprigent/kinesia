@@ -59,6 +59,11 @@ typedef struct {
     GtkWidget *counterLabel;      /**< Label containing the number of files */
 }MediaType;
 
+typedef struct {
+    GtkWidget *window;
+    int cssMode;
+}SoftwareSettings;
+
 void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
 void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall);
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window);
@@ -66,7 +71,7 @@ void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window);
 void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser);
 void launchCalendar(GtkWidget *button, GtkWidget *entry);
 void launchPatientWarning(GtkWidget *button, WarningType *warning);
-void launchSettingsEditor(GtkWidget *button, GtkWidget *window);
+void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings);
 void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperties);
 void launchDeleteElement(GtkWidget *button, DeleteElements *element);
 

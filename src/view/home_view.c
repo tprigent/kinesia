@@ -64,14 +64,15 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
     symbolPixbuf = gdk_pixbuf_new_from_file("../media/graphic-assets/logo.jpg", NULL);
     gtk_window_set_icon(GTK_WINDOW(window), symbolPixbuf);
 
-    //gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
-    if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
+    if(strcmp(OS, "macOS") == 0){
+        gtk_window_set_default_size(GTK_WINDOW(window), 1200, 720);
+    } else if(fullScreen) gtk_window_maximize(GTK_WINDOW(window));
     else gtk_window_unmaximize(GTK_WINDOW(window));
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_window_set_destroy_with_parent(GTK_WINDOW(window), FALSE);
-    setHomeEnvironment(window);
+    setHomeEnvironment(window, cssMode);
     gtk_widget_show_all(window);
     gtk_main();
 
@@ -88,7 +89,7 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
  *
  * \param[in] window Patient window to fill
 */
-void setHomeEnvironment(GtkWidget *window){
+void setHomeEnvironment(GtkWidget *window, int cssMode){
 
     /* DECLARE VARIABLES */
     GtkWidget *grid = NULL;
@@ -145,7 +146,11 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(button_parameters, FALSE);
     gtk_widget_set_halign(button_parameters, GTK_ALIGN_END);
-    g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), window);
+    gtk_widget_set_tooltip_text(button_parameters, "Réglages");
+    SoftwareSettings *settings = (SoftwareSettings*) malloc(sizeof(SoftwareSettings));
+    settings->window = window;
+    settings->cssMode = cssMode;
+    g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), settings);
 
 
     gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 1, 1);
@@ -156,6 +161,7 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_grid_attach_next_to(GTK_GRID(grid), entry_search, frame_calendar, GTK_POS_RIGHT, 2, 1);
     gtk_widget_set_valign(entry_search, GTK_ALIGN_START);
     gtk_widget_set_hexpand(entry_search, TRUE);
+    gtk_widget_set_tooltip_text(entry_search, "Rechercher un patient");
     SearchParam *patientSearchParam = (SearchParam *) malloc(sizeof(SearchParam));
     patientSearchParam->entry = entry_search;
     patientSearchParam->notebook = tabs;
@@ -168,6 +174,7 @@ void setHomeEnvironment(GtkWidget *window){
     gtk_widget_set_halign(button_new_patient, GTK_ALIGN_END);
     gtk_widget_set_valign(button_new_patient, GTK_ALIGN_START);
     gtk_widget_set_hexpand(button_new_patient, TRUE);
+    gtk_widget_set_tooltip_text(button_new_patient, "Ajouter un patient");
 
     /* Box patient */
     gtk_grid_attach_next_to(GTK_GRID(grid), tabs, entry_search, GTK_POS_BOTTOM, 6,1);
@@ -203,6 +210,8 @@ void setHomeEnvironment(GtkWidget *window){
         active_patient_button[i] = gtk_button_new_with_label(nameActivePatient[i]);
         archive_button[i] = gtk_button_new_from_icon_name("user-trash", GTK_ICON_SIZE_MENU);
         active_delete_button[i] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+        gtk_widget_set_tooltip_text(archive_button[i], "Archiver");
+        gtk_widget_set_tooltip_text(active_delete_button[i], "Supprimer");
 
         if (i == 0){
             gtk_grid_attach(GTK_GRID(grid_active_patient), active_patient_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
@@ -267,6 +276,8 @@ void setHomeEnvironment(GtkWidget *window){
         archived_patient_button[i] = gtk_button_new_with_label(nomArchivePatient[i]);
         unarchive_button[i] = gtk_button_new_from_icon_name("edit-undo", GTK_ICON_SIZE_MENU);
         archived_delete_button[i] = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+        gtk_widget_set_tooltip_text(unarchive_button[i], "Réactiver");
+        gtk_widget_set_tooltip_text(archived_delete_button[i], "Supprimer");
 
         if(i == 0){
             gtk_grid_attach(GTK_GRID(grid_archived_patient), archived_patient_button[i], GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
