@@ -242,12 +242,14 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     /* Section which fills the information grid */
     // Name
     gtk_grid_attach(GTK_GRID(grid_etat_civil), patient_name, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+    gtk_label_set_use_markup(GTK_LABEL(patient_name), TRUE);
     gtk_widget_set_hexpand(patient_name, TRUE);
     gtk_widget_set_vexpand(patient_name, FALSE);
+    gtk_widget_set_margin_top(patient_name, 5);
+    gtk_widget_set_margin_bottom(patient_name, 5);
     gtk_widget_set_halign(patient_name, GTK_ALIGN_CENTER);
 
     // Birthdate
-    gtk_label_set_use_markup(GTK_LABEL(patient_birth), TRUE);
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_birth, patient_name, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(patient_birth, TRUE);
     gtk_widget_set_vexpand(patient_birth, FALSE);
@@ -258,6 +260,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_grid_attach_next_to(GTK_GRID(grid_etat_civil), patient_job, patient_birth, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(patient_job, TRUE);
     gtk_widget_set_vexpand(patient_job, FALSE);
+    gtk_widget_set_margin_bottom(patient_job, 5);
     gtk_widget_set_halign(patient_job, GTK_ALIGN_CENTER);
 
     /* Manage the frame which contains medical informations and its grid */
@@ -273,12 +276,14 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_grid_attach(GTK_GRID(grid_medical_info), patient_height_weight, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(patient_height_weight, TRUE);
     gtk_widget_set_vexpand(patient_height_weight, FALSE);
+    gtk_widget_set_margin_top(patient_height_weight, 5);
     gtk_widget_set_halign(patient_height_weight, GTK_ALIGN_CENTER);
 
     // First consultation
     gtk_grid_attach_next_to(GTK_GRID(grid_medical_info), patient_first_consultation, patient_height_weight, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(patient_first_consultation, TRUE);
     gtk_widget_set_vexpand(patient_first_consultation, FALSE);
+    gtk_widget_set_margin_bottom(patient_first_consultation, 5);
     gtk_widget_set_halign(patient_first_consultation, GTK_ALIGN_CENTER);
 
     /* Manage the frame which contains other informations */
@@ -292,6 +297,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_hexpand(grid_other_info, TRUE);
     gtk_grid_attach(GTK_GRID(grid_other_info), patient_other_info, GTK_ALIGN_CENTER, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(patient_other_info, TRUE);
+    gtk_widget_set_margin_top(patient_other_info, 5);
+    gtk_widget_set_margin_bottom(patient_other_info, 5);
     if(strcmp(patient->mail_address, "") != 0) gtk_grid_attach_next_to(GTK_GRID(grid_other_info), patient_mail_link, patient_other_info, GTK_POS_BOTTOM, 1, 1);
 
 
@@ -357,7 +364,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     }
 
 
-
+    free(contact_link);
 }
 
 /*!
