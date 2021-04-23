@@ -17,11 +17,13 @@
 
 
 /*!
-* \brief Initiate session window with some default parameters
+ * \brief Initiate session window with some default parameters
  *
  * Focus, position, size, title and destroy callback are set.
  *
- * \param[in] id_patient ID of the patient file opened
+ * \param[in] fullScreen : to tell if the window have to be set fullScreen
+ * \param[in] id_patient : ID of the patient file opened
+ * \param[in] id_folder : ID of the current folder
 */
 GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder){
 
@@ -59,7 +61,7 @@ GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder){
 }
 
 /*!
-* \brief Split the main window in three spaces and fill them
+* \brief Split the Work window in three spaces and fill them
  *
  * The three spaces are:
  * on the left side the patient,
@@ -68,7 +70,7 @@ GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder){
  *
  * The three boxes are filled by external functions.
  *
- * \param[in] window_id Window_id structure with window, patient ID and session
+ * \param[in] window_id  : structure containing info to launch the view
 */
 void setWorkEnvironment(Window_id *window_id){
 
@@ -106,19 +108,19 @@ void setWorkEnvironment(Window_id *window_id){
     free(window_id);
 }
 
-
 /*!
 * \brief Fill the Patient box
  *
  * The box is made up of the main infos (anamnesis) and a photo from the Patient.
- *
- * At the top a button to go back to the patient view is set up.
- *
+ * At the top a button to go back to the Home view is set up.
  * At the bottom a folder chooser is displayed.
  *
- * \param[in] window Current window to enable refresh
- * \param[in] box Existing patient box
- * \param[in] patient Current Patient
+ * \param[in] window : Current window to enable refresh
+ * \param[in] patientBox : patient box that has to be filled
+ * \param[in] folderBox : folder box that has to be filled
+ * \param[in] sessionBox : session box that has to be filled
+ * \param[in] patient : current patient
+ * \param[in] id_folder : the current folder to display
 */
 void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient, int id_folder){
 
@@ -371,10 +373,14 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 * \brief Fill the Folder box
  *
  * The box is made up of the current Folder infos.
- *
  * A button is displayed to see the attached media related to this Folder.
+ * Folders can also be created, modified or deleted in this box.
  *
- * \param[in] box Existing Folder box
+ * \param[in] window : Current window to enable refresh
+ * \param[in] box : folder box that has to be filled
+ * \param[in] sessionBox : session box that has to be filled
+ * \param[in] activeFolder : the folder that has to be displayed
+ * \param[in] patient : current patient
 */
 void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int activeFolder, Patient *patient){
 
@@ -645,15 +651,15 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
 * \brief Fill the Session box
  *
  * The box is made up of a list of the passed Sessions
- * and the current related to the current Folder.
+ * and the current one related to the current Folder.
+ * This box allows the user to edit, create and delete session.
+ * Attachments can also be added in a session
  *
- * This box allows the user to edit data.
- *
- * The button to attach files is set up.
- *
- * \param[in] window Current window to enable refresh
- * \param[in] box Existing Session box
- * \param[in] idPatient ID of the current Patient
+ * \param[in] window : Current window to enable refresh
+ * \param[in] box: session box that has to be filled
+ * \param[in] attachmentCounterLabel : label to increase number of attachments
+ * \param[in] patient : current patient
+ * param[in] folderID : current folder
 */
 void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCounterLabel, Patient *patient, int folderID){
 
@@ -919,15 +925,15 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
 }
 
-
 /*!
- * \brief Allows to close the patient window and open the session window
+ * \brief Allows to close the home window and open the work window
  *
  * When the user click on a patient from the patient window, this function closes
  * the patient window and open the session window related to the patient selected.
  *
- * \param[in] window_id Window to be refresh and ID of the Patient concerned
- * \param[in] but Button pressed to launch the work view
+ * * \param[in] but : Button pressed to call this function
+ * \param[in] window_id : Window to be refresh and ID of the Patient concerned
+
 */
 void launchWorkView(GtkWidget *but, Window_id *window_id){
     int fullScreen = 0;
@@ -938,13 +944,13 @@ void launchWorkView(GtkWidget *but, Window_id *window_id){
 }
 
 /*!
- * \brief Add an empty session when creating a new one
+ * \brief Create a new default session in BDD and display it in notebook
  *
- * When the current folder contains no session, or when the user wants to create
- * a new session, this function add an empty session to the notebook
+ * When the user wants to create a new session, this function add an empty
+ * session in BDD and in the notebook
  *
- * \param[in] but Button pressed to launch the work view
- * \param[in] notebook The notebook which contains the sessions
+ * \param[in] button : Button pressed to call this function
+ * \param[in] newSessionStruct : Structure containing widgets to update
 */
 void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     /* DECLARE VARIABLES */
@@ -1126,6 +1132,15 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
 
 }
 
+/*!
+ * \brief Create the first session of a folder in BDD and display it
+ *
+ * When a folder contains no sessio and this function is called, it creates a new session
+ * in BDD and display it in the notebook
+ *
+ * \param[in] button : Button pressed to call this function
+ * \param[in] firstSessionStruct : Structure containing widgets to update
+*/
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct){
     int fullScreen = 0;
     if(gtk_window_is_maximized(GTK_WINDOW(firstSessionStruct->window))==TRUE) fullScreen = 1;
