@@ -671,14 +671,27 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
 
 }
 
+void changeDateCallback(GtkWidget *calendar, GtkWidget *entry){
+    Date date;
+    unsigned int year, month, day;
+    gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+
+    date.year = (int) year;
+    date.month = (int) month + 1;
+    date.day = (int) day;
+    char *date_char = get_date_UI(&date);
+
+    gtk_entry_set_text(GTK_ENTRY(entry), date_char);
+    free(date_char);
+}
+
 void launchCalendar(GtkWidget *button, GtkWidget *entry){
 
     /* CREATE THE DIALOG BOX */
     GtkWidget *dialog = NULL;
     GtkWidget *content_area = NULL;
-    dialog = gtk_dialog_new_with_buttons ("Calendrier",NULL,GTK_DIALOG_MODAL,
-                                          "Annuler",GTK_RESPONSE_REJECT,
-                                          "Enregistrer", GTK_RESPONSE_ACCEPT,NULL);
+    dialog = gtk_dialog_new();
+    gtk_window_set_title(GTK_WINDOW(dialog), "Calendrier");
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
 
@@ -688,23 +701,12 @@ void launchCalendar(GtkWidget *button, GtkWidget *entry){
 
     gtk_widget_show_all(dialog);
 
-    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
-        Date date;
-        unsigned int year, month, day;
-        gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+    g_signal_connect(GTK_CALENDAR(calendar), "day-selected", G_CALLBACK(changeDateCallback), entry);
 
-        date.year = (int) year;
-        date.month = (int) month + 1;
-        date.day = (int) day;
-        char *date_char = get_date_UI(&date);
-
-        gtk_entry_set_text(GTK_ENTRY(entry), date_char);
-        free(date_char);
-
-        gtk_widget_destroy(dialog);
-    } else {
+    if (gtk_dialog_run (GTK_DIALOG (dialog))){
         gtk_widget_destroy(dialog);
     }
+
 }
 
 /*!
