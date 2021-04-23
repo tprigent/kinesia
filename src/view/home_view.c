@@ -10,11 +10,11 @@
 #include "../controller/display_helpers.h"
 
 /*!
- * \brief Function that launch whiteMode.css to modify application style
+ * \brief Function that launch css mode to modify application style
  *
- * This function set necessary parameters to load css and use css file
+ * This function set necessary parameters to load css and use css files
  *
- * \param[in] cssMode to tell which mode to display (normal or dark mode)
+ * \param[in] cssMode : int to tell which mode to display (normal or dark mode)
 */
 static void load_css(int cssMode){
     GtkCssProvider *provider;
@@ -39,12 +39,13 @@ static void load_css(int cssMode){
 }
 
 /*!
- * \brief Initiate patient window which shows a list of the patient
+ * \brief Initiate patient window which shows a list of the patient and the meetings
  *
  * Focus, position, size, title and destroy callback are set.
  *
- * \param[in] firstLoad to tell if css file has to be charged (1) or not (0)
- * \param[in] cssMode to tell which mode to display (normal or dark mode)
+ * \param[in] firstLoad : to tell if css file has to be charged (1) or not (0)
+ * \param[in] fullScreen : to tell if the window has to be load fullscreen or not
+ * \param[in] cssMode : to tell which mode to display (normal or dark mode)
 */
 GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
 
@@ -86,8 +87,8 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
  * on the left side a calendar and buttons to archive patients,
  * at the right side a list of patients, an search-entry and a button to create a patient.
  *
- *
- * \param[in] window Patient window to fill
+ * \param[in] window : Home window to fill
+ * \patam[in] cssMode : to tell which mode to display (normal or dark mode)
 */
 void setHomeEnvironment(GtkWidget *window, int cssMode){
 
@@ -330,13 +331,13 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 }
 
 /*!
- * \brief Allows to close the session window and open the patient window
+ * \brief Allows to close the Work window and open the Home window
  *
  * When the user click on the back button from a session window, this function closes
- * the current session window and open the patient window.
+ * the current Work window and open the Home window.
  *
- * \param[in] but clicked button which call this function
- * \param[in] window Window dedicated to the patient view
+ * \param[in] but : Button clicked to call this function
+ * \param[in] window : Current window that have to be closed
 */
 void launchHomeView(GtkWidget *but, GtkWidget *window){
     int fullScreen = 0;
@@ -351,7 +352,8 @@ void launchHomeView(GtkWidget *but, GtkWidget *window){
  * When a new session is created, this function allocates it
  * and fills it with the current date
  *
- * \param[out] Empty session
+ * \param[in] idFolder : folder id to which the session has to be linked
+ * \param[out] session : Empty session allocated
 */
 Session *createEmptySession(int idFolder){
     Session *newSession = (Session*) malloc(sizeof(Session));
@@ -378,6 +380,14 @@ Session *createEmptySession(int idFolder){
     return newSession;
 }
 
+/*!
+ * \brief show on screen the result of the patient research
+ *
+ * This function add a page in the notebook with the result of the research
+ *
+ * \param[in] button : Button clicked to call this function
+ * \param[in] search : structure containing widgets to update window (notebook & search entry)
+*/
 void processSearch(GtkWidget *button, SearchParam *search){
 
     /* Check if entry is null */
