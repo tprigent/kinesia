@@ -33,11 +33,12 @@ void tostring(char *str, int num){
  * \param[out] Char pointer combining at "Firstname Name" format
 */
 char *get_name_UI(Patient *patient){
-    char *name = (char*) malloc(sizeof(patient->firstname)+sizeof(patient->name)+2*sizeof(char));
-    strcpy(name, patient->firstname);
+    char *name = (char*) malloc(sizeof(patient->firstname)+sizeof(patient->name)+8*sizeof(char));
+    strcpy(name, "<b>");
+    strcat(name, patient->firstname);
     strcat(name, " ");
     strcat(name, patient->name);
-    strcat(name, "\0");
+    strcat(name, "</b>\0");
 
     return name;
 }
