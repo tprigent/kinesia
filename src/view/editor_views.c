@@ -27,8 +27,9 @@
  * This function sets the dialog box attributes (size, position, name)
  * and displays entries to edit or fill Folder structure.
  *
- * \param[in] folder Folder to be edited
-*/
+ * \param[in] button : button clicked to launch this view
+ * \param[in] foldEditStruct : Structure containing infos needed to modify folder and reload the view
+ * */
 void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
 
     /* DECLARE VARIABLES */
@@ -205,6 +206,16 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     }
 }
 
+/*!
+ * \brief Call the folder editor with a new folder
+ * *
+ * This function creates a new folder with default attributes and calls
+ * folder editor with this new folder struct
+ *
+ * \param[in] button : button clicked to launch this view
+ * \param[in] idPatientCall : Structure containing infos needed to create Folder and reload the view
+ *
+*/
 void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
     Folder *folder = createEmptyFolder(idPatientCall->idPatient);
     FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
@@ -224,8 +235,8 @@ void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
  *
  * More data is displayed than in the session view (all Patient anamnesis).
  *
- * \param[in] but_edit Edit button clicked to launch this view
- * \param[in] patient_window Structure (Patient_window) containing infos needed to modify Patient and reload the view
+ * \param[in] but_edit : button clicked to launch this view
+ * \param[in] patient_window : Structure containing infos needed to modify Patient and reload the view
  *
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
@@ -595,13 +606,14 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 }
 
 /*!
- * \brief Set up the edit Patient dialog box with empty entries
+ * \brief Call the patient editor with a new folder
  *
- * This function creates a patient with no attributes and pass it to launchPatientEditor
- * in order to create a new patient.
+ * This function creates a new patient with default attributes and calls
+ * patient editor with this new patient struct
  *
- * \param[in] but_new button clicked to launch this view
- * \param[in] window Patient window
+ * \param[in] button : button clicked to launch this view
+ * \param[in] window : Current window to reload the view
+ *
 */
 void launchNewPatientEditor(GtkWidget *but_new, GtkWidget *window){
     Patient *patient = NULL;
@@ -671,6 +683,15 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
 
 }
 
+/*!
+ * \brief Get the date selected on calendar and write it in selected entry
+ *
+ * This function gets the selected date in calendar and automatically write it
+ * in the entry passed in parameter
+ *
+ * \param[in] calendar : the calendar used to select the date
+ * \param[in] entry : the entry in which the date should be written
+*/
 void changeDateCallback(GtkWidget *calendar, GtkWidget *entry){
     Date date;
     unsigned int year, month, day;
@@ -685,6 +706,15 @@ void changeDateCallback(GtkWidget *calendar, GtkWidget *entry){
     free(date_char);
 }
 
+/*!
+ * \brief Create a dialog with a calendar to select date
+ *
+ * This function displays a dialog box containing a calendar to select
+ * a date for dates entries
+ *
+ * \param[in] button : button clicked to launch this view
+ * \param[in] entry : the entry in which the date should be written
+*/
 void launchCalendar(GtkWidget *button, GtkWidget *entry){
 
     /* CREATE THE DIALOG BOX */
@@ -714,8 +744,8 @@ void launchCalendar(GtkWidget *button, GtkWidget *entry){
  *
  * This function launches a dialog box to request user confirmation.
  *
- * \param[in] button Button clicked to launch this dialog box
- * \param[in] warning Struct WarningType containing Patient id, window and action type
+ * \param[in] button : Button clicked to launch this dialog box
+ * \param[in] warning : Struct WarningType containing Patient id, window and action type
 */
 void launchPatientWarning(GtkWidget *button, WarningType *warning){
     GtkWidget *dialog;
@@ -816,8 +846,8 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
  *
  * Bi-choice dialog box: "Annuler" that does nothing and "Enregistrer" that saves changes.
  *
- * \param[in] button Button clicked to launch this dialog box
- * \param[in] window Current window to refresh the view
+ * \param[in] button : Button clicked to launch this dialog box
+ * \param[in] settings : structure containing infos needed to change css mode and reload windows
 */
 void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
 
@@ -896,6 +926,15 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
     }
 }
 
+/*!
+ * \brief Set up the attachments dialog box
+ *
+ * Tri-choice dialog box: "Annuler" that does nothing, "Supprimer" that deletes selected
+ * attachments and "Ouvrir" that opens the selected attachments
+ *
+ * \param[in] button : Button clicked to launch this dialog box
+ * \param[in] attachmentProperties : structure containing infos needed to display the attachments
+*/
 void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperties){
     GtkWidget *dialog;
     GtkWidget *grid = NULL;
@@ -994,6 +1033,15 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     gtk_widget_destroy(dialog);
 }
 
+/*!
+ * \brief Set up the warning dialog box for session of folder deletion
+ *
+ * Bi-choice dialog box: "Annuler" that does nothing and "Supprimer" which deletes
+ * the selected element (can be a folder or a session)
+ *
+ * \param[in] button : Button clicked to launch this dialog box
+ * \param[in] element : element to be deleted
+*/
 void launchDeleteElement(GtkWidget *button, DeleteElements *element){
     GtkWidget *dialog;
     GtkWidget *content_area;
