@@ -13,11 +13,14 @@
 #include "extern_files_manager.h"
 
 /*!
- * \brief Copy a given file to the media/ folder of the software.
+ * \brief Copy a given file to the media folder of the software.
  *
- * \param[in] from Path of the source file
- * \param[in] patient To which Patient the file concerns
- * \param[in] type Type of the media : profil or attachment
+ * The copied file automatically goes into media/patient-data/patientID/folderID/
+ *
+ * \param[in] source_path Path of the source file
+ * \param[in] patientID To which Patient the file concerns
+ * \param[in] folderID To which Folder the file concerns
+ * \param[in] type Type of the media : profile or attachment
 */
 void copyToMedia(char *source_path, int patientID, int folderID, char *type){
 
@@ -76,9 +79,10 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
 
 /*!
  * \brief Get a file extension from a given path
+ * Without the separating dot
  *
  * \param[in] path Where the file is located
- * \param[out] File extension
+ * \param[out] File extension, "error" if problem encountered
 */
 char *getExtensionFromPath(char *path){
     char *result;
@@ -98,9 +102,10 @@ char *getExtensionFromPath(char *path){
 
 /*!
  * \brief Get a profile photo extension from a given Patient
+ * With the final dot.
  *
- * \param[in] patient Patient concerned
- * \param[out] Profile photo extension
+ * \param[in] patientID Identifier of the Patient concerned
+ * \param[out] Profile photo extension, returns ".error" if format not supported
 */
 char *getProfileExtension(int patientID){
     char *stringID = (char*) malloc(sizeof(char)*strlen("000000"));
@@ -157,24 +162,16 @@ char *getProfileExtension(int patientID){
 /*!
  * \brief Get the path of the profile photo from a given Patient
  *
- * \param[in] patient Patient concerned
+ * \param[in] patientID Identifier of the Patient concerned
  * \param[out] Profile photo path
 */
-char *getProfilePhotoPath(int patientID ,int folder){
-    char *charID = (char*) malloc(sizeof(char)*10);
+char *getProfilePhotoPath(int patientID){
     char *photo_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/profil.jpeg")+40));
-    strcpy(photo_path, "../media/patient-data/");
-    tostring(charID, (int) patientID);
-    strcat(photo_path, charID);
-    strcat(photo_path, "/");
-    if(folder == 0){
-        strcat(photo_path, "profil");
-        strcat(photo_path, getProfileExtension(patientID));
-    }
-    printf("%s\n", photo_path);
+    strcpy(photo_path, getPatientMediaPath(patientID));
+    strcat(photo_path, "profil");
+    strcat(photo_path, getProfileExtension(patientID));
 
-    free((char*) charID);
-    return(photo_path);
+    return photo_path;
 }
 
 char *getPatientMediaPath(int patientID){
@@ -292,13 +289,12 @@ int getNbOfAttachments(int patientID, int folderID){
 }
 
 void deleteMediaFolder(int patientID) {
-    char *path = getProfilePhotoPath(patientID, 1);
+    char *path = getPatientMediaPath(patientID);
 
     if(strcmp(OS, "linux") == 0 || strcmp(OS, "macOS") == 0) {
         char *cmd = (char*) malloc(50*sizeof(char));
         strcpy(cmd, "rm -R ");
         strcat(cmd, path);
-        printf("\n **** TEST : %s l.291 ****** \n", cmd);
         system(cmd);
     }
     else if(strcmp(OS, "Windows") == 0){}
