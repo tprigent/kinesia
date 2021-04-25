@@ -21,10 +21,16 @@ typedef struct {
     int folderID;           /**< ID of the Folder to be edited */
 }Window_id;
 
+/**
+ * \brief Structure for search function
+ *
+ * This structure is used to pass many arguments in a callback function which has only
+ * one argument.
+*/
 typedef struct {
-    GtkWidget *notebook;
-    GtkWidget *entry;
-    GtkWidget *window;
+    GtkWidget *notebook;    /**< Notebook to enable callback to add one tab */
+    GtkWidget *entry;       /**< Search entry to process user request */
+    GtkWidget *window;      /**< Parent window to be refreshed */
 }SearchParam;
 
 GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
