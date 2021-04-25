@@ -11,6 +11,11 @@
 #include "../model/structures.h"
 #include "home_view.h"
 
+/**
+ * \brief Structure to add new session
+ *
+ * Callback structure
+*/
 typedef struct {
     GtkWidget *notebook;             /**< notebook in which sessions are added */
     GtkWidget *attachmentLabel;      /**< Label to increment number of attachments */
@@ -18,19 +23,29 @@ typedef struct {
     int patientID;                   /**< ID of the current patient */
 }AddNewSessionStruct;
 
+/**
+ * \brief Structure to add the first Session to a Folder
+ *
+ * Callback structure
+*/
 typedef struct {
-    GtkWidget *window;      /**< window to refresh view */
-    int folderID;           /**< ID of the Folder to be edited */
-    int patientID;          /**< ID of the current Patient to refresh view */
+    GtkWidget *window;              /**< window to refresh view */
+    int folderID;                   /**< ID of the Folder to be edited */
+    int patientID;                  /**< ID of the current Patient to refresh view */
 }AddFirstSessionStruct;
 
+/**
+ * \brief Structure delete a given element
+ *
+ * Callback structure
+*/
 typedef struct {
-    GtkWidget *window;      /**< window to refresh view */
-    GtkWidget *notebook;    /**< notebook to remove session */
-    int patientID;          /**< ID of the patient to refresh view */
-    int folderID;           /**< ID of the Folder to be deleted */
-    int sessionID;          /**< ID of the Session to be deleted */
-    int isFolder;           /**< Determines if it's a folder */
+    GtkWidget *window;              /**< window to be refreshed */
+    GtkWidget *notebook;            /**< notebook to remove session */
+    int patientID;                  /**< ID of the patient to refresh view */
+    int folderID;                   /**< ID of the Folder to be deleted */
+    int sessionID;                  /**< ID of the Session to be deleted */
+    int isFolder;                   /**< Determines if it's a folder */
 }DeleteElements;
 
 GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder);
