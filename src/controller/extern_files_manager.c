@@ -162,7 +162,7 @@ char *getProfileExtension(int patientID){
 /*!
  * \brief Get the path of the profile photo from a given Patient
  *
- * \param[in] patientID Identifier of the Patient concerned
+ * \param[in] patientID Identifier of the concerned Patient
  * \param[out] Profile photo path
 */
 char *getProfilePhotoPath(int patientID){
@@ -174,6 +174,12 @@ char *getProfilePhotoPath(int patientID){
     return photo_path;
 }
 
+/*!
+ * \brief Get the path the media path of a given Patient
+ *
+ * \param[in] patientID Identifier of the concerned Patient
+ * \param[out] Media path of the Patient
+*/
 char *getPatientMediaPath(int patientID){
     char *charID = (char*) malloc(sizeof(char)*10);
     char *media_path = (char*) malloc(sizeof(char)*(strlen("../media/patient-data/0000/")+40));
@@ -192,6 +198,13 @@ char *getPatientMediaPath(int patientID){
     return(media_path);
 }
 
+/*!
+ * \brief Get the path the media path of a given Patient for a given Folder
+ *
+ * \param[in] patientID Identifier of the concerned Patient
+ * \param[in] folderID Identifier of the concerned Folder
+ * \param[out] Folder media path
+*/
 char *getFolderMediaPath(int patientID, int folderID){
     char *charID = (char*) malloc(sizeof(char)*10);
     char *patientMediaPath = getPatientMediaPath(patientID);
@@ -250,6 +263,15 @@ void removeExistingProfilePicture(char *media_path, char *dest_path, char *sourc
     free((char*) dest_path_png);
 }
 
+/*!
+ * \brief Get the content of a media directory
+ *
+ * Returns an array of the file list excluding "." and ".." files.
+ *
+ * \param[in] patientID Identifier of the concerned Patient
+ * \param[in] folderID Identifier of the concerned Folder
+ * \param[out] List of files related to the Folder and the Patient
+*/
 char **getMediaDirectoryContent(int patientID, int folderID){
     DIR *d;
     struct dirent *dir;
@@ -270,6 +292,15 @@ char **getMediaDirectoryContent(int patientID, int folderID){
     return fileList;
 }
 
+/*!
+ * \brief Get the number of attachments for a given Folder
+ *
+ * Counts the number of files of a specific directory
+ *
+ * \param[in] patientID Identifier of the concerned Patient
+ * \param[in] folderID Identifier of the concerned Folder
+ * \param[out] Number of attachment relative to the Folder
+*/
 int getNbOfAttachments(int patientID, int folderID){
     DIR *d;
     struct dirent *dir;
@@ -288,6 +319,12 @@ int getNbOfAttachments(int patientID, int folderID){
     return number;
 }
 
+/*!
+ * \brief Delete recursively all the content of the Patient media directory
+ *
+ * \param[in] patientID Identifier of the concerned Patient
+ * \todo: support deletion on Window
+*/
 void deleteMediaFolder(int patientID) {
     char *path = getPatientMediaPath(patientID);
 
@@ -301,6 +338,12 @@ void deleteMediaFolder(int patientID) {
 
 }
 
+/*!
+ * \brief Replace whitespaces in a given char with underscores
+ *
+ * \param[in] filename Input char with whitespaces
+ * \param[out] Output char with underscores
+*/
 char *replaceWhitespaces(char *filename){
     int i=0;
     while(filename[i])
