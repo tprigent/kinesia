@@ -35,15 +35,21 @@ typedef struct {
     GtkWidget *window;     /**< Parent window to be reload after changes */
 }WarningType;
 
+/**
+ * \brief Structure to choose the folder editor
+*/
 typedef struct{
-    Folder *folder;
-    int edit_new;
-    GtkWidget *window;
+    Folder *folder;         /**< Folder to be edited */
+    int edit_new;           /**< Is the folder new (1) or alredy existing (0) */
+    GtkWidget *window;      /**< Parent window to be refreshed */
 }FolderEditorStruct;
 
+/**
+ * \brief Structure to communicate the Patient identifier in callback
+*/
 typedef struct{
-    int idPatient;
-    GtkWidget *window;
+    int idPatient;          /**< Patient identifier */
+    GtkWidget *window;      /**< Parent window to be refreshed */
 }IdPatientCallback;
 
 /**
@@ -53,15 +59,20 @@ typedef struct{
  * and which Patient it is to store it in the right place
 */
 typedef struct {
-    int patientID;             /**< Patient concerned */
+    int patientID;                /**< Patient concerned */
     int folderID;                 /**< Identifier of the concerned Folder */
     int mediaType;                /**< Type of media to be stored in the software: 0 = "profile" 1 = other */
     GtkWidget *counterLabel;      /**< Label containing the number of files */
 }MediaType;
 
+/**
+ * \brief Structure to communicate the settings of the window
+ *
+ * Enables to communicate css parameters
+*/
 typedef struct {
-    GtkWidget *window;
-    int cssMode;
+    GtkWidget *window;            /**< Parent window */
+    int cssMode;                  /**< UI theme: 0 = light or 1 = dark */
 }SoftwareSettings;
 
 void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct);
