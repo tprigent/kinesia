@@ -16,9 +16,9 @@
 void copyToMedia(char *source_path, int patientID, int folderID, char *type);
 char *getExtensionFromPath(char *path);
 char *getProfileExtension(int patientID);
-char *getPatientMediaPath(int patientID);
 char *getFolderMediaPath(int patientID, int folderID);
-char *getProfilePhotoPath(int patientID, int folder);
+char *getPatientMediaPath(int patientID);
+char *getProfilePhotoPath(int patientID);
 void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path);
 char **getMediaDirectoryContent(int patientID, int folderID);
 int getNbOfAttachments(int patientID, int folderID);
