@@ -25,10 +25,22 @@ static void test_getExtensionFromPath(void **state){
 }
 
 static void test_getProfileExtension(void **state){
-    char *temp = (char*) malloc(sizeof(char)*strlen(getProfileExtension(1)));
-    strcpy(temp, getProfileExtension(1));
-    assert_string_equal(".jpeg", temp);
-    free(temp);
+    char *temp1 = (char*) malloc(sizeof(char)*10);
+    strcpy(temp1, getProfileExtension(10));
+    assert_string_equal(".error", temp1);
+    char *temp2 = (char*) malloc(sizeof(char)*10);
+    strcpy(temp2, getProfileExtension(11));
+    assert_string_equal(".jpeg", temp2);
+    char *temp3 = (char*) malloc(sizeof(char)*10);
+    strcpy(temp3, getProfileExtension(12));
+    assert_string_equal(".png", temp3);
+    char *temp4 = (char*) malloc(sizeof(char)*10);
+    strcpy(temp4, getProfileExtension(13));
+    assert_string_equal(".jpg", temp4);
+    free(temp1);
+    free(temp2);
+    free(temp3);
+    free(temp4);
 }
 
 static void test_getProfilePhotoPath(void **state){
