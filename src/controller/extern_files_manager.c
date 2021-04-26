@@ -34,7 +34,7 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
     if(strcmp(type, "profil") == 0){
         strcpy(dest_path, patientMediaPath);
         strcat(dest_path, "profil.");
-        removeExistingProfilePicture(patientMediaPath, dest_path, source_path);
+        removeExistingProfilePicture(dest_path, source_path);
         strcat(dest_path, getExtensionFromPath(source_path));
     } else {
         strcpy(dest_path, folderMediaPath);
@@ -231,14 +231,13 @@ char *getFolderMediaPath(int patientID, int folderID){
  * This function remove profile pictures with a different extension
  * than the new one to avoid conflicts.
  *
- * \param[in] media_path Path of the media/ folder
- * \param[in] dest_path Destination path of the profile picture
- * \param[in] source_path Path of the source file (useful to know the extension of the new profile picture)
+ * \param[in] dest_path Path of the profile picture ending with /profil.
+ * \param[in] source_path Absolute path of the source file (useful to know the extension of the new profile picture)
 */
-void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path){
-    char *dest_path_png = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
-    char *dest_path_jpg = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
-    char *dest_path_jpeg = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
+void removeExistingProfilePicture(char *dest_path, char *source_path){
+    char *dest_path_png = (char *) malloc(sizeof(char)*(strlen(dest_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
+    char *dest_path_jpg = (char *) malloc(sizeof(char)*(strlen(dest_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
+    char *dest_path_jpeg = (char *) malloc(sizeof(char)*(strlen(dest_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
 
     strcpy(dest_path_png, dest_path);
     strcat(dest_path_png, "png");
