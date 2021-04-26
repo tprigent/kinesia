@@ -220,7 +220,7 @@ char *getFolderMediaPath(int patientID, int folderID){
 /*!
  * \brief Remove old profile picture if exists
  *
- * \param[in] photo_path Path of the profile picture ending with /profil.
+ * \param[in] photo_path Path of the profile picture ending with "/profil."
 */
 void removeExistingProfilePicture(char *dest_path){
     char *dest_path_png = (char *) malloc(sizeof(char)*(strlen(dest_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
