@@ -64,8 +64,8 @@ static void test_getNbOfAttachments(){
 }
 
 static void test_getMediaDirectoryContent(){
-    char **fileList = getMediaDirectoryContent(10,1);
-    assert_string_equal("abc.xyz", fileList[1]);
+    char **fileList = getMediaDirectoryContent(-2,1);
+    assert_string_equal("zyx.cba", fileList[0]);
     assert_string_equal("abc.xyz", fileList[1]);
 
 }
