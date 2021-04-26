@@ -86,18 +86,10 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
 */
 char *getExtensionFromPath(char *path){
     char *result;
-    char *last;
-    if ((last = strrchr(path, '.')) != NULL) {
-        if ((*last == '.') && (last == path))
-            return "";
-        else {
-            result = (char*) malloc(sizeof(char)*strlen(path));
-            snprintf(result, sizeof result, "%s", last + 1);
-            return result;
-        }
-    } else {
-        return "error";
-    }
+    char *last = strrchr(path, '.');
+    result = (char*) malloc(sizeof(char)*strlen(path));
+    snprintf(result, sizeof result, "%s", last + 1);
+    return result;
 }
 
 /*!
