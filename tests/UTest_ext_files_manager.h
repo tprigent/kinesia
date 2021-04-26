@@ -1,6 +1,7 @@
-//
-// Created by julien on 26/04/2021.
-//
+/*!
+* \file UTest_ext_files_manager.h
+* \brief Functions to test the functions to manage external files
+*/
 
 #ifndef LOGICIEL_KINE_CBP_UTEST_EXT_FILES_MANAGER_H
 #define LOGICIEL_KINE_CBP_UTEST_EXT_FILES_MANAGER_H

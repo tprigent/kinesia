@@ -1,6 +1,7 @@
-//
-// Created by julien on 26/04/2021.
-//
+/*!
+* \file UTest_ext_files_manager.c
+* \brief Functions to test the functions to manage external files
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +13,9 @@
 #include "../src/controller/extern_files_manager.h"
 #include "../src/controller/struct_to_BDD_patient.h"
 
+/*!
+ * \brief Test getExtensionFromPath function
+*/
 static void test_getExtensionFromPath(){
     char *testPath = (char*) malloc(sizeof(char)*strlen("../media/graphic-assets/archive_512.png"));
     strcpy(testPath, "../media/graphic-assets/archive_512.png");
@@ -21,6 +25,11 @@ static void test_getExtensionFromPath(){
     free(temp);
 }
 
+/*!
+ * \brief Test getProfileExtension function
+ *
+ * Test every profile extension possibility
+*/
 static void test_getProfileExtension(){
     char *temp1 = (char*) malloc(sizeof(char)*10);
     strcpy(temp1, getProfileExtension(-2));
@@ -40,29 +49,44 @@ static void test_getProfileExtension(){
     free(temp4);
 }
 
+/*!
+ * \brief Test getProfilePhotoPath function
+*/
 static void test_getProfilePhotoPath(){
-    char *temp = getProfilePhotoPath(1);
-    assert_string_equal("../media/patient-data/1/profil.jpeg", temp);
+    char *temp = getProfilePhotoPath(-3);
+    assert_string_equal("../media/patient-data/-3/profil.jpeg", temp);
     free(temp);
 }
 
+/*!
+ * \brief Test getPatientMediaPath function
+*/
 static void test_getPatientMediaPath(){
-    char *temp = getPatientMediaPath(1);
-    assert_string_equal("../media/patient-data/1/", temp);
+    char *temp = getPatientMediaPath(-2);
+    assert_string_equal("../media/patient-data/-2/", temp);
     free(temp);
 }
 
+/*!
+ * \brief Test getFolderMediaPath function
+*/
 static void test_getFolderMediaPath(){
-    char *temp = getFolderMediaPath(1,1);
-    assert_string_equal("../media/patient-data/1/1/", temp);
+    char *temp = getFolderMediaPath(-2,1);
+    assert_string_equal("../media/patient-data/-2/1/", temp);
     free(temp);
 }
 
+/*!
+ * \brief Test getNbOfAttachments function
+*/
 static void test_getNbOfAttachments(){
-    int count = getNbOfAttachments(1,1);
-    assert_int_equal(0, count);
+    int count = getNbOfAttachments(-2,1);
+    assert_int_equal(2, count);
 }
 
+/*!
+ * \brief Test getMediaDirectoryContent function
+*/
 static void test_getMediaDirectoryContent(){
     char **fileList = getMediaDirectoryContent(-2,1);
     assert_string_equal("zyx.cba", fileList[0]);
@@ -70,6 +94,9 @@ static void test_getMediaDirectoryContent(){
 
 }
 
+/*!
+ * \brief Test replaceWhitespaces function
+*/
 static void test_replaceWhitespaces(){
     char *testString = (char*) malloc(sizeof(char)*strlen("this is a test string"));
     strcpy(testString, "this is a test string");
@@ -80,6 +107,9 @@ static void test_replaceWhitespaces(){
     free(temp);
 }
 
+/*!
+ * \brief Test addMedia function
+*/
 static void test_addMedia(){
     copyToMedia("/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/profil.jpg", -1, -1, "profil");
     copyToMedia("/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/attachment.png", -1, -1, "attachment");
@@ -90,13 +120,18 @@ static void test_addMedia(){
 
 }
 
+/*!
+ * \brief Test mediaDeletion function
+*/
 static void test_mediaDeletion(){
     assert_int_equal(1, getNbOfAttachments(-1, -1));
     //removeExistingProfilePicture("../media/patient-data/-1/profil.");
     deleteMediaFolder(-1);
 }
 
-
+/*!
+ * \brief Global function to launch tests for external files managers
+*/
 int main_ext_files_manager(void)
 {
     const struct CMUnitTest tests_ext_files_manager[]=
