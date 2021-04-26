@@ -11,7 +11,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/FetchCMocka.cmake)
 # Source files
 set(SOURCE_FILES
         UTest.c
-        UTest_UI.c
+        UTest_display_helpers.c
         #UTest_BDD.c
         #UTest_session.c
         #UTest_BDD_session.c

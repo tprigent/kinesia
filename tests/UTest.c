@@ -3,7 +3,7 @@
 * \brief Functions to run CMocka tests
 */
 
-#include "UTest_UI.h"
+#include "UTest_display_helpers.h"
 #include "UTest_BDD.h"
 #include "UTest_session.h"
 #include "UTest_BDD_session.h"
