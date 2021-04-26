@@ -131,31 +131,6 @@ char *get_formatted_folder_title_UI(Folder *folder){
     return formattedTitle;
 }
 
-/*!
- * \brief Format Folder information
- *
- * Put breaklines every n word for long texts
- *
- * \param[in] folder Concerned Folder
- * \param[out] Char pointer containing the formatted information
-*/
-char *get_formatted_folder_infos_UI(Folder *folder){
-    /*int length = (int) strlen(folder->details);
-    int i = 0;
-    int c = 0;
-    char *formattedInfos = (char*) malloc(600*sizeof(char));
-    while(c < length){
-        strcat(&formattedInfos[c+i], &folder->details[c]);
-        if(length % 50 == 0){
-            strcat(formattedInfos, "\n");
-            i+=3;
-        }
-        c++;
-    }
-    return formattedInfos;*/
-    return folder->details;
-}
-
 
 /*!
  * \brief Format Folder attachment counter display
