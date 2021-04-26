@@ -17,10 +17,10 @@
  *
  * The copied file automatically goes into media/patient-data/patientID/folderID/
  *
- * \param[in] source_path Path of the source file
- * \param[in] patientID To which Patient the file concerns
- * \param[in] folderID To which Folder the file concerns
- * \param[in] type Type of the media : profile or attachment
+ * \param[in] source_path : Path of the source file
+ * \param[in] patientID : To which Patient the file concerns
+ * \param[in] folderID : To which Folder the file concerns
+ * \param[in] type : Type of the media : profile or attachment
 */
 void copyToMedia(char *source_path, int patientID, int folderID, char *type){
 
@@ -81,7 +81,7 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
  * \brief Get a file extension from a given path
  * Without the separating dot
  *
- * \param[in] path Where the file is located
+ * \param[in] path : Where the file is located
  * \param[out] File extension, "error" if problem encountered
 */
 char *getExtensionFromPath(char *path){
@@ -162,7 +162,7 @@ char *getProfileExtension(int patientID){
 /*!
  * \brief Get the path of the profile photo from a given Patient
  *
- * \param[in] patientID Identifier of the concerned Patient
+ * \param[in] patientID : Identifier of the concerned Patient
  * \param[out] Profile photo path
 */
 char *getProfilePhotoPath(int patientID){
@@ -199,10 +199,10 @@ char *getPatientMediaPath(int patientID){
 }
 
 /*!
- * \brief Get the path the media path of a given Patient for a given Folder
+ * \brief Get the path to the media of a given Patient for a given Folder
  *
- * \param[in] patientID Identifier of the concerned Patient
- * \param[in] folderID Identifier of the concerned Folder
+ * \param[in] patientID : Identifier of the concerned Patient
+ * \param[in] folderID : Identifier of the concerned Folder
  * \param[out] Folder media path
 */
 char *getFolderMediaPath(int patientID, int folderID){
@@ -231,9 +231,9 @@ char *getFolderMediaPath(int patientID, int folderID){
  * This function remove profile pictures with a different extension
  * than the new one to avoid conflicts.
  *
- * \param[in] media_path Path of the media/ folder
- * \param[in] dest_path Destination path of the profile picture
- * \param[in] source_path Path of the source file (useful to know the extension of the new profile picture)
+ * \param[in] media_path : Path of the media/ folder
+ * \param[in] dest_path : Destination path of the profile picture
+ * \param[in] source_path : Path of the source file (useful to know the extension of the new profile picture)
 */
 void removeExistingProfilePicture(char *media_path, char *dest_path, char *source_path){
     char *dest_path_png = (char *) malloc(sizeof(char)*(strlen(media_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
@@ -268,8 +268,8 @@ void removeExistingProfilePicture(char *media_path, char *dest_path, char *sourc
  *
  * Returns an array of the file list excluding "." and ".." files.
  *
- * \param[in] patientID Identifier of the concerned Patient
- * \param[in] folderID Identifier of the concerned Folder
+ * \param[in] patientID : Identifier of the concerned Patient
+ * \param[in] folderID : Identifier of the concerned Folder
  * \param[out] List of files related to the Folder and the Patient
 */
 char **getMediaDirectoryContent(int patientID, int folderID){
@@ -297,8 +297,8 @@ char **getMediaDirectoryContent(int patientID, int folderID){
  *
  * Counts the number of files of a specific directory
  *
- * \param[in] patientID Identifier of the concerned Patient
- * \param[in] folderID Identifier of the concerned Folder
+ * \param[in] patientID : Identifier of the concerned Patient
+ * \param[in] folderID : Identifier of the concerned Folder
  * \param[out] Number of attachment relative to the Folder
 */
 int getNbOfAttachments(int patientID, int folderID){
@@ -341,7 +341,7 @@ void deleteMediaFolder(int patientID) {
 /*!
  * \brief Replace whitespaces in a given char with underscores
  *
- * \param[in] filename Input char with whitespaces
+ * \param[in] filename : Input char with whitespaces
  * \param[out] Output char with underscores
 */
 char *replaceWhitespaces(char *filename){
