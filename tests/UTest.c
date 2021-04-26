@@ -10,6 +10,7 @@
 
 
 int main(void){
-    int i = main_BDD_session()*main_BDD()*main_UI()*main_session();
+    //int i = main_BDD_session()*main_BDD()*main_UI()*main_session();
+    int i = main_UI();
     return i;
 }
