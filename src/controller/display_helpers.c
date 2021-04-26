@@ -14,10 +14,23 @@
 void tostring(char *str, int num){
     int i, rem, len = 0, n;
     n = num;
+    if(num < 0) n = -n;
     while(n!=0){
         len++;
         n /= 10;
     }
+
+    if(num < 0){
+        str[0] = '-';
+        for(i=0; i<len; i++){
+            rem = (-num) % 10;
+            num = (-num)/10;
+            str[len+1 - (i+1)] = rem + '0';
+        }
+        str[len+1] = '\0';
+        return ;
+    }
+
     for(i=0; i<len; i++){
         rem = num % 10;
         num = num/10;
@@ -129,31 +142,6 @@ char *get_formatted_folder_title_UI(Folder *folder){
     strcat(formattedTitle, folder->folderName);
     strcat(formattedTitle, end);
     return formattedTitle;
-}
-
-/*!
- * \brief Format Folder information
- *
- * Put breaklines every n word for long texts
- *
- * \param[in] folder : Concerned Folder
- * \param[out] Char pointer containing the formatted information
-*/
-char *get_formatted_folder_infos_UI(Folder *folder){
-    /*int length = (int) strlen(folder->details);
-    int i = 0;
-    int c = 0;
-    char *formattedInfos = (char*) malloc(600*sizeof(char));
-    while(c < length){
-        strcat(&formattedInfos[c+i], &folder->details[c]);
-        if(length % 50 == 0){
-            strcat(formattedInfos, "\n");
-            i+=3;
-        }
-        c++;
-    }
-    return formattedInfos;*/
-    return folder->details;
 }
 
 

@@ -1,0 +1,4 @@
+mkdir ../media/patient-data/-1
+mkdir ../media/patient-data/-1/-1
+cp ../media/media-for-tests/profil.png ../media/patient-data/-1
+cp ../media/media-for-tests/attachment.png ../media/patient-data/-1/-1
