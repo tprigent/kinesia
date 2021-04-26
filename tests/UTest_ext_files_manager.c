@@ -64,6 +64,11 @@ static void test_replaceWhitespaces(void **state){
     free(temp);
 }
 
+static void test_mediaDeletion(void **state){
+    assert_int_equal(1, getNbOfAttachments(-1, -1));
+    deleteMediaFolder(-1);
+}
+
 
 int main_ext_files_manager(void)
 {
@@ -76,6 +81,7 @@ int main_ext_files_manager(void)
                     cmocka_unit_test(test_getFolderMediaPath),
                     cmocka_unit_test(test_getNbOfAttachments),
                     cmocka_unit_test(test_replaceWhitespaces),
+                    cmocka_unit_test(test_mediaDeletion),
             };
     return cmocka_run_group_tests_name("Test ext_files_manager module",tests_ext_files_manager,NULL,NULL);
 }
