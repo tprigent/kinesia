@@ -538,11 +538,9 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     /* LABELS */
     GtkWidget *folder_infos = NULL;
     GtkWidget *folder_infos_content = NULL;
-    char *formatted_infos = get_formatted_folder_infos_UI(folder);
     folder_infos = gtk_label_new("<u>Autres informations</u> : ");
     gtk_label_set_use_markup(GTK_LABEL(folder_infos), TRUE);
-    folder_infos_content = gtk_label_new(formatted_infos);
-    //free_folder_infos_UI(formatted_infos);
+    folder_infos_content = gtk_label_new(folder->details);
     gtk_box_pack_start(GTK_BOX(vbox_infos), folder_infos, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox_infos_content), folder_infos_content, FALSE, FALSE, 0);
 
