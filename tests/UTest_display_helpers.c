@@ -18,6 +18,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
+/** ********************************************** PATIENT HELPERS TESTS ***********************************************/
 
 /*!
  * \brief Setup function which allocates and return a patient
@@ -50,7 +51,7 @@ static void test_get_name_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char * temp = get_name_UI(patient);
     assert_string_equal("<b>Claude François</b>", temp);
-    free(temp);
+    free_info_UI(temp);
 }
 
 /*!
@@ -64,7 +65,7 @@ static void test_get_date_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char *temp = get_date_UI(&patient->birthdate);
     assert_string_equal("1/2/1939", temp);
-    free(temp);
+    free_info_UI(temp);
 }
 
 /*!
@@ -78,7 +79,7 @@ static void test_get_height_weight_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char *temp = get_height_weight_UI(patient);
     assert_string_equal("1.70m     ;     59kg", temp);
-    free(temp);
+    free_info_UI(temp);
 }
 
 /*!
@@ -92,7 +93,7 @@ static void test_get_first_consultation_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char *temp = get_first_consultation_UI(patient);
     assert_string_equal("Première consultation : 1/1/1962", temp);
-    free(temp);
+    free_info_UI(temp);
 }
 
 /*!
@@ -107,7 +108,7 @@ static void test_get_age_and_birthdate(void **state){
     Patient * patient = (Patient *) (*state);
     char * age = get_age_and_birthdate(patient);
     assert_string_equal("1/2/1939 (82 ans)", age);
-    free(age);
+    free_info_UI(age);
 }
 
 /*!
@@ -120,7 +121,7 @@ static void test_get_age_and_birthdate(void **state){
 static void test_get_current_date(void **state){
     char * date = get_current_date();
     assert_string_equal("26/4/2021", date);
-    free(date);
+    free_info_UI(date);
 }
 
 /*!
@@ -134,7 +135,7 @@ static void test_get_current_date(void **state){
 static void test_get_new_session_name(void **state){
     char * session_name = get_new_session_name();
     assert_string_equal("Séance du 26/4/2021", session_name);
-    free(session_name);
+    free_info_UI(session_name);
 }
 
 
@@ -174,7 +175,7 @@ int patient_display_helpers_tests(void)
 }
 
 
-/* *********************************************************************************************************************/
+/** ********************************************** FOLDER HELPERS TESTS ************************************************/
 
 static int setup_folder(void **state){
     Folder *folder = getFolder(1);
@@ -187,16 +188,16 @@ static int setup_folder(void **state){
 
 static void test_get_formatted_folder_title_UI(void **state){
     Folder * folder = (Folder *) (*state);
-    char * formatted_folder = get_formatted_folder_title_UI(folder);
-    assert_string_equal("<big><b>         Entorse de la cheville</b></big>", formatted_folder);
-    free(formatted_folder);
+    char * temp = get_formatted_folder_title_UI(folder);
+    assert_string_equal("<big><b>         Entorse de la cheville</b></big>", temp);
+    free_info_UI(temp);
 }
 
 static void test_get_indicator_files_UI(void **state){
     Folder * folder = (Folder *) (*state);
-    char * indicator_files = get_indicator_files_UI(1, 1);
-    assert_string_equal("   (0)", indicator_files);
-    free(indicator_files);
+    char * temp = get_indicator_files_UI(1, 1);
+    assert_string_equal("   (0)", temp);
+    free_info_UI(temp);
 }
 
 /*!
@@ -230,23 +231,23 @@ int folder_display_helpers_tests(void)
 }
 
 
-/* *********************************************************************************************************************/
+/** ********************************************** OTHER HELPERS TESTS *************************************************/
 
 static void test_tostring(){
-    char *number = (char*) malloc(3*sizeof(char));
-    tostring(number, 18);
-    assert_string_equal("18", number);
-    free(number);
+    char *temp = (char*) malloc(3*sizeof(char));
+    tostring(temp, 18);
+    assert_string_equal("18", temp);
+    free_info_UI(temp);
 }
 
 static void test_parseDate(){
-    char *dateC = (char*) malloc(11*sizeof(char));
-    strcpy(dateC, "26/04/2021");
-    Date date = *parseDate(dateC);
+    char *temp = (char*) malloc(11*sizeof(char));
+    strcpy(temp, "26/04/2021");
+    Date date = *parseDate(temp);
     assert_int_equal(26, date.day);
     assert_int_equal(4, date.month);
     assert_int_equal(2021, date.year);
-    free(dateC);
+    free_info_UI(temp);
 }
 
 /*!
