@@ -57,7 +57,8 @@ static void test_getNbOfAttachments(void **state){
 static void test_replaceWhitespaces(void **state){
     char *testString = (char*) malloc(sizeof(char)*strlen("this is a test string"));
     strcpy(testString, "this is a test string");
-    char *temp = replaceWhitespaces(testString);
+    char *temp = (char*) malloc(sizeof(char)*strlen("this is a test string"));
+    strcpy(temp, replaceWhitespaces(testString));
     assert_string_equal("this_is_a_test_string", temp);
     free(testString);
     free(temp);
