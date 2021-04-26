@@ -8,8 +8,8 @@
 /*!
  * \brief Write an integer into a given char
  *
- * \param[in] str destination char pointer
- * \param[in] num source integer
+ * \param[in] str : destination char pointer
+ * \param[in] num : source integer
 */
 void tostring(char *str, int num){
     int i, rem, len = 0, n;
@@ -29,7 +29,7 @@ void tostring(char *str, int num){
 /*!
  * \brief Concatenate firstname and surname in one char
  *
- * \param[in] patient Concerned Patient
+ * \param[in] patient : Concerned Patient
  * \param[out] Char pointer combining at "Firstname Name" format
 */
 char *get_name_UI(Patient *patient){
@@ -46,7 +46,7 @@ char *get_name_UI(Patient *patient){
 /*!
  * \brief Parse Date instance to char
  *
- * \param[in] date Involved Date
+ * \param[in] date : Involved Date
  * \param[out] Char pointer containing the date
 */
 char *get_date_UI(Date *date){
@@ -72,7 +72,7 @@ char *get_date_UI(Date *date){
 /*!
  * \brief Concatenate Patient height and weight in a single char for display
  *
- * \param[in] patient Concerned Patient
+ * \param[in] patient : Concerned Patient
  * \param[out] Char pointer containing the Patient height and weight
 */
 char *get_height_weight_UI(Patient *patient){
@@ -88,7 +88,7 @@ char *get_height_weight_UI(Patient *patient){
 /*!
  * \brief Parse first consultation date from Date structure to char
  *
- * \param[in] patient Concerned Patient
+ * \param[in] patient : Concerned Patient
  * \param[out] Char pointer containing the first consultation date
 */
 char *get_first_consultation_UI(Patient *patient){
@@ -115,7 +115,7 @@ char *get_first_consultation_UI(Patient *patient){
 /*!
  * \brief Format Folder title
  *
- * \param[in] folder Concerned Folder
+ * \param[in] folder : Concerned Folder
  * \param[out] Char pointer containing the formatted  title
 */
 char *get_formatted_folder_title_UI(Folder *folder){
@@ -136,7 +136,7 @@ char *get_formatted_folder_title_UI(Folder *folder){
  *
  * Put breaklines every n word for long texts
  *
- * \param[in] folder Concerned Folder
+ * \param[in] folder : Concerned Folder
  * \param[out] Char pointer containing the formatted information
 */
 char *get_formatted_folder_infos_UI(Folder *folder){
@@ -160,7 +160,7 @@ char *get_formatted_folder_infos_UI(Folder *folder){
 /*!
  * \brief Format Folder attachment counter display
  *
- * \param[in] folder Concerned Folder
+ * \param[in] folder : Concerned Folder
  * \param[out] Char pointer containing the formatted counter
 */
 char *get_indicator_files_UI(int patientID, int folderID){
@@ -177,8 +177,8 @@ char *get_indicator_files_UI(int patientID, int folderID){
 /*!
  * \brief Get the birthdate and the age of a Patient
  *
- * \param[in] patient Patient concerned
- * \param[out] String containing the birthdate and age to the format "dd/mm/yyyy (xxx ans)"
+ * \param[in] patient : Patient concerned
+ * \param[out] Char pointer containing the birthdate and age to the format "dd/mm/yyyy (xxx ans)"
 */
 char *get_age_and_birthdate(Patient *patient){
     char *ageString = (char*) malloc(sizeof(char)*strlen("00/00/0000 (000 ans)"));
@@ -239,7 +239,7 @@ char *get_new_session_name(){
 /*!
  * \brief Parse string date to Date format
  *
- * \param[in] stringDate source string date
+ * \param[in] stringDate : source string date
  * \param[out] destination Date structure
 */
 Date *parseDate(char *stringDate){
