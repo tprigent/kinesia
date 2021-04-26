@@ -78,7 +78,8 @@ static void test_replaceWhitespaces(void **state){
 
 static void test_mediaDeletion(void **state){
     assert_int_equal(1, getNbOfAttachments(-1, -1));
-    deleteMediaFolder(-1);
+    removeExistingProfilePicture("../media/patient-data/-1/jjjjjjjjjjjjj", "media/patient-data/-1/profil.", "/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/profil.jpg");
+    //deleteMediaFolder(-1);
 }
 
 
