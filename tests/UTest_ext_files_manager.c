@@ -23,16 +23,16 @@ static void test_getExtensionFromPath(){
 
 static void test_getProfileExtension(){
     char *temp1 = (char*) malloc(sizeof(char)*10);
-    strcpy(temp1, getProfileExtension(10));
+    strcpy(temp1, getProfileExtension(-2));
     assert_string_equal(".error", temp1);
     char *temp2 = (char*) malloc(sizeof(char)*10);
-    strcpy(temp2, getProfileExtension(11));
+    strcpy(temp2, getProfileExtension(-3));
     assert_string_equal(".jpeg", temp2);
     char *temp3 = (char*) malloc(sizeof(char)*10);
-    strcpy(temp3, getProfileExtension(12));
+    strcpy(temp3, getProfileExtension(-4));
     assert_string_equal(".png", temp3);
     char *temp4 = (char*) malloc(sizeof(char)*10);
-    strcpy(temp4, getProfileExtension(13));
+    strcpy(temp4, getProfileExtension(-5));
     assert_string_equal(".jpg", temp4);
     free(temp1);
     free(temp2);
