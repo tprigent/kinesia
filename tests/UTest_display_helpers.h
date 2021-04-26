@@ -7,7 +7,9 @@
 #define UTEST_UI_H
 
 
-int main_UI(void);
+int patient_display_helpers_tests(void);
+int folder_display_helpers_tests(void);
+int other_display_helpers_tests(void);
 
 
 #endif //UTEST_UI_H
