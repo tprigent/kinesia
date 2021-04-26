@@ -1,12 +1,36 @@
 CC=gcc
-CFLAGS= -Wall -g -MMD -coverage -D DB_PATH='"database/Bdd.db"'
+CFLAGS= -Wall -g -MMD -coverage -D DB_PATH='"../src/model/data.db"'
 LDFLAGS= -lcmocka -coverage
 LDFLAGS+= `pkg-config --libs sqlite3`
+
+ifeq ($(OS),Windows_NT)
+    CFLAGS += -D OS='"Windows"'
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux)
+        CFLAGS += -D OS='"linux"'
+    endif
+    ifeq ($(UNAME_S),Darwin)
+        CFLAGS += -D OS='"macOS"'
+    endif
+    UNAME_P := $(shell uname -p)
+    ifeq ($(UNAME_P),x86_64)
+        CCFLAGS += -D AMD64
+    endif
+    ifneq ($(filter %86,$(UNAME_P)),)
+        CCFLAGS += -D IA32
+    endif
+    ifneq ($(filter arm%,$(UNAME_P)),)
+        CCFLAGS += -D ARM
+    endif
+endif
+
+
 
 all: main
 
 
-main: display_helpers.o UTest.o UTest_UI.o UTest_session.o UTest_BDD_session.o UTest_BDD.o patient_manager.o session_manager.o BDD_to_struct_session.o BDD_to_struct_patient.o struct_to_BDD_patient.o
+main: display_helpers.o UTest.o UTest_display_helpers.o UTest_ext_files_manager.o UTest_session.o patient_manager.o session_manager.o BDD_to_struct_session.o BDD_to_struct_patient.o struct_to_BDD_patient.o struct_to_BDD_session.o extern_files_manager.o display_helpers.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
