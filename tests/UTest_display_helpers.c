@@ -6,6 +6,7 @@
 #include "../src/model/structures.h"
 #include "../src/controller/display_helpers.h"
 #include "../src/controller/BDD_to_struct_patient.h"
+#include "../src/controller/BDD_to_struct_folder.h"
 #include "../src/controller/struct_to_BDD_patient.h"
 #include "../src/model/patient_manager.h"
 
@@ -17,6 +18,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
+/** ********************************************** PATIENT HELPERS TESTS ***********************************************/
 
 /*!
  * \brief Setup function which allocates and return a patient
@@ -49,7 +51,7 @@ static void test_get_name_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char * temp = get_name_UI(patient);
     assert_string_equal("<b>Claude François</b>", temp);
-    free(temp);
+    free_info_UI(temp);
 }
 
 /*!
@@ -63,9 +65,8 @@ static void test_get_date_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char *temp = get_date_UI(&patient->birthdate);
     assert_string_equal("1/2/1939", temp);
-    free(temp);
+    free_info_UI(temp);
 }
-
 
 /*!
  * \brief test get_height_weight_UI function
@@ -78,7 +79,7 @@ static void test_get_height_weight_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char *temp = get_height_weight_UI(patient);
     assert_string_equal("1.70m     ;     59kg", temp);
-    free(temp);
+    free_info_UI(temp);
 }
 
 /*!
@@ -92,9 +93,8 @@ static void test_get_first_consultation_UI(void **state){
     Patient * patient = (Patient *) (*state);
     char *temp = get_first_consultation_UI(patient);
     assert_string_equal("Première consultation : 1/1/1962", temp);
-    free(temp);
+    free_info_UI(temp);
 }
-
 
 /*!
  * \brief test get_age_and_birthdate function
@@ -108,7 +108,7 @@ static void test_get_age_and_birthdate(void **state){
     Patient * patient = (Patient *) (*state);
     char * age = get_age_and_birthdate(patient);
     assert_string_equal("1/2/1939 (82 ans)", age);
-    free(age);
+    free_info_UI(age);
 }
 
 /*!
@@ -120,8 +120,8 @@ static void test_get_age_and_birthdate(void **state){
 */
 static void test_get_current_date(void **state){
     char * date = get_current_date();
-    assert_string_equal("6/4/2021", date);
-    free(date);
+    assert_string_equal("26/4/2021", date);
+    free_info_UI(date);
 }
 
 /*!
@@ -134,8 +134,8 @@ static void test_get_current_date(void **state){
 */
 static void test_get_new_session_name(void **state){
     char * session_name = get_new_session_name();
-    assert_string_equal("Séance du 6/4/2021", session_name);
-    free(session_name);
+    assert_string_equal("Séance du 26/4/2021", session_name);
+    free_info_UI(session_name);
 }
 
 
@@ -158,10 +158,10 @@ static int teardown(void **state){
  *
  * \param[out] An int to tell if tests are passed
 */
-int main_UI(void)
+int patient_display_helpers_tests(void)
 {
 
-    const struct CMUnitTest tests_UI[]=
+    const struct CMUnitTest tests_patient_helpers[]=
     {
             cmocka_unit_test_setup_teardown(test_get_name_UI, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_date_UI, setup_patient, teardown),
@@ -171,5 +171,96 @@ int main_UI(void)
             cmocka_unit_test_setup_teardown(test_get_current_date, setup_patient, teardown),
             cmocka_unit_test_setup_teardown(test_get_new_session_name, setup_patient, teardown),
     };
-    return cmocka_run_group_tests_name("Test UI module",tests_UI,NULL,NULL);
+    return cmocka_run_group_tests_name("Test patient_helpers module",tests_patient_helpers,NULL,NULL);
+}
+
+
+/** ********************************************** FOLDER HELPERS TESTS ************************************************/
+
+static int setup_folder(void **state){
+    Folder *folder = getFolder(1);
+    if(folder == NULL) return -1;
+
+    assert_non_null(folder);
+    *state = folder;
+    return 0;
+}
+
+static void test_get_formatted_folder_title_UI(void **state){
+    Folder * folder = (Folder *) (*state);
+    char * temp = get_formatted_folder_title_UI(folder);
+    assert_string_equal("<big><b>         Entorse de la cheville</b></big>", temp);
+    free_info_UI(temp);
+}
+
+static void test_get_indicator_files_UI(void **state){
+    Folder * folder = (Folder *) (*state);
+    char * temp = get_indicator_files_UI(1, 1);
+    assert_string_equal("   (0)", temp);
+    free_info_UI(temp);
+}
+
+/*!
+ * \brief Teardown function which desallocates the patient
+ *
+ * This function desallocates the patient allocated by setup function
+ *
+ * \param[in] A pointer addressto pass the allocated patient
+ * \param[out] An int to tell that desallocation worked
+*/
+static int teardown_folder(void **state){
+    Folder * folder = (Folder *) (*state);
+    //free(&folder);
+    return 0;
+}
+
+/*!
+ * \brief main function which runs the tests for UI
+ *
+ * \param[out] An int to tell if tests are passed
+*/
+int folder_display_helpers_tests(void)
+{
+    const struct CMUnitTest tests_folder_helpers[]=
+            {
+                    cmocka_unit_test_setup_teardown(test_get_formatted_folder_title_UI, setup_folder, teardown_folder),
+                    cmocka_unit_test_setup_teardown(test_get_indicator_files_UI, setup_folder, teardown_folder),
+
+            };
+    return cmocka_run_group_tests_name("Test folder_helpers module",tests_folder_helpers,NULL,NULL);
+}
+
+
+/** ********************************************** OTHER HELPERS TESTS *************************************************/
+
+static void test_tostring(){
+    char *temp = (char*) malloc(3*sizeof(char));
+    tostring(temp, 18);
+    assert_string_equal("18", temp);
+    free_info_UI(temp);
+}
+
+static void test_parseDate(){
+    char *temp = (char*) malloc(11*sizeof(char));
+    strcpy(temp, "26/04/2021");
+    Date date = *parseDate(temp);
+    assert_int_equal(26, date.day);
+    assert_int_equal(4, date.month);
+    assert_int_equal(2021, date.year);
+    free_info_UI(temp);
+}
+
+/*!
+ * \brief main function which runs the tests for UI
+ *
+ * \param[out] An int to tell if tests are passed
+*/
+int other_display_helpers_tests(void)
+{
+    const struct CMUnitTest tests_other_helpers[]=
+            {
+                    cmocka_unit_test(test_tostring),
+                    cmocka_unit_test(test_parseDate),
+            };
+    return cmocka_run_group_tests_name("Test folder_helpers module",tests_other_helpers,NULL,NULL);
 }
