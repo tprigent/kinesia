@@ -18,13 +18,14 @@ while true; do
     case $ucm in
         [Uu]* )
           echo "*** Unit tests selected ***"
-          mkdir cmocka && cd cmocka
-          cmake ..
-          cmake --build . --config
-          ctest -C "Release"
           cd ../
-          mv cmocka/Testing/Temporary/LastTest.log unitreport-${today}.log
-          rm -rf cmocka
+          cmake -g -S . -B ./build
+          cd build
+          make UnitTest > unitreport
+          cd ../tests
+          ../build/UnitTest >> unitreport
+          mv unitreport unitreport-${today}.log
+          rm -rf ../build
           echo "*** Unit tests done ***"
           break;;
         [Cc]* )
