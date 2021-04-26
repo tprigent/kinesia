@@ -63,6 +63,13 @@ static void test_getNbOfAttachments(){
     assert_int_equal(0, count);
 }
 
+static void test_getMediaDirectoryContent(){
+    char **fileList = getMediaDirectoryContent(10,1);
+    assert_string_equal("abc.xyz", fileList[1]);
+    assert_string_equal("abc.xyz", fileList[1]);
+
+}
+
 static void test_replaceWhitespaces(){
     char *testString = (char*) malloc(sizeof(char)*strlen("this is a test string"));
     strcpy(testString, "this is a test string");
@@ -91,6 +98,7 @@ int main_ext_files_manager(void)
                     cmocka_unit_test(test_getFolderMediaPath),
                     cmocka_unit_test(test_getNbOfAttachments),
                     cmocka_unit_test(test_replaceWhitespaces),
+                    cmocka_unit_test(test_getMediaDirectoryContent),
                     cmocka_unit_test(test_mediaDeletion),
             };
     return cmocka_run_group_tests_name("Test ext_files_manager module",tests_ext_files_manager,NULL,NULL);

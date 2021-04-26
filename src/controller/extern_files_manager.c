@@ -34,7 +34,7 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
     if(strcmp(type, "profil") == 0){
         strcpy(dest_path, patientMediaPath);
         strcat(dest_path, "profil.");
-        removeExistingProfilePicture(dest_path, source_path);
+        removeExistingProfilePicture(dest_path);
         strcat(dest_path, getExtensionFromPath(source_path));
     } else {
         strcpy(dest_path, folderMediaPath);
@@ -86,18 +86,10 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
 */
 char *getExtensionFromPath(char *path){
     char *result;
-    char *last;
-    if ((last = strrchr(path, '.')) != NULL) {
-        if ((*last == '.') && (last == path))
-            return "";
-        else {
-            result = (char*) malloc(sizeof(char)*strlen(path));
-            snprintf(result, sizeof result, "%s", last + 1);
-            return result;
-        }
-    } else {
-        return "error";
-    }
+    char *last = strrchr(path, '.');
+    result = (char*) malloc(sizeof(char)*strlen(path));
+    snprintf(result, sizeof result, "%s", last + 1);
+    return result;
 }
 
 /*!
@@ -228,36 +220,29 @@ char *getFolderMediaPath(int patientID, int folderID){
 /*!
  * \brief Remove old profile picture if exists
  *
- * This function remove profile pictures with a different extension
- * than the new one to avoid conflicts.
- *
- * \param[in] dest_path Path of the profile picture ending with /profil.
- * \param[in] source_path Absolute path of the source file (useful to know the extension of the new profile picture)
+ * \param[in] photo_path Path of the profile picture ending with "/profil."
 */
-void removeExistingProfilePicture(char *dest_path, char *source_path){
+void removeExistingProfilePicture(char *dest_path){
     char *dest_path_png = (char *) malloc(sizeof(char)*(strlen(dest_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
     char *dest_path_jpg = (char *) malloc(sizeof(char)*(strlen(dest_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
     char *dest_path_jpeg = (char *) malloc(sizeof(char)*(strlen(dest_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
-
+    char *dest_path_JPEG = (char *) malloc(sizeof(char)*(strlen(dest_path)+strlen("/")+strlen("profile")+strlen(".xxxx")+10)+sizeof(int)*10);
     strcpy(dest_path_png, dest_path);
     strcat(dest_path_png, "png");
     strcpy(dest_path_jpg, dest_path);
     strcat(dest_path_jpg, "jpg");
     strcpy(dest_path_jpeg, dest_path);
     strcat(dest_path_jpeg, "jpeg");
+    strcpy(dest_path_JPEG, dest_path);
+    strcat(dest_path_JPEG, "JPEG");
 
-    if(strcmp(getExtensionFromPath(source_path), "jpeg") == 0){
-        remove(dest_path_jpg);
-        remove(dest_path_png);
-    } else if(strcmp(getExtensionFromPath(source_path), "jpg") == 0){
-        remove(dest_path_jpeg);
-        remove(dest_path_png);
-    } else if(strcmp(getExtensionFromPath(source_path), "png") == 0){
-        remove(dest_path_jpeg);
-        remove(dest_path_jpg);
-    }
+    remove(dest_path_jpg);
+    remove(dest_path_png);
+    remove(dest_path_jpeg);
+    remove(dest_path_JPEG);
 
     free((char*) dest_path_jpeg);
+    free((char*) dest_path_JPEG);
     free((char*) dest_path_jpg);
     free((char*) dest_path_png);
 }
