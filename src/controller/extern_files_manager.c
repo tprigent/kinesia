@@ -24,7 +24,7 @@
 */
 void copyToMedia(char *source_path, int patientID, int folderID, char *type){
 
-    FILE *source_stream, *dest_stream;
+    FILE *source_stream = NULL, *dest_stream = NULL;
     int c;
     char *patientMediaPath = getPatientMediaPath(patientID);
     char *folderMediaPath = getFolderMediaPath(patientID, folderID);
