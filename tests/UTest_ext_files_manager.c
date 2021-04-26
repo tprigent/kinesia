@@ -80,10 +80,20 @@ static void test_replaceWhitespaces(){
     free(temp);
 }
 
+static void test_addMedia(){
+    copyToMedia("/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/profil.jpg", -1, -1, "profil");
+    copyToMedia("/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/attachment.png", -1, -1, "attachment");
+
+    // The next ones have errors in path to cover codes in case of failure
+    copyToMedia("", -1, -1, "attachment");
+    copyToMedia("/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/attachment.png", -10, -1, "attachment");
+
+}
+
 static void test_mediaDeletion(){
     assert_int_equal(1, getNbOfAttachments(-1, -1));
-    removeExistingProfilePicture("../media/patient-data/-1/jjjjjjjjjjjjj", "media/patient-data/-1/profil.", "/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/profil.jpg");
-    //deleteMediaFolder(-1);
+    //removeExistingProfilePicture("../media/patient-data/-1/profil.");
+    deleteMediaFolder(-1);
 }
 
 
@@ -99,6 +109,7 @@ int main_ext_files_manager(void)
                     cmocka_unit_test(test_getNbOfAttachments),
                     cmocka_unit_test(test_replaceWhitespaces),
                     cmocka_unit_test(test_getMediaDirectoryContent),
+                    cmocka_unit_test(test_addMedia),
                     cmocka_unit_test(test_mediaDeletion),
             };
     return cmocka_run_group_tests_name("Test ext_files_manager module",tests_ext_files_manager,NULL,NULL);
