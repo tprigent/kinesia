@@ -2,6 +2,12 @@
 // Created by julien on 26/04/2021.
 //
 
+#include <cmocka.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include <stdarg.h>
+#include <setjmp.h>
 #include "UTest_ext_files_manager.h"
 #include "../src/model/structures.h"
 #include "../src/controller/extern_files_manager.h"
@@ -10,9 +16,11 @@
 #include "../src/model/patient_manager.h"
 
 static void test_getExtensionFromPath(void **state){
-    char *testPath = "../media/graphic-assets/archive_512.png"
-    char *temp = get_name_UI(patient);
+    Patient *testPatient = getPatient(1);
+    char *testPath = "../media/graphic-assets/archive_512.png";
+    char *temp = get_name_UI(testPatient);
     assert_string_equal("png", temp);
+    freePatient(&testPatient);
     free(testPath);
     free(temp);
 }
@@ -47,7 +55,7 @@ static void test_getNbOfAttachments(void **state){
 }
 
 static void test_replaceWhitespaces(void **state){
-    char *testString = "this is a test string"
+    char *testString = "this is a test string";
     char *temp = replaceWhitespaces(testString);
     assert_string_equal("this_is_a_test_string", temp);
     free(testString);
@@ -57,7 +65,7 @@ static void test_replaceWhitespaces(void **state){
 
 int main_ext_files_manager(void)
 {
-    const struct CMUnitTest tests_UI[]=
+    const struct CMUnitTest tests_ext_files_manager[]=
             {
                     cmocka_unit_test(test_getExtensionFromPath),
                     cmocka_unit_test(test_getProfileExtension),
@@ -65,7 +73,7 @@ int main_ext_files_manager(void)
                     cmocka_unit_test(test_getPatientMediaPath),
                     cmocka_unit_test(test_getFolderMediaPath),
                     cmocka_unit_test(test_getNbOfAttachments),
-                    cmocka_unit_test(test_replaceWhitespaces)
+                    cmocka_unit_test(test_replaceWhitespaces),
             };
-    return cmocka_run_group_tests_name("Test ext_files_manager module",tests_UI,NULL,NULL);
+    return cmocka_run_group_tests_name("Test ext_files_manager module",tests_ext_files_manager,NULL,NULL);
 }

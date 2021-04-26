@@ -12,6 +12,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/FetchCMocka.cmake)
 set(SOURCE_FILES
         UTest.c
         UTest_display_helpers.c
+        UTest_ext_files_manager.c
         #UTest_BDD.c
         #UTest_session.c
         #UTest_BDD_session.c
