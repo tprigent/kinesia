@@ -19,7 +19,7 @@ while true; do
         [Uu]* )
           echo "*** Unit tests selected ***"
           cd ../
-          cmake -g -S . -B ./build
+          cmake -S . -B ./build
           cd build
           make UnitTest > unitreport
           cd ../tests

@@ -12,6 +12,6 @@
 
 int main(void){
     //int i = main_BDD_session()*main_BDD()*main_UI()*main_session();
-    int i = patient_display_helpers_tests()*folder_display_helpers_tests()*other_display_helpers_tests();
+    int i = patient_display_helpers_tests()*folder_display_helpers_tests()*other_display_helpers_tests()*main_ext_files_manager();
     return i;
 }
