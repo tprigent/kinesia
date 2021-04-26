@@ -4,18 +4,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
+//#include <stdarg.h>
 #include <stddef.h>
 #include <setjmp.h>
 #include <cmocka.h>
 #include "UTest_ext_files_manager.h"
-#include "../src/model/structures.h"
 #include "../src/controller/extern_files_manager.h"
-#include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/controller/struct_to_BDD_patient.h"
-#include "../src/model/patient_manager.h"
 
-static void test_getExtensionFromPath(void **state){
+static void test_getExtensionFromPath(){
     char *testPath = (char*) malloc(sizeof(char)*strlen("../media/graphic-assets/archive_512.png"));
     strcpy(testPath, "../media/graphic-assets/archive_512.png");
     char *temp = getExtensionFromPath(testPath);
@@ -24,7 +21,7 @@ static void test_getExtensionFromPath(void **state){
     free(temp);
 }
 
-static void test_getProfileExtension(void **state){
+static void test_getProfileExtension(){
     char *temp1 = (char*) malloc(sizeof(char)*10);
     strcpy(temp1, getProfileExtension(10));
     assert_string_equal(".error", temp1);
@@ -43,30 +40,30 @@ static void test_getProfileExtension(void **state){
     free(temp4);
 }
 
-static void test_getProfilePhotoPath(void **state){
+static void test_getProfilePhotoPath(){
     char *temp = getProfilePhotoPath(1);
     assert_string_equal("../media/patient-data/1/profil.jpeg", temp);
     free(temp);
 }
 
-static void test_getPatientMediaPath(void **state){
+static void test_getPatientMediaPath(){
     char *temp = getPatientMediaPath(1);
     assert_string_equal("../media/patient-data/1/", temp);
     free(temp);
 }
 
-static void test_getFolderMediaPath(void **state){
+static void test_getFolderMediaPath(){
     char *temp = getFolderMediaPath(1,1);
     assert_string_equal("../media/patient-data/1/1/", temp);
     free(temp);
 }
 
-static void test_getNbOfAttachments(void **state){
+static void test_getNbOfAttachments(){
     int count = getNbOfAttachments(1,1);
     assert_int_equal(0, count);
 }
 
-static void test_replaceWhitespaces(void **state){
+static void test_replaceWhitespaces(){
     char *testString = (char*) malloc(sizeof(char)*strlen("this is a test string"));
     strcpy(testString, "this is a test string");
     char *temp = (char*) malloc(sizeof(char)*strlen("this is a test string"));
@@ -76,7 +73,7 @@ static void test_replaceWhitespaces(void **state){
     free(temp);
 }
 
-static void test_mediaDeletion(void **state){
+static void test_mediaDeletion(){
     assert_int_equal(1, getNbOfAttachments(-1, -1));
     deleteMediaFolder(-1);
 }
