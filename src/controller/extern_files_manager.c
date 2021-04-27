@@ -22,7 +22,7 @@
  * \param[in] folderID To which Folder the file concerns
  * \param[in] type Type of the media : profile or attachment
 */
-void copyToMedia(char *source_path, int patientID, int folderID, char *type){
+int copyToMedia(char *source_path, int patientID, int folderID, char *type){
 
     FILE *source_stream = NULL, *dest_stream = NULL;
     int c;
@@ -46,6 +46,7 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
     if (source_stream == NULL)
     {
         printf("Cannot open source file %s\n", source_path);
+        return 0;
     }
 
 
@@ -54,6 +55,7 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
     if (dest_stream == NULL)
     {
         printf("Cannot open dest file %s\n", dest_path);
+        return 0;
     }
 
 
@@ -75,6 +77,8 @@ void copyToMedia(char *source_path, int patientID, int folderID, char *type){
     /* Free chars */
     free((char*) stringID);
     free((char*) dest_path);
+
+    return 1;
 }
 
 /*!
