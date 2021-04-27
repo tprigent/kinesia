@@ -1,6 +1,6 @@
 /*!
-* \file UTest_UI.c
-* \brief Functions to test the functions linking structure and UI
+* \file UTest_display_helpers.c
+* \brief Functions to test the functions for displaying infos on interface
 */
 
 #include "../src/model/structures.h"
@@ -120,7 +120,7 @@ static void test_get_age_and_birthdate(void **state){
 */
 static void test_get_current_date(void **state){
     char * date = get_current_date();
-    assert_string_equal("26/4/2021", date);
+    assert_string_equal("27/4/2021", date);
     free_info_UI(date);
 }
 
@@ -134,7 +134,7 @@ static void test_get_current_date(void **state){
 */
 static void test_get_new_session_name(void **state){
     char * session_name = get_new_session_name();
-    assert_string_equal("Séance du 26/4/2021", session_name);
+    assert_string_equal("Séance du 27/4/2021", session_name);
     free_info_UI(session_name);
 }
 

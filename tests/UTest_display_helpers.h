@@ -1,6 +1,6 @@
 /*!
-* \file UTest_UI.c
-* \brief Functions to test the functions linking structure and UI
+* \file UTest_display_helpers.h
+* \brief Functions to test the functions for displaying infos on interface
 */
 
 #ifndef UTEST_UI_H
