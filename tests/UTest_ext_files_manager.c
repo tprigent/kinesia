@@ -118,15 +118,15 @@ static void test_replaceWhitespaces(){
 */
 static void test_addMedia(){
     int test;
-    test = copyToMedia("/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/profil.jpg", -1, -1, "profil");
+    test = copyToMedia("../media/media-for-tests/profil.jpg", -1, -1, "profil");
     assert_int_equal(1, test);
-    test = copyToMedia("/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/attachment.png", -1, -1, "attachment");
+    test = copyToMedia("../media/media-for-tests/attachment.png", -1, -1, "attachment");
     assert_int_equal(1, test);
 
     // The next ones have errors in path to cover codes in case of failure
     test = copyToMedia("", -1, -1, "attachment");
     assert_int_equal(0, test);
-    test = copyToMedia("/home/julien/Desktop/projet-logiciel-kine/media/media-for-tests/attachment.png", -10, -1, "attachment");
+    test = copyToMedia("../media/media-for-tests/attachment.png", -10, -1, "attachment");
     assert_int_equal(0, test);
 }
 
