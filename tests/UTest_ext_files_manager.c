@@ -89,8 +89,14 @@ static void test_getNbOfAttachments(){
 */
 static void test_getMediaDirectoryContent(){
     char **fileList = getMediaDirectoryContent(-2,1);
-    assert_string_equal("zyx.cba", fileList[0]);
-    assert_string_equal("abc.xyz", fileList[1]);
+    if(strcmp(OS, "macOS") == 0){
+        assert_string_equal("zyx.cba", fileList[0]);
+        assert_string_equal("abc.xyz", fileList[1]);
+    } else {
+        assert_string_equal("abc.xyz", fileList[0]);
+        assert_string_equal("zyx.cba", fileList[1]);
+    }
+
 
 }
 
