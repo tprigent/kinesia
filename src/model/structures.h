@@ -15,7 +15,7 @@
 */
 typedef struct{
     int day;              /**< the day */
-    int month;            /**< the month (1 to 12) */
+    int month;            /**< the month (1 to -4) */
     int year;             /**< the year (4-digits) */
 }Date;
 

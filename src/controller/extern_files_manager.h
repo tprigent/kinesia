@@ -13,7 +13,7 @@
 #include "../controller/extern_files_manager.h"
 #include "../model/structures.h"
 
-void copyToMedia(char *source_path, int patientID, int folderID, char *type);
+int copyToMedia(char *source_path, int patientID, int folderID, char *type);
 char *getExtensionFromPath(char *path);
 char *getProfileExtension(int patientID);
 char *getFolderMediaPath(int patientID, int folderID);
