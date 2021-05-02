@@ -8,6 +8,8 @@
 #include "work_view.h"
 #include "editor_views.h"
 #include "../controller/display_helpers.h"
+#include "../controller/BDD_to_struct_session.h"
+#include "../controller/BDD_to_struct_folder.h"
 #include "../model/patient_manager.h"
 #include "../model/folder_manager.h"
 #include "../model/session_manager.h"
@@ -56,7 +58,6 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
         gtk_init(NULL, NULL);
         load_css(cssMode);
     }
-
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
@@ -113,6 +114,8 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     GtkWidget *entry_search = NULL;
     GtkWidget *tabs = NULL;
 
+    GtkWidget *upcoming_title = NULL;
+
 
     /* ASSIGN VARIABLES */
     grid = gtk_grid_new();
@@ -120,7 +123,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     grid_archived_patient = gtk_grid_new();
     grid_calendar = gtk_grid_new();
 
-    frame_calendar = gtk_frame_new("CALENDRIER");
+    frame_calendar = gtk_frame_new("AGENDA");
 
     box_active_patient = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(box_active_patient), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -132,6 +135,9 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     button_new_patient = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     entry_search = gtk_search_entry_new();
     tabs = gtk_notebook_new();
+
+    upcoming_title = gtk_label_new("<u>Prochains rendez-vous</u>:");
+    gtk_label_set_use_markup(GTK_LABEL(upcoming_title), TRUE);
 
     /* GRID WHICH ORGANIZES THE WINDOW */
     gtk_container_add(GTK_CONTAINER(window), grid);
@@ -148,7 +154,8 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     gtk_container_add(GTK_CONTAINER(frame_calendar), grid_calendar);
     gtk_grid_set_row_spacing(GTK_GRID(grid_calendar), 5);
 
-    gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
+    // Parameters button
+    gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 6, 1);
     gtk_widget_set_hexpand(button_parameters, FALSE);
     gtk_widget_set_halign(button_parameters, GTK_ALIGN_END);
     gtk_widget_set_tooltip_text(button_parameters, "Réglages");
@@ -157,9 +164,55 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     settings->cssMode = cssMode;
     g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), settings);
 
-
-    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 1, 1);
+    // Calendar
+    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 6, 1);
     gtk_widget_set_hexpand(calendar, TRUE);
+
+    // Upcoming meetings
+    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_title, calendar, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_margin_top(upcoming_title, 10);
+
+
+    int *sessionAtDateID = (int *) malloc(sizeof(int));
+    int *folderAtDateID = (int *) malloc(sizeof(int));
+    int nbSessionsAtDate = getSessionsAtDate(parseDate(get_current_date()), sessionAtDateID, folderAtDateID);
+
+    if(nbSessionsAtDate > 0){
+        GtkWidget *upcoming_patient[nbSessionsAtDate];
+        GtkWidget *upcoming_meeting[nbSessionsAtDate];
+        GtkWidget *upcoming_button[nbSessionsAtDate];
+
+        int k;
+        for(k = 0; k<nbSessionsAtDate; k++){
+            int patientID = getPatientIDFromFolder(folderAtDateID[k]);
+            char *patientName = getNameFirstnamePatient(patientID);
+            char *hour = getSession(sessionAtDateID[k])->nextSessionHour;
+            upcoming_patient[k] = gtk_label_new(patientName);
+            upcoming_meeting[k] = gtk_label_new(hour);
+            upcoming_button[k] = gtk_button_new_from_icon_name("mail-replied-symbolic", GTK_ICON_SIZE_MENU);
+
+            if(k == 0){
+                gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_patient[k], upcoming_title, GTK_POS_BOTTOM, 2, 1);
+            } else {
+                gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_patient[k], upcoming_patient[k-1], GTK_POS_BOTTOM, 2, 1);
+            }
+            gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_meeting[k], upcoming_patient[k], GTK_POS_RIGHT, 2, 1);
+            gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_button[k], upcoming_meeting[k], GTK_POS_RIGHT, 2, 1);
+            gtk_widget_set_hexpand(upcoming_patient[k], TRUE);
+            gtk_widget_set_margin_start(upcoming_patient[k], 18);
+            gtk_widget_set_halign(upcoming_patient[k], GTK_ALIGN_START);
+            gtk_widget_set_hexpand(upcoming_meeting[k], TRUE);
+            gtk_widget_set_halign(upcoming_meeting[k], GTK_ALIGN_START);
+            gtk_widget_set_hexpand(upcoming_button[k], TRUE);
+
+            Window_id *window_id_active[nbSessionsAtDate];
+            window_id_active[k] = (Window_id*) malloc(sizeof(Window_id));
+            window_id_active[k]->window = window;
+            window_id_active[k]->patientID = patientID;
+            window_id_active[k]->folderID = folderAtDateID[k];
+            g_signal_connect(GTK_BUTTON(upcoming_button[k]), "clicked", G_CALLBACK(launchWorkView), window_id_active[k]);
+        }
+    }
 
 
     /* Search a patient */
@@ -171,7 +224,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     patientSearchParam->entry = entry_search;
     patientSearchParam->notebook = tabs;
     patientSearchParam->window = window;
-    g_signal_connect(entry_search, "activate", G_CALLBACK(processSearch), patientSearchParam);
+    g_signal_connect(entry_search, "search-changed", G_CALLBACK(processSearch), patientSearchParam);
 
     /* Add a new patient */
     g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), window);

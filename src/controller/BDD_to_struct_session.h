@@ -12,5 +12,6 @@ Session * getSession(int idSession);
 int * getSessionId(int idFolder);
 SessionList * getSessionList(int idF);
 int getNbSession(int idFolder);
+int getSessionsAtDate(Date *date, int *sessionID, int *folderID);
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_SESSION_H
