@@ -9,6 +9,7 @@
 #include "editor_views.h"
 #include "../controller/display_helpers.h"
 #include "../controller/BDD_to_struct_session.h"
+#include "../controller/BDD_to_struct_folder.h"
 
 /*!
  * \brief Function that launch css mode to modify application style
@@ -169,9 +170,9 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     gtk_widget_set_margin_top(upcoming_title, 10);
 
 
-    int *SessionAtDateID = (int *) malloc(sizeof(int));
-    int *FolderAtDateID = (int *) malloc(sizeof(int));
-    int nbSessionsAtDate = getSessionsAtDate(parseDate(get_current_date()), SessionAtDateID, FolderAtDateID);
+    int *sessionAtDateID = (int *) malloc(sizeof(int));
+    int *folderAtDateID = (int *) malloc(sizeof(int));
+    int nbSessionsAtDate = getSessionsAtDate(parseDate(get_current_date()), sessionAtDateID, folderAtDateID);
 
     GtkWidget *upcoming_patient[2];
     GtkWidget *upcoming_meeting[2];
@@ -180,7 +181,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
     int k;
     for(k = 0; k<nbSessionsAtDate; k++){
-        printf("Session today: %d\n", SessionAtDateID[k]);
+        printf("Session today: %d\n", sessionAtDateID[k]);
     }
 
     upcoming_patient[0] = gtk_label_new("Théo Prigent");
