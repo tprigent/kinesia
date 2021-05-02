@@ -201,6 +201,13 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
             gtk_widget_set_hexpand(upcoming_meeting[k], TRUE);
             gtk_widget_set_halign(upcoming_meeting[k], GTK_ALIGN_START);
             gtk_widget_set_hexpand(upcoming_button[k], TRUE);
+
+            Window_id *window_id_active[nbSessionsAtDate];
+            window_id_active[k] = (Window_id*) malloc(sizeof(Window_id));
+            window_id_active[k]->window = window;
+            window_id_active[k]->patientID = patientID;
+            window_id_active[k]->folderID = folderAtDateID[k];
+            g_signal_connect(GTK_BUTTON(upcoming_button[k]), "clicked", G_CALLBACK(launchWorkView), window_id_active[k]);
         }
     }
 
