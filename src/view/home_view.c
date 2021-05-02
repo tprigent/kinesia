@@ -167,7 +167,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     patientSearchParam->entry = entry_search;
     patientSearchParam->notebook = tabs;
     patientSearchParam->window = window;
-    g_signal_connect(entry_search, "activate", G_CALLBACK(processSearch), patientSearchParam);
+    g_signal_connect(entry_search, "search-changed", G_CALLBACK(processSearch), patientSearchParam);
 
     /* Add a new patient */
     g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), window);
