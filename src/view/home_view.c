@@ -174,44 +174,36 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     int *folderAtDateID = (int *) malloc(sizeof(int));
     int nbSessionsAtDate = getSessionsAtDate(parseDate(get_current_date()), sessionAtDateID, folderAtDateID);
 
-    GtkWidget *upcoming_patient[2];
-    GtkWidget *upcoming_meeting[2];
-    GtkWidget *upcoming_button[2];
-    int upcoming_id[2];
+    if(nbSessionsAtDate > 0){
+        GtkWidget *upcoming_patient[nbSessionsAtDate];
+        GtkWidget *upcoming_meeting[nbSessionsAtDate];
+        GtkWidget *upcoming_button[nbSessionsAtDate];
 
-    int k;
-    for(k = 0; k<nbSessionsAtDate; k++){
-        printf("Session today: %d\n", sessionAtDateID[k]);
+        int k;
+        for(k = 0; k<nbSessionsAtDate; k++){
+            int patientID = getPatientIDFromFolder(folderAtDateID[k]);
+            char *patientName = getNameFirstnamePatient(patientID);
+            char *hour = getSession(sessionAtDateID[k])->nextSessionHour;
+            upcoming_patient[k] = gtk_label_new(patientName);
+            upcoming_meeting[k] = gtk_label_new(hour);
+            upcoming_button[k] = gtk_button_new_from_icon_name("mail-replied-symbolic", GTK_ICON_SIZE_MENU);
+
+            if(k == 0){
+                gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_patient[k], upcoming_title, GTK_POS_BOTTOM, 2, 1);
+            } else {
+                gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_patient[k], upcoming_patient[k-1], GTK_POS_BOTTOM, 2, 1);
+            }
+            gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_meeting[k], upcoming_patient[k], GTK_POS_RIGHT, 2, 1);
+            gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_button[k], upcoming_meeting[k], GTK_POS_RIGHT, 2, 1);
+            gtk_widget_set_hexpand(upcoming_patient[k], TRUE);
+            gtk_widget_set_margin_start(upcoming_patient[k], 18);
+            gtk_widget_set_halign(upcoming_patient[k], GTK_ALIGN_START);
+            gtk_widget_set_hexpand(upcoming_meeting[k], TRUE);
+            gtk_widget_set_halign(upcoming_meeting[k], GTK_ALIGN_START);
+            gtk_widget_set_hexpand(upcoming_button[k], TRUE);
+        }
     }
 
-    upcoming_patient[0] = gtk_label_new("Théo Prigent");
-    upcoming_patient[1] = gtk_label_new("Julien Priam");
-    upcoming_meeting[0] = gtk_label_new("16h15");
-    upcoming_meeting[1] = gtk_label_new("18h35");
-    upcoming_button[0] = gtk_button_new_from_icon_name("mail-replied-symbolic", GTK_ICON_SIZE_MENU);
-    upcoming_button[1] = gtk_button_new_from_icon_name("mail-replied-symbolic", GTK_ICON_SIZE_MENU);
-    upcoming_id[0] = 3;
-    upcoming_id[1] = 2;
-
-    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_patient[0], upcoming_title, GTK_POS_BOTTOM, 2, 1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_meeting[0], upcoming_patient[0], GTK_POS_RIGHT, 2, 1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_button[0], upcoming_meeting[0], GTK_POS_RIGHT, 2, 1);
-    gtk_widget_set_hexpand(upcoming_patient[0], TRUE);
-    gtk_widget_set_margin_start(upcoming_patient[0], 18);
-    gtk_widget_set_halign(upcoming_patient[0], GTK_ALIGN_START);
-    gtk_widget_set_hexpand(upcoming_meeting[0], TRUE);
-    gtk_widget_set_halign(upcoming_meeting[0], GTK_ALIGN_START);
-    gtk_widget_set_hexpand(upcoming_button[0], TRUE);
-
-    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_patient[1], upcoming_patient[0], GTK_POS_BOTTOM, 2, 1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_meeting[1], upcoming_patient[1], GTK_POS_RIGHT, 2, 1);
-    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_button[1], upcoming_meeting[1], GTK_POS_RIGHT, 2, 1);
-    gtk_widget_set_hexpand(upcoming_patient[1], TRUE);
-    gtk_widget_set_margin_start(upcoming_patient[1], 18);
-    gtk_widget_set_halign(upcoming_patient[1], GTK_ALIGN_START);
-    gtk_widget_set_hexpand(upcoming_meeting[1], TRUE);
-    gtk_widget_set_halign(upcoming_meeting[1], GTK_ALIGN_START);
-    gtk_widget_set_hexpand(upcoming_button[1], TRUE);
 
     /* Search a patient */
     gtk_grid_attach_next_to(GTK_GRID(grid), entry_search, frame_calendar, GTK_POS_RIGHT, 2, 1);

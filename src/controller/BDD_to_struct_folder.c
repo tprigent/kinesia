@@ -230,7 +230,7 @@ int* getIdFolder(int idPatient){
 }
 
 
-int getPatientFromFolder(int folderID){
+int getPatientIDFromFolder(int folderID){
     sqlite3 *db;
     char *zErrMsg = 0;
     int rc;
