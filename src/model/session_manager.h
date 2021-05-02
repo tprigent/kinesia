@@ -30,5 +30,7 @@ void setOnNext(SessionList *l);
 int isOutOfList(SessionList *l);
 void freeList(SessionList *l);
 
+int getFutureSessionId();
+
 
 #endif //LOGICIEL_KINE_SESSION_MANAGER_H
