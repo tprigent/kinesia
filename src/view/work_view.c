@@ -954,6 +954,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     /* DECLARE VARIABLES */
     GtkWidget *notebook = newSessionStruct->notebook;
     Session *new_session = createEmptySession(newSessionStruct->folderID);
+    new_session->idSession = (unsigned int) getFutureSessionId();
     GtkWidget *grid_add_session;
     GtkWidget *frame_session_note;
 
@@ -1000,8 +1001,8 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
 
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     gtk_widget_set_tooltip_text(save_button, "Enregistrer");
-    session_attach_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
-    gtk_widget_set_tooltip_text(session_attach_button, "Nouvelle séance");
+    new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(new_session_button, "Nouvelle séance");
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
     gtk_widget_set_tooltip_text(session_attach_button, "Joindre un élément");
     delete_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
