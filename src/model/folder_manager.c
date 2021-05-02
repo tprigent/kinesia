@@ -91,3 +91,42 @@ Folder *createEmptyFolder(int idPatient){
     return folder;
 
 }
+
+int getFutureFolderId(){
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+    int futureFolderId = 0;
+
+    //Opening database
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Testing opening
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stdout,"Opened database successfully\n");
+    }
+
+    //Creating te request
+    sql = "SELECT seq FROM sqlite_sequence WHERE name = 'folder'";
+
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error : %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+
+    sqlite3_step(stmt);
+    futureFolderId = sqlite3_column_int(stmt,0);
+
+    sqlite3_finalize(stmt);
+
+    //Closing database
+    sqlite3_close(db);
+    return futureFolderId + 1;
+}

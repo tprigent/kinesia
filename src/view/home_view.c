@@ -8,6 +8,9 @@
 #include "work_view.h"
 #include "editor_views.h"
 #include "../controller/display_helpers.h"
+#include "../model/patient_manager.h"
+#include "../model/folder_manager.h"
+#include "../model/session_manager.h"
 
 /*!
  * \brief Function that launch css mode to modify application style
@@ -53,6 +56,8 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
         gtk_init(NULL, NULL);
         load_css(cssMode);
     }
+
+    //printf("\n ****** TEST %d ******* \n", getFutureFolderId());
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
