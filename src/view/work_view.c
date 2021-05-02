@@ -973,6 +973,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     /* DECLARE VARIABLES */
     GtkWidget *notebook = newSessionStruct->notebook;
     Session *new_session = createEmptySession(newSessionStruct->folderID);
+    new_session->idSession = (unsigned int) getFutureSessionId();
     GtkWidget *grid_add_session;
     GtkWidget *frame_session_note;
 
