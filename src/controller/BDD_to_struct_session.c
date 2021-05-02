@@ -67,6 +67,53 @@ Session * getSession(int idSession){
 
 }
 
+Session * getSession0(int idFolder){
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt=NULL;
+    Session *session=NULL;
+
+    session = (Session*)malloc(sizeof(Session));
+
+    //Ouverture de la bdd
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open model: %s\n", sqlite3_errmsg(db));
+        return NULL;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT * FROM seance WHERE idDossier=? AND isRealSession=0";
+
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare SELECT error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    sqlite3_bind_int(stmt,1,idFolder);
+
+    sqlite3_step(stmt);
+
+    initSession(session,(char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,8),
+                sqlite3_column_int(stmt,4),sqlite3_column_int(stmt,3),sqlite3_column_int(stmt,2),
+                sqlite3_column_int(stmt,7),sqlite3_column_int(stmt,6),sqlite3_column_int(stmt,5),
+                (char*)sqlite3_column_text(stmt,10), sqlite3_column_int(stmt,11),
+                sqlite3_column_int(stmt,0),sqlite3_column_int(stmt,1));
+
+    sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return session;
+}
+
 /*!
  * \brief This function makes an SQL request, returns the session's id of a folder.
  *
