@@ -41,7 +41,7 @@ void createNewSession(int idFolder){
     strcpy(session->nextSessionHour, "12:00");
 
     /* OTHER */
-    session->isRealFolder = 1;
+    session->isRealSession = 1;
 
 
     /* ADD SESSION IN BDD */
@@ -109,7 +109,7 @@ Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMo
 
         newS->idFolder = idFolder;
         newS->idSession = idS;
-        newS->isRealFolder = isRealFolder;
+        newS->isRealSession = isRealFolder;
 
     }
 

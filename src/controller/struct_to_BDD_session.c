@@ -36,8 +36,8 @@ int addSession(Session *session){
     //Creation de la requête
     sql = "INSERT INTO seance (idDossier,dateSeance_year,dateSeance_month"
           ",dateSeance_day,dateSeanceSuiv_year"
-          ",dateSeanceSuiv_month,dateSeanceSuiv_day,observations,nomSeance) VALUES (?,?,?,?,?,"
-          "?,?,?,?)";
+          ",dateSeanceSuiv_month,dateSeanceSuiv_day,observations,nomSeance,nextSessionHour,isRealSession) VALUES (?,?,?,?,?,"
+          "?,?,?,?,?,?)";
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
@@ -58,7 +58,7 @@ int addSession(Session *session){
     sqlite3_bind_text(stmt,8,session->observations,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,9,session->sessionName,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,10,session->nextSessionHour,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,11,session->isRealFolder);
+    sqlite3_bind_int(stmt,11,session->isRealSession);
 
     //Execution de la requête
     rc = sqlite3_step(stmt);
@@ -104,7 +104,7 @@ int modifySession(Session *session){
     //Creation de la requête
     sql = "UPDATE seance SET idDossier=?,dateSeance_year=?,dateSeance_month=?"
           ",dateSeance_day=?,dateSeanceSuiv_year=?"
-          ",dateSeanceSuiv_month=?,dateSeanceSuiv_day=?,observations=?,nomSeance=? WHERE idSeance=?";
+          ",dateSeanceSuiv_month=?,dateSeanceSuiv_day=?,observations=?,nomSeance=?, nextSessionHour=?, isRealSession=? WHERE idSeance=?";
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
@@ -124,9 +124,9 @@ int modifySession(Session *session){
     sqlite3_bind_int(stmt,7,session->nextSessionDate.day);
     sqlite3_bind_text(stmt,8,session->observations,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,9,session->sessionName,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,0,(int)session->idSession);
     sqlite3_bind_text(stmt,10,session->nextSessionHour,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,11,session->isRealFolder);
+    sqlite3_bind_int(stmt,11,session->isRealSession);
+    sqlite3_bind_int(stmt,12,(int)session->idSession);
 
     //Execution de la requête
     rc = sqlite3_step(stmt);

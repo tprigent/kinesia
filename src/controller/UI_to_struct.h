@@ -22,6 +22,7 @@ typedef struct{
     GtkWidget *sessionName;         /**< Entry for the name of the session */
     GtkWidget *sessionDate;         /**< Session date entry */
     GtkWidget *nextSessionDate;     /**< Next session date entry */
+    GtkWidget *nextSessionHour;     /**< Next session hour entry */
     GtkWidget *observations;        /**< Observations entry */
     GtkWidget *notebook;            /**< Session notebook to refresh page title */
     int origin;                     /**< Boolean: 0 for new session, 1 to edit session */     /**< Parameters to refresh the view */

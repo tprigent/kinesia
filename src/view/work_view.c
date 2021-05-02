@@ -777,7 +777,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         session_next_meeting_hour[session_cursor] = gtk_label_new("Heure : ");
         entry_next_meeting_hour[session_cursor] = gtk_entry_new();
         space[session_cursor] = gtk_label_new("");
-        gtk_entry_set_text(GTK_ENTRY(entry_next_meeting_hour[session_cursor]), "12:00");
+        gtk_entry_set_text(GTK_ENTRY(entry_next_meeting_hour[session_cursor]), session_list->current->session.nextSessionHour);
 
         save_button[session_cursor] = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
         gtk_widget_set_tooltip_text(save_button[session_cursor], "Enregistrer");
@@ -892,6 +892,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             saveSession[session_cursor]->sessionName = entry_title_new[session_cursor];
             saveSession[session_cursor]->sessionDate = entry_date_new[session_cursor];
             saveSession[session_cursor]->nextSessionDate = entry_next_meeting[session_cursor];
+            saveSession[session_cursor]->nextSessionHour = entry_next_meeting_hour[session_cursor];
             saveSession[session_cursor]->observations = text_session_note[session_cursor];
             saveSession[session_cursor]->notebook = notebook;
             g_signal_connect(GTK_BUTTON(save_button[session_cursor]), "clicked", G_CALLBACK(saveSessionEntries), saveSession[session_cursor]);
@@ -1114,6 +1115,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     saveSession->sessionName = entry_title_new;
     saveSession->sessionDate = entry_date_new;
     saveSession->nextSessionDate = entry_next_meeting;
+    saveSession->nextSessionHour = entry_next_meeting_hour;
     saveSession->observations = text_session_note;
     saveSession->notebook = notebook;
     g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveSessionEntries), saveSession);
