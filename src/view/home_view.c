@@ -57,7 +57,6 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode){
         load_css(cssMode);
     }
 
-    //printf("\n ****** TEST %d ******* \n", getFutureFolderId());
 
     GtkWidget *window = NULL;
     GdkPixbuf *symbolPixbuf = NULL;
