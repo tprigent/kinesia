@@ -36,6 +36,8 @@ void saveSessionEntries(GtkWidget *save_button, SessionEntries *new_session){
     new_session->session->nextSessionDate.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(new_session->nextSessionDate)))->month;
     new_session->session->nextSessionDate.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(new_session->nextSessionDate)))->year;
 
+    strcpy(new_session->session->nextSessionHour, (char*) gtk_entry_get_text(GTK_ENTRY(new_session->nextSessionHour)));
+
     /* SESSION OBSERVATIONS */
     GtkTextIter start, end;
     GtkTextBuffer *info_result_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(new_session->observations));

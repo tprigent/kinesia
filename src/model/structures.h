@@ -96,7 +96,7 @@ typedef struct{
     Date nextSessionDate;       /**< Date of the next session */
     char * nextSessionHour;     /**< Hour of the next session */
     char * observations;        /**< Observations made during the session */
-    int isRealFolder;           /**< Helper to display next appointments in Home view */
+    int isRealSession;          /**< Helper to display next appointments in Home view */
 
     /**
      * \name Database information
