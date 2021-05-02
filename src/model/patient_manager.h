@@ -27,5 +27,6 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
 int setAddress(Address * adr, char * r, char * cp, char * v, char * iC);
 int setDate(Date * d, int j, int m, int a);
 
+int getFuturePatientId();
 
 #endif //LOGICIEL_KINE_PATIENT_H
