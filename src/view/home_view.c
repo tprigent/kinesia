@@ -417,6 +417,11 @@ Session *createEmptySession(int idFolder){
     newSession->nextSessionDate.month = tm.tm_mon + 1;
     newSession->nextSessionDate.year = tm.tm_year + 1900;
 
+    newSession->nextSessionHour = (char*) malloc(LG_MAX_INFO*sizeof(char));
+    strcpy(newSession->nextSessionHour, "12:00");
+
+    newSession->isRealSession = 1;
+
     newSession->idSession = 0;
     newSession->idFolder = idFolder;
 

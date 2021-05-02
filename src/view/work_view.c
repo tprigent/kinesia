@@ -725,6 +725,9 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
     GtkWidget *session_next_meeting[nb_session];
     GtkWidget *entry_next_meeting[nb_session];
     GtkWidget *calendar_next_meeting_button[nb_session];
+    GtkWidget *session_next_meeting_hour[nb_session];
+    GtkWidget *entry_next_meeting_hour[nb_session];
+    GtkWidget *space[nb_session];
     GtkWidget *session_attach_button[nb_session];
     GtkWidget *text_session_note[nb_session];
     GtkTextBuffer *session_buffer[nb_session];
@@ -770,6 +773,11 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_entry_set_text(GTK_ENTRY(entry_next_meeting[session_cursor]), next_session_date_char[session_cursor]);
         free_info_UI(next_session_date_char[session_cursor]);
         calendar_next_meeting_button[session_cursor] = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
+
+        session_next_meeting_hour[session_cursor] = gtk_label_new("Heure : ");
+        entry_next_meeting_hour[session_cursor] = gtk_entry_new();
+        space[session_cursor] = gtk_label_new("");
+        gtk_entry_set_text(GTK_ENTRY(entry_next_meeting_hour[session_cursor]), session_list->current->session.nextSessionHour);
 
         save_button[session_cursor] = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
         gtk_widget_set_tooltip_text(save_button[session_cursor], "Enregistrer");
@@ -854,6 +862,15 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), calendar_next_meeting_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_RIGHT, 8, 1);
         g_signal_connect(GTK_BUTTON(calendar_next_meeting_button[session_cursor]), "clicked", G_CALLBACK(launchCalendar), entry_next_meeting[session_cursor]);
 
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_next_meeting_hour[session_cursor], session_next_meeting[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        gtk_widget_set_hexpand(session_next_meeting_hour[session_cursor], TRUE);
+        gtk_widget_set_vexpand(session_next_meeting_hour[session_cursor], FALSE);
+        gtk_widget_set_halign(session_next_meeting_hour[session_cursor], GTK_ALIGN_END);
+
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), entry_next_meeting_hour[session_cursor], entry_next_meeting[session_cursor], GTK_POS_BOTTOM, 8, 1);
+        gtk_widget_set_hexpand(entry_next_meeting_hour[session_cursor], FALSE);
+        gtk_widget_set_vexpand(entry_next_meeting_hour[session_cursor], FALSE);
+        gtk_widget_set_halign(entry_next_meeting_hour[session_cursor], GTK_ALIGN_START);
 
         /* Manage to display the new session button */
         gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), new_session_button[session_cursor], entry_next_meeting[session_cursor], GTK_POS_TOP, 7, 1);
@@ -875,13 +892,15 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             saveSession[session_cursor]->sessionName = entry_title_new[session_cursor];
             saveSession[session_cursor]->sessionDate = entry_date_new[session_cursor];
             saveSession[session_cursor]->nextSessionDate = entry_next_meeting[session_cursor];
+            saveSession[session_cursor]->nextSessionHour = entry_next_meeting_hour[session_cursor];
             saveSession[session_cursor]->observations = text_session_note[session_cursor];
             saveSession[session_cursor]->notebook = notebook;
             g_signal_connect(GTK_BUTTON(save_button[session_cursor]), "clicked", G_CALLBACK(saveSessionEntries), saveSession[session_cursor]);
 
 
         /* Manage the button to attach items */
-        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_attach_button[session_cursor], entry_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), space[session_cursor], entry_title_new[session_cursor], GTK_POS_BOTTOM, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid_add_session[session_cursor]), session_attach_button[session_cursor], space[session_cursor], GTK_POS_BOTTOM, 1, 1);
         gtk_widget_set_hexpand(session_attach_button[session_cursor], FALSE);
         gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
         mediaChooser[session_cursor] = (MediaType *) malloc(sizeof(MediaType));
@@ -967,6 +986,9 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     GtkWidget *session_next_meeting;
     GtkWidget *entry_next_meeting;
     GtkWidget *calendar_next_meeting_button = NULL;
+    GtkWidget *session_next_meeting_hour;
+    GtkWidget *entry_next_meeting_hour;
+    GtkWidget *space;
     GtkWidget *session_attach_button;
     GtkWidget *delete_button = NULL;
     GtkWidget *text_session_note;
@@ -997,11 +1019,15 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     free_info_UI(next_session_date_char);
     calendar_next_meeting_button = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
 
+    session_next_meeting_hour = gtk_label_new("Heure : ");
+    entry_next_meeting_hour = gtk_entry_new();
+    space = gtk_label_new("");
+    gtk_entry_set_text(GTK_ENTRY(entry_next_meeting_hour), "12:00");
 
     save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
     gtk_widget_set_tooltip_text(save_button, "Enregistrer");
-    session_attach_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
-    gtk_widget_set_tooltip_text(session_attach_button, "Nouvelle séance");
+    new_session_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+    gtk_widget_set_tooltip_text(new_session_button, "Nouvelle séance");
     session_attach_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_MENU);
     gtk_widget_set_tooltip_text(session_attach_button, "Joindre un élément");
     delete_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
@@ -1060,6 +1086,15 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), calendar_next_meeting_button, entry_next_meeting, GTK_POS_RIGHT, 8, 1);
     g_signal_connect(GTK_BUTTON(calendar_next_meeting_button), "clicked", G_CALLBACK(launchCalendar), entry_next_meeting);
 
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_next_meeting_hour, session_next_meeting, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(session_next_meeting_hour, TRUE);
+    gtk_widget_set_vexpand(session_next_meeting_hour, FALSE);
+    gtk_widget_set_halign(session_next_meeting_hour, GTK_ALIGN_END);
+
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), entry_next_meeting_hour, entry_next_meeting, GTK_POS_BOTTOM, 8, 1);
+    gtk_widget_set_hexpand(entry_next_meeting_hour, FALSE);
+    gtk_widget_set_vexpand(entry_next_meeting_hour, FALSE);
+    gtk_widget_set_halign(entry_next_meeting_hour, GTK_ALIGN_START);
 
     /* Manage to display the new session button */
     gtk_grid_attach_next_to(GTK_GRID(grid_add_session), new_session_button, entry_next_meeting, GTK_POS_TOP, 7, 1);
@@ -1080,12 +1115,14 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     saveSession->sessionName = entry_title_new;
     saveSession->sessionDate = entry_date_new;
     saveSession->nextSessionDate = entry_next_meeting;
+    saveSession->nextSessionHour = entry_next_meeting_hour;
     saveSession->observations = text_session_note;
     saveSession->notebook = notebook;
     g_signal_connect(GTK_BUTTON(save_button), "clicked", G_CALLBACK(saveSessionEntries), saveSession);
 
     /* Manage the button to attach items */
-    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, entry_title_new, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), space, entry_title_new, GTK_POS_BOTTOM, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_add_session), session_attach_button, space, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(session_attach_button, FALSE);
     gtk_widget_set_vexpand(session_attach_button, FALSE);
     MediaType *mediaChooser = (MediaType *) malloc(sizeof(MediaType));
