@@ -11,6 +11,12 @@
 #include "../model/structures.h"
 #include "home_view.h"
 
+typedef struct {
+    Session *session;
+    GtkWidget *dateEntry;
+    GtkWidget *hourEntry;
+}firstSessionHoursStruct;
+
 /**
  * \brief Structure to add new session
  *
@@ -58,6 +64,7 @@ void launchWorkView(GtkWidget *but, Window_id *window_id);
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct);
 void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct);
 void launchDeleteWarning(GtkWidget *button, char *title);
+void modifyFirstSessionHours(GtkWidget *entry, firstSessionHoursStruct *fSHS);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);
