@@ -8,6 +8,7 @@
 #include "work_view.h"
 #include "editor_views.h"
 #include "../controller/display_helpers.h"
+#include "../controller/BDD_to_struct_session.h"
 
 /*!
  * \brief Function that launch css mode to modify application style
@@ -167,10 +168,20 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_title, calendar, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_margin_top(upcoming_title, 10);
 
+
+    int *SessionAtDateID = (int *) malloc(sizeof(int));
+    int *FolderAtDateID = (int *) malloc(sizeof(int));
+    int nbSessionsAtDate = getSessionsAtDate(parseDate(get_current_date()), SessionAtDateID, FolderAtDateID);
+
     GtkWidget *upcoming_patient[2];
     GtkWidget *upcoming_meeting[2];
     GtkWidget *upcoming_button[2];
     int upcoming_id[2];
+
+    int k;
+    for(k = 0; k<nbSessionsAtDate; k++){
+        printf("Session today: %d\n", SessionAtDateID[k]);
+    }
 
     upcoming_patient[0] = gtk_label_new("Théo Prigent");
     upcoming_patient[1] = gtk_label_new("Julien Priam");
