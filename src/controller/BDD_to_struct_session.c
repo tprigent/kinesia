@@ -54,6 +54,7 @@ Session * getSession(int idSession){
     initSession(session,(char*)sqlite3_column_text(stmt,9),(char*)sqlite3_column_text(stmt,8),
                 sqlite3_column_int(stmt,4),sqlite3_column_int(stmt,3),sqlite3_column_int(stmt,2),
                 sqlite3_column_int(stmt,7),sqlite3_column_int(stmt,6),sqlite3_column_int(stmt,5),
+                (char*)sqlite3_column_text(stmt,10), sqlite3_column_int(stmt,11),
                 sqlite3_column_int(stmt,0),sqlite3_column_int(stmt,1));
 
     sqlite3_finalize(stmt);
@@ -145,7 +146,7 @@ SessionList * getSessionList(int idF) {
 
     while(i<NB_MAX_SESSION && tab_id[i] != -1) {
         Session * s = getSession(tab_id[i]);
-        if(insertFirst(l, s->sessionName, s->observations, s->sessionDate.day, s->sessionDate.month, s->sessionDate.year, s->nextSessionDate.day, s->nextSessionDate.month, s->nextSessionDate.year, s->idSession, s->idFolder) !=0) return NULL;
+        if(insertFirst(l, s->sessionName, s->observations, s->sessionDate.day, s->sessionDate.month, s->sessionDate.year, s->nextSessionDate.day, s->nextSessionDate.month, s->nextSessionDate.year, s->nextSessionHour, s->isRealFolder, (int) s->idSession, (int) s->idFolder) !=0) return NULL;
         freeSession(s);
         free(s);
         i++;

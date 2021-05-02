@@ -57,6 +57,8 @@ int addSession(Session *session){
     sqlite3_bind_int(stmt,7,session->nextSessionDate.day);
     sqlite3_bind_text(stmt,8,session->observations,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,9,session->sessionName,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,10,session->nextSessionHour,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,11,session->isRealFolder);
 
     //Execution de la requête
     rc = sqlite3_step(stmt);
@@ -122,7 +124,9 @@ int modifySession(Session *session){
     sqlite3_bind_int(stmt,7,session->nextSessionDate.day);
     sqlite3_bind_text(stmt,8,session->observations,-1,SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,9,session->sessionName,-1,SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,10,(int)session->idSession);
+    sqlite3_bind_int(stmt,0,(int)session->idSession);
+    sqlite3_bind_text(stmt,10,session->nextSessionHour,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,11,session->isRealFolder);
 
     //Execution de la requête
     rc = sqlite3_step(stmt);

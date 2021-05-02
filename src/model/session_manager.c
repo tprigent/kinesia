@@ -24,6 +24,7 @@ void createNewSession(int idFolder){
     session->idFolder = idFolder;
     session->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
     session->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+    session->nextSessionHour = (char*) malloc(LG_MAX_INFO*sizeof(char));
 
     char *date = get_current_date();
 
@@ -37,6 +38,11 @@ void createNewSession(int idFolder){
     /*SESSION DATES */
     session->sessionDate = *parseDate(date);
     session->nextSessionDate = *parseDate(date);
+    strcpy(session->nextSessionHour, "12:00");
+
+    /* OTHER */
+    session->isRealFolder = 1;
+
 
     /* ADD SESSION IN BDD */
     addSession(session);
@@ -54,6 +60,7 @@ void createNewSession(int idFolder){
 void freeSession(Session *s) {
     free((void *)s->observations);
     free((void *)s->sessionName);
+    free((void *)s->nextSessionHour);
 }
 
 /*!
@@ -72,12 +79,13 @@ void freeSession(Session *s) {
 * \param[in] int idFolder, the id of the folder containing the session.
 * \param[out] Session *, the pointer on the session initialized.
 */
-Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
+Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, char *nsHour, int isRealFolder, int idS, int idFolder) {
 
     newS->sessionName = (char *) malloc(sizeof(char)*LG_MAX_INFO + 1);
     newS->observations = (char *) malloc(sizeof(char)*LG_MAX_OTHERS + 1);
+    newS->nextSessionHour = (char *) malloc(sizeof(char)*LG_MAX_INFO + 1);
 
-    if(newS->sessionName !=NULL && newS->observations != NULL) {
+    if(newS->sessionName !=NULL && newS->observations != NULL && newS->nextSessionHour != NULL) {
         if(sName == NULL) strcpy(newS->sessionName, "\0");
         else {
             strncpy(newS->sessionName, sName, LG_MAX_INFO);
@@ -90,11 +98,18 @@ Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMo
             newS->observations[LG_MAX_OTHERS] = '\0';
         }
 
+        if(nsHour == NULL) strcpy(newS->nextSessionHour, "\0");
+        else {
+            strncpy(newS->nextSessionHour, nsHour, LG_MAX_INFO);
+            newS->nextSessionHour[LG_MAX_INFO] = '\0';
+        }
+
         setDate(&(newS->nextSessionDate), nsdDay, nsdMonth, nsdYear);
         setDate(&(newS->sessionDate), sdDay, sdMonth, sdYear);
 
         newS->idFolder = idFolder;
         newS->idSession = idS;
+        newS->isRealFolder = isRealFolder;
 
     }
 
@@ -120,11 +135,11 @@ Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMo
 * \param[in] NodeList * prevNode, the previous NodeList in the list.
 * \param[out] NodeList *, the Nodelist created.
 */
-static NodeList * newNodeList(char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder, NodeList *nextNode, NodeList *prevNode) {
+static NodeList * newNodeList(char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, char *nsHour, int isRealFolder, int idS, int idFolder, NodeList *nextNode, NodeList *prevNode) {
     NodeList *newNode = (NodeList *) malloc(sizeof(NodeList));
 
     if(newNode == NULL) return NULL;
-    newNode->session = *initSession(&newNode->session, sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, idS, idFolder);
+    newNode->session = *initSession(&newNode->session, sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, nsHour, isRealFolder, idS, idFolder);
 
     newNode->next = nextNode;
     newNode->previous = prevNode;
@@ -180,9 +195,9 @@ int isEmpty(SessionList *l) {
 * \param[in] int idFolder, the id of the folder containing the session.
 * \param[out] int, 0 if the NodeList has been inserted, -1 otherwise.
 */
-int insertFirst(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
+int insertFirst(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, char *nsHour, int isRealFolder, int idS, int idFolder) {
     setOnFirst(l);
-    NodeList * newNode = newNodeList(sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, idS, idFolder, l->first, NULL);
+    NodeList * newNode = newNodeList(sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, nsHour, isRealFolder, idS, idFolder, l->first, NULL);
     if(newNode == NULL) return -1;
 
     if(isEmpty(l) !=0) {
@@ -211,9 +226,9 @@ int insertFirst(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, 
 * \param[in] int idFolder, the id of the folder containing the session.
 * \param[out] int, 0 if the NodeList has been inserted, -1 otherwise.
 */
-int insertLast(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder) {
+int insertLast(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, char *nsHour, int isRealFolder, int idS, int idFolder) {
     setOnLast(l);
-    NodeList * newNode = newNodeList(sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, idS, idFolder, NULL, l->last);
+    NodeList * newNode = newNodeList(sName, obs, sdDay, sdMonth, sdYear, nsdDay, nsdMonth, nsdYear, nsHour, isRealFolder, idS, idFolder, NULL, l->last);
     if(newNode == NULL) return -1;
 
     if(isEmpty(l) !=0) {

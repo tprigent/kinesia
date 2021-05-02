@@ -13,13 +13,13 @@
 /*session's allocation's functions*/
 void createNewSession(int idFolder);
 void freeSession(Session *s);
-Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder);
+Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, char *nsHour, int isRealFolder, int idS, int idFolder);
 
 /*list gestion's functions*/
 void initList(SessionList *l);
 int isEmpty(SessionList *l);
-int insertFirst(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder);
-int insertLast(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, int idS, int idFolder);
+int insertFirst(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, char *nsHour, int isRealFolder, int idS, int idFolder);
+int insertLast(SessionList *l, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, char *nsHour, int isRealFolder, int idS, int idFolder);
 void deleteFirst(SessionList *l);
 void deleteCurrent(SessionList *l);
 int pointNthElement(SessionList *l, int n);
