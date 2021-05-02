@@ -94,7 +94,10 @@ typedef struct{
     char * sessionName;         /**< Session title (eventually chosen by user) */
     Date sessionDate;           /**< Session date */
     Date nextSessionDate;       /**< Date of the next session */
+    char * nextSessionHour;     /**< Hour of the next session */
     char * observations;        /**< Observations made during the session */
+    int isRealSession;          /**< Helper to display next appointments in Home view */
+
     /**
      * \name Database information
     */
