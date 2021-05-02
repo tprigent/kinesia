@@ -680,8 +680,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_widget_set_tooltip_text(button, "Ajouter une première séance");
         gtk_container_add(GTK_CONTAINER(box), frame);
         gtk_container_add(GTK_CONTAINER(frame), grid);
-        gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-        gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 1, 1);
+        gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_START, GTK_ALIGN_START, 15, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 15, 1);
 
         /* CONNECT BUTTON TO CREATE FIRST SESSION */
         AddFirstSessionStruct *firstSession = (AddFirstSessionStruct*) malloc(sizeof(AddFirstSessionStruct));
@@ -689,6 +689,21 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         firstSession->patientID = (int) patient->id;
         firstSession->folderID = folderID;
         g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(addFirstSessionUI), firstSession);
+
+        /* DISPLAY THE DATE/HOUR OF FIRST APPOINTMENT */
+        Session *session0 = getSession0(folderID);
+        GtkWidget *meeting_label1 = gtk_label_new("Le premier rendez-vous est programmé le ");
+        GtkWidget *meeting_label2 = gtk_label_new(" à ");
+        GtkWidget *date_entry = gtk_entry_new();
+        GtkWidget *hour_entry = gtk_entry_new();
+        char *date = get_date_UI(&session0->nextSessionDate);
+        gtk_entry_set_text(GTK_ENTRY(date_entry), date);
+        free_info_UI(date);
+        gtk_entry_set_text(GTK_ENTRY(hour_entry), session0->nextSessionHour);
+        gtk_grid_attach_next_to(GTK_GRID(grid), meeting_label1, button, GTK_POS_BOTTOM, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid), date_entry, meeting_label1, GTK_POS_RIGHT, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid), meeting_label2, date_entry, GTK_POS_RIGHT, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid), hour_entry, meeting_label2, GTK_POS_RIGHT, 1, 1);
 
         /* SET VISUAL ATTRIBUTES */
         gtk_grid_set_row_spacing(GTK_GRID(grid), 15);
@@ -699,6 +714,15 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
         gtk_widget_set_vexpand(box, TRUE);
         gtk_widget_set_vexpand(grid, TRUE);
+
+        gtk_widget_set_halign(meeting_label1, GTK_ALIGN_START);
+        gtk_widget_set_halign(date_entry, GTK_ALIGN_START);
+        gtk_widget_set_halign(meeting_label2, GTK_ALIGN_START);
+        gtk_widget_set_halign(hour_entry, GTK_ALIGN_START);
+        gtk_widget_set_hexpand(meeting_label1, FALSE);
+        gtk_widget_set_hexpand(date_entry, FALSE);
+        gtk_widget_set_hexpand(meeting_label2, FALSE);
+        gtk_widget_set_hexpand(hour_entry, FALSE);
 
         gtk_frame_set_label_align(GTK_FRAME(frame), (float) 0.5, (float) 0.5);
 
