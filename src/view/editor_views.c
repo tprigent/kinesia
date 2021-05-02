@@ -222,6 +222,12 @@ void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
     foldEditStruct->folder = folder;
     foldEditStruct->edit_new = 0;
     foldEditStruct->window = idPatientCall->window;
+
+    /* Create a non real session to display the first appointment in HomeView */
+    Session *firstSessionDate = createEmptySession(getFutureFolderId());
+    firstSessionDate->isRealSession = 0;
+    addSession(firstSessionDate);
+
     launchFolderEditor(button, foldEditStruct);
 }
 
