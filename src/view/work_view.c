@@ -705,6 +705,13 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_grid_attach_next_to(GTK_GRID(grid), meeting_label2, date_entry, GTK_POS_RIGHT, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(grid), hour_entry, meeting_label2, GTK_POS_RIGHT, 1, 1);
 
+        firstSessionHoursStruct *fSHS = (firstSessionHoursStruct*) malloc(sizeof(firstSessionHoursStruct));
+        fSHS->session = session0;
+        fSHS->dateEntry = date_entry;
+        fSHS->hourEntry = hour_entry;
+        g_signal_connect(date_entry, "activate", G_CALLBACK(modifyFirstSessionHours), fSHS);
+        g_signal_connect(hour_entry, "activate", G_CALLBACK(modifyFirstSessionHours), fSHS);
+
         /* SET VISUAL ATTRIBUTES */
         gtk_grid_set_row_spacing(GTK_GRID(grid), 15);
         gtk_container_set_border_width(GTK_CONTAINER(frame), 5);
@@ -1206,6 +1213,16 @@ void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStr
     gtk_widget_destroy(firstSessionStruct->window);
     createNewSession(firstSessionStruct->folderID);
     setWorkWindow(fullScreen, firstSessionStruct->patientID, firstSessionStruct->folderID);
+}
+
+void modifyFirstSessionHours(GtkWidget *entry, firstSessionHoursStruct *fSHS){
+
+    fSHS->session->nextSessionDate.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(fSHS->dateEntry)))->day;
+    fSHS->session->nextSessionDate.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(fSHS->dateEntry)))->month;
+    fSHS->session->nextSessionDate.year = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(fSHS->dateEntry)))->year;
+
+    strcpy(fSHS->session->nextSessionHour, (char*) gtk_entry_get_text(GTK_ENTRY(fSHS->hourEntry)));
+    modifySession(fSHS->session);
 }
 
 /* HELPERS */
