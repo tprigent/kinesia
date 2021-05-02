@@ -5,9 +5,11 @@
 
 #include "BDD_to_struct_session.h"
 #include "../model/session_manager.h"
+#include "display_helpers.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*!
  * \brief This function makes an SQL request, returns a Session struct from the sesison's id.
@@ -200,6 +202,65 @@ int getNbSession(int idFolder) {
     }
 
     sqlite3_finalize(stmt);
+
+    //Fermeture de la bdd
+    sqlite3_close(db);
+    return rc;
+}
+
+int getSessionsAtDate(Date *date, int *sessionID, int *folderID){
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+    sqlite3_stmt *stmt;
+
+    //Ouverture de la bdd
+    rc = sqlite3_open(DB_PATH, &db);
+
+    //Test de l'ouverture
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return 0;
+    } else {
+        fprintf(stderr,"Opened database successfully\n");
+    }
+
+    //Creation de la requête
+    sql = "SELECT idSeance,idDossier FROM seance WHERE DateSeanceSuiv_year=? AND DateSeanceSuiv_month=? AND DateSeanceSuiv_day=?";
+
+    //Préparation de la requête
+    rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "Prepare error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+
+    char *dateYear = (char *) malloc(sizeof(char)*5);
+    char *dateMonth = (char *) malloc(sizeof(char)*3);
+    char *dateDay = (char *) malloc(sizeof(char)*3);
+    tostring(dateYear, date->year);
+    tostring(dateMonth, date->month);
+    tostring(dateDay, date->day);
+
+    sqlite3_bind_text(stmt,1,dateYear,(int)strlen(dateYear),NULL);
+    sqlite3_bind_text(stmt,2,dateMonth,(int)strlen(dateMonth),NULL);
+    sqlite3_bind_text(stmt,3,dateDay,(int)strlen(dateDay),NULL);
+
+    //Execution de la requête
+    rc=0;
+    while(sqlite3_step(stmt) == SQLITE_ROW) {
+        sessionID[rc] = sqlite3_column_int(stmt,0);
+        folderID[rc] = sqlite3_column_int(stmt, 1);
+        rc++;
+    }
+
+    sqlite3_finalize(stmt);
+
+    free(dateYear);
+    free(dateMonth);
+    free(dateDay);
 
     //Fermeture de la bdd
     sqlite3_close(db);
