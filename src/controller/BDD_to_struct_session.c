@@ -97,7 +97,7 @@ int * getSessionId(int idFolder){
     }
 
     //Creation de la requête
-    sql = "SELECT idSeance FROM seance WHERE idDossier=?";
+    sql = "SELECT idSeance FROM seance WHERE idDossier=? AND isRealSession=1";
 
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     if( rc != SQLITE_OK ){
@@ -181,7 +181,7 @@ int getNbSession(int idFolder) {
     }
 
     //Creation de la requête
-    sql = "SELECT * FROM seance where idDossier=?";
+    sql = "SELECT * FROM seance where idDossier=? AND isRealSession=1";
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
