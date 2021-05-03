@@ -274,7 +274,7 @@ int getSessionsAtDate(Date *date, int *sessionID, int *folderID){
     }
 
     //Creation de la requête
-    sql = "SELECT idSeance,idDossier FROM seance WHERE DateSeanceSuiv_year=? AND DateSeanceSuiv_month=? AND DateSeanceSuiv_day=?";
+    sql = "SELECT idSeance,idDossier FROM seance WHERE DateSeanceSuiv_year=? AND DateSeanceSuiv_month=? AND DateSeanceSuiv_day=? ORDER BY nextSessionHour ASC";
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
