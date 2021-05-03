@@ -107,6 +107,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
     GtkWidget *box_active_patient = NULL;
     GtkWidget *box_archived_patient = NULL;
+    GtkWidget *box_meetings = NULL;
 
     GtkWidget *button_parameters = NULL;
     GtkWidget *calendar = NULL;
@@ -155,7 +156,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     gtk_grid_set_row_spacing(GTK_GRID(grid_calendar), 5);
 
     // Parameters button
-    gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 6, 1);
+    gtk_grid_attach(GTK_GRID(grid_calendar), button_parameters, GTK_ALIGN_END, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(button_parameters, FALSE);
     gtk_widget_set_halign(button_parameters, GTK_ALIGN_END);
     gtk_widget_set_tooltip_text(button_parameters, "Réglages");
@@ -165,62 +166,26 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     g_signal_connect(GTK_BUTTON(button_parameters), "clicked", G_CALLBACK(launchSettingsEditor), settings);
 
     // Calendar
-    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 6, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_calendar), calendar, button_parameters, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_hexpand(calendar, TRUE);
 
     // Upcoming meetings
     gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_title, calendar, GTK_POS_BOTTOM, 1, 1);
     gtk_widget_set_margin_top(upcoming_title, 10);
 
+    CalendarView *params = (CalendarView*) malloc(sizeof(CalendarView));
+    params->vbox = box_meetings;
+    params->title = upcoming_title;
+    params->window = window;
+    params->grid = grid_calendar;
 
-    int *sessionAtDateID = (int *) malloc(sizeof(int));
-    int *folderAtDateID = (int *) malloc(sizeof(int));
-    int nbSessionsAtDate = getSessionsAtDate(parseDate(get_current_date()), sessionAtDateID, folderAtDateID);
+    // For first launch: d-day
+    params->atLoad = 1;
+    seeAppointmentsAtDate(GTK_CALENDAR(calendar), params);
 
-    if(nbSessionsAtDate > 0){
-        GtkWidget *upcoming_patient[nbSessionsAtDate];
-        GtkWidget *upcoming_meeting[nbSessionsAtDate];
-        GtkWidget *upcoming_button[nbSessionsAtDate];
-
-        int k;
-        for(k = 0; k<nbSessionsAtDate; k++){
-            int patientID = getPatientIDFromFolder(folderAtDateID[k]);
-            char *patientName = getNameFirstnamePatient(patientID);
-            char *hour = getSession(sessionAtDateID[k])->nextSessionHour;
-            upcoming_patient[k] = gtk_label_new(patientName);
-            upcoming_meeting[k] = gtk_label_new(hour);
-            upcoming_button[k] = gtk_button_new_from_icon_name("mail-replied-symbolic", GTK_ICON_SIZE_MENU);
-
-            if(k == 0){
-                gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_patient[k], upcoming_title, GTK_POS_BOTTOM, 2, 1);
-            } else {
-                gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_patient[k], upcoming_patient[k-1], GTK_POS_BOTTOM, 2, 1);
-            }
-            gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_meeting[k], upcoming_patient[k], GTK_POS_RIGHT, 2, 1);
-            gtk_grid_attach_next_to(GTK_GRID(grid_calendar), upcoming_button[k], upcoming_meeting[k], GTK_POS_RIGHT, 2, 1);
-            gtk_widget_set_hexpand(upcoming_patient[k], TRUE);
-            gtk_widget_set_margin_start(upcoming_patient[k], 18);
-            gtk_widget_set_halign(upcoming_patient[k], GTK_ALIGN_START);
-            gtk_widget_set_hexpand(upcoming_meeting[k], TRUE);
-            gtk_widget_set_halign(upcoming_meeting[k], GTK_ALIGN_START);
-            gtk_widget_set_hexpand(upcoming_button[k], TRUE);
-
-            Window_id *work_param[nbSessionsAtDate];
-            work_param[k] = (Window_id*) malloc(sizeof(Window_id));
-            work_param[k]->window = window;
-            work_param[k]->patientID = patientID;
-            work_param[k]->folderID = folderAtDateID[k];
-            g_signal_connect(GTK_BUTTON(upcoming_button[k]), "clicked", G_CALLBACK(launchWorkView), work_param[k]);
-        }
-    } else {
-        GtkWidget *noAppointmentToday = NULL;
-        noAppointmentToday = gtk_label_new("<i>Rien de programmé</i>");
-        gtk_label_set_use_markup(GTK_LABEL(noAppointmentToday), TRUE);
-        gtk_grid_attach_next_to(GTK_GRID(grid_calendar), noAppointmentToday, upcoming_title, GTK_POS_BOTTOM, 6, 1);
-        gtk_widget_set_margin_top(noAppointmentToday, 15);
-        gtk_widget_set_halign(noAppointmentToday, GTK_ALIGN_CENTER);
-        gtk_widget_set_hexpand(noAppointmentToday, FALSE);
-    }
+    // For user choice: x-day
+    params->atLoad = 0;
+    g_signal_connect(GTK_CALENDAR(calendar), "day-selected", G_CALLBACK(seeAppointmentsAtDate), params);
 
 
     /* Search a patient */
@@ -535,4 +500,94 @@ void processSearch(GtkWidget *button, SearchParam *search){
 
     free(searchResult);
     free(idResult);
+}
+
+/*!
+ * \brief Display appointments scheduled for the selected day
+ *
+ * \param[in] calendar Calendar mastering the view
+ * \param[in] params Structure of parameters needed
+*/
+void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
+    Date *date = (Date *) malloc(sizeof(Date));
+    unsigned int year, month, day;
+
+    if(params->atLoad){
+        date = parseDate(get_current_date());
+    } else {
+        gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+        date->year = (int) year;
+        date->month = (int) month + 1;
+        date->day = (int) day;
+    }
+
+    /* Remove old items */
+    gtk_grid_remove_row(GTK_GRID(params->grid), 4);
+    params->vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    gtk_grid_attach_next_to(GTK_GRID(params->grid), params->vbox, params->title, GTK_POS_BOTTOM, 1, 1);
+
+    /* Add new items */
+    int *sessionAtDateID = (int *) malloc(sizeof(int));
+    int *folderAtDateID = (int *) malloc(sizeof(int));
+    int nbSessionsAtDate = getSessionsAtDate(date, sessionAtDateID, folderAtDateID);
+
+    int k;
+    if(nbSessionsAtDate > 0){
+        GtkWidget *upcoming_patient[nbSessionsAtDate];
+        GtkWidget *upcoming_meeting[nbSessionsAtDate];
+        GtkWidget *upcoming_button[nbSessionsAtDate];
+        GtkWidget *meeting_box[nbSessionsAtDate];
+        GtkWidget *meeting_grid[nbSessionsAtDate];
+
+        for(k = 0; k<nbSessionsAtDate; k++){
+
+            /* Define elements */
+            int patientID = getPatientIDFromFolder(folderAtDateID[k]);
+            char *patientName = getNameFirstnamePatient(patientID);
+            char *hour = getSession(sessionAtDateID[k])->nextSessionHour;
+            upcoming_patient[k] = gtk_label_new(patientName);
+            upcoming_meeting[k] = gtk_label_new(hour);
+            upcoming_button[k] = gtk_button_new_from_icon_name("mail-replied-symbolic", GTK_ICON_SIZE_MENU);
+            meeting_box[k] = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+            meeting_grid[k] = gtk_grid_new();
+            gtk_widget_set_tooltip_text(upcoming_button[k], "Accéder au dossier");
+
+            /* Fill the view */
+            gtk_box_pack_start(GTK_BOX(meeting_box[k]), meeting_grid[k], TRUE, TRUE, 0);
+            gtk_grid_attach(GTK_GRID(meeting_grid[k]), upcoming_patient[k], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+            gtk_grid_attach_next_to(GTK_GRID(meeting_grid[k]), upcoming_meeting[k], upcoming_patient[k], GTK_POS_RIGHT, 1, 1);
+            gtk_grid_attach_next_to(GTK_GRID(meeting_grid[k]), upcoming_button[k], upcoming_meeting[k], GTK_POS_RIGHT, 1, 1);
+
+            gtk_grid_set_column_spacing(GTK_GRID(meeting_grid[k]), 10);
+            gtk_widget_set_hexpand(upcoming_patient[k], TRUE);
+            gtk_widget_set_margin_start(upcoming_patient[k], 18);
+            gtk_widget_set_halign(upcoming_patient[k], GTK_ALIGN_START);
+            gtk_widget_set_hexpand(upcoming_meeting[k], FALSE);
+            gtk_widget_set_halign(upcoming_meeting[k], GTK_ALIGN_END);
+            gtk_widget_set_hexpand(upcoming_button[k], FALSE);
+            gtk_widget_set_halign(upcoming_button[k], GTK_ALIGN_END);
+
+            gtk_box_pack_start(GTK_BOX(params->vbox), meeting_box[k], TRUE, TRUE, 0);
+
+            /* Manage the quick access button */
+            Window_id *work_param[nbSessionsAtDate];
+            work_param[k] = (Window_id*) malloc(sizeof(Window_id));
+            work_param[k]->window = params->window;
+            work_param[k]->patientID = patientID;
+            work_param[k]->folderID = folderAtDateID[k];
+            g_signal_connect(GTK_BUTTON(upcoming_button[k]), "clicked", G_CALLBACK(launchWorkView), work_param[k]);
+        }
+    } else {        // if noting is scheduled for this day
+        GtkWidget *noAppointmentToday = NULL;
+        noAppointmentToday = gtk_label_new("<i>Rien de programmé</i>");
+        gtk_label_set_use_markup(GTK_LABEL(noAppointmentToday), TRUE);
+        gtk_box_pack_start(GTK_BOX(params->vbox), noAppointmentToday, TRUE, TRUE, 0);
+        //gtk_grid_attach_next_to(GTK_GRID(params->grid), noAppointmentToday, params->title, GTK_POS_BOTTOM, 6, 1);
+        gtk_widget_set_margin_top(noAppointmentToday, 15);
+        gtk_widget_set_halign(noAppointmentToday, GTK_ALIGN_CENTER);
+        gtk_widget_set_hexpand(noAppointmentToday, FALSE);
+    }
+
+    gtk_widget_show_all(params->grid);
+    free(date);
 }
