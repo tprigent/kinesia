@@ -501,7 +501,12 @@ void processSearch(GtkWidget *button, SearchParam *search){
     free(idResult);
 }
 
-
+/*!
+ * \brief Display appointments scheduled for the selected day
+ *
+ * \param[in] calendar Calendar mastering the view
+ * \param[in] params Structure of parameters needed
+*/
 void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
     Date *date = (Date *) malloc(sizeof(Date));
     unsigned int year, month, day;
