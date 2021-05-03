@@ -255,6 +255,16 @@ int getNbSession(int idFolder) {
     return rc;
 }
 
+/*!
+ * \brief Get the list of the sessions for a given date, sorted by hour
+ * SQL request function
+ *
+ * \param[in] date Day concerned
+ * \param[in] sessionID Empty array of int in which the sessionID found will be stored
+ * \param[in] folderID Empty array of int in which the corresponding folderID will be stored
+ *
+ * \param[out] Number of sessions found for this day
+*/
 int getSessionsAtDate(Date *date, int *sessionID, int *folderID){
     sqlite3 *db;
     char *zErrMsg = 0;
