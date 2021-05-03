@@ -537,6 +537,7 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
         GtkWidget *upcoming_meeting[nbSessionsAtDate];
         GtkWidget *upcoming_button[nbSessionsAtDate];
         GtkWidget *meeting_box[nbSessionsAtDate];
+        GtkWidget *meeting_grid[nbSessionsAtDate];
 
         for(k = 0; k<nbSessionsAtDate; k++){
             int patientID = getPatientIDFromFolder(folderAtDateID[k]);
@@ -546,24 +547,22 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
             upcoming_meeting[k] = gtk_label_new(hour);
             upcoming_button[k] = gtk_button_new_from_icon_name("mail-replied-symbolic", GTK_ICON_SIZE_MENU);
             meeting_box[k] = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+            meeting_grid[k] = gtk_grid_new();
             gtk_widget_set_tooltip_text(upcoming_button[k], "Accéder au dossier");
 
-            /*if(k == 0){
-                gtk_grid_attach_next_to(GTK_GRID(params->grid), upcoming_patient[k], params->title, GTK_POS_BOTTOM, 2, 1);
-            } else {
-                gtk_grid_attach_next_to(GTK_GRID(params->grid), upcoming_patient[k], upcoming_patient[k-1], GTK_POS_BOTTOM, 2, 1);
-            }
-            gtk_grid_attach_next_to(GTK_GRID(params->grid), upcoming_meeting[k], upcoming_patient[k], GTK_POS_RIGHT, 2, 1);
-            gtk_grid_attach_next_to(GTK_GRID(params->grid), upcoming_button[k], upcoming_meeting[k], GTK_POS_RIGHT, 2, 1);*/
-            gtk_box_pack_start(GTK_BOX(meeting_box[k]), upcoming_patient[k], TRUE, TRUE, 0);
-            gtk_box_pack_start(GTK_BOX(meeting_box[k]), upcoming_meeting[k], FALSE, FALSE, 0);
-            gtk_box_pack_end(GTK_BOX(meeting_box[k]), upcoming_button[k], TRUE, FALSE, 0);
+            gtk_box_pack_start(GTK_BOX(meeting_box[k]), meeting_grid[k], TRUE, TRUE, 0);
+            gtk_grid_attach(GTK_GRID(meeting_grid[k]), upcoming_patient[k], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
+            gtk_grid_attach_next_to(GTK_GRID(meeting_grid[k]), upcoming_meeting[k], upcoming_patient[k], GTK_POS_RIGHT, 1, 1);
+            gtk_grid_attach_next_to(GTK_GRID(meeting_grid[k]), upcoming_button[k], upcoming_meeting[k], GTK_POS_RIGHT, 1, 1);
+
+            gtk_grid_set_column_spacing(GTK_GRID(meeting_grid[k]), 10);
             gtk_widget_set_hexpand(upcoming_patient[k], TRUE);
             gtk_widget_set_margin_start(upcoming_patient[k], 18);
             gtk_widget_set_halign(upcoming_patient[k], GTK_ALIGN_START);
-            gtk_widget_set_hexpand(upcoming_meeting[k], TRUE);
-            gtk_widget_set_halign(upcoming_meeting[k], GTK_ALIGN_START);
-            gtk_widget_set_hexpand(upcoming_button[k], TRUE);
+            gtk_widget_set_hexpand(upcoming_meeting[k], FALSE);
+            gtk_widget_set_halign(upcoming_meeting[k], GTK_ALIGN_END);
+            gtk_widget_set_hexpand(upcoming_button[k], FALSE);
+            gtk_widget_set_halign(upcoming_button[k], GTK_ALIGN_END);
 
             gtk_box_pack_start(GTK_BOX(params->vbox), meeting_box[k], TRUE, TRUE, 0);
 
