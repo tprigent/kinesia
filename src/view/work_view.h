@@ -15,6 +15,7 @@ typedef struct {
     Session *session;
     GtkWidget *dateEntry;
     GtkWidget *hourEntry;
+    GtkWidget *stateLabel;
 }firstSessionHoursStruct;
 
 /**
@@ -65,6 +66,7 @@ void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStr
 void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct);
 void launchDeleteWarning(GtkWidget *button, char *title);
 void modifyFirstSessionHours(GtkWidget *entry, firstSessionHoursStruct *fSHS);
+void manageStateLabel(GtkWidget *widget, GtkWidget *label);
 
 void setStartMargin(GtkWidget *widget);
 void setTopMargin(GtkWidget *widget);
