@@ -544,6 +544,7 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
             upcoming_patient[k] = gtk_label_new(patientName);
             upcoming_meeting[k] = gtk_label_new(hour);
             upcoming_button[k] = gtk_button_new_from_icon_name("mail-replied-symbolic", GTK_ICON_SIZE_MENU);
+            gtk_widget_set_tooltip_text(upcoming_button[k], "Accéder au dossier");
 
             if(k == 0){
                 gtk_grid_attach_next_to(GTK_GRID(params->grid), upcoming_patient[k], params->title, GTK_POS_BOTTOM, 2, 1);
