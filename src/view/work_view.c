@@ -939,6 +939,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         mediaChooser[session_cursor]->folderID = folderID;
         mediaChooser[session_cursor]->mediaType = 1;
         mediaChooser[session_cursor]->counterLabel = attachmentCounterLabel;
+        mediaChooser[session_cursor]->isNewPatient = 0;
         g_signal_connect(GTK_BUTTON(session_attach_button[session_cursor]), "clicked", G_CALLBACK(launchFileChooser), mediaChooser[session_cursor]);
 
         /* Manage to display the delete session button */
@@ -1162,6 +1163,7 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
     mediaChooser->folderID = newSessionStruct->folderID;
     mediaChooser->mediaType = 1;
     mediaChooser->counterLabel = newSessionStruct->attachmentLabel;
+    mediaChooser->isNewPatient = 0;
     g_signal_connect(GTK_BUTTON(session_attach_button), "clicked", G_CALLBACK(launchFileChooser), mediaChooser);
 
 

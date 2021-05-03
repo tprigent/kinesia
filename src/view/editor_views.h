@@ -62,6 +62,7 @@ typedef struct {
     int patientID;                /**< Patient concerned */
     int folderID;                 /**< Identifier of the concerned Folder */
     int mediaType;                /**< Type of media to be stored in the software: 0 = "profile" 1 = other */
+    int isNewPatient;             /**< Boolean to know if the patient is new: 0 = existing, 1 = new */
     GtkWidget *counterLabel;      /**< Label containing the number of files */
 }MediaType;
 

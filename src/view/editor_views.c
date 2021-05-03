@@ -319,6 +319,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     photoChooser->patientID = (int) patient->id;
     photoChooser->mediaType = 0;
+    photoChooser->isNewPatient = !origin;
 
     // entry parameters
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
@@ -679,7 +680,11 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
         printf("%s\n", filename);
         if(mediaChooser->mediaType == 0){
-            copyToMedia(filename, mediaChooser->patientID , mediaChooser->folderID, "profil");
+            if(mediaChooser->isNewPatient){
+                copyToMedia(filename, getFuturePatientId() , mediaChooser->folderID, "profil");
+            } else {
+                copyToMedia(filename, mediaChooser->patientID , mediaChooser->folderID, "profil");
+            }
         } else {
             copyToMedia(filename, mediaChooser->patientID , mediaChooser->folderID, basename(filename));
             gtk_label_set_text(GTK_LABEL(mediaChooser->counterLabel), get_indicator_files_UI(mediaChooser->patientID, mediaChooser->folderID));
