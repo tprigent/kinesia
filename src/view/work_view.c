@@ -672,7 +672,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
     }
 
     int nb_session = getNbSession(folderID);
-    if(nb_session ==0){
+    if(nb_session == 0){
         GtkWidget *label = gtk_label_new("Créer une première séance pour ce dossier :");
         GtkWidget *frame = gtk_frame_new("Séances");
         GtkWidget *grid = gtk_grid_new();
@@ -694,7 +694,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         Session *session0 = getSession0(folderID);
         GtkWidget *meeting_label1 = gtk_label_new("Le premier rendez-vous est programmé le ");
         GtkWidget *meeting_label2 = gtk_label_new(" à ");
-        GtkWidget *state_label = gtk_label_new("(enregistré)");
+        GtkWidget *state_label = gtk_label_new("");
         GtkWidget *date_entry = gtk_entry_new();
         GtkWidget *hour_entry = gtk_entry_new();
         char *date = get_date_UI(&session0->nextSessionDate);
@@ -709,6 +709,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
         firstSessionHoursStruct *fSHS = (firstSessionHoursStruct*) malloc(sizeof(firstSessionHoursStruct));
         fSHS->session = session0;
+        fSHS->stateLabel = state_label;
         fSHS->dateEntry = date_entry;
         fSHS->hourEntry = hour_entry;
         g_signal_connect(date_entry, "move-cursor", G_CALLBACK(manageStateLabel), state_label);
