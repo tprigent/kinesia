@@ -540,6 +540,8 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
         GtkWidget *meeting_grid[nbSessionsAtDate];
 
         for(k = 0; k<nbSessionsAtDate; k++){
+
+            /* Define elements */
             int patientID = getPatientIDFromFolder(folderAtDateID[k]);
             char *patientName = getNameFirstnamePatient(patientID);
             char *hour = getSession(sessionAtDateID[k])->nextSessionHour;
@@ -550,6 +552,7 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
             meeting_grid[k] = gtk_grid_new();
             gtk_widget_set_tooltip_text(upcoming_button[k], "Accéder au dossier");
 
+            /* Fill the view */
             gtk_box_pack_start(GTK_BOX(meeting_box[k]), meeting_grid[k], TRUE, TRUE, 0);
             gtk_grid_attach(GTK_GRID(meeting_grid[k]), upcoming_patient[k], GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
             gtk_grid_attach_next_to(GTK_GRID(meeting_grid[k]), upcoming_meeting[k], upcoming_patient[k], GTK_POS_RIGHT, 1, 1);
@@ -566,6 +569,7 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
 
             gtk_box_pack_start(GTK_BOX(params->vbox), meeting_box[k], TRUE, TRUE, 0);
 
+            /* Manage the quick access button */
             Window_id *work_param[nbSessionsAtDate];
             work_param[k] = (Window_id*) malloc(sizeof(Window_id));
             work_param[k]->window = params->window;
