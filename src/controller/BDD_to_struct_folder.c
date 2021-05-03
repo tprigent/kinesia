@@ -229,7 +229,13 @@ int* getIdFolder(int idPatient){
 
 }
 
-
+/*!
+ * \brief Get the Patient corresponding to a specific Folder
+ * SQL request function
+ *
+ * \param[in] folderID Identifier of the Folder concerned
+ * \param[out] Identifier of the Patient
+*/
 int getPatientIDFromFolder(int folderID){
     sqlite3 *db;
     char *zErrMsg = 0;
