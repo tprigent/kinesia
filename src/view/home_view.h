@@ -33,11 +33,17 @@ typedef struct {
     GtkWidget *window;      /**< Parent window to be refreshed */
 }SearchParam;
 
+/**
+ * \brief Structure for appointments
+ *
+ * This structure is used to pass many arguments in a callback function which has only
+ * one argument.
+*/
 typedef struct {
-    GtkWidget *grid;
-    GtkWidget *title;
-    GtkWidget *window;
-    int atLoad;
+    GtkWidget *grid;        /**< Calendar grid (left part of the view) which is going to be updated */
+    GtkWidget *title;       /**< Title to which the next elements will be attached */
+    GtkWidget *window;      /**< Current window to allow child window to close it */
+    int atLoad;             /**< Boolean parameter to determine which is the selected date: 1 = current, 0 = custom */
 }CalendarView;
 
 GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
