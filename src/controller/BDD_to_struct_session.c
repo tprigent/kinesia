@@ -255,6 +255,16 @@ int getNbSession(int idFolder) {
     return rc;
 }
 
+/*!
+ * \brief Get the list of the sessions for a given date, sorted by hour
+ * SQL request function
+ *
+ * \param[in] date Day concerned
+ * \param[in] sessionID Empty array of int in which the sessionID found will be stored
+ * \param[in] folderID Empty array of int in which the corresponding folderID will be stored
+ *
+ * \param[out] Number of sessions found for this day
+*/
 int getSessionsAtDate(Date *date, int *sessionID, int *folderID){
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -274,7 +284,7 @@ int getSessionsAtDate(Date *date, int *sessionID, int *folderID){
     }
 
     //Creation de la requête
-    sql = "SELECT idSeance,idDossier FROM seance WHERE DateSeanceSuiv_year=? AND DateSeanceSuiv_month=? AND DateSeanceSuiv_day=?";
+    sql = "SELECT idSeance,idDossier FROM seance WHERE DateSeanceSuiv_year=? AND DateSeanceSuiv_month=? AND DateSeanceSuiv_day=? ORDER BY nextSessionHour ASC";
 
     //Préparation de la requête
     rc = sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
