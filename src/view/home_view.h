@@ -40,9 +40,10 @@ typedef struct {
  * one argument.
 */
 typedef struct {
-    GtkWidget *grid;        /**< Calendar grid (left part of the view) which is going to be updated */
+    GtkWidget *vbox;        /**< Calendar grid (left part of the view) which is going to be updated */
     GtkWidget *title;       /**< Title to which the next elements will be attached */
     GtkWidget *window;      /**< Current window to allow child window to close it */
+    GtkWidget *grid;
     int atLoad;             /**< Boolean parameter to determine which is the selected date: 1 = current, 0 = custom */
 }CalendarView;
 
