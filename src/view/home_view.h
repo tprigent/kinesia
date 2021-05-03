@@ -33,11 +33,19 @@ typedef struct {
     GtkWidget *window;      /**< Parent window to be refreshed */
 }SearchParam;
 
+typedef struct {
+    GtkWidget *grid;
+    GtkWidget *title;
+    GtkWidget *window;
+    int atLoad;
+}CalendarView;
+
 GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
 void setHomeEnvironment(GtkWidget *window, int cssMode);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 
 Session *createEmptySession(int idFolder);
 void processSearch(GtkWidget *button, SearchParam *search);
+void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params);
 
 #endif //LOGICIEL_KINE_PATIENT_VIEW_H
