@@ -377,45 +377,6 @@ void launchHomeView(GtkWidget *but, GtkWidget *window){
 }
 
 /*!
- * \brief Create and allocate an empty session
- *
- * When a new session is created, this function allocates it
- * and fills it with the current date
- *
- * \param[in] idFolder : folder id to which the session has to be linked
- * \param[out] session : Empty session allocated
-*/
-Session *createEmptySession(int idFolder){
-    Session *newSession = (Session*) malloc(sizeof(Session));
-    newSession->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
-    char *new_session_name = get_new_session_name();
-    strcpy(newSession->sessionName, new_session_name);
-    free_info_UI(new_session_name);
-    newSession->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
-    strcpy(newSession->observations, "Remarques");
-
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    newSession->sessionDate.day = tm.tm_mday;
-    newSession->sessionDate.month = tm.tm_mon + 1;
-    newSession->sessionDate.year = tm.tm_year + 1900;
-
-    newSession->nextSessionDate.day = tm.tm_mday;
-    newSession->nextSessionDate.month = tm.tm_mon + 1;
-    newSession->nextSessionDate.year = tm.tm_year + 1900;
-
-    newSession->nextSessionHour = (char*) malloc(LG_MAX_INFO*sizeof(char));
-    strcpy(newSession->nextSessionHour, "12:00");
-
-    newSession->isRealSession = 1;
-
-    newSession->idSession = 0;
-    newSession->idFolder = idFolder;
-
-    return newSession;
-}
-
-/*!
  * \brief show on screen the result of the patient research
  *
  * This function add a page in the notebook with the result of the research

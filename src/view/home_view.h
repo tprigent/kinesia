@@ -51,7 +51,6 @@ GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
 void setHomeEnvironment(GtkWidget *window, int cssMode);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 
-Session *createEmptySession(int idFolder);
 void processSearch(GtkWidget *button, SearchParam *search);
 void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params);
 
