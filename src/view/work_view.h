@@ -15,6 +15,7 @@ typedef struct {
     Session *session;
     GtkWidget *dateEntry;
     GtkWidget *hourEntry;
+    GtkWidget *stateLabel;
 }firstSessionHoursStruct;
 
 /**
