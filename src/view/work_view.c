@@ -697,6 +697,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         GtkWidget *state_label = gtk_label_new("");
         GtkWidget *date_entry = gtk_entry_new();
         GtkWidget *hour_entry = gtk_entry_new();
+        GtkWidget *save_button = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
         char *date = get_date_UI(&session0->nextSessionDate);
         gtk_entry_set_text(GTK_ENTRY(date_entry), date);
         free_info_UI(date);
@@ -706,16 +707,16 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_grid_attach_next_to(GTK_GRID(grid), meeting_label2, date_entry, GTK_POS_RIGHT, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(grid), hour_entry, meeting_label2, GTK_POS_RIGHT, 1, 1);
         gtk_grid_attach_next_to(GTK_GRID(grid), state_label, hour_entry, GTK_POS_RIGHT, 1, 1);
+        gtk_grid_attach_next_to(GTK_GRID(grid), save_button, state_label, GTK_POS_RIGHT, 10, 1);
 
         firstSessionHoursStruct *fSHS = (firstSessionHoursStruct*) malloc(sizeof(firstSessionHoursStruct));
         fSHS->session = session0;
         fSHS->stateLabel = state_label;
         fSHS->dateEntry = date_entry;
         fSHS->hourEntry = hour_entry;
-        g_signal_connect(date_entry, "move-cursor", G_CALLBACK(manageStateLabel), state_label);
-        g_signal_connect(hour_entry, "move-cursor", G_CALLBACK(manageStateLabel), state_label);
         g_signal_connect(date_entry, "activate", G_CALLBACK(modifyFirstSessionHours), fSHS);
         g_signal_connect(hour_entry, "activate", G_CALLBACK(modifyFirstSessionHours), fSHS);
+        g_signal_connect(save_button, "clicked", G_CALLBACK(modifyFirstSessionHours), fSHS);
 
         /* SET VISUAL ATTRIBUTES */
         gtk_grid_set_row_spacing(GTK_GRID(grid), 15);
@@ -731,10 +732,12 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_widget_set_halign(date_entry, GTK_ALIGN_START);
         gtk_widget_set_halign(meeting_label2, GTK_ALIGN_START);
         gtk_widget_set_halign(hour_entry, GTK_ALIGN_START);
+        gtk_widget_set_halign(save_button, GTK_ALIGN_END);
         gtk_widget_set_hexpand(meeting_label1, FALSE);
         gtk_widget_set_hexpand(date_entry, FALSE);
         gtk_widget_set_hexpand(meeting_label2, FALSE);
         gtk_widget_set_hexpand(hour_entry, FALSE);
+        gtk_widget_set_hexpand(save_button, FALSE);
 
         gtk_frame_set_label_align(GTK_FRAME(frame), (float) 0.5, (float) 0.5);
 
@@ -1255,7 +1258,7 @@ void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStr
 
 void modifyFirstSessionHours(GtkWidget *entry, firstSessionHoursStruct *fSHS){
 
-    gtk_label_set_label(GTK_LABEL(fSHS->stateLabel), "(enregistré)");
+    gtk_label_set_text(GTK_LABEL(fSHS->stateLabel), "(enregistré)");
 
     fSHS->session->nextSessionDate.day = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(fSHS->dateEntry)))->day;
     fSHS->session->nextSessionDate.month = parseDate((char*) gtk_entry_get_text(GTK_ENTRY(fSHS->dateEntry)))->month;
@@ -1265,12 +1268,6 @@ void modifyFirstSessionHours(GtkWidget *entry, firstSessionHoursStruct *fSHS){
     modifySession(fSHS->session);
 }
 
-void manageStateLabel(GtkWidget *widget, GtkWidget *label){
-    printf("\n ******* TEST1 ****** \n");
-    gtk_label_set_text(GTK_LABEL(label), "(non enregistré)");
-    //gtk_widget_show(label);
-    printf("\n ******* TEST2 ****** \n");
-}
 
 /* HELPERS */
 
