@@ -998,7 +998,8 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 
     /* Action on button */
-    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+    int response = gtk_dialog_run(GTK_DIALOG(dialog));
+    if (response == GTK_RESPONSE_ACCEPT){
         int j;
         for(j=0; j < nbOfAttachments; j++){
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
@@ -1018,7 +1019,7 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
                 free(command);
             }
         }
-    } else if(gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_DELETE_EVENT) {
+    } else if(response == GTK_RESPONSE_DELETE_EVENT) {
         int j;
         for(j=0; j<getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID); j++) {
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
