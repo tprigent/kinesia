@@ -194,12 +194,12 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
 
 
-    /* MANAGE THE GRID WHICH ORGANIZES THE LEFT SECTION */
+    /************ LEFT PART : PATIENT INFORMATION BOX  ************/
     gtk_grid_set_row_spacing(GTK_GRID(grid_left_section), 5);
     gtk_box_pack_start(GTK_BOX(patientBox), grid_left_section, TRUE, TRUE, 0);
 
 
-    /* ******************************* FIRST PART : BUTTON "REVENIR A LA LISTE PATIENT" ******************************* */
+    /* BUTTON "REVENIR A LA LISTE PATIENT" */
     gtk_grid_attach(GTK_GRID(grid_left_section), back_button, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
     gtk_widget_set_hexpand(back_button, FALSE);
     gtk_widget_set_vexpand(back_button, FALSE);
@@ -208,8 +208,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
 
 
-    /* ************************** SECOND PART : SECTION WHICH CONTAINS PATIENT INFORMATION **************************** */
-    /* Manage the frame global and its grid */
+    /* FRAME WHICH CONTAINS PATIENT INFORMATION */
     gtk_frame_set_label_align(GTK_FRAME(frame_info), (float)0.5, (float)0.5);
     gtk_grid_attach_next_to(GTK_GRID(grid_left_section), frame_info, back_button, GTK_POS_BOTTOM, 1, 3);
     gtk_widget_set_hexpand(frame_info, TRUE);
@@ -305,7 +304,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
 
 
-    /* ******************************* THIRD PART : SECTION WHICH CONTAINS THE FOLDERS ******************************** */
+    /* SECTION WHICH CONTAINS THE PATIENT FOLDERS */
 
     /* DECLARE VARIABLES */
     GtkWidget *folder_box = NULL;
@@ -414,169 +413,157 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
         return ;
     }
 
-
-    /* Create a grid which contains the different elements of the folder ************ */
-    GtkWidget *grid_part2 = NULL;
-    grid_part2 = gtk_grid_new();
-    gtk_box_pack_start(GTK_BOX(box), grid_part2, TRUE, TRUE, 0);
-    /* ****************************************************************************** */
-
-    /* Create a frame for the folder zone ******************************************* */
+    /* DECLARE VARIABLES */
     GtkWidget *frame_folder = NULL;
-    frame_folder = gtk_frame_new("Dossier");
-    gtk_frame_set_label_align(GTK_FRAME(frame_folder), (float)0.5, (float) 0.5);
-    gtk_grid_attach(GTK_GRID(grid_part2), frame_folder, GTK_ALIGN_START, GTK_ALIGN_START, 1, 1);
-    gtk_widget_set_hexpand(frame_folder, TRUE);
-    gtk_widget_set_vexpand(frame_folder, TRUE);
-    /* ****************************************************************************** */
 
-    /* Create a grid to display all the elements ************************************ */
     GtkWidget *grid_folder = NULL;
-    grid_folder = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(frame_folder), grid_folder);
-    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 0);
-    /* ****************************************************************************** */
 
-
-    /* Display the folder title ***************************************************** */
-    /* BOX */
     GtkWidget *hbox_folder = NULL;
-    hbox_folder = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_grid_attach(GTK_GRID(grid_folder), hbox_folder, GTK_ALIGN_CENTER, GTK_ALIGN_START, 3, 1);
+    GtkWidget *hbox_treatment = NULL;
+    GtkWidget *hbox_pathology = NULL;
+    GtkWidget *vbox_infos = NULL;
+    GtkWidget *vbox_infos_content = NULL;
+    GtkWidget *hbox_attachments = NULL;
+    GtkWidget *hbox_edit_folder = NULL;
 
-    /* CONSTRAINTS */
-    gtk_widget_set_hexpand(hbox_folder, TRUE);
-    gtk_widget_set_vexpand(hbox_folder, FALSE);
-    gtk_widget_set_halign(hbox_folder, GTK_ALIGN_CENTER);
-
-    /* MARGINS */
-    gtk_widget_set_margin_top(hbox_folder, 10);
-    gtk_widget_set_margin_bottom(hbox_folder, 40);
-
-    /* LABEL */
     GtkWidget *folder_title = NULL;
+    GtkWidget *folder_start_treatment = NULL;
+    GtkWidget *folder_date = NULL;
+    GtkWidget *folder_pathology = NULL;
+    GtkWidget *folder_pathology_name = NULL;
+    GtkWidget *folder_infos = NULL;
+    GtkWidget *folder_infos_content = NULL;
+    GtkWidget *attachments_label = NULL;
+    GtkWidget *attachments_count = NULL;
+
+    GtkWidget *attachments_button = NULL;
+    GtkWidget *new_button = NULL;
+    GtkWidget *edit_folder_button = NULL;
+    GtkWidget *delete_folder_button = NULL;
+
+    /* ASSIGN VARIABLES */
+    frame_folder = gtk_frame_new("Dossier");
+
+    grid_folder = gtk_grid_new();
+
+    hbox_folder = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    hbox_treatment = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    hbox_pathology = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    vbox_infos = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    vbox_infos_content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    hbox_attachments = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    hbox_edit_folder = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
     char *formatted_folder_title_UI = get_formatted_folder_title_UI(folder);
     folder_title = gtk_label_new(formatted_folder_title_UI);
     free_info_UI(formatted_folder_title_UI);
-    gtk_label_set_use_markup(GTK_LABEL(folder_title), TRUE);
-    gtk_widget_set_halign(folder_title, GTK_ALIGN_CENTER);
-    gtk_box_pack_start(GTK_BOX(hbox_folder), folder_title, FALSE, FALSE, 0);
-
-    /* ****************************************************************************** */
-
-    /* Display start of treatment *************************************************** */
-    /* BOX */
-    GtkWidget *hbox_treatment = NULL;
-    hbox_treatment = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_grid_attach_next_to(GTK_GRID(grid_folder), hbox_treatment, hbox_folder, GTK_POS_BOTTOM, 1, 1);
-
-    /* CONSTRAINTS */
-    gtk_widget_set_hexpand(hbox_treatment, TRUE);
-    gtk_widget_set_vexpand(hbox_treatment, FALSE);
-    gtk_widget_set_halign(hbox_treatment, GTK_ALIGN_START);
-
-    /* MARGIN */
-    setStartMargin(hbox_treatment);
-
-    /* LABEL */
-    GtkWidget *folder_start_treatment = NULL;
-    GtkWidget *folder_date = NULL;
     char *start_of_treatment = get_date_UI(&folder->startOfTreatment);
     folder_start_treatment = gtk_label_new("Début de traitement: ");
     folder_date = gtk_label_new(start_of_treatment);
     free_info_UI(start_of_treatment);
+    folder_pathology = gtk_label_new("Pathologie: ");
+    folder_pathology_name = gtk_label_new(folder->pathology);
+    folder_infos = gtk_label_new("<u>Autres informations</u> : ");
+    folder_infos_content = gtk_label_new(folder->details);
+    char *indicator = get_indicator_files_UI((int) patient->id, activeFolder);
+    attachments_label = gtk_label_new("Pièces jointes:    ");
+    attachments_count = gtk_label_new(indicator);
+    free_info_UI(indicator);
+
+    attachments_button = gtk_button_new_from_icon_name("folder-documents", GTK_ICON_SIZE_MENU);
+    new_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+    edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+    delete_folder_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+
+
+    /* FRAME WHICH HOLDS OTHER WIDGETS */
+    gtk_frame_set_label_align(GTK_FRAME(frame_folder), (float)0.5, (float) 0.5);
+    gtk_box_pack_start(GTK_BOX(box), frame_folder, TRUE, TRUE, 0);
+    gtk_widget_set_hexpand(frame_folder, TRUE);
+    gtk_widget_set_vexpand(frame_folder, TRUE);
+
+    /* GRID USED TO FILL THE FOLDER FRAME */
+    gtk_container_add(GTK_CONTAINER(frame_folder), grid_folder);
+    gtk_container_set_border_width(GTK_CONTAINER(grid_folder), 0);
+
+
+    /* FOLDER TITLE */
+    // Box
+    gtk_grid_attach(GTK_GRID(grid_folder), hbox_folder, GTK_ALIGN_CENTER, GTK_ALIGN_START, 3, 1);
+    gtk_widget_set_hexpand(hbox_folder, TRUE);
+    gtk_widget_set_vexpand(hbox_folder, FALSE);
+    gtk_widget_set_halign(hbox_folder, GTK_ALIGN_CENTER);
+    gtk_widget_set_margin_top(hbox_folder, 10);
+    gtk_widget_set_margin_bottom(hbox_folder, 40);
+
+    // Label
+    gtk_label_set_use_markup(GTK_LABEL(folder_title), TRUE);
+    gtk_widget_set_halign(folder_title, GTK_ALIGN_CENTER);
+    gtk_box_pack_start(GTK_BOX(hbox_folder), folder_title, FALSE, FALSE, 0);
+
+    /* START OF TREATMENT */
+    // Box
+    gtk_grid_attach_next_to(GTK_GRID(grid_folder), hbox_treatment, hbox_folder, GTK_POS_BOTTOM, 1, 1);
+    gtk_widget_set_hexpand(hbox_treatment, TRUE);
+    gtk_widget_set_vexpand(hbox_treatment, FALSE);
+    gtk_widget_set_halign(hbox_treatment, GTK_ALIGN_START);
+    setStartMargin(hbox_treatment);
+
+    // Label
     gtk_box_pack_start(GTK_BOX(hbox_treatment), folder_start_treatment, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_treatment), folder_date, FALSE, FALSE, 0);
 
-    /* ****************************************************************************** */
-
-    /* Display pathology ************************************************************ */
-    /* BOX */
-    GtkWidget *hbox_pathology = NULL;
-    hbox_pathology = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    /* PATHOLOGIE */
+    // Box
     gtk_grid_attach_next_to(GTK_GRID(grid_folder), hbox_pathology, hbox_treatment, GTK_POS_RIGHT, 1, 1);
-
-    /* CONSTRAINTS */
     gtk_widget_set_hexpand(hbox_pathology, TRUE);
     gtk_widget_set_vexpand(hbox_pathology, FALSE);
     gtk_widget_set_halign(hbox_pathology, GTK_ALIGN_START);
 
-    /* LABEL */
-    GtkWidget *folder_pathology = NULL;
-    GtkWidget *folder_pathology_name = NULL;
-    folder_pathology = gtk_label_new("Pathologie: ");
-    folder_pathology_name = gtk_label_new(folder->pathology);
+    // Label
     gtk_box_pack_start(GTK_BOX(hbox_pathology), folder_pathology, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_pathology), folder_pathology_name, FALSE, FALSE, 0);
 
-    /* ****************************************************************************** */
-
-    /* Display other infos ********************************************************** */
-    /* BOXES */
-    GtkWidget *vbox_infos = NULL;
-    GtkWidget *vbox_infos_content = NULL;
-    vbox_infos = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    vbox_infos_content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    /* OTHER INFORMATION */
+    // Boxes
     gtk_grid_attach_next_to(GTK_GRID(grid_folder), vbox_infos, hbox_treatment, GTK_POS_BOTTOM, 1, 1);
     gtk_grid_attach_next_to(GTK_GRID(grid_folder), vbox_infos_content, vbox_infos, GTK_POS_BOTTOM, 1, 1);
 
-    /* CONSTRAINTS */
     gtk_widget_set_hexpand(vbox_infos, FALSE);
     gtk_widget_set_vexpand(vbox_infos, FALSE);
     gtk_widget_set_halign(vbox_infos, GTK_ALIGN_START);
-
     gtk_widget_set_hexpand(vbox_infos_content, FALSE);
     gtk_widget_set_vexpand(vbox_infos_content, FALSE);
     gtk_widget_set_halign(vbox_infos_content, GTK_ALIGN_START);
-
-    /* MARGINS */
     gtk_widget_set_margin_top(vbox_infos, 20);
     gtk_widget_set_margin_top(vbox_infos_content, 5);
     setStartMargin(vbox_infos);
     setStartMargin(vbox_infos_content);
 
-    /* LABELS */
-    GtkWidget *folder_infos = NULL;
-    GtkWidget *folder_infos_content = NULL;
-    folder_infos = gtk_label_new("<u>Autres informations</u> : ");
+    // Labels
     gtk_label_set_use_markup(GTK_LABEL(folder_infos), TRUE);
-    folder_infos_content = gtk_label_new(folder->details);
     gtk_box_pack_start(GTK_BOX(vbox_infos), folder_infos, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox_infos_content), folder_infos_content, FALSE, FALSE, 0);
 
-    /* ****************************************************************************** */
 
-    /* See attachments ************************************************************** */
-    /* BOX */
-    GtkWidget *hbox_attachments = NULL;
-    hbox_attachments = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    /* ATTACHMENTS */
+    // Box
     gtk_grid_attach_next_to(GTK_GRID(grid_folder), hbox_attachments, hbox_pathology, GTK_POS_BOTTOM,1,2);
 
-    /* CONSTRAINTS */
     gtk_widget_set_hexpand(hbox_attachments, FALSE);
     gtk_widget_set_vexpand(hbox_attachments, FALSE);
     gtk_widget_set_halign(hbox_attachments, GTK_ALIGN_START);
-
-    /* MARGINS */
     gtk_widget_set_margin_top(hbox_attachments, 20);
 
-    /* LABEL */
-    GtkWidget *attachments_label = NULL;
-    GtkWidget *attachments_count = NULL;
-    char *indicator = get_indicator_files_UI((int) patient->id, activeFolder);
-    attachments_label = gtk_label_new("Pièces jointes:    ");
-    attachments_count = gtk_label_new(indicator);
-    free_info_UI(indicator);
+    // Label
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_label, FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(hbox_attachments), attachments_count, FALSE, FALSE, 0);
 
-    /* BUTTON */
-    GtkWidget *attachments_button = NULL;
-    attachments_button = gtk_button_new_from_icon_name("folder-documents", GTK_ICON_SIZE_MENU);
-    gtk_widget_set_hexpand(attachments_button, FALSE);
-    gtk_widget_set_vexpand(attachments_button, FALSE);
+    // Button
     gtk_box_pack_start(GTK_BOX(hbox_attachments), attachments_button, FALSE, FALSE, 0);
     gtk_widget_set_tooltip_text(attachments_button, "Pièces-jointes");
+    gtk_widget_set_hexpand(attachments_button, FALSE);
+    gtk_widget_set_vexpand(attachments_button, FALSE);
 
     MediaType *attachment_properties = (MediaType*) malloc(sizeof(Patient)+sizeof(char)*10+sizeof(int));
     attachment_properties->patientID = (int) patient->id;
@@ -584,49 +571,49 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     attachment_properties->mediaType = 1;
     attachment_properties->counterLabel = attachments_count;
     g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentListViewer), attachment_properties);
-    /* ****************************************************************************** */
 
-    /* Edit button ****************************************************************** */
-    /* BOX */
-    GtkWidget *hbox_edit_folder = NULL;
-    hbox_edit_folder = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
+    /* BOX WITH FOLDER EDITION BUTTONS */
     gtk_grid_attach_next_to(GTK_GRID(grid_folder), hbox_edit_folder, hbox_folder, GTK_POS_RIGHT, 1, 1);
 
-    /* CONSTRAINTS */
     gtk_widget_set_hexpand(hbox_edit_folder, FALSE);
     gtk_widget_set_vexpand(hbox_edit_folder, FALSE);
     gtk_widget_set_halign(hbox_edit_folder, GTK_ALIGN_END);
     gtk_widget_set_valign(hbox_edit_folder, GTK_ALIGN_END);
 
-    /* BUTTON */
-    GtkWidget *new_button = NULL;
-    new_button = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
+    /* NEW FOLDER BUTTON */
+    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), new_button, FALSE, FALSE, 0);
     gtk_widget_set_tooltip_text(new_button, "Créer un nouveau dossier");
+
+    gtk_widget_set_hexpand(new_button, FALSE);
+    gtk_widget_set_vexpand(new_button, FALSE);
+    gtk_widget_set_margin_end(new_button, 17);
 
     IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
     idPatient->idPatient = (int) patient->id;
     idPatient->window = window;
     g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
-    gtk_widget_set_hexpand(new_button, FALSE);
-    gtk_widget_set_vexpand(new_button, FALSE);
-    gtk_widget_set_margin_end(new_button, 17);
-    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), new_button, FALSE, FALSE, 0);
 
-    GtkWidget *edit_folder_button = NULL;
-    edit_folder_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
+
+    /* EDIT FOLDER BUTTON */
+    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
     gtk_widget_set_tooltip_text(edit_folder_button, "Modifier le dossier");
+    gtk_widget_set_hexpand(edit_folder_button, FALSE);
+    gtk_widget_set_vexpand(edit_folder_button, FALSE);
+
     FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
     foldEditStruct->folder = folder;
     foldEditStruct->edit_new = 1;
     foldEditStruct->window = window;
     g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
-    gtk_widget_set_hexpand(edit_folder_button, FALSE);
-    gtk_widget_set_vexpand(edit_folder_button, FALSE);
-    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), edit_folder_button, FALSE, FALSE, 0);
 
-    GtkWidget *delete_folder_button = NULL;
-    delete_folder_button = gtk_button_new_from_icon_name("edit-delete", GTK_ICON_SIZE_MENU);
+
+    /* DELETE FOLDER BUTTON */
+    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), delete_folder_button, FALSE, FALSE, 0);
     gtk_widget_set_tooltip_text(delete_folder_button, "Supprimer le dossier");
+    gtk_widget_set_hexpand(delete_folder_button, FALSE);
+    gtk_widget_set_vexpand(delete_folder_button, FALSE);
+
     DeleteElements *folderDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
     folderDelete->window = window;
     folderDelete->isFolder = 1;
@@ -635,13 +622,9 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     folderDelete->patientID = (int) patient->id;
     g_signal_connect(GTK_BUTTON(delete_folder_button), "clicked", G_CALLBACK(launchDeleteElement), folderDelete);
 
-    gtk_widget_set_hexpand(delete_folder_button, FALSE);
-    gtk_widget_set_vexpand(delete_folder_button, FALSE);
-    gtk_box_pack_start(GTK_BOX(hbox_edit_folder), delete_folder_button, FALSE, FALSE, 0);
-    /* ****************************************************************************** */
 
+    /* CALL FUNCTION WHICH FILLS SESSION PART */
     fillSessionBox(window, sessionBox, attachments_count, patient, activeFolder);
-
 
 }
 
@@ -741,7 +724,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
         gtk_frame_set_label_align(GTK_FRAME(frame), (float) 0.5, (float) 0.5);
 
-        //return ;
     }
 
     else {
@@ -806,8 +788,6 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             free_info_UI(session_date_char[session_cursor]);
             calendar_session_date_button[session_cursor] = gtk_button_new_from_icon_name("x-office-calendar",
                                                                                          GTK_ICON_SIZE_LARGE_TOOLBAR);
-
-
             session_next_meeting[session_cursor] = gtk_label_new("Prochain rendez-vous : ");
             entry_next_meeting[session_cursor] = gtk_entry_new();
             next_session_date_char[session_cursor] = get_date_UI(&session_list->current->session.nextSessionDate);
@@ -815,12 +795,10 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             free_info_UI(next_session_date_char[session_cursor]);
             calendar_next_meeting_button[session_cursor] = gtk_button_new_from_icon_name("x-office-calendar",
                                                                                          GTK_ICON_SIZE_LARGE_TOOLBAR);
-
             session_next_meeting_hour[session_cursor] = gtk_label_new("Heure : ");
             entry_next_meeting_hour[session_cursor] = gtk_entry_new();
             space[session_cursor] = gtk_label_new("");
-            gtk_entry_set_text(GTK_ENTRY(entry_next_meeting_hour[session_cursor]),
-                               session_list->current->session.nextSessionHour);
+            gtk_entry_set_text(GTK_ENTRY(entry_next_meeting_hour[session_cursor]), session_list->current->session.nextSessionHour);
 
             save_button[session_cursor] = gtk_button_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
             gtk_widget_set_tooltip_text(save_button[session_cursor], "Enregistrer");
@@ -828,8 +806,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             gtk_widget_set_tooltip_text(delete_button[session_cursor], "Supprimer la séance");
             new_session_button[session_cursor] = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
             gtk_widget_set_tooltip_text(new_session_button[session_cursor], "Nouvelle séance");
-            session_attach_button[session_cursor] = gtk_button_new_from_icon_name("mail-attachment",
-                                                                                  GTK_ICON_SIZE_MENU);
+            session_attach_button[session_cursor] = gtk_button_new_from_icon_name("mail-attachment",GTK_ICON_SIZE_MENU);
             gtk_widget_set_tooltip_text(session_attach_button[session_cursor], "Joindre un élément");
 
             text_session_note[session_cursor] = gtk_text_view_new();
@@ -848,19 +825,19 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             setOnNext(session_list);
         }
 
-        /* MANAGE GRID WHICH ORGANIZES THE SESSION SECTION */
+        /* GRID WHICH ORGANIZES THE SESSION SECTION */
         gtk_grid_set_row_spacing(GTK_GRID(grid_session_section), 0);
         gtk_container_add(GTK_CONTAINER(box), grid_session_section);
 
 
-        /* ******************************** FIRST PART : SECTION TO ADD A NEW SESSION ************************************ */
+        /* STRUCTURE USED TO CREATE A NEW SESSION */
         AddNewSessionStruct *newSessionStruct = (AddNewSessionStruct *) malloc(sizeof(AddNewSessionStruct));
         newSessionStruct->notebook = notebook;
         newSessionStruct->attachmentLabel = attachmentCounterLabel;
         newSessionStruct->folderID = folderID;
         newSessionStruct->patientID = (int) patient->id;
 
-        /* Manage to add a notebook */
+        /* NOTEBOOK TO DISPLAY THE DIFFERENT SESSIONS */
         gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
         gtk_widget_set_hexpand(notebook, TRUE);
         gtk_widget_set_vexpand(notebook, TRUE);

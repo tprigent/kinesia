@@ -146,8 +146,8 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     gtk_widget_set_hexpand(grid, TRUE);
     gtk_widget_set_vexpand(grid, TRUE);
 
-    /* FILL THE GRID */
-    /* Left part */
+
+    /************** LEFT PART : CALENDAR FRAME ****************/
     gtk_grid_attach(GTK_GRID(grid), frame_calendar, GTK_ALIGN_START, GTK_ALIGN_START, 1, 14);
     gtk_widget_set_hexpand(frame_calendar, TRUE);
     gtk_widget_set_vexpand(frame_calendar, TRUE);
@@ -188,7 +188,8 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     g_signal_connect(GTK_CALENDAR(calendar), "day-selected", G_CALLBACK(seeAppointmentsAtDate), params);
 
 
-    /* Search a patient */
+    /************ RIGHT PART : PATIENTS MANAGEMENT *************/
+    /* SEARCH A PATIENT */
     gtk_grid_attach_next_to(GTK_GRID(grid), entry_search, frame_calendar, GTK_POS_RIGHT, 2, 1);
     gtk_widget_set_valign(entry_search, GTK_ALIGN_START);
     gtk_widget_set_hexpand(entry_search, TRUE);
@@ -199,7 +200,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     patientSearchParam->window = window;
     g_signal_connect(entry_search, "search-changed", G_CALLBACK(processSearch), patientSearchParam);
 
-    /* Add a new patient */
+    /* ADD A NEW PATIENT */
     g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), window);
     gtk_grid_attach_next_to(GTK_GRID(grid), button_new_patient, entry_search, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_halign(button_new_patient, GTK_ALIGN_END);
@@ -207,7 +208,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     gtk_widget_set_hexpand(button_new_patient, TRUE);
     gtk_widget_set_tooltip_text(button_new_patient, "Ajouter un patient");
 
-    /* Box patient */
+    /* DISPLAY EXISTING PATIENTS */
     gtk_grid_attach_next_to(GTK_GRID(grid), tabs, entry_search, GTK_POS_BOTTOM, 6,1);
     gtk_widget_set_hexpand(tabs, TRUE);
     gtk_widget_set_vexpand(tabs, TRUE);
@@ -355,8 +356,6 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
         free(nomArchivePatient[i]);
 
     free(nomArchivePatient);
-
-    //Have to free window_id tabb (can't be done here)*/
 
 }
 
