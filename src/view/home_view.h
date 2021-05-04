@@ -47,10 +47,17 @@ typedef struct {
     int atLoad;             /**< Boolean parameter to determine which is the selected date: 1 = current, 0 = custom */
 }CalendarView;
 
+typedef struct {
+    GtkWidget *window;
+    GtkWidget *notebook;
+    int sortType;
+}NotebookFill;
+
 GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
 void setHomeEnvironment(GtkWidget *window, int cssMode);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 
+void fillPatientNotebook(GtkWidget *button, NotebookFill *param);
 void processSearch(GtkWidget *button, SearchParam *search);
 void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params);
 

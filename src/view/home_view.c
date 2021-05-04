@@ -213,30 +213,72 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     gtk_widget_set_hexpand(tabs, TRUE);
     gtk_widget_set_vexpand(tabs, TRUE);
     gtk_widget_set_margin_top(tabs, 15);
-    gtk_grid_set_row_spacing(GTK_GRID(grid_active_patient), 5);
-    gtk_container_add(GTK_CONTAINER(box_active_patient), grid_active_patient);
-    gtk_grid_set_row_spacing(GTK_GRID(grid_archived_patient), 5);
-    gtk_container_add(GTK_CONTAINER(box_archived_patient), grid_archived_patient);
 
-    /* Add tabs */
-    gtk_notebook_append_page(GTK_NOTEBOOK(tabs), box_active_patient, gtk_label_new("Patients actifs"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(tabs), box_archived_patient, gtk_label_new("Archives"));
+
+    /* CREATE NOTEBOOK WITH PATIENTS */
+    NotebookFill *param = (NotebookFill*) malloc(sizeof(NotebookFill));
+    param->notebook = tabs;
+    param->sortType = 1;
+    param->window = window;
+    fillPatientNotebook(NULL, param);
+
+}
+
+/*!
+ * \brief Allows to close the Work window and open the Home window
+ *
+ * When the user click on the back button from a session window, this function closes
+ * the current Work window and open the Home window.
+ *
+ * \param[in] but : Button clicked to call this function
+ * \param[in] window : Current window that have to be closed
+*/
+void launchHomeView(GtkWidget *but, GtkWidget *window){
+    int fullScreen = 0;
+    if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
+    gtk_widget_destroy(window);
+    setHomeWindow(0, fullScreen, 0);
+}
+
+void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
 
     /* ADD PATIENTS */
     int i;
     char** nameActivePatient;
     int* idActivePatient;
 
-    /* ACTIVE PATIENTS */
     int nbActivePatient = getNbPatient(ACTIVE);
+    GtkWidget *grid_active_patient = gtk_grid_new();
+    GtkWidget *grid_archived_patient = gtk_grid_new();
+    GtkWidget *box_active_patient = gtk_scrolled_window_new(NULL, NULL);
+    GtkWidget *box_archived_patient = gtk_scrolled_window_new(NULL, NULL);
+    GtkWidget *sort_button = NULL;
     GtkWidget *active_patient_button[nbActivePatient];
     GtkWidget *archive_button[nbActivePatient];
     GtkWidget *active_delete_button[nbActivePatient];
 
+    sort_button = gtk_combo_box_text_new();
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "A-Z");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "Z-A");
+    //gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "Autre");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(sort_button), 0);
+
+    gtk_container_add(GTK_CONTAINER(box_active_patient), grid_active_patient);
+    gtk_container_add(GTK_CONTAINER(box_archived_patient), grid_archived_patient);
+
     idActivePatient = (int*)calloc(nbActivePatient,sizeof(int));
     nameActivePatient = (char**)calloc(nbActivePatient,sizeof(void *));
 
+    gtk_notebook_append_page(GTK_NOTEBOOK(param->notebook), box_active_patient, gtk_label_new("Patients actifs"));
+    gtk_notebook_append_page(GTK_NOTEBOOK(param->notebook), box_archived_patient, gtk_label_new("Patients archivés"));
+    gtk_grid_set_row_spacing(GTK_GRID(grid_active_patient), 5);
+    gtk_container_add(GTK_CONTAINER(box_active_patient), grid_active_patient);
+    gtk_grid_set_row_spacing(GTK_GRID(grid_archived_patient), 5);
+    gtk_container_add(GTK_CONTAINER(box_archived_patient), grid_archived_patient);
+
     getNameFirstnameIdPatient(idActivePatient,nameActivePatient,ACTIVE,NAME_DESC);
+
+    gtk_grid_attach(GTK_GRID(grid_active_patient), sort_button, GTK_ALIGN_START, GTK_ALIGN_START, 7, 1);
 
     for(i=0; i < nbActivePatient; i++){
         active_patient_button[i] = gtk_button_new_with_label(nameActivePatient[i]);
@@ -246,7 +288,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
         gtk_widget_set_tooltip_text(active_delete_button[i], "Supprimer");
 
         if (i == 0){
-            gtk_grid_attach(GTK_GRID(grid_active_patient), active_patient_button[0], GTK_ALIGN_START, GTK_ALIGN_START, 5, 1);
+            gtk_grid_attach_next_to(GTK_GRID(grid_active_patient), active_patient_button[i], sort_button, GTK_POS_BOTTOM, 5, 1);
             gtk_widget_set_margin_top(active_patient_button[0], 5);
         } else {
             gtk_grid_attach_next_to(GTK_GRID(grid_active_patient), active_patient_button[i], active_patient_button[i-1],GTK_POS_BOTTOM, 5, 1);
@@ -264,18 +306,18 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
         WarningType *deleteActiveWarning[nbActivePatient];
         deleteActiveWarning[i] = (WarningType*) malloc(sizeof(WarningType));
         deleteActiveWarning[i]->patientID = idActivePatient[i];
-        deleteActiveWarning[i]->window = window;
+        deleteActiveWarning[i]->window = param->window;
         deleteActiveWarning[i]->actionType = 0;
 
         WarningType *archiveWarning[nbActivePatient];
         archiveWarning[i] = (WarningType*) malloc(sizeof(WarningType));
         archiveWarning[i]->patientID = idActivePatient[i];
-        archiveWarning[i]->window = window;
+        archiveWarning[i]->window = param->window;
         archiveWarning[i]->actionType = 1;
 
         Window_id *window_id_active[nbActivePatient];
         window_id_active[i] = (Window_id*) malloc(sizeof(Window_id));
-        window_id_active[i]->window = window;
+        window_id_active[i]->window = param->window;
         window_id_active[i]->patientID = idActivePatient[i];
         window_id_active[i]->folderID = 0;
         g_signal_connect(GTK_BUTTON(archive_button[i]), "clicked", G_CALLBACK(launchPatientWarning), archiveWarning[i]);
@@ -290,7 +332,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
     free(nameActivePatient);
 
-    /* ARCHIVED PATIENTS */
+
     int nbArchivedPatient = getNbPatient(ARCHIVED);
     int* idArchivePatient = NULL;
     char** nomArchivePatient = NULL;
@@ -331,18 +373,18 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
         WarningType *deleteArchivedWarning[nbArchivedPatient];
         deleteArchivedWarning[i] = (WarningType*) malloc(sizeof(WarningType));
         deleteArchivedWarning[i]->patientID = idArchivePatient[i];
-        deleteArchivedWarning[i]->window = window;
+        deleteArchivedWarning[i]->window = param->window;
         deleteArchivedWarning[i]->actionType = 0;
 
         WarningType *unarchiveWarning[nbArchivedPatient];
         unarchiveWarning[i] = (WarningType*) malloc(sizeof(WarningType));
         unarchiveWarning[i]->patientID = idArchivePatient[i];
-        unarchiveWarning[i]->window = window;
+        unarchiveWarning[i]->window = param->window;
         unarchiveWarning[i]->actionType = 1;
 
         Window_id *window_id_archived[nbArchivedPatient];
         window_id_archived[i] = (Window_id*) malloc(sizeof(Window_id));
-        window_id_archived[i]->window = window;
+        window_id_archived[i]->window = param->window;
         window_id_archived[i]->patientID = idArchivePatient[i];
         window_id_archived[i]->folderID = 0;
         g_signal_connect(GTK_BUTTON(unarchive_button[i]), "clicked", G_CALLBACK(launchPatientWarning), unarchiveWarning[i]);
@@ -356,24 +398,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
         free(nomArchivePatient[i]);
 
     free(nomArchivePatient);
-
-}
-
-/*!
- * \brief Allows to close the Work window and open the Home window
- *
- * When the user click on the back button from a session window, this function closes
- * the current Work window and open the Home window.
- *
- * \param[in] but : Button clicked to call this function
- * \param[in] window : Current window that have to be closed
-*/
-void launchHomeView(GtkWidget *but, GtkWidget *window){
-    int fullScreen = 0;
-    if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
-    gtk_widget_destroy(window);
-    setHomeWindow(0, fullScreen, 0);
-}
+};
 
 /*!
  * \brief show on screen the result of the patient research
