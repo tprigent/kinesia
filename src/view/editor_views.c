@@ -18,6 +18,7 @@
 #include "../controller/display_helpers.h"
 #include "../controller/UI_to_struct.h"
 #include "../model/folder_manager.h"
+#include "../model/session_manager.h"
 
 /*!
  * \brief Set up the edit Folder dialog box
