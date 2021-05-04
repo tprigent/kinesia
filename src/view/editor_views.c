@@ -102,7 +102,6 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     scroll_info_box = gtk_scrolled_window_new(NULL, NULL);
 
 
-
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition du dossier",NULL,GTK_DIALOG_MODAL,
                                           "Annuler",GTK_RESPONSE_REJECT,
@@ -159,8 +158,6 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     gtk_widget_set_margin_bottom(treatment_box, 5);
     gtk_widget_set_hexpand(treatment_box, FALSE);
     gtk_widget_set_vexpand(treatment_box, TRUE);
-
-
 
 
     /* Pathology name */
@@ -247,7 +244,6 @@ void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
  *
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
-
 
     /* GET INFO FROM PATIENT WINDOW STRUCT */
     Patient *patient = patient_window->patient;
@@ -406,11 +402,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_text_buffer_insert(info_buffer, &end, patient->global_pathologies, -1);
     gtk_text_view_set_buffer(GTK_TEXT_VIEW(info_text), info_buffer);
 
-
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
     calendar_birth_button = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
     calendar_first_consult_button = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
-
 
     g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), photoChooser);
     g_signal_connect(GTK_BUTTON(calendar_birth_button), "clicked", G_CALLBACK(launchCalendar), birth_entry);
@@ -760,14 +754,14 @@ void launchCalendar(GtkWidget *button, GtkWidget *entry){
  * \param[in] warning : Struct WarningType containing Patient id, window and action type
 */
 void launchPatientWarning(GtkWidget *button, WarningType *warning){
-    GtkWidget *dialog;
-    GtkWidget *content_area;
-    GtkWidget *title;
-    GtkWidget *explanations;
-    GtkWidget *patientName;
-    GdkPixbuf *symbolPixbuf;
-    GtkWidget *symbol;
-    Patient *patient;
+    GtkWidget *dialog = NULL;
+    GtkWidget *content_area = NULL;
+    GtkWidget *title = NULL;
+    GtkWidget *explanations = NULL;
+    GtkWidget *patientName = NULL;
+    GdkPixbuf *symbolPixbuf = NULL;
+    GtkWidget *symbol = NULL;
+    Patient *patient = NULL;
 
     patient = getPatient((int) warning->patientID);
     if(warning->actionType == 0){
@@ -948,7 +942,7 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
  * \param[in] attachmentProperties : structure containing infos needed to display the attachments
 */
 void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperties){
-    GtkWidget *dialog;
+    GtkWidget *dialog = NULL;
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *noAttachmentLabel = NULL;
@@ -1055,13 +1049,13 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
  * \param[in] element : element to be deleted
 */
 void launchDeleteElement(GtkWidget *button, DeleteElements *element){
-    GtkWidget *dialog;
-    GtkWidget *content_area;
-    GtkWidget *title;
-    GtkWidget *explanations;
-    GtkWidget *elementName;
-    GdkPixbuf *symbolPixbuf;
-    GtkWidget *symbol;
+    GtkWidget *dialog = NULL;
+    GtkWidget *content_area = NULL;
+    GtkWidget *title = NULL;
+    GtkWidget *explanations = NULL;
+    GtkWidget *elementName = NULL;
+    GdkPixbuf *symbolPixbuf = NULL;
+    GtkWidget *symbol = NULL;
 
     dialog = gtk_dialog_new_with_buttons ("Suppression d'un élément du dossier",NULL,GTK_DIALOG_MODAL,
                                           "Annuler",GTK_RESPONSE_REJECT,
