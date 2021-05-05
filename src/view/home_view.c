@@ -412,7 +412,13 @@ void processSearch(GtkWidget *button, SearchParam *search){
 
     /* Check if entry is null */
     char *searchEntry = (char*) gtk_entry_get_text(GTK_ENTRY(search->entry));
-    if(strcmp(searchEntry, "") == 0) return;
+    if(strcmp(searchEntry, "") == 0){
+        if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(search->notebook))) {
+            gtk_notebook_remove_page(GTK_NOTEBOOK(search->notebook), 2);
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(search->notebook), 0);
+        }
+        return;
+    }
 
     /* Initialise variables */
     GtkWidget *grid_searched_patient;
