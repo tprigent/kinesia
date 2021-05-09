@@ -75,12 +75,19 @@ GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder){
 void setWorkEnvironment(Window_id *window_id){
 
     /* GET PATIENT STRUCTURE FROM BDD */
-    Patient *patient = getPatient(window_id->patientID);
 
-    GtkWidget *window = window_id->window;
+    WorkWindow * workwindow = malloc(sizeof(WorkWindow));
+    if(workwindow == NULL) printf("Allocation error on workwindow.\n");
+
+    /*Patient *patient = getPatient(window_id->patientID);*/
+    workwindow->patient = getPatient(window_id->patientID);
+
+    /*GtkWidget *window = window_id->window;*/
+    workwindow->window = window_id->window;
+
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_container_add(GTK_CONTAINER(workwindow->window), grid);
 
     /* Set the 3 main spaces of the window */
     GtkWidget *boxPart[3];
@@ -104,7 +111,7 @@ void setWorkEnvironment(Window_id *window_id){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    fillPatientBox(window, boxPart[0], boxPart[1], boxPart[2], patient, window_id->folderID);
+    fillPatientBox(boxPart[0], boxPart[1], boxPart[2], workwindow, window_id->folderID);
     free(window_id);
 }
 
@@ -122,12 +129,12 @@ void setWorkEnvironment(Window_id *window_id){
  * \param[in] patient : current patient
  * \param[in] id_folder : the current folder to display
 */
-void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient, int id_folder){
+void fillPatientBox(GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, WorkWindow *workwindow, int id_folder){
 
     /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
-    patient_window->patient = patient;
-    patient_window->window = window;
+    patient_window->patient = workwindow->patient;
+    patient_window->window = workwindow->window;
     patient_window->origin = 1;
 
 
@@ -155,11 +162,11 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     GtkWidget *patient_other_info = NULL;
     GtkWidget *patient_mail_link = NULL;
 
-    char *patient_name_char = get_name_UI(patient);
-    char *patient_birth_char = get_age_and_birthdate(patient);
-    char *patient_height_weight_char = get_height_weight_UI(patient);
-    char *patient_first_consultation_char = get_first_consultation_UI(patient);
-    char *contact_link = (char*) malloc(sizeof(char)*(strlen("mailto:")+strlen(patient->mail_address)));
+    char *patient_name_char = get_name_UI(workwindow->patient);
+    char *patient_birth_char = get_age_and_birthdate(workwindow->patient);
+    char *patient_height_weight_char = get_height_weight_UI(workwindow->patient);
+    char *patient_first_consultation_char = get_first_consultation_UI(workwindow->patient);
+    char *contact_link = (char*) malloc(sizeof(char)*(strlen("mailto:")+strlen(workwindow->patient->mail_address)));
 
     /* ASSIGN VARIABLES */
     frame_info = gtk_frame_new("Informations patient");
@@ -175,21 +182,21 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath((int) patient->id), NULL);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath((int) workwindow->patient->id), NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 145, 193, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
     patient_name = gtk_label_new(patient_name_char);
     free_info_UI(patient_name_char);
     patient_birth = gtk_label_new(patient_birth_char);
     free_info_UI(patient_birth_char);
-    patient_job = gtk_label_new(patient->job);
+    patient_job = gtk_label_new(workwindow->patient->job);
     patient_height_weight = gtk_label_new(patient_height_weight_char);
     free_info_UI(patient_height_weight_char);
     patient_first_consultation = gtk_label_new(patient_first_consultation_char);
     free_info_UI(patient_first_consultation_char);
-    patient_other_info = gtk_label_new(patient->global_pathologies);
+    patient_other_info = gtk_label_new(workwindow->patient->global_pathologies);
     strcpy(contact_link, "mailto:");
-    strcat(contact_link, patient->mail_address);
+    strcat(contact_link, workwindow->patient->mail_address);
     patient_mail_link = gtk_link_button_new_with_label(contact_link, "Contacter");
 
 
@@ -204,7 +211,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_hexpand(back_button, FALSE);
     gtk_widget_set_vexpand(back_button, FALSE);
     gtk_widget_set_halign(back_button, GTK_ALIGN_START);
-    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(launchHomeView), window);
+    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(launchHomeView), workwindow);
 
 
 
@@ -301,7 +308,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_hexpand(patient_other_info, TRUE);
     gtk_widget_set_margin_top(patient_other_info, 5);
     gtk_widget_set_margin_bottom(patient_other_info, 5);
-    if(strcmp(patient->mail_address, "") != 0) gtk_grid_attach_next_to(GTK_GRID(grid_other_info), patient_mail_link, patient_other_info, GTK_POS_BOTTOM, 1, 1);
+    if(strcmp(workwindow->patient->mail_address, "") != 0) gtk_grid_attach_next_to(GTK_GRID(grid_other_info), patient_mail_link, patient_other_info, GTK_POS_BOTTOM, 1, 1);
 
 
 
@@ -318,10 +325,10 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     folder_grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(folder_box), folder_grid);
 
-    int *folderIDTab = getIdFolder((int) patient->id);
+    int *folderIDTab = getIdFolder((int) workwindow->patient->id);
     int folder_cursor;
 
-    int nb_folders = getNbFolder((int) patient->id);
+    int nb_folders = getNbFolder((int) workwindow->patient->id);
     GtkWidget *folder_button[nb_folders];
     char *name_folder[nb_folders];
 
@@ -339,8 +346,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         gtk_widget_set_hexpand(folder_button[nb_folders - 1], TRUE);
         Window_id *window_id[nb_folders];
         window_id[nb_folders - 1] = (Window_id*) malloc(sizeof(Window_id));
-        window_id[nb_folders - 1]->window = window;
-        window_id[nb_folders - 1]->patientID = (int) patient->id;
+        window_id[nb_folders - 1]->window = workwindow->window;
+        window_id[nb_folders - 1]->patientID = (int) workwindow->patient->id;
         window_id[nb_folders - 1]->folderID = folderIDTab[nb_folders - 1];
         g_signal_connect(GTK_BUTTON(folder_button[nb_folders - 1]), "clicked", G_CALLBACK(launchWorkView), window_id[nb_folders - 1]);
 
@@ -348,21 +355,21 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
             gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[folder_cursor], folder_button[folder_cursor+1], GTK_POS_BOTTOM, 1, 1);
             gtk_widget_set_hexpand(folder_button[folder_cursor], TRUE);
             window_id[folder_cursor] = (Window_id*) malloc(sizeof(Window_id));
-            window_id[folder_cursor]->window = window;
-            window_id[folder_cursor]->patientID = (int) patient->id;
+            window_id[folder_cursor]->window = workwindow->window;
+            window_id[folder_cursor]->patientID = (int) workwindow->patient->id;
             window_id[folder_cursor]->folderID = folderIDTab[folder_cursor];
             g_signal_connect(GTK_BUTTON(folder_button[folder_cursor]), "clicked", G_CALLBACK(launchWorkView), window_id[folder_cursor]);
         }
     }
 
     if(nb_folders>0 && id_folder == 0){
-        fillFolderBox(window, folderBox, sessionBox, folderIDTab[nb_folders - 1], patient);
+        fillFolderBox(workwindow->window, folderBox, sessionBox, folderIDTab[nb_folders - 1], workwindow->patient);
     }
     else if(nb_folders>0 && id_folder != 0){
-        fillFolderBox(window, folderBox, sessionBox, id_folder, patient);
+        fillFolderBox(workwindow->window, folderBox, sessionBox, id_folder, workwindow->patient);
     }
     else{
-        fillFolderBox(window, folderBox, sessionBox, 0, patient);
+        fillFolderBox(workwindow->window, folderBox, sessionBox, 0, workwindow->patient);
     }
 
 
