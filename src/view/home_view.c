@@ -8,6 +8,7 @@
 #include "work_view.h"
 #include "editor_views.h"
 #include "../controller/display_helpers.h"
+#include "../model/session_manager.h"
 
 /*!
  * \brief Function that launch css mode to modify application style
@@ -339,10 +340,11 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
  * \param[in] but : Button clicked to call this function
  * \param[in] window : Current window that have to be closed
 */
-void launchHomeView(GtkWidget *but, GtkWidget *window){
+void launchHomeView(GtkWidget *but, WorkWindow *workwindow){
     int fullScreen = 0;
-    if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
-    gtk_widget_destroy(window);
+    if(gtk_window_is_maximized(GTK_WINDOW(workwindow->window))==TRUE) fullScreen = 1;
+    gtk_widget_destroy(workwindow->window);
+    freeWorkWindow(workwindow);
     setHomeWindow(0, fullScreen, 0);
 }
 
@@ -465,4 +467,10 @@ void processSearch(GtkWidget *button, SearchParam *search){
 
     free(searchResult);
     free(idResult);
+}
+
+void freeWorkWindow(WorkWindow *workwindow) {
+    if(workwindow->patient !=NULL) freePatient(&(workwindow->patient));
+    //if(workwindow->folder !=NULL) freeFolder(&(workwindow->folder));
+    if(workwindow->sessionList !=NULL) freeList(workwindow->sessionList);
 }
