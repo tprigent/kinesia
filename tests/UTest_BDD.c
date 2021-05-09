@@ -104,6 +104,22 @@ static void test_setPatient(void **state) {
     assert_string_equal("68", patient->weight);
     assert_string_equal("170", patient->height);
     assert_int_equal(1, patient->id);
+
+    /*address = {"", "", "", ""};
+
+    assert_int_equal(0, setPatient(patient, NULL, NULL, date, NULL, 0, address, NULL, NULL, NULL, NULL, NULL, NULL, date, NULL, 1, 0));
+    assert_string_equal(NULL, patient->name);
+    assert_string_equal(NULL, patient->firstname);
+    assert_string_equal(NULL, patient->place_birth);
+    assert_string_equal(NULL, patient->phone_number);
+    assert_string_equal(NULL, patient->mail_address);
+    assert_string_equal(NULL, patient->job);
+    assert_string_equal(NULL, patient->ssn);
+    assert_string_equal(NULL, patient->global_pathologies);
+    assert_int_equal(0, patient->gender);
+    assert_string_equal(NULL, patient->weight);
+    assert_string_equal(NULL, patient->height);
+    assert_int_equal(1, patient->id);*/
 }
 
 /*!
