@@ -18,6 +18,7 @@
 #include "../src/controller/BDD_to_struct_folder.h"
 #include "../src/controller/BDD_to_struct_session.h"
 #include "../src/model/structures.h"
+#include "../src/controller/struct_to_BDD_session.h"
 
 int idPatientTest = 28;
 
