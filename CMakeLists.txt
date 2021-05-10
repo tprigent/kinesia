@@ -74,9 +74,9 @@ set(SOURCE_FILES_TEST
         tests/UTest.c
         tests/UTest_display_helpers.c
         tests/UTest_ext_files_manager.c
-        #tests/UTest_BDD.c
-        #tests/UTest_session.c
-        #tests/UTest_BDD_session.c
+        tests/UTest_BDD.c
+        tests/UTest_session.c
+        tests/UTest_BDD_session.c
         src/model/patient_manager.c
         src/model/folder_manager.c
         src/model/session_manager.c
