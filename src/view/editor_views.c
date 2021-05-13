@@ -868,16 +868,27 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
     GtkWidget *darkImage= NULL;
     GtkWidget *toggle_switch = NULL;
     GtkWidget *darkModeLabel = NULL;
+    GtkWidget *explanationsLabel = NULL;
+    GtkWidget *licenseLabel = NULL;
+    GtkWidget *INSAlabel = NULL;
+    GtkWidget *authorsLabel = NULL;
 
     /* ASSIGN VARIABLES */
     label_whiteMode = gtk_label_new("Mode clair :");
     label_darkMode = gtk_label_new("Mode sombre :");
+    darkModeLabel = gtk_label_new("Mode sombre ");
+    explanationsLabel = gtk_label_new("<i>Ce logiciel a été développé dans le cadre d'un projet de langage C de troisième année.</i>");
+    licenseLabel = gtk_link_button_new_with_label("https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine.git", "© Kinesia (2021)");
+    INSAlabel = gtk_label_new("<i>INSA Rennes, département EII</i>");
+    authorsLabel = gtk_label_new("<i>Paul Bertho, Salomé Guinaudeau, Julien Priam, Théo Prigent</i>");
+    gtk_label_set_use_markup(GTK_LABEL(authorsLabel), TRUE);
+    gtk_label_set_use_markup(GTK_LABEL(INSAlabel), TRUE);
+    gtk_label_set_use_markup(GTK_LABEL(explanationsLabel), TRUE);
 
     grid_dialog = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
     gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
 
-    darkModeLabel = gtk_label_new("Mode sombre ");
     toggle_switch = gtk_switch_new();
     if(settings->cssMode == 1) gtk_switch_set_active(GTK_SWITCH(toggle_switch), TRUE);
 
@@ -902,6 +913,12 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, label_darkMode, GTK_POS_BOTTOM, 14, 1);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkModeLabel, whiteImage, GTK_POS_BOTTOM, 1, 1);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), toggle_switch, darkModeLabel, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), explanationsLabel, toggle_switch, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), INSAlabel, explanationsLabel, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), authorsLabel, INSAlabel, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), licenseLabel, authorsLabel, GTK_POS_BOTTOM, 23, 1);
+
+    gtk_widget_set_margin_top(explanationsLabel, 15);
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
