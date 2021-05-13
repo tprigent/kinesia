@@ -256,6 +256,7 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     GtkWidget *active_patient_button[nbActivePatient];
     GtkWidget *archive_button[nbActivePatient];
     GtkWidget *active_delete_button[nbActivePatient];
+    GtkWidget *noActivePatientLabel = NULL;
 
     sort_button = gtk_combo_box_text_new();
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "A-Z");
@@ -279,6 +280,14 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     getNameFirstnameIdPatient(idActivePatient,nameActivePatient,ACTIVE,NAME_DESC);
 
     gtk_grid_attach(GTK_GRID(grid_active_patient), sort_button, GTK_ALIGN_START, GTK_ALIGN_START, 7, 1);
+
+    if(nbActivePatient == 0){
+        noActivePatientLabel = gtk_label_new("<big><i>Créez votre première fiche patient</i></big>");
+        gtk_label_set_use_markup(GTK_LABEL(noActivePatientLabel), TRUE);
+        gtk_grid_attach(GTK_GRID(grid_active_patient), noActivePatientLabel, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_widget_set_hexpand(noActivePatientLabel, TRUE);
+        gtk_widget_set_vexpand(noActivePatientLabel, TRUE);
+    }
 
     for(i=0; i < nbActivePatient; i++){
         active_patient_button[i] = gtk_button_new_with_label(nameActivePatient[i]);
@@ -340,11 +349,20 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     GtkWidget *archived_patient_button[nbArchivedPatient];
     GtkWidget *unarchive_button[nbArchivedPatient];
     GtkWidget *archived_delete_button[nbArchivedPatient];
+    GtkWidget *noArchivedPatientLabel = NULL;
 
     idArchivePatient = (int*)calloc(nbArchivedPatient,sizeof(int));
     nomArchivePatient = (char**)calloc(nbArchivedPatient,sizeof(void *));
 
     getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED,NAME_ASC);
+
+    if(nbArchivedPatient == 0){
+        noArchivedPatientLabel = gtk_label_new("<big><i>Aucune fiche patient archivée</i></big>");
+        gtk_label_set_use_markup(GTK_LABEL(noArchivedPatientLabel), TRUE);
+        gtk_grid_attach(GTK_GRID(grid_archived_patient), noArchivedPatientLabel, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_widget_set_hexpand(noArchivedPatientLabel, TRUE);
+        gtk_widget_set_vexpand(noArchivedPatientLabel, TRUE);
+    }
 
     for(i=0; i < nbArchivedPatient; i++){
         archived_patient_button[i] = gtk_button_new_with_label(nomArchivePatient[i]);
