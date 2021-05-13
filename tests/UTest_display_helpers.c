@@ -134,8 +134,12 @@ static void test_get_current_date(void **state){
 */
 static void test_get_new_session_name(void **state){
     char * session_name = get_new_session_name();
-    assert_string_equal("Séance du 27/4/2021", session_name);
+    char * new_session_name = (char*) malloc(sizeof(char) * strlen("Séance du xx/xx/xxxx"));
+    strcpy(new_session_name, "Séance du ");
+    strcat(new_session_name, get_current_date());
+    assert_string_equal(new_session_name, session_name);
     free_info_UI(session_name);
+    free_info_UI(new_session_name);
 }
 
 
