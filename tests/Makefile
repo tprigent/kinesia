@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS= -Wall -g -MMD -coverage -D DB_PATH='"../src/model/data.db"'
-LDFLAGS= -lcmocka -coverage
+LDFLAGS= -lcmocka -coverage -lsqlite3
 LDFLAGS+= `pkg-config --libs sqlite3`
 
 ifeq ($(OS),Windows_NT)
@@ -30,7 +30,7 @@ endif
 all: main
 
 
-main: display_helpers.o UTest.o UTest_display_helpers.o UTest_ext_files_manager.o UTest_session.o patient_manager.o folder_manager.o session_manager.o BDD_to_struct_session.o BDD_to_struct_patient.o BDD_to_struct_folder.o struct_to_BDD_patient.o struct_to_BDD_session.o extern_files_manager.o display_helpers.o
+main: display_helpers.o UTest.o UTest_display_helpers.o UTest_ext_files_manager.o UTest_session.o patient_manager.o folder_manager.o session_manager.o BDD_to_struct_session.o BDD_to_struct_patient.o BDD_to_struct_folder.o struct_to_BDD_patient.o struct_to_BDD_session.o struct_to_BDD_folder.o extern_files_manager.o display_helpers.o UTest_BDD.o UTest_BDD_session.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c

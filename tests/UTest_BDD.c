@@ -11,14 +11,16 @@
 #include "UTest_BDD.h"
 #include "../src/model/patient_manager.h"
 #include "../src/model/folder_manager.h"
+#include "../src/model/session_manager.h"
 #include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/controller/struct_to_BDD_patient.h"
 #include "../src/controller/struct_to_BDD_folder.h"
 #include "../src/controller/BDD_to_struct_folder.h"
 #include "../src/controller/BDD_to_struct_session.h"
 #include "../src/model/structures.h"
+#include "../src/controller/struct_to_BDD_session.h"
 
-int idPatientTest;
+int idPatientTest = 28;
 
 /*!
  * \brief Setup function which allocates a patient
@@ -136,6 +138,9 @@ static void test_getPatient(void **state){
 
     Patient *p = getPatient(-1);
     assert_null(p);
+    p=getPatient(1);
+    assert_string_equal("Claude",p->firstname);
+    freePatient(&p);
 
 }
 
@@ -170,15 +175,7 @@ static void test_addPatient(void **state){
 
     assert_int_equal(1,addPatient(p));
 
-    int* tabId = getArchivedPatientID();
-    int i;
-    idPatientTest = 0;
-    i=0;
-    while(tabId[i] != -1){
-        if(idPatientTest < tabId[i])
-            idPatientTest = tabId[i];
-        i++;
-    }
+    freePatient(&p);
 
 }
 
@@ -197,38 +194,47 @@ static void test_modifyPatient(void **state){
 
 }
 
+static void test_getNameFirstnameIdPatient(void **state){
+
+    int i,nbArchivedPatient;
+    int *idArchivePatient;
+    char** nomArchivePatient;
+
+    nbArchivedPatient = getNbPatient(ARCHIVED);
+
+    idArchivePatient = (int*)calloc(2,sizeof(int));
+    nomArchivePatient = (char**)calloc(2,sizeof(void *));
+
+    assert_int_equal(1,getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED,NAME_ASC));
+    assert_string_equal("Claude François",nomArchivePatient[1]);
+    assert_int_equal(1,getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED,NAME_DESC));
+    assert_string_equal("Claude François",nomArchivePatient[0]);
+    assert_int_equal(1,getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED,FIRSTNAME_DESC));
+    assert_string_equal("Claude François",nomArchivePatient[0]);
+    assert_int_equal(1,getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED,FIRSTNAME_ASC));
+    assert_string_equal("Claude François",nomArchivePatient[1]);
+    free(idArchivePatient);
+
+    for(i=0;i<nbArchivedPatient;i++)
+        free(nomArchivePatient[i]);
+
+    free(nomArchivePatient);
+
+}
+
 static void test_getNameFirstnamePatient(void **state){
 
-    assert_string_equal("Claude François",getNameFirstnamePatient(1));
-    //assert_null(getNameFirstnamePatient(-1));
+    char * c;
+    c=getNameFirstnamePatient(1);
+    assert_string_equal("Claude François",c);
+    free(c);
 
 }
 
-static void test_getArchivedPatientID(void **state){
+static void test_getNbPatient(void **state){
 
-    int *t;
-    t = getArchivedPatientID();
-    assert_int_equal(1,t[1]);
-
-}
-
-static void test_getActivePatientID(void **state){
-
-    int *tab;
-    tab = getActivePatientID();
-    assert_int_equal(6,tab[0]);
-
-}
-
-static void test_getNbActivePatient(void **state){
-
-    assert_int_equal(5,getNbActivePatient());
-
-}
-
-static void test_getNbarchivedPatient(void **state){
-
-    assert_int_equal(2,getNbArchivedPatient());
+    assert_int_equal(7,getNbPatient(ACTIVE));
+    assert_int_equal(2,getNbPatient(ARCHIVED));
 
 }
 
@@ -249,17 +255,17 @@ static void test_getFolder(void **state){
 
 }
 
-static void test_getNameFolder(void **state){
-
-    assert_string_equal("Entorse de la cheville",getNameFolder(1));
-
-}
-
 static void test_getIdFolder(void **state){
 
     int *t;
     t = getIdFolder(1);
     assert_int_equal(1,t[0]);
+
+}
+
+static void test_getNameFolder(void **state){
+
+    assert_string_equal("TEST2",getNameFolder(3));
 
 }
 
@@ -274,18 +280,18 @@ static void test_addFolder(void **state){
 
     assert_int_equal(1,addFolder(folder));
 
+    free(folder);
+
 }
 
 static void test_modifyFolder(void **state){
 
     Folder *f;
-    f = getFolder(2);
+    f = getFolder(3);
     f->details="New details";
     assert_int_equal(1,modifyFolder(f));
-    f = getFolder(2);
+    f = getFolder(3);
     assert_string_equal("New details",f->details);
-    f->details="Ici on peu ajouter des indications";
-    assert_int_equal(1,modifyFolder(f));
 
 }
 
@@ -304,6 +310,52 @@ static void test_addSession(void **state){
 static void test_deletePatient(void **state){
 
     assert_int_equal(1,deletePatient(idPatientTest));
+
+}
+
+static void test_searchPatient(void **state){
+
+    int i;
+    int *idPatient;
+    char** nomPatient;
+
+    idPatient = (int*)calloc(10,sizeof(int));
+    nomPatient = (char**)calloc(10,sizeof(void *));
+
+    assert_int_equal(1,searchPatient("bertho",nomPatient,idPatient,10));
+
+    free(idPatient);
+    for(i=0;i<10;i++)
+        free(nomPatient[i]);
+
+    free(nomPatient);
+
+}
+
+static void test_deleteFolder(void **state){
+
+    assert_int_equal(1,deleteFoler(100));
+
+}
+
+static void test_getSessionId(void **state){
+
+    int* t;
+    t = getSessionId(3);
+    assert_int_equal(6,t[0]);
+    free(t);
+
+}
+
+static void test_getNbSession(void **state){
+
+    assert_int_equal(1,getNbSession(3));
+
+}
+
+static void test_getNbFolder(void **state){
+
+    assert_int_equal(1,getNbFolder(15));
 
 }
 
@@ -366,17 +418,19 @@ int main_BDD(void)
                     cmocka_unit_test(test_getPatient),
                     cmocka_unit_test(test_addPatient),
                     cmocka_unit_test(test_modifyPatient),
+                    cmocka_unit_test(test_getNbPatient),
+                    cmocka_unit_test(test_getNameFirstnameIdPatient),
                     cmocka_unit_test(test_getNameFirstnamePatient),
-                    cmocka_unit_test(test_getArchivedPatientID),
-                    cmocka_unit_test(test_getNbActivePatient),
-                    cmocka_unit_test(test_getActivePatientID),
-                    cmocka_unit_test(test_getNbarchivedPatient),
+                    cmocka_unit_test(test_searchPatient),
                     cmocka_unit_test(test_getFolder),
                     cmocka_unit_test(test_getIdFolder),
-                    cmocka_unit_test(test_addSession),
-                    cmocka_unit_test(test_getNameFolder),
                     cmocka_unit_test(test_addFolder),
+                    cmocka_unit_test(test_addSession),
+                    cmocka_unit_test(test_getNbSession),
+                    cmocka_unit_test(test_getNameFolder),
+                    cmocka_unit_test(test_getNbFolder),
                     cmocka_unit_test(test_modifyFolder),
+                    cmocka_unit_test(test_deleteFolder),
                     cmocka_unit_test(test_deletePatient)
             };
     return cmocka_run_group_tests_name("Test counter module",tests_BDD,NULL,NULL);
