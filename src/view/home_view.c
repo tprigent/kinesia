@@ -111,6 +111,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
     GtkWidget *button_parameters = NULL;
     GtkWidget *calendar = NULL;
+    GtkWidget *sort_button = NULL;
     GtkWidget *button_new_patient = NULL;
     GtkWidget *entry_search = NULL;
     GtkWidget *tabs = NULL;
@@ -133,6 +134,13 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
     button_parameters = gtk_button_new_from_icon_name("emblem-system", GTK_ICON_SIZE_MENU);
     calendar = gtk_calendar_new();
+    sort_button = gtk_combo_box_text_new();
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "Nom (A-Z)");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "Nom (Z-A)");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "Prénom (A-Z)");
+    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "Prénom (Z-A)");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(sort_button), 0);
+
     button_new_patient = gtk_button_new_from_icon_name("list-add", GTK_ICON_SIZE_MENU);
     entry_search = gtk_search_entry_new();
     tabs = gtk_notebook_new();
@@ -200,9 +208,17 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     patientSearchParam->window = window;
     g_signal_connect(entry_search, "search-changed", G_CALLBACK(processSearch), patientSearchParam);
 
+    /* SORT PATIENTS */
+    gtk_grid_attach_next_to(GTK_GRID(grid), sort_button, entry_search, GTK_POS_RIGHT, 1, 1);
+    NotebookFill *param = (NotebookFill*) malloc(sizeof(NotebookFill));
+    param->notebook = tabs;
+    param->window = window;
+    param->sortType = 2;
+    g_signal_connect(GTK_COMBO_BOX(sort_button), "changed", G_CALLBACK(fillPatientNotebook), param);
+
     /* ADD A NEW PATIENT */
     g_signal_connect(GTK_BUTTON(button_new_patient), "clicked", G_CALLBACK(launchNewPatientEditor), window);
-    gtk_grid_attach_next_to(GTK_GRID(grid), button_new_patient, entry_search, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid), button_new_patient, sort_button, GTK_POS_RIGHT, 1, 1);
     gtk_widget_set_halign(button_new_patient, GTK_ALIGN_END);
     gtk_widget_set_valign(button_new_patient, GTK_ALIGN_START);
     gtk_widget_set_hexpand(button_new_patient, TRUE);
@@ -216,10 +232,6 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
 
     /* CREATE NOTEBOOK WITH PATIENTS */
-    NotebookFill *param = (NotebookFill*) malloc(sizeof(NotebookFill));
-    param->notebook = tabs;
-    param->sortType = 1;
-    param->window = window;
     fillPatientNotebook(NULL, param);
 
 }
@@ -242,10 +254,17 @@ void launchHomeView(GtkWidget *but, GtkWidget *window){
 
 void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
 
+    /* CLEAN NOTEBOOK BEFORE WORKING ON IT */
+    int nbPages = gtk_notebook_get_n_pages(GTK_NOTEBOOK(param->notebook));
+    int j;
+    for(j=0; j<nbPages; j++) gtk_notebook_remove_page (GTK_NOTEBOOK(param->notebook), 0);
+
+
     /* ADD PATIENTS */
     int i;
     char** nameActivePatient;
     int* idActivePatient;
+    int sortType = gtk_combo_box_get_active(GTK_COMBO_BOX(button));
 
     int nbActivePatient = getNbPatient(ACTIVE);
     GtkWidget *grid_active_patient = gtk_grid_new();
@@ -257,15 +276,6 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     GtkWidget *archive_button[nbActivePatient];
     GtkWidget *active_delete_button[nbActivePatient];
 
-    sort_button = gtk_combo_box_text_new();
-    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "A-Z");
-    gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "Z-A");
-    //gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(sort_button), NULL, "Autre");
-    gtk_combo_box_set_active(GTK_COMBO_BOX(sort_button), 0);
-
-    gtk_container_add(GTK_CONTAINER(box_active_patient), grid_active_patient);
-    gtk_container_add(GTK_CONTAINER(box_archived_patient), grid_archived_patient);
-
     idActivePatient = (int*)calloc(nbActivePatient,sizeof(int));
     nameActivePatient = (char**)calloc(nbActivePatient,sizeof(void *));
 
@@ -276,9 +286,7 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     gtk_grid_set_row_spacing(GTK_GRID(grid_archived_patient), 5);
     gtk_container_add(GTK_CONTAINER(box_archived_patient), grid_archived_patient);
 
-    getNameFirstnameIdPatient(idActivePatient,nameActivePatient,ACTIVE,NAME_DESC);
-
-    gtk_grid_attach(GTK_GRID(grid_active_patient), sort_button, GTK_ALIGN_START, GTK_ALIGN_START, 7, 1);
+    getNameFirstnameIdPatient(idActivePatient,nameActivePatient,ACTIVE, sortType);
 
     for(i=0; i < nbActivePatient; i++){
         active_patient_button[i] = gtk_button_new_with_label(nameActivePatient[i]);
@@ -344,7 +352,8 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     idArchivePatient = (int*)calloc(nbArchivedPatient,sizeof(int));
     nomArchivePatient = (char**)calloc(nbArchivedPatient,sizeof(void *));
 
-    getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED,NAME_ASC);
+    getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED, sortType);
+
 
     for(i=0; i < nbArchivedPatient; i++){
         archived_patient_button[i] = gtk_button_new_with_label(nomArchivePatient[i]);
@@ -398,6 +407,9 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
         free(nomArchivePatient[i]);
 
     free(nomArchivePatient);
+
+    gtk_widget_show_all(param->notebook);
+
 };
 
 /*!
