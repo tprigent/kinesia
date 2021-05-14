@@ -360,7 +360,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Femme");
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Homme");
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Autre");
-    gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), patient->gender);
+    if(patient->gender == WOMAN) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 0);
+    else if (patient->gender == MAN) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 1);
+    else if (patient->gender == OTHER) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 2);
 
     job = gtk_label_new("Profession : ");
     gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
