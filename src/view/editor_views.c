@@ -318,7 +318,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(surname_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(birth_entry), 10);
-    gtk_entry_set_max_length(GTK_ENTRY(job_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(job_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(address_entry), 100);
     gtk_entry_set_max_length(GTK_ENTRY(postcode_entry), 5);
     gtk_entry_set_max_length(GTK_ENTRY(city_entry), 25);
