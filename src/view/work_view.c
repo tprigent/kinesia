@@ -664,6 +664,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         gtk_container_add(GTK_CONTAINER(box), frame);
         gtk_container_add(GTK_CONTAINER(frame), grid);
         gtk_grid_attach(GTK_GRID(grid), label, GTK_ALIGN_START, GTK_ALIGN_START, 15, 1);
+        gtk_widget_set_margin_top(label, 15);
         gtk_grid_attach_next_to(GTK_GRID(grid), button, label, GTK_POS_BOTTOM, 15, 1);
 
         /* CONNECT BUTTON TO CREATE FIRST SESSION */
