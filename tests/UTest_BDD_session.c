@@ -9,20 +9,15 @@
 #include "../src/model/session_manager.h"
 
 static void test_getSession(void **state){
-    Session * s = getSession(8);
+    Session * s = getSession(1);
     assert_non_null(s);
-    assert_string_equal("TestS1", s->sessionName);
-    assert_int_equal(s->sessionDate.day, 3);
-    assert_int_equal(s->nextSessionDate.day, 5);
-    assert_int_equal(8, s->idSession);
+    assert_string_equal("New name", s->sessionName);
     freeSession(s);
-    free(s);
 }
 
 static void test_getSessionId(void **state){
     int* tab_id = getSessionId(3);
-    assert_int_equal(8, tab_id[0]);
-    assert_int_equal(9, tab_id[1]);
+    assert_int_equal(6, tab_id[0]);
     free(tab_id);
 }
 

@@ -33,11 +33,32 @@ typedef struct {
     GtkWidget *window;      /**< Parent window to be refreshed */
 }SearchParam;
 
+/**
+ * \brief Structure for appointments
+ *
+ * This structure is used to pass many arguments in a callback function which has only
+ * one argument.
+*/
+typedef struct {
+    GtkWidget *vbox;        /**< Calendar grid (left part of the view) which is going to be updated */
+    GtkWidget *title;       /**< Title to which the next elements will be attached */
+    GtkWidget *window;      /**< Current window to allow child window to close it */
+    GtkWidget *grid;
+    int atLoad;             /**< Boolean parameter to determine which is the selected date: 1 = current, 0 = custom */
+}CalendarView;
+
+typedef struct {
+    GtkWidget *window;
+    GtkWidget *notebook;
+    int sortType;
+}NotebookFill;
+
 GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
 void setHomeEnvironment(GtkWidget *window, int cssMode);
 void launchHomeView(GtkWidget *but, GtkWidget *window);
 
-Session *createEmptySession(int idFolder);
+void fillPatientNotebook(GtkWidget *button, NotebookFill *param);
 void processSearch(GtkWidget *button, SearchParam *search);
+void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params);
 
 #endif //LOGICIEL_KINE_PATIENT_VIEW_H

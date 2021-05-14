@@ -18,6 +18,7 @@
 #include "../controller/display_helpers.h"
 #include "../controller/UI_to_struct.h"
 #include "../model/folder_manager.h"
+#include "../model/session_manager.h"
 
 /*!
  * \brief Set up the edit Folder dialog box
@@ -101,7 +102,6 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     scroll_info_box = gtk_scrolled_window_new(NULL, NULL);
 
 
-
     /* CREATE THE DIALOG BOX */
     dialog = gtk_dialog_new_with_buttons ("Édition du dossier",NULL,GTK_DIALOG_MODAL,
                                           "Annuler",GTK_RESPONSE_REJECT,
@@ -158,8 +158,6 @@ void launchFolderEditor(GtkWidget *button, FolderEditorStruct *foldEditStruct){
     gtk_widget_set_margin_bottom(treatment_box, 5);
     gtk_widget_set_hexpand(treatment_box, FALSE);
     gtk_widget_set_vexpand(treatment_box, TRUE);
-
-
 
 
     /* Pathology name */
@@ -223,10 +221,6 @@ void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
     foldEditStruct->edit_new = 0;
     foldEditStruct->window = idPatientCall->window;
 
-    /* Create a non real session to display the first appointment in HomeView */
-    Session *firstSessionDate = createEmptySession(getFutureFolderId());
-    firstSessionDate->isRealSession = 0;
-    addSession(firstSessionDate);
 
     launchFolderEditor(button, foldEditStruct);
 }
@@ -246,7 +240,6 @@ void launchNewFolderEditor(GtkWidget *button, IdPatientCallback *idPatientCall){
  *
 */
 void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
-
 
     /* GET INFO FROM PATIENT WINDOW STRUCT */
     Patient *patient = patient_window->patient;
@@ -319,12 +312,13 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
 
     photoChooser->patientID = (int) patient->id;
     photoChooser->mediaType = 0;
+    photoChooser->isNewPatient = !origin;
 
     // entry parameters
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(surname_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(birth_entry), 10);
-    gtk_entry_set_max_length(GTK_ENTRY(job_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(job_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(address_entry), 100);
     gtk_entry_set_max_length(GTK_ENTRY(postcode_entry), 5);
     gtk_entry_set_max_length(GTK_ENTRY(city_entry), 25);
@@ -366,7 +360,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Femme");
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Homme");
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Autre");
-    gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), patient->gender);
+    if(patient->gender == WOMAN) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 0);
+    else if (patient->gender == MAN) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 1);
+    else if (patient->gender == OTHER) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 2);
 
     job = gtk_label_new("Profession : ");
     gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
@@ -404,11 +400,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_text_buffer_insert(info_buffer, &end, patient->global_pathologies, -1);
     gtk_text_view_set_buffer(GTK_TEXT_VIEW(info_text), info_buffer);
 
-
     photo_button = gtk_button_new_from_icon_name("mail-attachment", GTK_ICON_SIZE_LARGE_TOOLBAR);
     calendar_birth_button = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
     calendar_first_consult_button = gtk_button_new_from_icon_name("x-office-calendar", GTK_ICON_SIZE_LARGE_TOOLBAR);
-
 
     g_signal_connect(GTK_BUTTON(photo_button), "clicked", G_CALLBACK(launchFileChooser), photoChooser);
     g_signal_connect(GTK_BUTTON(calendar_birth_button), "clicked", G_CALLBACK(launchCalendar), birth_entry);
@@ -679,7 +673,11 @@ void launchFileChooser(GtkWidget *photo_button, MediaType *mediaChooser){
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
         printf("%s\n", filename);
         if(mediaChooser->mediaType == 0){
-            copyToMedia(filename, mediaChooser->patientID , mediaChooser->folderID, "profil");
+            if(mediaChooser->isNewPatient){
+                copyToMedia(filename, getFuturePatientId() , mediaChooser->folderID, "profil");
+            } else {
+                copyToMedia(filename, mediaChooser->patientID , mediaChooser->folderID, "profil");
+            }
         } else {
             copyToMedia(filename, mediaChooser->patientID , mediaChooser->folderID, basename(filename));
             gtk_label_set_text(GTK_LABEL(mediaChooser->counterLabel), get_indicator_files_UI(mediaChooser->patientID, mediaChooser->folderID));
@@ -754,14 +752,14 @@ void launchCalendar(GtkWidget *button, GtkWidget *entry){
  * \param[in] warning : Struct WarningType containing Patient id, window and action type
 */
 void launchPatientWarning(GtkWidget *button, WarningType *warning){
-    GtkWidget *dialog;
-    GtkWidget *content_area;
-    GtkWidget *title;
-    GtkWidget *explanations;
-    GtkWidget *patientName;
-    GdkPixbuf *symbolPixbuf;
-    GtkWidget *symbol;
-    Patient *patient;
+    GtkWidget *dialog = NULL;
+    GtkWidget *content_area = NULL;
+    GtkWidget *title = NULL;
+    GtkWidget *explanations = NULL;
+    GtkWidget *patientName = NULL;
+    GdkPixbuf *symbolPixbuf = NULL;
+    GtkWidget *symbol = NULL;
+    Patient *patient = NULL;
 
     patient = getPatient((int) warning->patientID);
     if(warning->actionType == 0){
@@ -872,16 +870,27 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
     GtkWidget *darkImage= NULL;
     GtkWidget *toggle_switch = NULL;
     GtkWidget *darkModeLabel = NULL;
+    GtkWidget *explanationsLabel = NULL;
+    GtkWidget *licenseLabel = NULL;
+    GtkWidget *INSAlabel = NULL;
+    GtkWidget *authorsLabel = NULL;
 
     /* ASSIGN VARIABLES */
     label_whiteMode = gtk_label_new("Mode clair :");
     label_darkMode = gtk_label_new("Mode sombre :");
+    darkModeLabel = gtk_label_new("Mode sombre ");
+    explanationsLabel = gtk_label_new("<i>Ce logiciel a été développé dans le cadre d'un projet de langage C de troisième année.</i>");
+    licenseLabel = gtk_link_button_new_with_label("https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine.git", "© Kinesia (2021)");
+    INSAlabel = gtk_label_new("<i>INSA Rennes, département EII</i>");
+    authorsLabel = gtk_label_new("<i>Paul Bertho, Salomé Guinaudeau, Julien Priam, Théo Prigent</i>");
+    gtk_label_set_use_markup(GTK_LABEL(authorsLabel), TRUE);
+    gtk_label_set_use_markup(GTK_LABEL(INSAlabel), TRUE);
+    gtk_label_set_use_markup(GTK_LABEL(explanationsLabel), TRUE);
 
     grid_dialog = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
     gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
 
-    darkModeLabel = gtk_label_new("Mode sombre ");
     toggle_switch = gtk_switch_new();
     if(settings->cssMode == 1) gtk_switch_set_active(GTK_SWITCH(toggle_switch), TRUE);
 
@@ -906,6 +915,12 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, label_darkMode, GTK_POS_BOTTOM, 14, 1);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkModeLabel, whiteImage, GTK_POS_BOTTOM, 1, 1);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), toggle_switch, darkModeLabel, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), explanationsLabel, toggle_switch, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), INSAlabel, explanationsLabel, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), authorsLabel, INSAlabel, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), licenseLabel, authorsLabel, GTK_POS_BOTTOM, 23, 1);
+
+    gtk_widget_set_margin_top(explanationsLabel, 15);
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
@@ -942,7 +957,7 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
  * \param[in] attachmentProperties : structure containing infos needed to display the attachments
 */
 void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperties){
-    GtkWidget *dialog;
+    GtkWidget *dialog = NULL;
     GtkWidget *grid = NULL;
     GtkWidget *content_area = NULL;
     GtkWidget *noAttachmentLabel = NULL;
@@ -998,7 +1013,8 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
     gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 
     /* Action on button */
-    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+    int response = gtk_dialog_run(GTK_DIALOG(dialog));
+    if (response == GTK_RESPONSE_ACCEPT){
         int j;
         for(j=0; j < nbOfAttachments; j++){
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
@@ -1018,7 +1034,7 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
                 free(command);
             }
         }
-    } else if(gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_DELETE_EVENT) {
+    } else if(response == GTK_RESPONSE_DELETE_EVENT) {
         int j;
         for(j=0; j<getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID); j++) {
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
@@ -1049,13 +1065,13 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
  * \param[in] element : element to be deleted
 */
 void launchDeleteElement(GtkWidget *button, DeleteElements *element){
-    GtkWidget *dialog;
-    GtkWidget *content_area;
-    GtkWidget *title;
-    GtkWidget *explanations;
-    GtkWidget *elementName;
-    GdkPixbuf *symbolPixbuf;
-    GtkWidget *symbol;
+    GtkWidget *dialog = NULL;
+    GtkWidget *content_area = NULL;
+    GtkWidget *title = NULL;
+    GtkWidget *explanations = NULL;
+    GtkWidget *elementName = NULL;
+    GdkPixbuf *symbolPixbuf = NULL;
+    GtkWidget *symbol = NULL;
 
     dialog = gtk_dialog_new_with_buttons ("Suppression d'un élément du dossier",NULL,GTK_DIALOG_MODAL,
                                           "Annuler",GTK_RESPONSE_REJECT,
