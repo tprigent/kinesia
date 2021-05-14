@@ -22,6 +22,7 @@ void createNewSession(int idFolder){
     /* ALLOCATION */
     Session *session = (Session*) malloc(sizeof(Session));
     session->idFolder = idFolder;
+    session->idSession = 0;
     session->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
     session->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
     session->nextSessionHour = (char*) malloc(LG_MAX_INFO*sizeof(char));
@@ -50,6 +51,45 @@ void createNewSession(int idFolder){
     /* FREE */
     free(date);
     freeSession(session);
+}
+
+/*!
+ * \brief Create and allocate an empty session
+ *
+ * When a new session is created, this function allocates it
+ * and fills it with the current date
+ *
+ * \param[in] idFolder : folder id to which the session has to be linked
+ * \param[out] session : Empty session allocated
+*/
+Session *createEmptySession(int idFolder){
+    Session *newSession = (Session*) malloc(sizeof(Session));
+    newSession->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
+    char *new_session_name = get_new_session_name();
+    strcpy(newSession->sessionName, new_session_name);
+    free_info_UI(new_session_name);
+    newSession->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+    strcpy(newSession->observations, "Remarques");
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    newSession->sessionDate.day = tm.tm_mday;
+    newSession->sessionDate.month = tm.tm_mon + 1;
+    newSession->sessionDate.year = tm.tm_year + 1900;
+
+    newSession->nextSessionDate.day = tm.tm_mday;
+    newSession->nextSessionDate.month = tm.tm_mon + 1;
+    newSession->nextSessionDate.year = tm.tm_year + 1900;
+
+    newSession->nextSessionHour = (char*) malloc(LG_MAX_INFO*sizeof(char));
+    strcpy(newSession->nextSessionHour, "12:00");
+
+    newSession->isRealSession = 1;
+
+    newSession->idSession = 0;
+    newSession->idFolder = idFolder;
+
+    return newSession;
 }
 
 /*!

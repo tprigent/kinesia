@@ -143,6 +143,14 @@ int modifySession(Session *session){
 
 }
 
+/*!
+ * \brief This function makes an SQL request, delete the session.
+ *
+ * \param[in] the id of the session.
+ *
+ * \param[out] int, 1 if an error occurred, 0 otherwise
+*/
+
 int deleteSession(int id){
 
     sqlite3 *db;

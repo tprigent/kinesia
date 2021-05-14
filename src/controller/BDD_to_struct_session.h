@@ -9,8 +9,10 @@
 #include "../model/structures.h"
 
 Session * getSession(int idSession);
+Session * getSession0(int idFolder);
 int * getSessionId(int idFolder);
 SessionList * getSessionList(int idF);
 int getNbSession(int idFolder);
+int getSessionsAtDate(Date *date, int *sessionID, int *folderID);
 
 #endif //LOGICIEL_KINE_BDD_TO_STRUCT_SESSION_H

@@ -9,6 +9,8 @@
 #include "display_helpers.h"
 #include "struct_to_BDD_patient.h"
 #include "struct_to_BDD_folder.h"
+#include "../model/session_manager.h"
+#include "../model/folder_manager.h"
 
 
 /*!
@@ -88,6 +90,14 @@ void saveFolderEntries(Folder *folder, GtkWidget *folder_name,GtkWidget *patholo
     if(origin == 1){
         modifyFolder(folder);
     } else {
+        /* Create a non real session to display the first appointment in HomeView */
+        Session *firstSessionDate = createEmptySession(getFutureFolderId());
+        firstSessionDate->isRealSession = 0;
+        firstSessionDate->nextSessionDate.day = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->day;
+        firstSessionDate->nextSessionDate.month= parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->month;
+        firstSessionDate->nextSessionDate.year = parseDate((char *)gtk_entry_get_text(GTK_ENTRY(start_treatment)))->year;
+        addSession(firstSessionDate);
+
         addFolder(folder);
     }
 
