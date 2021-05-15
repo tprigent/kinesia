@@ -214,6 +214,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
     param->notebook = tabs;
     param->window = window;
     param->sortType = 2;
+    param->sortButton = sort_button;
     g_signal_connect(GTK_COMBO_BOX(sort_button), "changed", G_CALLBACK(fillPatientNotebook), param);
 
     /* ADD A NEW PATIENT */
@@ -264,7 +265,7 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     int i;
     char** nameActivePatient;
     int* idActivePatient;
-    int sortType = gtk_combo_box_get_active(GTK_COMBO_BOX(button));
+    int sortType = gtk_combo_box_get_active(GTK_COMBO_BOX(param->sortButton));
 
     int nbActivePatient = getNbPatient(ACTIVE);
     GtkWidget *grid_active_patient = gtk_grid_new();
