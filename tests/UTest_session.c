@@ -32,8 +32,8 @@ static int setup_sessionList_non_empty(void **state){
     assert_null(l->first);
     assert_null(l->last);
 
-    insertFirst(l, "nom", "obs", 12, 3, 0, 0, 0, 0, 0, 1);
-    insertFirst(l, "nom2", "obs2", 15, 14, 13, 12, 11, 10, 2, 3);
+    insertFirst(l, "nom", "obs", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1);
+    insertFirst(l, "nom2", "obs2", 15, 14, 13, 12, 11, 10, "0", 0, 2, 3);
     *state = l;
     return 0;
 }
@@ -42,7 +42,7 @@ static void test_isEmpty_insertFirst(void **state) {
     SessionList *l = *state;
     assert_int_equal(-1, isEmpty(l));
 
-    assert_int_equal(0, insertFirst(l, "nom", "obs", 12, 3, 0, 0, 0, 0, 0, 1));
+    assert_int_equal(0, insertFirst(l, "nom", "obs", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1));
 
     assert_non_null(l->first);
 
@@ -80,7 +80,7 @@ static void test_setOnLast(void **state) {
 
 static void test_insertLast(void **state) {
     SessionList *l = *state;
-    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, 0, 1);
+    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "8", 0, 0, 1);
 
     assert_non_null(l->last);
 
@@ -104,7 +104,7 @@ static void test_insertLast(void **state) {
 
 static void test_insertLast_emptyList(void **state) {
     SessionList *l = *state;
-    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, 0, 1);
+    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1);
 
     assert_non_null(l->last);
 
@@ -150,7 +150,7 @@ static void test_deleteFirst(void **state) {
 
 static void test_deleteCurrent(void **state) {
     SessionList *l = *state;
-    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, 0, 1);
+    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1);
     setOnFirst(l);
     setOnNext(l);
     deleteCurrent(l);
@@ -171,7 +171,7 @@ static void test_pointNthElement(void **state) {
 
 static void test_deleteNthElement(void **state) {
     SessionList *l = *state;
-    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, 0, 1);
+    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0,"0", 0, 0, 1);
     assert_int_equal(0, deleteNthElement(l, 2));
     assert_string_equal("nom3", l->last->session.sessionName);
     assert_string_equal("nom2", l->first->session.sessionName);
