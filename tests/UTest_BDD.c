@@ -17,6 +17,7 @@
 #include "../src/controller/struct_to_BDD_folder.h"
 #include "../src/controller/BDD_to_struct_folder.h"
 #include "../src/controller/BDD_to_struct_session.h"
+#include "../src/controller/struct_to_BDD_session.h"
 #include "../src/model/structures.h"
 #include "../src/controller/struct_to_BDD_session.h"
 
@@ -104,6 +105,22 @@ static void test_setPatient(void **state) {
     assert_int_equal(0, patient->gender);
     assert_string_equal("68", patient->weight);
     assert_string_equal("170", patient->height);
+    assert_int_equal(1, patient->id);
+
+    setAddress(&address, NULL, NULL, NULL, NULL);
+
+    assert_int_equal(0, setPatient(patient, NULL, NULL, date, NULL, 0, address, NULL, NULL, NULL, NULL, NULL, NULL, date, NULL, 1, 0));
+    assert_null(patient->name);
+    assert_null(patient->firstname);
+    assert_null(patient->place_birth);
+    assert_null(patient->phone_number);
+    assert_null(patient->mail_address);
+    assert_null(patient->job);
+    assert_null(patient->ssn);
+    assert_null(patient->global_pathologies);
+    assert_int_equal(0, patient->gender);
+    assert_null(patient->weight);
+    assert_null(patient->height);
     assert_int_equal(1, patient->id);
 }
 
