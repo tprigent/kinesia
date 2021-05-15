@@ -78,6 +78,10 @@ void setWorkEnvironment(Window_id *window_id){
 
     WorkWindow * workwindow = malloc(sizeof(WorkWindow));
     if(workwindow == NULL) printf("Allocation error on workwindow.\n");
+    workwindow->patient = NULL;
+    workwindow->window = NULL;
+    workwindow->folder = NULL;
+    workwindow->sessionList = NULL;
 
     /*Patient *patient = getPatient(window_id->patientID);*/
     workwindow->patient = getPatient(window_id->patientID);
