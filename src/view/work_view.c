@@ -75,12 +75,19 @@ GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder){
 void setWorkEnvironment(Window_id *window_id){
 
     /* GET PATIENT STRUCTURE FROM BDD */
-    Patient *patient = getPatient(window_id->patientID);
 
-    GtkWidget *window = window_id->window;
+    WorkWindow * workwindow = malloc(sizeof(WorkWindow));
+    if(workwindow == NULL) printf("Allocation error on workwindow.\n");
+
+    /*Patient *patient = getPatient(window_id->patientID);*/
+    workwindow->patient = getPatient(window_id->patientID);
+
+    /*GtkWidget *window = window_id->window;*/
+    workwindow->window = window_id->window;
+
     GtkWidget *grid = NULL;
     grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_container_add(GTK_CONTAINER(workwindow->window), grid);
 
     /* Set the 3 main spaces of the window */
     GtkWidget *boxPart[3];
@@ -104,7 +111,7 @@ void setWorkEnvironment(Window_id *window_id){
     gtk_widget_set_vexpand(boxPart[2], TRUE);
 
     /* Fill in the 3 spaces */
-    fillPatientBox(window, boxPart[0], boxPart[1], boxPart[2], patient, window_id->folderID);
+    fillPatientBox(boxPart[0], boxPart[1], boxPart[2], workwindow, window_id->folderID);
     free(window_id);
 }
 
@@ -122,12 +129,12 @@ void setWorkEnvironment(Window_id *window_id){
  * \param[in] patient : current patient
  * \param[in] id_folder : the current folder to display
 */
-void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient, int id_folder){
+void fillPatientBox(GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, WorkWindow *workwindow, int id_folder){
 
     /* CREATE STRUCT TO PASS ARGUMENTS TO DIALOG BOX */
     Patient_window *patient_window = (Patient_window*) malloc(sizeof(Patient_window));
-    patient_window->patient = patient;
-    patient_window->window = window;
+    patient_window->patient = workwindow->patient;
+    patient_window->window = workwindow->window;
     patient_window->origin = 1;
 
 
@@ -155,11 +162,11 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     GtkWidget *patient_other_info = NULL;
     GtkWidget *patient_mail_link = NULL;
 
-    char *patient_name_char = get_name_UI(patient);
-    char *patient_birth_char = get_age_and_birthdate(patient);
-    char *patient_height_weight_char = get_height_weight_UI(patient);
-    char *patient_first_consultation_char = get_first_consultation_UI(patient);
-    char *contact_link = (char*) malloc(sizeof(char)*(strlen("mailto:")+strlen(patient->mail_address)));
+    char *patient_name_char = get_name_UI(workwindow->patient);
+    char *patient_birth_char = get_age_and_birthdate(workwindow->patient);
+    char *patient_height_weight_char = get_height_weight_UI(workwindow->patient);
+    char *patient_first_consultation_char = get_first_consultation_UI(workwindow->patient);
+    char *contact_link = (char*) malloc(sizeof(char)*(strlen("mailto:")+strlen(workwindow->patient->mail_address)));
 
     /* ASSIGN VARIABLES */
     frame_info = gtk_frame_new("Informations patient");
@@ -175,21 +182,21 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
 
     back_button = gtk_button_new_with_label("< Revenir à la liste");
     edit_button = gtk_button_new_from_icon_name("text-editor", GTK_ICON_SIZE_MENU);
-    patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath((int) patient->id), NULL);
+    patient_photo_pixbuf = gdk_pixbuf_new_from_file(getProfilePhotoPath((int) workwindow->patient->id), NULL);
     patient_photo_pixbuf = gdk_pixbuf_scale_simple(patient_photo_pixbuf, 145, 193, GDK_INTERP_BILINEAR);
     patient_photo = gtk_image_new_from_pixbuf(GDK_PIXBUF(patient_photo_pixbuf));
     patient_name = gtk_label_new(patient_name_char);
     free_info_UI(patient_name_char);
     patient_birth = gtk_label_new(patient_birth_char);
     free_info_UI(patient_birth_char);
-    patient_job = gtk_label_new(patient->job);
+    patient_job = gtk_label_new(workwindow->patient->job);
     patient_height_weight = gtk_label_new(patient_height_weight_char);
     free_info_UI(patient_height_weight_char);
     patient_first_consultation = gtk_label_new(patient_first_consultation_char);
     free_info_UI(patient_first_consultation_char);
-    patient_other_info = gtk_label_new(patient->global_pathologies);
+    patient_other_info = gtk_label_new(workwindow->patient->global_pathologies);
     strcpy(contact_link, "mailto:");
-    strcat(contact_link, patient->mail_address);
+    strcat(contact_link, workwindow->patient->mail_address);
     patient_mail_link = gtk_link_button_new_with_label(contact_link, "Contacter");
 
 
@@ -204,7 +211,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_hexpand(back_button, FALSE);
     gtk_widget_set_vexpand(back_button, FALSE);
     gtk_widget_set_halign(back_button, GTK_ALIGN_START);
-    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(launchHomeView), window);
+    g_signal_connect(GTK_BUTTON(back_button), "clicked", G_CALLBACK(launchHomeView), workwindow);
 
 
 
@@ -300,7 +307,7 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     gtk_widget_set_hexpand(patient_other_info, TRUE);
     gtk_widget_set_margin_top(patient_other_info, 5);
     gtk_widget_set_margin_bottom(patient_other_info, 5);
-    if(strcmp(patient->mail_address, "") != 0) gtk_grid_attach_next_to(GTK_GRID(grid_other_info), patient_mail_link, patient_other_info, GTK_POS_BOTTOM, 1, 1);
+    if(strcmp(workwindow->patient->mail_address, "") != 0) gtk_grid_attach_next_to(GTK_GRID(grid_other_info), patient_mail_link, patient_other_info, GTK_POS_BOTTOM, 1, 1);
 
 
 
@@ -317,10 +324,10 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
     folder_grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(folder_box), folder_grid);
 
-    int *folderIDTab = getIdFolder((int) patient->id);
+    int *folderIDTab = getIdFolder((int) workwindow->patient->id);
     int folder_cursor;
 
-    int nb_folders = getNbFolder((int) patient->id);
+    int nb_folders = getNbFolder((int) workwindow->patient->id);
     GtkWidget *folder_button[nb_folders];
     char *name_folder[nb_folders];
 
@@ -338,8 +345,8 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
         gtk_widget_set_hexpand(folder_button[nb_folders - 1], TRUE);
         Window_id *window_id[nb_folders];
         window_id[nb_folders - 1] = (Window_id*) malloc(sizeof(Window_id));
-        window_id[nb_folders - 1]->window = window;
-        window_id[nb_folders - 1]->patientID = (int) patient->id;
+        window_id[nb_folders - 1]->window = workwindow->window;
+        window_id[nb_folders - 1]->patientID = (int) workwindow->patient->id;
         window_id[nb_folders - 1]->folderID = folderIDTab[nb_folders - 1];
         g_signal_connect(GTK_BUTTON(folder_button[nb_folders - 1]), "clicked", G_CALLBACK(launchWorkView), window_id[nb_folders - 1]);
 
@@ -347,21 +354,21 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
             gtk_grid_attach_next_to(GTK_GRID(folder_grid), folder_button[folder_cursor], folder_button[folder_cursor+1], GTK_POS_BOTTOM, 1, 1);
             gtk_widget_set_hexpand(folder_button[folder_cursor], TRUE);
             window_id[folder_cursor] = (Window_id*) malloc(sizeof(Window_id));
-            window_id[folder_cursor]->window = window;
-            window_id[folder_cursor]->patientID = (int) patient->id;
+            window_id[folder_cursor]->window = workwindow->window;
+            window_id[folder_cursor]->patientID = (int) workwindow->patient->id;
             window_id[folder_cursor]->folderID = folderIDTab[folder_cursor];
             g_signal_connect(GTK_BUTTON(folder_button[folder_cursor]), "clicked", G_CALLBACK(launchWorkView), window_id[folder_cursor]);
         }
     }
 
     if(nb_folders>0 && id_folder == 0){
-        fillFolderBox(window, folderBox, sessionBox, folderIDTab[nb_folders - 1], patient);
+        fillFolderBox(folderBox, sessionBox, folderIDTab[nb_folders - 1], workwindow);
     }
     else if(nb_folders>0 && id_folder != 0){
-        fillFolderBox(window, folderBox, sessionBox, id_folder, patient);
+        fillFolderBox(folderBox, sessionBox, id_folder, workwindow);
     }
     else{
-        fillFolderBox(window, folderBox, sessionBox, 0, patient);
+        fillFolderBox(folderBox, sessionBox, 0, workwindow);
     }
 
 
@@ -381,12 +388,12 @@ void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderB
  * \param[in] activeFolder : the folder that has to be displayed
  * \param[in] patient : current patient
 */
-void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int activeFolder, Patient *patient){
+void fillFolderBox(GtkWidget *box, GtkWidget *sessionBox, int activeFolder, WorkWindow * workwindow){
 
     /* GETTING FOLDER (SPECIAL VIEW IF NO FOLDER) */
-    Folder *folder = NULL;
+    /*Folder *folder = NULL;*/
     if(activeFolder != 0){
-        folder = getFolder(activeFolder);
+        workwindow->folder = getFolder(activeFolder);
     }
     else{
         GtkWidget *frame = gtk_frame_new("");
@@ -405,11 +412,11 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
         gtk_widget_set_tooltip_text(button, "Ajouter le premier dossier");
 
         IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
-        idPatient->idPatient = (int) patient->id;
-        idPatient->window = window;
+        idPatient->idPatient = (int) workwindow->patient->id;
+        idPatient->window = workwindow->window;
         g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
 
-        fillSessionBox(window, sessionBox, NULL, patient, 0);
+        fillSessionBox(sessionBox, NULL, workwindow, 0);
         return ;
     }
 
@@ -454,18 +461,18 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     hbox_attachments = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     hbox_edit_folder = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
-    char *formatted_folder_title_UI = get_formatted_folder_title_UI(folder);
+    char *formatted_folder_title_UI = get_formatted_folder_title_UI(workwindow->folder);
     folder_title = gtk_label_new(formatted_folder_title_UI);
     free_info_UI(formatted_folder_title_UI);
-    char *start_of_treatment = get_date_UI(&folder->startOfTreatment);
+    char *start_of_treatment = get_date_UI(&workwindow->folder->startOfTreatment);
     folder_start_treatment = gtk_label_new("Début de traitement: ");
     folder_date = gtk_label_new(start_of_treatment);
     free_info_UI(start_of_treatment);
     folder_pathology = gtk_label_new("Pathologie: ");
-    folder_pathology_name = gtk_label_new(folder->pathology);
+    folder_pathology_name = gtk_label_new(workwindow->folder->pathology);
     folder_infos = gtk_label_new("<u>Autres informations</u> : ");
-    folder_infos_content = gtk_label_new(folder->details);
-    char *indicator = get_indicator_files_UI((int) patient->id, activeFolder);
+    folder_infos_content = gtk_label_new(workwindow->folder->details);
+    char *indicator = get_indicator_files_UI((int) workwindow->patient->id, activeFolder);
     attachments_label = gtk_label_new("Pièces jointes:    ");
     attachments_count = gtk_label_new(indicator);
     free_info_UI(indicator);
@@ -566,8 +573,8 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     gtk_widget_set_vexpand(attachments_button, FALSE);
 
     MediaType *attachment_properties = (MediaType*) malloc(sizeof(Patient)+sizeof(char)*10+sizeof(int));
-    attachment_properties->patientID = (int) patient->id;
-    attachment_properties->folderID = (int) folder->idFolder;
+    attachment_properties->patientID = (int) workwindow->patient->id;
+    attachment_properties->folderID = (int) workwindow->folder->idFolder;
     attachment_properties->mediaType = 1;
     attachment_properties->counterLabel = attachments_count;
     g_signal_connect(GTK_BUTTON(attachments_button), "clicked", G_CALLBACK(launchAttachmentListViewer), attachment_properties);
@@ -590,8 +597,8 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     gtk_widget_set_margin_end(new_button, 17);
 
     IdPatientCallback *idPatient = (IdPatientCallback*) malloc(sizeof(IdPatientCallback));
-    idPatient->idPatient = (int) patient->id;
-    idPatient->window = window;
+    idPatient->idPatient = (int) workwindow->patient->id;
+    idPatient->window = workwindow->window;
     g_signal_connect(GTK_BUTTON(new_button), "clicked", G_CALLBACK(launchNewFolderEditor), idPatient);
 
 
@@ -602,9 +609,9 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     gtk_widget_set_vexpand(edit_folder_button, FALSE);
 
     FolderEditorStruct *foldEditStruct = (FolderEditorStruct*) malloc(sizeof(FolderEditorStruct));
-    foldEditStruct->folder = folder;
+    foldEditStruct->folder = workwindow->folder;
     foldEditStruct->edit_new = 1;
-    foldEditStruct->window = window;
+    foldEditStruct->window = workwindow->window;
     g_signal_connect(GTK_BUTTON(edit_folder_button), "clicked", G_CALLBACK(launchFolderEditor), foldEditStruct);
 
 
@@ -615,16 +622,16 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
     gtk_widget_set_vexpand(delete_folder_button, FALSE);
 
     DeleteElements *folderDelete = (DeleteElements *) malloc(sizeof(DeleteElements));
-    folderDelete->window = window;
+    folderDelete->window = workwindow->window;
     folderDelete->isFolder = 1;
     folderDelete->folderID = activeFolder;
     folderDelete->notebook = NULL;
-    folderDelete->patientID = (int) patient->id;
+    folderDelete->patientID = (int) workwindow->patient->id;
     g_signal_connect(GTK_BUTTON(delete_folder_button), "clicked", G_CALLBACK(launchDeleteElement), folderDelete);
 
 
     /* CALL FUNCTION WHICH FILLS SESSION PART */
-    fillSessionBox(window, sessionBox, attachments_count, patient, activeFolder);
+    fillSessionBox(sessionBox, attachments_count, workwindow, activeFolder);
 
 }
 
@@ -642,7 +649,7 @@ void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int
  * \param[in] patient : current patient
  * param[in] folderID : current folder
 */
-void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCounterLabel, Patient *patient, int folderID){
+void fillSessionBox(GtkWidget *box, GtkWidget *attachmentCounterLabel, WorkWindow * workwindow, int folderID){
 
     if(folderID == 0){
         GtkWidget *label = gtk_label_new("Ce patient n'a pas de dossier associé");
@@ -669,8 +676,8 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
 
         /* CONNECT BUTTON TO CREATE FIRST SESSION */
         AddFirstSessionStruct *firstSession = (AddFirstSessionStruct*) malloc(sizeof(AddFirstSessionStruct));
-        firstSession->window = window;
-        firstSession->patientID = (int) patient->id;
+        firstSession->window = workwindow->window;
+        firstSession->patientID = (int) workwindow->patient->id;
         firstSession->folderID = folderID;
         g_signal_connect(GTK_BUTTON(button), "clicked", G_CALLBACK(addFirstSessionUI), firstSession);
 
@@ -836,7 +843,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
         newSessionStruct->notebook = notebook;
         newSessionStruct->attachmentLabel = attachmentCounterLabel;
         newSessionStruct->folderID = folderID;
-        newSessionStruct->patientID = (int) patient->id;
+        newSessionStruct->patientID = (int) workwindow->patient->id;
 
         /* NOTEBOOK TO DISPLAY THE DIFFERENT SESSIONS */
         gtk_grid_attach(GTK_GRID(grid_session_section), notebook, GTK_ALIGN_START, GTK_ALIGN_CENTER, 1, 1);
@@ -946,7 +953,7 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             gtk_widget_set_hexpand(session_attach_button[session_cursor], FALSE);
             gtk_widget_set_vexpand(session_attach_button[session_cursor], FALSE);
             mediaChooser[session_cursor] = (MediaType *) malloc(sizeof(MediaType));
-            mediaChooser[session_cursor]->patientID = (int) patient->id;
+            mediaChooser[session_cursor]->patientID = (int) workwindow->patient->id;
             mediaChooser[session_cursor]->folderID = folderID;
             mediaChooser[session_cursor]->mediaType = 1;
             mediaChooser[session_cursor]->counterLabel = attachmentCounterLabel;
@@ -960,11 +967,11 @@ void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCoun
             gtk_widget_set_vexpand(delete_button[session_cursor], TRUE);
             gtk_widget_set_valign(delete_button[session_cursor], GTK_ALIGN_END);
             sessionDelete[session_cursor] = (DeleteElements *) malloc(sizeof(DeleteElements));
-            sessionDelete[session_cursor]->window = window;
+            sessionDelete[session_cursor]->window = workwindow->window;
             sessionDelete[session_cursor]->isFolder = 0;
             sessionDelete[session_cursor]->sessionID = (int) session_list->current->session.idSession;
             sessionDelete[session_cursor]->notebook = notebook;
-            sessionDelete[session_cursor]->patientID = (int) patient->id;
+            sessionDelete[session_cursor]->patientID = (int) workwindow->patient->id;
             sessionDelete[session_cursor]->folderID = folderID;
             g_signal_connect(GTK_BUTTON(delete_button[session_cursor]), "clicked", G_CALLBACK(launchDeleteElement),
                              sessionDelete[session_cursor]);

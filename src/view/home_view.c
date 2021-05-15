@@ -224,6 +224,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
 }
 
+
 /*!
  * \brief Allows to close the Work window and open the Home window
  *
@@ -231,12 +232,13 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
  * the current Work window and open the Home window.
  *
  * \param[in] but : Button clicked to call this function
- * \param[in] window : Current window that have to be closed
+ * \param[in] workwindow : A struct with the current window that have to be closed and all the structures to free
 */
-void launchHomeView(GtkWidget *but, GtkWidget *window){
+void launchHomeView(GtkWidget *but, WorkWindow *workwindow){
     int fullScreen = 0;
-    if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
-    gtk_widget_destroy(window);
+    if(gtk_window_is_maximized(GTK_WINDOW(workwindow->window))==TRUE) fullScreen = 1;
+    gtk_widget_destroy(workwindow->window);
+    freeWorkWindow(workwindow);
     setHomeWindow(0, fullScreen, 0);
 }
 
@@ -417,6 +419,61 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
 
     free(nomArchivePatient);
 };
+
+    //Have to free window_id tabb (can't be done here)*/
+
+}
+
+/*!
+ * \brief Allows to close the Work window and open the Home window
+ *
+ * When the user click on the back button from a session window, this function closes
+ * the current Work window and open the Home window.
+ *
+ * \param[in] but : Button clicked to call this function
+ * \param[in] window : Current window that have to be closed
+*/
+void launchHomeView(GtkWidget *but, WorkWindow *workwindow){
+    int fullScreen = 0;
+    if(gtk_window_is_maximized(GTK_WINDOW(workwindow->window))==TRUE) fullScreen = 1;
+    gtk_widget_destroy(workwindow->window);
+    freeWorkWindow(workwindow);
+    setHomeWindow(0, fullScreen, 0);
+}
+
+/*!
+ * \brief Create and allocate an empty session
+ *
+ * When a new session is created, this function allocates it
+ * and fills it with the current date
+ *
+ * \param[in] idFolder : folder id to which the session has to be linked
+ * \param[out] session : Empty session allocated
+*/
+Session *createEmptySession(int idFolder){
+    Session *newSession = (Session*) malloc(sizeof(Session));
+    newSession->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
+    char *new_session_name = get_new_session_name();
+    strcpy(newSession->sessionName, new_session_name);
+    free_info_UI(new_session_name);
+    newSession->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+    strcpy(newSession->observations, "Remarques");
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    newSession->sessionDate.day = tm.tm_mday;
+    newSession->sessionDate.month = tm.tm_mon + 1;
+    newSession->sessionDate.year = tm.tm_year + 1900;
+
+    newSession->nextSessionDate.day = tm.tm_mday;
+    newSession->nextSessionDate.month = tm.tm_mon + 1;
+    newSession->nextSessionDate.year = tm.tm_year + 1900;
+
+    newSession->idSession = 0;
+    newSession->idFolder = idFolder;
+
+    return newSession;
+}
 
 /*!
  * \brief show on screen the result of the patient research
@@ -599,4 +656,11 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
 
     gtk_widget_show_all(params->grid);
     free(date);
+}
+
+
+void freeWorkWindow(WorkWindow *workwindow) {
+    if(workwindow->patient !=NULL) freePatient(&(workwindow->patient));
+    //if(workwindow->folder !=NULL) freeFolder(&(workwindow->folder));
+    if(workwindow->sessionList !=NULL) freeList(workwindow->sessionList);
 }

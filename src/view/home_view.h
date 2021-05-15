@@ -21,6 +21,13 @@ typedef struct {
     int folderID;           /**< ID of the Folder to be edited */
 }Window_id;
 
+typedef struct {
+    GtkWidget *window;
+    Patient * patient;
+    SessionList *sessionList;
+    Folder *folder;
+}WorkWindow;
+
 /**
  * \brief Structure for search function
  *
@@ -55,7 +62,8 @@ typedef struct {
 
 GtkWidget *setHomeWindow(int firstLoad, int fullScreen, int cssMode);
 void setHomeEnvironment(GtkWidget *window, int cssMode);
-void launchHomeView(GtkWidget *but, GtkWidget *window);
+void launchHomeView(GtkWidget *but, WorkWindow * workwindow);
+void freeWorkWindow(WorkWindow * workwindow);
 
 void fillPatientNotebook(GtkWidget *button, NotebookFill *param);
 void processSearch(GtkWidget *button, SearchParam *search);
