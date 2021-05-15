@@ -50,6 +50,7 @@ typedef struct {
 typedef struct {
     GtkWidget *window;
     GtkWidget *notebook;
+    GtkWidget *sortButton;
     int sortType;
 }NotebookFill;
 
