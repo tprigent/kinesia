@@ -28,11 +28,11 @@ static void load_css(int cssMode){
 
     const gchar *css_style_file = NULL;
     if(cssMode == 0) {
-        css_style_file = "../src/view/whiteMod.css"; // missing e to diable css
+        css_style_file = "../src/view/whiteMode.css"; // missing e to diable css
         g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", FALSE, NULL);
     }
     else {
-        css_style_file = "../src/view/darkMod.css"; // missing e to diable css
+        css_style_file = "../src/view/darkMode.css"; // missing e to diable css
         g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", TRUE, NULL);
     }
 
