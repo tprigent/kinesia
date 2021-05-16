@@ -27,8 +27,14 @@ static void load_css(int cssMode){
     GdkScreen *screen;
 
     const gchar *css_style_file = NULL;
-    if(cssMode == 0) css_style_file = "../src/view/whiteMode.css";
-    else css_style_file = "../src/view/darkMode.css";
+    if(cssMode == 0) {
+        css_style_file = "../src/view/whiteMode.css"; // missing e to diable css
+        g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", FALSE, NULL);
+    }
+    else {
+        css_style_file = "../src/view/darkMode.css"; // missing e to diable css
+        g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", TRUE, NULL);
+    }
 
     GFile *css_fp = g_file_new_for_path(css_style_file);
     GError *error = 0;

@@ -41,3 +41,7 @@ entry{
 text{
   background: #FFFFFF;
 }
+
+label{
+  color: #000000;
+}
