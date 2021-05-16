@@ -894,9 +894,9 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
     toggle_switch = gtk_switch_new();
     if(settings->cssMode == 1) gtk_switch_set_active(GTK_SWITCH(toggle_switch), TRUE);
 
-    whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/whiteMode.jpeg", 400, 300, TRUE, NULL);
+    whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/whiteMode.png", 400, 300, TRUE, NULL);
     whiteImage = gtk_image_new_from_pixbuf(whitePixbuf);
-    darkPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/darkMode.jpeg", 400, 300, TRUE, NULL);
+    darkPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/darkMode.png", 400, 300, TRUE, NULL);
     darkImage = gtk_image_new_from_pixbuf(darkPixbuf);
 
     /* CREATE THE DIALOG BOX */
