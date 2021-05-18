@@ -243,7 +243,6 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
 }
 
-
 /*!
  * \brief Allows to close the Work window and open the Home window
  *
@@ -261,6 +260,14 @@ void launchHomeView(GtkWidget *but, WorkWindow *workwindow){
     setHomeWindow(0, fullScreen, 0);
 }
 
+/*!
+ * \brief Manage display of the patient list notebook
+ * Fills home view and allow the user to distinguish active and archived patient
+ * and sort ascending or descending by name/firstname.
+ *
+ * \param[in] button Button used to change the sort type
+ * \param[in] param Structure of parameters needed (notebook, sortButton, etc)
+*/
 void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
 
     /* CLEAN NOTEBOOK BEFORE WORKING ON IT */
@@ -438,7 +445,6 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     gtk_widget_show_all(param->notebook);
 
 };
-
 
 /*!
  * \brief show on screen the result of the patient research
@@ -623,7 +629,12 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
     free(date);
 }
 
-
+/*!
+ * \brief Deallocate data structures
+ * Free Patient struct, Folder struct and Session list
+ *
+ * \param[in] workwindow Structure containing all the data structures to be freed
+*/
 void freeWorkWindow(WorkWindow *workwindow) {
     if(workwindow->patient !=NULL) freePatient(&(workwindow->patient));
     //if(workwindow->folder !=NULL) freeFolder(&(workwindow->folder));
