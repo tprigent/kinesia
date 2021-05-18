@@ -156,7 +156,8 @@ char *getProfileExtension(int patientID){
 }
 
 /*!
- * \brief Get the path of the profile photo from a given Patient
+ * \brief Get the path of the profile photo from a given Patient.
+ * If no profile photo has been provided, a generic avatar is returned.
  *
  * \param[in] patientID : Identifier of the concerned Patient
  * \param[out] Profile photo path
@@ -167,7 +168,11 @@ char *getProfilePhotoPath(int patientID){
     strcat(photo_path, "profil");
     strcat(photo_path, getProfileExtension(patientID));
 
-    return photo_path;
+    if( access(photo_path, F_OK ) == 0 ) {
+        return photo_path;
+    } else {
+        return "../media/graphic-assets/avatar.png";
+    }
 }
 
 /*!
