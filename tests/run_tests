@@ -43,7 +43,7 @@ while true; do
           echo "*** Memory tests selected ***"
           cd ..
           mkdir build
-          cmake -g -S . -B ./build
+          cmake -S . -DCMAKE_BUILD_TYPE=Debug -B ./build
           cd build
           make
           valgrind --log-file="memreport" --leak-check=full --track-origins=yes ./Kinesia

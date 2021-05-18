@@ -57,7 +57,7 @@ int addFolder(Folder *folder){
     sqlite3_bind_int(stmt,i++,folder->startOfTreatment.month);
     sqlite3_bind_int(stmt,i++,folder->startOfTreatment.day);
     sqlite3_bind_int(stmt,i++,(int)folder->numberOfFiles);
-    sqlite3_bind_int(stmt,i++,(int)folder->idPatient);
+    sqlite3_bind_int(stmt,i,(int)folder->idPatient);
 
     //Execution de la requête
     rc = sqlite3_step(stmt);
@@ -127,7 +127,7 @@ int modifyFolder(Folder *folder){
     sqlite3_bind_int(stmt,i,(int)folder->idFolder);
 
     //Execution de la requête
-    rc = sqlite3_step(stmt);
+    sqlite3_step(stmt);
 
     sqlite3_finalize(stmt);
 
@@ -136,6 +136,14 @@ int modifyFolder(Folder *folder){
     return 1;
 
 }
+
+/*!
+ * \brief This function makes an SQL request, delete the folder and its associated session(s).
+ *
+ * \param[in] the id of the folder.
+ *
+ * \param[out] int, 1 if an error occurred, 0 otherwise
+*/
 
 int deleteFoler(int id){
 

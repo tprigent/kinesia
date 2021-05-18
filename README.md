@@ -13,7 +13,9 @@ It allows them to easily manage patient information and consultation notes.
 
 ## For users
 
-// To be written
+####macOS
+Download the .dmg located in `/bin` ([here](bin/Kinesia.dmg)) and follow the instructions.
+You may need to allow the app in the security settings at first launch.
 
 ## Join the project
 
@@ -60,7 +62,7 @@ chmod +x run
 ./run
 ```
 
-
+***
 #### For macOS
 
 Firstly, if it has never been done before, you will need to install Xcode Command Line Tools to get ```gcc``` compiler and ```git```:

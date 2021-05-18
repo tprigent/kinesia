@@ -27,8 +27,14 @@ static void load_css(int cssMode){
     GdkScreen *screen;
 
     const gchar *css_style_file = NULL;
-    if(cssMode == 0) css_style_file = "../src/view/whiteMode.css";
-    else css_style_file = "../src/view/darkMode.css";
+    if(cssMode == 0) {
+        css_style_file = "../src/view/whiteMode.css"; // missing e to diable css
+        g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", FALSE, NULL);
+    }
+    else {
+        css_style_file = "../src/view/darkMode.css"; // missing e to diable css
+        g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", TRUE, NULL);
+    }
 
     GFile *css_fp = g_file_new_for_path(css_style_file);
     GError *error = 0;
@@ -237,6 +243,7 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
 
 }
 
+
 /*!
  * \brief Allows to close the Work window and open the Home window
  *
@@ -244,12 +251,13 @@ void setHomeEnvironment(GtkWidget *window, int cssMode){
  * the current Work window and open the Home window.
  *
  * \param[in] but : Button clicked to call this function
- * \param[in] window : Current window that have to be closed
+ * \param[in] workwindow : A struct with the current window that have to be closed and all the structures to free
 */
-void launchHomeView(GtkWidget *but, GtkWidget *window){
+void launchHomeView(GtkWidget *but, WorkWindow *workwindow){
     int fullScreen = 0;
-    if(gtk_window_is_maximized(GTK_WINDOW(window))==TRUE) fullScreen = 1;
-    gtk_widget_destroy(window);
+    if(gtk_window_is_maximized(GTK_WINDOW(workwindow->window))==TRUE) fullScreen = 1;
+    gtk_widget_destroy(workwindow->window);
+    freeWorkWindow(workwindow);
     setHomeWindow(0, fullScreen, 0);
 }
 
@@ -276,6 +284,7 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     GtkWidget *active_patient_button[nbActivePatient];
     GtkWidget *archive_button[nbActivePatient];
     GtkWidget *active_delete_button[nbActivePatient];
+    GtkWidget *noActivePatientLabel = NULL;
 
     idActivePatient = (int*)calloc(nbActivePatient,sizeof(int));
     nameActivePatient = (char**)calloc(nbActivePatient,sizeof(void *));
@@ -288,6 +297,14 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     gtk_container_add(GTK_CONTAINER(box_archived_patient), grid_archived_patient);
 
     getNameFirstnameIdPatient(idActivePatient,nameActivePatient,ACTIVE, sortType);
+
+    if(nbActivePatient == 0){
+        noActivePatientLabel = gtk_label_new("<big><i>Créez votre première fiche patient</i></big>");
+        gtk_label_set_use_markup(GTK_LABEL(noActivePatientLabel), TRUE);
+        gtk_grid_attach(GTK_GRID(grid_active_patient), noActivePatientLabel, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_widget_set_hexpand(noActivePatientLabel, TRUE);
+        gtk_widget_set_vexpand(noActivePatientLabel, TRUE);
+    }
 
     for(i=0; i < nbActivePatient; i++){
         active_patient_button[i] = gtk_button_new_with_label(nameActivePatient[i]);
@@ -349,12 +366,21 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
     GtkWidget *archived_patient_button[nbArchivedPatient];
     GtkWidget *unarchive_button[nbArchivedPatient];
     GtkWidget *archived_delete_button[nbArchivedPatient];
+    GtkWidget *noArchivedPatientLabel = NULL;
 
     idArchivePatient = (int*)calloc(nbArchivedPatient,sizeof(int));
     nomArchivePatient = (char**)calloc(nbArchivedPatient,sizeof(void *));
 
     getNameFirstnameIdPatient(idArchivePatient,nomArchivePatient,ARCHIVED, sortType);
 
+
+    if(nbArchivedPatient == 0){
+        noArchivedPatientLabel = gtk_label_new("<big><i>Aucune fiche patient archivée</i></big>");
+        gtk_label_set_use_markup(GTK_LABEL(noArchivedPatientLabel), TRUE);
+        gtk_grid_attach(GTK_GRID(grid_archived_patient), noArchivedPatientLabel, GTK_ALIGN_CENTER, GTK_ALIGN_CENTER, 1, 1);
+        gtk_widget_set_hexpand(noArchivedPatientLabel, TRUE);
+        gtk_widget_set_vexpand(noArchivedPatientLabel, TRUE);
+    }
 
     for(i=0; i < nbArchivedPatient; i++){
         archived_patient_button[i] = gtk_button_new_with_label(nomArchivePatient[i]);
@@ -413,6 +439,7 @@ void fillPatientNotebook(GtkWidget *button, NotebookFill *param){
 
 };
 
+
 /*!
  * \brief show on screen the result of the patient research
  *
@@ -425,7 +452,13 @@ void processSearch(GtkWidget *button, SearchParam *search){
 
     /* Check if entry is null */
     char *searchEntry = (char*) gtk_entry_get_text(GTK_ENTRY(search->entry));
-    if(strcmp(searchEntry, "") == 0) return;
+    if(strcmp(searchEntry, "") == 0){
+        if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(search->notebook))) {
+            gtk_notebook_remove_page(GTK_NOTEBOOK(search->notebook), 2);
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(search->notebook), 0);
+        }
+        return;
+    }
 
     /* Initialise variables */
     GtkWidget *grid_searched_patient;
@@ -588,4 +621,11 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
 
     gtk_widget_show_all(params->grid);
     free(date);
+}
+
+
+void freeWorkWindow(WorkWindow *workwindow) {
+    if(workwindow->patient !=NULL) freePatient(&(workwindow->patient));
+    //if(workwindow->folder !=NULL) freeFolder(&(workwindow->folder));
+    if(workwindow->sessionList !=NULL) freeList(workwindow->sessionList);
 }
