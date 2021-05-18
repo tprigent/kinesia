@@ -30,6 +30,8 @@ typedef struct {
     int patientID;                   /**< ID of the current patient */
 }AddNewSessionStruct;
 
+
+
 /**
  * \brief Structure to add the first Session to a Folder
  *
@@ -58,9 +60,9 @@ typedef struct {
 GtkWidget *setWorkWindow(int fullScreen, int id_patient, int id_folder);
 void setWorkEnvironment(Window_id *window_id);
 
-void fillPatientBox(GtkWidget *window, GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, Patient *patient, int id_folder);
-void fillFolderBox(GtkWidget *window, GtkWidget *box, GtkWidget *sessionBox, int activeFolder, Patient *patient);
-void fillSessionBox(GtkWidget *window, GtkWidget *box, GtkWidget *attachmentCounterLabel, Patient *patient, int folderID);
+void fillPatientBox(GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sessionBox, WorkWindow * workwindow, int id_folder);
+void fillFolderBox(GtkWidget *box, GtkWidget *sessionBox, int activeFolder, WorkWindow * workwindow);
+void fillSessionBox(GtkWidget *box, GtkWidget *attachmentCounterLabel, WorkWindow * workwindow, int folderID);
 void launchWorkView(GtkWidget *but, Window_id *window_id);
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct);
 void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct);

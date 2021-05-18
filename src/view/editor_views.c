@@ -318,7 +318,7 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_entry_set_max_length(GTK_ENTRY(name_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(surname_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(birth_entry), 10);
-    gtk_entry_set_max_length(GTK_ENTRY(job_entry), 10);
+    gtk_entry_set_max_length(GTK_ENTRY(job_entry), 30);
     gtk_entry_set_max_length(GTK_ENTRY(address_entry), 100);
     gtk_entry_set_max_length(GTK_ENTRY(postcode_entry), 5);
     gtk_entry_set_max_length(GTK_ENTRY(city_entry), 25);
@@ -360,7 +360,9 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Femme");
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Homme");
     gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(gender_combo_box), NULL, "Autre");
-    gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), patient->gender);
+    if(patient->gender == WOMAN) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 0);
+    else if (patient->gender == MAN) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 1);
+    else if (patient->gender == OTHER) gtk_combo_box_set_active(GTK_COMBO_BOX(gender_combo_box), 2);
 
     job = gtk_label_new("Profession : ");
     gtk_entry_set_text(GTK_ENTRY(job_entry), patient->job);
@@ -868,22 +870,33 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
     GtkWidget *darkImage= NULL;
     GtkWidget *toggle_switch = NULL;
     GtkWidget *darkModeLabel = NULL;
+    GtkWidget *explanationsLabel = NULL;
+    GtkWidget *licenseLabel = NULL;
+    GtkWidget *INSAlabel = NULL;
+    GtkWidget *authorsLabel = NULL;
 
     /* ASSIGN VARIABLES */
     label_whiteMode = gtk_label_new("Mode clair :");
     label_darkMode = gtk_label_new("Mode sombre :");
+    darkModeLabel = gtk_label_new("Mode sombre ");
+    explanationsLabel = gtk_label_new("<i>Ce logiciel a été développé dans le cadre d'un projet de langage C de troisième année.</i>");
+    licenseLabel = gtk_link_button_new_with_label("https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine.git", "© Kinesia (2021)");
+    INSAlabel = gtk_label_new("<i>INSA Rennes, département EII</i>");
+    authorsLabel = gtk_label_new("<i>Paul Bertho, Salomé Guinaudeau, Julien Priam, Théo Prigent</i>");
+    gtk_label_set_use_markup(GTK_LABEL(authorsLabel), TRUE);
+    gtk_label_set_use_markup(GTK_LABEL(INSAlabel), TRUE);
+    gtk_label_set_use_markup(GTK_LABEL(explanationsLabel), TRUE);
 
     grid_dialog = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid_dialog), 5);
     gtk_grid_set_row_spacing(GTK_GRID(grid_dialog), 5);
 
-    darkModeLabel = gtk_label_new("Mode sombre ");
     toggle_switch = gtk_switch_new();
     if(settings->cssMode == 1) gtk_switch_set_active(GTK_SWITCH(toggle_switch), TRUE);
 
-    whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/whiteMode.jpeg", 400, 300, TRUE, NULL);
+    whitePixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/whiteMode.png", 400, 300, TRUE, NULL);
     whiteImage = gtk_image_new_from_pixbuf(whitePixbuf);
-    darkPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/darkMode.jpeg", 400, 300, TRUE, NULL);
+    darkPixbuf = gdk_pixbuf_new_from_file_at_scale("../media/graphic-assets/darkMode.png", 400, 300, TRUE, NULL);
     darkImage = gtk_image_new_from_pixbuf(darkPixbuf);
 
     /* CREATE THE DIALOG BOX */
@@ -902,6 +915,12 @@ void launchSettingsEditor(GtkWidget *button, SoftwareSettings *settings){
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkImage, label_darkMode, GTK_POS_BOTTOM, 14, 1);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), darkModeLabel, whiteImage, GTK_POS_BOTTOM, 1, 1);
     gtk_grid_attach_next_to(GTK_GRID(grid_dialog), toggle_switch, darkModeLabel, GTK_POS_RIGHT, 1, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), explanationsLabel, toggle_switch, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), INSAlabel, explanationsLabel, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), authorsLabel, INSAlabel, GTK_POS_BOTTOM, 23, 1);
+    gtk_grid_attach_next_to(GTK_GRID(grid_dialog), licenseLabel, authorsLabel, GTK_POS_BOTTOM, 23, 1);
+
+    gtk_widget_set_margin_top(explanationsLabel, 15);
 
     /* SETUP THE VIEW PARAMETERS */
     gtk_container_set_border_width(GTK_CONTAINER(content_area), 5);
