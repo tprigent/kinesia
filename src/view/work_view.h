@@ -11,11 +11,16 @@
 #include "../model/structures.h"
 #include "home_view.h"
 
+/**
+ * \brief Structure to manage the appointment indicator for the first one
+ *
+ * Callback structure
+*/
 typedef struct {
-    Session *session;
-    GtkWidget *dateEntry;
-    GtkWidget *hourEntry;
-    GtkWidget *stateLabel;
+    Session *session;               /**< Session related to this first appointment */
+    GtkWidget *dateEntry;           /**< Entry of the appointment date */
+    GtkWidget *hourEntry;           /**< Entry of the appointment hour */
+    GtkWidget *stateLabel;          /**< Label to indicate the state of the data (draft or saved) */
 }firstSessionHoursStruct;
 
 /**
@@ -66,7 +71,6 @@ void fillSessionBox(GtkWidget *box, GtkWidget *attachmentCounterLabel, WorkWindo
 void launchWorkView(GtkWidget *but, Window_id *window_id);
 void addFirstSessionUI(GtkWidget *button, AddFirstSessionStruct *firstSessionStruct);
 void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct);
-void launchDeleteWarning(GtkWidget *button, char *title);
 void modifyFirstSessionHours(GtkWidget *entry, firstSessionHoursStruct *fSHS);
 
 void setStartMargin(GtkWidget *widget);
