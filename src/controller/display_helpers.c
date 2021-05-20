@@ -46,7 +46,7 @@ void tostring(char *str, int num){
  * \param[out] Char pointer combining at "Firstname Name" format
 */
 char *get_name_UI(Patient *patient){
-    char *name = (char*) malloc(sizeof(patient->firstname)+sizeof(patient->name)+8*sizeof(char));
+    char *name = (char*) malloc(sizeof(char)*LG_MAX_INFO);
     strcpy(name, "<b>");
     strcat(name, patient->firstname);
     strcat(name, " ");
@@ -89,7 +89,7 @@ char *get_date_UI(Date *date){
  * \param[out] Char pointer containing the Patient height and weight
 */
 char *get_height_weight_UI(Patient *patient){
-    char *height_weight = (char*) malloc(sizeof(patient->height)+sizeof(patient->weight)+12*sizeof(char));
+    char *height_weight = (char*) malloc(sizeof(char)*LG_MAX_INFO);
     strcpy(height_weight, patient->height);
     strcat(height_weight, "     ;     ");
     strcat(height_weight, patient->weight);
@@ -137,7 +137,7 @@ char *get_formatted_folder_title_UI(Folder *folder){
     int length = (int) strlen(folder->folderName);
     length += (int) strlen(start);
     length += (int) strlen(end);
-    char *formattedTitle = (char*) malloc(length*sizeof(char));
+    char *formattedTitle = (char*) malloc(LG_MAX_INFO*sizeof(char));
     strcpy(formattedTitle, start);
     strcat(formattedTitle, folder->folderName);
     strcat(formattedTitle, end);
@@ -214,7 +214,7 @@ char *get_current_date(){
  * \param[out] String containing the new session name
 */
 char *get_new_session_name(){
-    char *new_session_name = (char*) malloc(21*sizeof(char));
+    char *new_session_name = (char*) malloc(LG_MAX_INFO*sizeof(char));
     char *date = get_current_date();
 
     strcpy(new_session_name, "Séance du ");

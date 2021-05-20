@@ -471,7 +471,7 @@ void processSearch(GtkWidget *button, SearchParam *search){
     GtkWidget *box_searched_patient;
     GtkWidget *no_patient_found_label;
 
-    char *tabTitle = (char*) malloc(sizeof(char)*(strlen(searchEntry)+strlen("Recherche: \" \"")));
+    char *tabTitle = (char*) malloc(sizeof(char)*LG_MAX_OTHERS);
 
     char **searchResult = (char**) malloc(sizeof(char)*1000);
     int *idResult = (int*) malloc(sizeof(int));

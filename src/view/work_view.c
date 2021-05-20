@@ -170,7 +170,7 @@ void fillPatientBox(GtkWidget *patientBox, GtkWidget *folderBox, GtkWidget *sess
     char *patient_birth_char = get_age_and_birthdate(workwindow->patient);
     char *patient_height_weight_char = get_height_weight_UI(workwindow->patient);
     char *patient_first_consultation_char = get_first_consultation_UI(workwindow->patient);
-    char *contact_link = (char*) malloc(sizeof(char)*(strlen("mailto:")+strlen(workwindow->patient->mail_address)));
+    char *contact_link = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
 
     /* ASSIGN VARIABLES */
     frame_info = gtk_frame_new("Informations patient");
