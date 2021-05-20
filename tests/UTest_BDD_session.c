@@ -11,13 +11,13 @@
 static void test_getSession(void **state){
     Session * s = getSession(1);
     assert_non_null(s);
-    assert_string_equal("New name", s->sessionName);
+    assert_string_equal("Séance du 18/3/2021", s->sessionName);
     freeSession(s);
 }
 
 static void test_getSessionId(void **state){
     int* tab_id = getSessionId(3);
-    assert_int_equal(6, tab_id[0]);
+    assert_int_equal(0x15, tab_id[0]);
     free(tab_id);
 }
 
@@ -40,17 +40,21 @@ static void test_getSessionList(void **state) {
 }
 
 static void test_getNbSession(void **state) {
-    assert_int_equal(2, getNbSession(3));
+    assert_int_equal(6, getNbSession(3));
 }
 
 static void test_modifySession(void **state){
 
     Session *s;
+    char* c;
     s = getSession(1);
+    c = s->sessionName;
     s->sessionName = "New name";
     assert_int_equal(1,modifySession(s));
-    s = getSession(s->idSession);
+    s = getSession((int)s->idSession);
     assert_string_equal("New name",s->sessionName);
+    s->sessionName=c;
+    assert_int_equal(1,modifySession(s));
 
 }
 
