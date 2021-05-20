@@ -8,6 +8,7 @@
 
 #define LG_MAX_INFO 100
 #define LG_MAX_OTHERS 300
+#define LG_MAX_OBSERVATIONS 1500
 #define NB_MAX_SESSION 100
 
 /**
