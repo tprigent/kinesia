@@ -24,7 +24,7 @@ void createNewSession(int idFolder){
     session->idFolder = idFolder;
     session->idSession = 0;
     session->sessionName = (char*) malloc(LG_MAX_INFO*sizeof(char));
-    session->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+    session->observations = (char*) malloc(LG_MAX_OBSERVATIONS*sizeof(char));
     session->nextSessionHour = (char*) malloc(LG_MAX_INFO*sizeof(char));
 
     char *date = get_current_date();
@@ -68,7 +68,7 @@ Session *createEmptySession(int idFolder){
     char *new_session_name = get_new_session_name();
     strcpy(newSession->sessionName, new_session_name);
     free_info_UI(new_session_name);
-    newSession->observations = (char*) malloc(LG_MAX_OTHERS*sizeof(char));
+    newSession->observations = (char*) malloc(LG_MAX_OBSERVATIONS*sizeof(char));
     strcpy(newSession->observations, "Remarques");
 
     time_t t = time(NULL);
@@ -122,7 +122,7 @@ void freeSession(Session *s) {
 Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMonth, int sdYear, int nsdDay, int nsdMonth, int nsdYear, char *nsHour, int isRealFolder, int idS, int idFolder) {
 
     newS->sessionName = (char *) malloc(sizeof(char)*LG_MAX_INFO + 1);
-    newS->observations = (char *) malloc(sizeof(char)*LG_MAX_OTHERS + 1);
+    newS->observations = (char *) malloc(sizeof(char)*LG_MAX_OBSERVATIONS + 1);
     newS->nextSessionHour = (char *) malloc(sizeof(char)*LG_MAX_INFO + 1);
 
     if(newS->sessionName !=NULL && newS->observations != NULL && newS->nextSessionHour != NULL) {
@@ -134,8 +134,8 @@ Session * initSession(Session *newS, char *sName, char *obs, int sdDay, int sdMo
 
         if(obs == NULL) strcpy(newS->observations, "\0");
         else {
-            strncpy(newS->observations, obs, LG_MAX_OTHERS);
-            newS->observations[LG_MAX_OTHERS] = '\0';
+            strncpy(newS->observations, obs, LG_MAX_OBSERVATIONS);
+            newS->observations[LG_MAX_OBSERVATIONS] = '\0';
         }
 
         if(nsHour == NULL) strcpy(newS->nextSessionHour, "\0");
