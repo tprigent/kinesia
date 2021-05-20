@@ -1220,6 +1220,8 @@ void addNewSessionUI(GtkWidget *button, AddNewSessionStruct *newSessionStruct){
 
     char *new_session_name = get_new_session_name();
     gtk_notebook_insert_page(GTK_NOTEBOOK(notebook), grid_add_session, gtk_label_new(new_session_name), 0);
+    gtk_widget_show_all(notebook);
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
     free(new_session_name);
 
     addSession(new_session);
