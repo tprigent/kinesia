@@ -20,7 +20,7 @@
 #include "../src/model/structures.h"
 #include "../src/controller/struct_to_BDD_session.h"
 
-int idPatientTest = 28;
+int idPatientTest = 12;
 
 /*!
  * \brief Setup function which allocates a patient
@@ -136,11 +136,12 @@ static void test_setDate(void **state) {
 
 static void test_getPatient(void **state){
 
-    Patient *p = getPatient(-1);
-    assert_null(p);
-    p=getPatient(1);
-    assert_string_equal("Claude",p->firstname);
-    freePatient(&p);
+    Patient *patient = getPatient(-1);
+    assert_null(patient);
+    patient=getPatient(1);
+    assert_string_equal("François", patient->name);
+    assert_string_equal("Claude", patient->firstname);
+    freePatient(&patient);
 
 }
 
@@ -233,7 +234,7 @@ static void test_getNameFirstnamePatient(void **state){
 
 static void test_getNbPatient(void **state){
 
-    assert_int_equal(7,getNbPatient(ACTIVE));
+    assert_int_equal(10,getNbPatient(ACTIVE));
     assert_int_equal(2,getNbPatient(ARCHIVED));
 
 }
@@ -245,8 +246,9 @@ static void test_getFolder(void **state){
 
     assert_int_equal(1,f->idFolder);
     assert_string_equal("Entorse de la cheville",f->folderName);
-    assert_string_equal("Entorse",f->pathology);
-    assert_string_equal("Voir fichiers joints,  retour à la ligne automatique à gérer...",f->details);
+    assert_string_equal("Entorse cheville droite",f->pathology);
+    assert_string_equal("Traumatisme de la cheville droite en inversion\n"
+                        "en jouant au basket",f->details);
     assert_int_equal(2021,f->startOfTreatment.year);
     assert_int_equal(3,f->startOfTreatment.month);
     assert_int_equal(22,f->startOfTreatment.day);
@@ -260,12 +262,13 @@ static void test_getIdFolder(void **state){
     int *t;
     t = getIdFolder(1);
     assert_int_equal(1,t[0]);
+    free(t);
 
 }
 
 static void test_getNameFolder(void **state){
 
-    assert_string_equal("TEST2",getNameFolder(3));
+    assert_string_equal("Entorse de la cheville",getNameFolder(1));
 
 }
 
@@ -287,11 +290,16 @@ static void test_addFolder(void **state){
 static void test_modifyFolder(void **state){
 
     Folder *f;
-    f = getFolder(3);
+    f = getFolder(1);
+    char* c = f->details;
     f->details="New details";
     assert_int_equal(1,modifyFolder(f));
-    f = getFolder(3);
+    f = getFolder(1);
     assert_string_equal("New details",f->details);
+    f->details = c;
+    assert_int_equal(1,modifyFolder(f));
+    free(c);
+    free(f);
 
 }
 
@@ -322,7 +330,7 @@ static void test_searchPatient(void **state){
     idPatient = (int*)calloc(10,sizeof(int));
     nomPatient = (char**)calloc(10,sizeof(void *));
 
-    assert_int_equal(1,searchPatient("bertho",nomPatient,idPatient,10));
+    assert_int_equal(1,searchPatient("Priam",nomPatient,idPatient,10));
 
     free(idPatient);
     for(i=0;i<10;i++)
@@ -341,21 +349,15 @@ static void test_deleteFolder(void **state){
 static void test_getSessionId(void **state){
 
     int* t;
-    t = getSessionId(3);
-    assert_int_equal(6,t[0]);
+    t = getSessionId(1);
+    assert_int_equal(1,t[0]);
     free(t);
-
-}
-
-static void test_getNbSession(void **state){
-
-    assert_int_equal(1,getNbSession(3));
 
 }
 
 static void test_getNbFolder(void **state){
 
-    assert_int_equal(1,getNbFolder(15));
+    assert_int_equal(1,getNbFolder(1));
 
 }
 
@@ -426,7 +428,6 @@ int main_BDD(void)
                     cmocka_unit_test(test_getIdFolder),
                     cmocka_unit_test(test_addFolder),
                     cmocka_unit_test(test_addSession),
-                    cmocka_unit_test(test_getNbSession),
                     cmocka_unit_test(test_getNameFolder),
                     cmocka_unit_test(test_getNbFolder),
                     cmocka_unit_test(test_modifyFolder),
