@@ -1019,7 +1019,7 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
         for(j=0; j < nbOfAttachments; j++){
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
                 char *mediaPath = getFolderMediaPath(attachmentProperties->patientID, attachmentProperties->folderID);
-                char *command = (char*) malloc(sizeof(char) * (strlen(fileList[j]) + strlen(mediaPath) + strlen("xdg-open ")));
+                char *command = (char*) malloc(sizeof(char) * 200);
 
                 /* Build open command with file path */
                 if(strcmp(OS, "macOS") == 0) strcpy(command, "open ");
@@ -1039,7 +1039,7 @@ void launchAttachmentListViewer(GtkWidget *button, MediaType *attachmentProperti
         for(j=0; j<getNbOfAttachments(attachmentProperties->patientID, attachmentProperties->folderID); j++) {
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkList[j]))){
                 char *mediaPath = getFolderMediaPath(attachmentProperties->patientID, attachmentProperties->folderID);
-                char *filePath = (char *) malloc(sizeof(char) * (strlen(fileList[j]) + strlen(mediaPath) + 5));
+                char *filePath = (char *) malloc(sizeof(char) * 200);
 
                 strcpy(filePath, mediaPath);
                 strcat(filePath, fileList[j]);
