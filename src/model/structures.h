@@ -106,16 +106,22 @@ typedef struct{
     unsigned int idFolder;      /**< Related Folder identifier */
 }Session;
 
+/**
+ * \brief Nodelist to navigate in the list
+*/
 typedef struct NodeList{
-    Session session;
-    struct NodeList *next;
-    struct NodeList *previous;
+    Session session;            /**< Session of the node */
+    struct NodeList *next;      /**< Next node */
+    struct NodeList *previous;  /**< Previous node */
 }NodeList;
 
+/**
+ * \brief List of nodes containing sessions
+*/
 typedef struct{
-    NodeList *first;
-    NodeList *current;
-    NodeList *last;
+    NodeList *first;           /**< First node of the list */
+    NodeList *current;         /**< Current node of the list */
+    NodeList *last;            /**< Last node of the list */
 }SessionList;
 
 /**
@@ -125,19 +131,20 @@ typedef struct{
     /**
       * \name Folder relative information
     */
-    char *folderName;           /**< Folder name */
-    char *pathology;            /**< Reason for consultation */
-    char *details;              /**< Important things to know about the pathology */
-    Date startOfTreatment;      /**< Date of the beginning of the treatment */
-    unsigned int numberOfFiles; /**< Attachment counter */
+    char *folderName;               /**< Folder name */
+    char *pathology;                /**< Reason for consultation */
+    char *details;                  /**< Important things to know about the pathology */
+    Date startOfTreatment;          /**< Date of the beginning of the treatment */
+    unsigned int numberOfFiles;     /**< Attachment counter */
 
-    SessionList *ListOfSessions;
+    SessionList *ListOfSessions;    /**< List of session relative to the Folder */
+
 
     /**
      * \name Database information
     */
     unsigned int idFolder;      /**< Folder unique identifier to select it in model */
-    unsigned int idPatient;
+    unsigned int idPatient;     /**< Patient unique identifier to which the Folder corresponds */
 }Folder;
 
 #endif //LOGICIEL_KINE_STRUCTURES_H
