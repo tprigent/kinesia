@@ -564,8 +564,8 @@ void seeAppointmentsAtDate(GtkCalendar *calendar, CalendarView *params){
     gtk_grid_attach_next_to(GTK_GRID(params->grid), params->vbox, params->title, GTK_POS_BOTTOM, 1, 1);
 
     /* Add new items */
-    int *sessionAtDateID = (int *) malloc(sizeof(int));
-    int *folderAtDateID = (int *) malloc(sizeof(int));
+    int *sessionAtDateID = (int *) malloc(50*sizeof(int));
+    int *folderAtDateID = (int *) malloc(50*sizeof(int));
     int nbSessionsAtDate = getSessionsAtDate(date, sessionAtDateID, folderAtDateID);
 
     int k;
