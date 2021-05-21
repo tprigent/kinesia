@@ -118,7 +118,7 @@ static void test_get_age_and_birthdate(void **state){
  *
  * \param[in] A pointer addressto pass the allocated patient
 */
-static void test_get_current_date(void **state){
+static void test_get_current_date(){
     char * date = get_current_date();
     assert_string_equal("27/4/2021", date);
     free_info_UI(date);
@@ -132,7 +132,7 @@ static void test_get_current_date(void **state){
  *
  * \param[in] A pointer addressto pass the allocated patient
 */
-static void test_get_new_session_name(void **state){
+static void test_get_new_session_name(){
     char * session_name = get_new_session_name();
     char * new_session_name = (char*) malloc(sizeof(char) * strlen("Séance du xx/xx/xxxx"));
     strcpy(new_session_name, "Séance du ");
@@ -197,10 +197,9 @@ static void test_get_formatted_folder_title_UI(void **state){
     free_info_UI(temp);
 }
 
-static void test_get_indicator_files_UI(void **state){
-    Folder * folder = (Folder *) (*state);
+static void test_get_indicator_files_UI(){
     char * temp = get_indicator_files_UI(1, 1);
-    assert_string_equal("   (0)", temp);
+    assert_string_equal("   (1)", temp);
     free_info_UI(temp);
 }
 
