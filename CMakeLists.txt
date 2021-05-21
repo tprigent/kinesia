@@ -87,7 +87,7 @@ set(SOURCE_FILES_TEST
         src/controller/struct_to_BDD_session.c
         src/controller/BDD_to_struct_patient.c
         src/controller/BDD_to_struct_session.c
-        src/controller/BDD_to_struct_folder.c)
+        src/controller/BDD_to_struct_folder.c tests/UTest_manager.c)
 
 add_executable(UnitTest tests/UTest.c ${SOURCE_FILES_TEST})
 
