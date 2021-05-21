@@ -144,7 +144,6 @@ char *get_formatted_folder_title_UI(Folder *folder){
     return formattedTitle;
 }
 
-
 /*!
  * \brief Format Folder attachment counter display
  *
@@ -160,7 +159,6 @@ char *get_indicator_files_UI(int patientID, int folderID){
     strcat(indicator, ")");
     return indicator;
 }
-
 
 /*!
  * \brief Get the birthdate and the age of a Patient

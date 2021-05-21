@@ -10,6 +10,6 @@
 
 int addFolder(Folder *folder);
 int modifyFolder(Folder *folder);
-int deleteFoler(int id);
+int deleteFolder(int id);
 
 #endif //LOGICIEL_KINE_STRUCT_TO_BDD_FOLDER_H

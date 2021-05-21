@@ -150,7 +150,6 @@ int modifySession(Session *session){
  *
  * \param[out] int, 1 if an error occurred, 0 otherwise
 */
-
 int deleteSession(int id){
 
     sqlite3 *db;

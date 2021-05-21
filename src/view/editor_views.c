@@ -1110,7 +1110,7 @@ void launchDeleteElement(GtkWidget *button, DeleteElements *element){
 
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
         if(element->isFolder){
-            deleteFoler(element->folderID);
+            deleteFodler(element->folderID);
             gtk_widget_destroy(dialog);
 
             int fullScreen = 0;
