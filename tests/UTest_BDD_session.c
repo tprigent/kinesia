@@ -8,20 +8,20 @@
 #include "UTest_BDD_session.h"
 #include "../src/model/session_manager.h"
 
-static void test_getSession(void **state){
+static void test_getSession(){
     Session * s = getSession(1);
     assert_non_null(s);
     assert_string_equal("Séance du 18/3/2021", s->sessionName);
     freeSession(s);
 }
 
-static void test_getSessionId(void **state){
+static void test_getSessionId(){
     int* tab_id = getSessionId(3);
     assert_int_equal(0x15, tab_id[0]);
     free(tab_id);
 }
 
-static void test_getSessionList(void **state) {
+static void test_getSessionList() {
     SessionList *l = getSessionList(1);
     assert_non_null(l);
 
@@ -42,11 +42,11 @@ static void test_getSessionList(void **state) {
     freeList(l);
 }
 
-static void test_getNbSession(void **state) {
+static void test_getNbSession() {
     assert_int_equal(6, getNbSession(3));
 }
 
-static void test_modifySession(void **state){
+static void test_modifySession(){
 
     Session *s;
     char* c;

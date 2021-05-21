@@ -134,7 +134,7 @@ static void test_setDate(void **state) {
     assert_int_equal(2021, date->year);
 }
 
-static void test_getPatient(void **state){
+static void test_getPatient(){
 
     Patient *patient = getPatient(-1);
     assert_null(patient);
@@ -145,7 +145,7 @@ static void test_getPatient(void **state){
 
 }
 
-static void test_addPatient(void **state){
+static void test_addPatient(){
 
     Patient *p = NULL;
     Address adresse;
@@ -180,7 +180,7 @@ static void test_addPatient(void **state){
 
 }
 
-static void test_getNameFirstnameIdPatient(void **state){
+static void test_getNameFirstnameIdPatient(){
 
     int i,nbArchivedPatient;
     int *idArchivePatient;
@@ -208,7 +208,7 @@ static void test_getNameFirstnameIdPatient(void **state){
 
 }
 
-static void test_getNameFirstnamePatient(void **state){
+static void test_getNameFirstnamePatient(){
 
     char * c;
     c=getNameFirstnamePatient(1);
@@ -217,14 +217,14 @@ static void test_getNameFirstnamePatient(void **state){
 
 }
 
-static void test_getNbPatient(void **state){
+static void test_getNbPatient(){
 
     assert_int_equal(10,getNbPatient(ACTIVE));
     assert_int_equal(2,getNbPatient(ARCHIVED));
 
 }
 
-static void test_getFolder(void **state){
+static void test_getFolder(){
 
     Folder *f;
     f = getFolder(1);
@@ -242,7 +242,7 @@ static void test_getFolder(void **state){
 
 }
 
-static void test_getIdFolder(void **state){
+static void test_getIdFolder(){
 
     int *t;
     t = getIdFolder(1);
@@ -251,13 +251,13 @@ static void test_getIdFolder(void **state){
 
 }
 
-static void test_getNameFolder(void **state){
+static void test_getNameFolder(){
 
     assert_string_equal("Entorse de la cheville",getNameFolder(1));
 
 }
 
-static void test_addFolder(void **state){
+static void test_addFolder(){
 
     Folder *folder;
     if(allocateFolder(&folder) == -1){
@@ -272,7 +272,7 @@ static void test_addFolder(void **state){
 
 }
 
-static void test_modifyFolder(void **state){
+static void test_modifyFolder(){
 
     Folder *f;
     f = getFolder(1);
@@ -288,7 +288,7 @@ static void test_modifyFolder(void **state){
 
 }
 
-static void test_addSession(void **state){
+static void test_addSession(){
 
     Session *s;
     int *t;
@@ -300,13 +300,13 @@ static void test_addSession(void **state){
 
 }
 
-static void test_deletePatient(void **state){
+static void test_deletePatient(){
 
     assert_int_equal(1,deletePatient(idPatientTest));
 
 }
 
-static void test_searchPatient(void **state){
+static void test_searchPatient(){
 
     int i;
     int *idPatient;
@@ -325,13 +325,13 @@ static void test_searchPatient(void **state){
 
 }
 
-static void test_deleteFolder(void **state){
+static void test_deleteFolder(){
 
     assert_int_equal(1,deleteFoler(100));
 
 }
 
-static void test_getSessionId(void **state){
+static void test_getSessionId(){
 
     int* t;
     t = getSessionId(1);
@@ -340,7 +340,7 @@ static void test_getSessionId(void **state){
 
 }
 
-static void test_getNbFolder(void **state){
+static void test_getNbFolder(){
 
     assert_int_equal(1,getNbFolder(1));
 
@@ -430,7 +430,8 @@ int main_BDD(void)
                     cmocka_unit_test(test_modifyFolder),
                     cmocka_unit_test(test_deleteFolder),
                     cmocka_unit_test(test_deletePatient),
-                    cmocka_unit_test(test_getPatientIDFromFolder)
+                    cmocka_unit_test(test_getPatientIDFromFolder),
+                    cmocka_unit_test(test_getSessionId)
             };
     return cmocka_run_group_tests_name("Test counter module",tests_BDD,NULL,NULL);
 }
