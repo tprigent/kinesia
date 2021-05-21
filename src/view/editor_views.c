@@ -246,8 +246,6 @@ void launchPatientEditor(GtkWidget *but_edit, Patient_window *patient_window){
     GtkWidget *window = patient_window->window;
     int origin = patient_window->origin;
 
-    printPatient(patient, "before being edited");
-
     /* DECLARE VARIABLES */
     MediaType *photoChooser = (MediaType*) malloc(sizeof(MediaType));
     GtkWidget *dialog = NULL;
@@ -830,7 +828,6 @@ void launchPatientWarning(GtkWidget *button, WarningType *warning){
             else if(patient->isArchived == 0) patient->isArchived = 1;
             modifyPatient(patient);
         }
-        printPatient(patient, "just after archiving\n");
         /* Reload the session window */
         gtk_widget_destroy(dialog);
 
