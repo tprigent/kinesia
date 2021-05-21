@@ -1,204 +1,115 @@
-#include "../src/model/structures.h"
-#include "../src/controller/display_helpers.h"
-#include "../src/model/patient_manager.h"
+#include <stdarg.h>
+#include <setjmp.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include <cmocka.h>
+#include "../src/controller/BDD_to_struct_session.h"
+#include "../src/controller/struct_to_BDD_session.h"
 #include "UTest_session.h"
 #include "../src/model/session_manager.h"
+#include "../src/controller/BDD_to_struct_folder.h"
 
-#include <stdio.h>
+static void test_getSession(){
+    Session * s = getSession(1);
+    assert_non_null(s);
+    assert_string_equal("Séance du 18/3/2021", s->sessionName);
+    freeSession(s);
+}
 
-#include <stdarg.h>
-#include <stddef.h>
-#include <setjmp.h>
-#include <cmocka.h>
+static void test_getSessionId(){
+    int* tab_id = getSessionId(3);
+    assert_int_equal(0x15, tab_id[0]);
+    free(tab_id);
+}
 
-static int setup_sessionList_empty(void **state){
-    SessionList *l = malloc(sizeof(SessionList));
-    if(l == NULL) return -1;
-    initList(l);
+static void test_getSessionList() {
+    SessionList *l = getSessionList(1);
     assert_non_null(l);
-    assert_null(l->current);
-    assert_null(l->first);
-    assert_null(l->last);
-    *state = l;
-    return 0;
-}
 
-static int setup_sessionList_non_empty(void **state){
-    SessionList *l = malloc(sizeof(SessionList));
-    if(l == NULL) return -1;
-    initList(l);
-    assert_non_null(l);
-    assert_null(l->current);
-    assert_null(l->first);
-    assert_null(l->last);
+    assert_string_equal("Séance du 25/3/2021", l->first->session.sessionName);
+    assert_string_equal("Comme d'habitude, bonne progression", l->last->session.observations);
+    assert_int_equal(25, l->first->session.nextSessionDate.day);
+    assert_int_equal(25, l->first->session.sessionDate.day);
+    assert_int_equal(4, l->first->session.idSession);
 
-    insertFirst(l, "nom", "obs", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1);
-    insertFirst(l, "nom2", "obs2", 15, 14, 13, 12, 11, 10, "0", 0, 2, 3);
-    *state = l;
-    return 0;
-}
-
-static void test_isEmpty_insertFirst(void **state) {
-    SessionList *l = *state;
-    assert_int_equal(-1, isEmpty(l));
-
-    assert_int_equal(0, insertFirst(l, "nom", "obs", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1));
-
-    assert_non_null(l->first);
-
-    assert_null(l->first->previous);
-    assert_string_equal("nom", l->first->session.sessionName);
-    assert_string_equal("obs", l->first->session.observations);
-
-    assert_int_equal(0, l->last->session.nextSessionDate.day);
-    assert_int_equal(0, l->last->session.nextSessionDate.month);
-    assert_int_equal(0, l->last->session.nextSessionDate.year);
-
-    assert_int_equal(12, l->first->session.sessionDate.day);
-    assert_int_equal(3, l->first->session.sessionDate.month);
-    assert_int_equal(0, l->first->session.sessionDate.year);
-
-    assert_int_equal(0, l->first->session.idSession);
-    assert_int_equal(1, l->first->session.idFolder);
-
-    assert_int_equal(0, isEmpty(l));
-}
-
-static void test_setOnFirst(void **state) {
-    SessionList *l = *state;
-    l->current = NULL;
-    setOnFirst(l);
-    assert_string_equal("nom2", l->current->session.sessionName);
-}
-
-static void test_setOnLast(void **state) {
-    SessionList *l = *state;
-    l->current = NULL;
-    setOnLast(l);
-    assert_string_equal("nom", l->current->session.sessionName);
-}
-
-static void test_insertLast(void **state) {
-    SessionList *l = *state;
-    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "8", 0, 0, 1);
-
-    assert_non_null(l->last);
-
-    assert_null(l->last->next);
-    assert_string_equal("nom3", l->last->session.sessionName);
-    assert_string_equal("obs3", l->last->session.observations);
-
-    assert_int_equal(0, l->last->session.nextSessionDate.day);
-    assert_int_equal(0, l->last->session.nextSessionDate.month);
-    assert_int_equal(0, l->last->session.nextSessionDate.year);
-
-    assert_int_equal(12, l->last->session.sessionDate.day);
-    assert_int_equal(3, l->last->session.sessionDate.month);
-    assert_int_equal(0, l->last->session.sessionDate.year);
-
-    assert_int_equal(0, l->last->session.idSession);
-    assert_int_equal(1, l->last->session.idFolder);
-
-    assert_int_equal(0, isEmpty(l));
-}
-
-static void test_insertLast_emptyList(void **state) {
-    SessionList *l = *state;
-    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1);
-
-    assert_non_null(l->last);
-
-    assert_null(l->last->next);
-    assert_string_equal("nom3", l->first->session.sessionName);
-    assert_string_equal("obs3", l->last->session.observations);
-
-    assert_int_equal(0, l->last->session.nextSessionDate.day);
-    assert_int_equal(0, l->last->session.nextSessionDate.month);
-    assert_int_equal(0, l->last->session.nextSessionDate.year);
-
-    assert_int_equal(12, l->last->session.sessionDate.day);
-    assert_int_equal(3, l->last->session.sessionDate.month);
-    assert_int_equal(0, l->last->session.sessionDate.year);
-
-    assert_int_equal(0, l->last->session.idSession);
-    assert_int_equal(1, l->last->session.idFolder);
-
-    assert_int_equal(0, isEmpty(l));
-}
-
-static void test_setOnNext_isOutOfList(void **state) {
-    SessionList *l = *state;
-    setOnFirst(l);
-    assert_string_equal("nom2", l->current->session.sessionName);
-    setOnNext(l);
-    assert_string_equal("nom", l->current->session.sessionName);
-    assert_int_equal(0, isOutOfList(l));
-    setOnNext(l);
-    assert_int_equal(-1, isOutOfList(l));
-}
-
-static void test_deleteFirst(void **state) {
-    SessionList *l = *state;
-    deleteFirst(l);
-    assert_string_equal("nom", l->first->session.sessionName);
-    assert_string_equal("nom", l->last->session.sessionName);
     setOnFirst(l);
     setOnNext(l);
-    assert_int_equal(-1, isOutOfList(l));
-    assert_null(l->last->next);
-}
+    assert_string_equal("Séance du 22/3/2021", l->current->session.sessionName);
+    assert_string_equal("Comme d'habitude", l->current->session.observations);
+    assert_int_equal(30, l->current->session.nextSessionDate.day);
+    assert_int_equal(22, l->current->session.sessionDate.day);
+    assert_int_equal(2, l->current->session.idSession);
 
-static void test_deleteCurrent(void **state) {
-    SessionList *l = *state;
-    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1);
-    setOnFirst(l);
-    setOnNext(l);
-    deleteCurrent(l);
-    setOnFirst(l);
-    assert_string_equal("nom2", l->current->session.sessionName);
-    setOnNext(l);
-    assert_string_equal("nom3", l->current->session.sessionName);
-    setOnLast(l);
-    assert_string_equal("nom3", l->current->session.sessionName);
-}
-
-static void test_pointNthElement(void **state) {
-    SessionList *l = *state;
-    assert_int_equal(0, pointNthElement(l, 2));
-    assert_string_equal("nom", l->current->session.sessionName);
-    assert_int_equal(-1, pointNthElement(l, 3));
-}
-
-static void test_deleteNthElement(void **state) {
-    SessionList *l = *state;
-    insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0,"0", 0, 0, 1);
-    assert_int_equal(0, deleteNthElement(l, 2));
-    assert_string_equal("nom3", l->last->session.sessionName);
-    assert_string_equal("nom2", l->first->session.sessionName);
-}
-
-static int teardown(void **state) {
-    SessionList *l = *state;
     freeList(l);
-    free(l);
-    return 0;
 }
 
-int main_session(void)
-{
+static void test_getNbSession() {
+    assert_int_equal(6, getNbSession(3));
+}
 
+static void test_modifySession(){
+
+    Session *s;
+    char* c;
+    s = getSession(1);
+    c = s->sessionName;
+    s->sessionName = "New name";
+    assert_int_equal(1,modifySession(s));
+    s = getSession((int)s->idSession);
+    assert_string_equal("New name",s->sessionName);
+    s->sessionName=c;
+    assert_int_equal(1,modifySession(s));
+
+}
+
+static void test_getSession0(){
+    assert_int_equal(0, getSession0(3)->idSession);
+}
+
+static void test_deleteSession(){
+    assert_int_equal(1, deleteSession(1));
+}
+
+static void test_getSessionsAtDate(){
+    Date *date = (Date*) malloc(sizeof(Date));
+    int *sessionID = (int*) malloc(sizeof(int));
+    int *folderID = (int*) malloc(sizeof(int));
+    date->day = 22;
+    date->month = 3;
+    date->year = 2021;
+    getSessionsAtDate(date, sessionID, folderID);
+    assert_int_equal(sessionID[0], 1);
+    assert_int_equal(folderID[0], 1);
+
+    free(date);
+    free(sessionID);
+    free(folderID);
+}
+
+static void test_addSession(){
+
+    Session *s;
+    int *t;
+    t = getIdFolder(1);
+    s = getSession(1);
+    s->sessionName = "New session";
+    s->idFolder = t[0];
+    assert_int_equal(1,addSession(s));
+
+}
+
+int main_session(void) {
     const struct CMUnitTest tests_session[]=
             {
-                    cmocka_unit_test_setup_teardown(test_isEmpty_insertFirst, setup_sessionList_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_setOnFirst, setup_sessionList_non_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_setOnLast, setup_sessionList_non_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_insertLast, setup_sessionList_non_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_insertLast_emptyList, setup_sessionList_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_setOnNext_isOutOfList, setup_sessionList_non_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_deleteFirst, setup_sessionList_non_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_deleteCurrent, setup_sessionList_non_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_pointNthElement, setup_sessionList_non_empty, teardown),
-                    cmocka_unit_test_setup_teardown(test_deleteNthElement, setup_sessionList_non_empty, teardown)
+                    cmocka_unit_test(test_getSession),
+                    cmocka_unit_test(test_getSessionId),
+                    cmocka_unit_test(test_getSessionList),
+                    cmocka_unit_test(test_getNbSession),
+                    cmocka_unit_test(test_modifySession),
+                    cmocka_unit_test(test_getSession0),
+                    cmocka_unit_test(test_getSessionsAtDate),
+                    cmocka_unit_test(test_deleteSession),
+                    cmocka_unit_test(test_addSession),
             };
-    return cmocka_run_group_tests_name("Test session module",tests_session,NULL,NULL);
+    return cmocka_run_group_tests_name("Session test module",tests_session,NULL,NULL);
 }

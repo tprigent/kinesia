@@ -1,26 +1,15 @@
-/*!
-* \file UTest_BDD.c
-* \brief Functions to test the functions linking structure and BDD, and allocations
-*/
+
 
 #include <stdarg.h>
 #include <setjmp.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <cmocka.h>
-#include "UTest_BDD.h"
 #include "../src/model/patient_manager.h"
-#include "../src/model/folder_manager.h"
-#include "../src/model/session_manager.h"
 #include "../src/controller/BDD_to_struct_patient.h"
 #include "../src/controller/struct_to_BDD_patient.h"
-#include "../src/controller/struct_to_BDD_folder.h"
 #include "../src/controller/BDD_to_struct_folder.h"
-#include "../src/controller/BDD_to_struct_session.h"
-#include "../src/model/structures.h"
-#include "../src/controller/struct_to_BDD_session.h"
 
-int idPatientTest = 12;
 
 /*!
  * \brief Setup function which allocates a patient
@@ -46,6 +35,7 @@ static int setup_patient(void **state) {
     *state = patient;
     return 0;
 }
+
 /*!
  * \brief Setup function which allocates an address
  *
@@ -224,86 +214,8 @@ static void test_getNbPatient(){
 
 }
 
-static void test_getFolder(){
-
-    Folder *f;
-    f = getFolder(1);
-
-    assert_int_equal(1,f->idFolder);
-    assert_string_equal("Entorse de la cheville",f->folderName);
-    assert_string_equal("Entorse cheville droite",f->pathology);
-    assert_string_equal("Traumatisme de la cheville droite en inversion\n"
-                        "en jouant au basket",f->details);
-    assert_int_equal(2021,f->startOfTreatment.year);
-    assert_int_equal(3,f->startOfTreatment.month);
-    assert_int_equal(22,f->startOfTreatment.day);
-    assert_int_equal(1,f->numberOfFiles);
-    assert_int_equal(1,f->idPatient);
-
-}
-
-static void test_getIdFolder(){
-
-    int *t;
-    t = getIdFolder(1);
-    assert_int_equal(1,t[0]);
-    free(t);
-
-}
-
-static void test_getNameFolder(){
-
-    assert_string_equal("Entorse de la cheville",getNameFolder(1));
-
-}
-
-static void test_addFolder(){
-
-    Folder *folder;
-    if(allocateFolder(&folder) == -1){
-        fprintf(stderr,"Erreur alloc folder\n");
-    }
-
-    setFolder(folder,"Folder test","Test","Details",1,1,1,1,1,idPatientTest);
-
-    assert_int_equal(1,addFolder(folder));
-
-    free(folder);
-
-}
-
-static void test_modifyFolder(){
-
-    Folder *f;
-    f = getFolder(1);
-    char* c = f->details;
-    f->details="New details";
-    assert_int_equal(1,modifyFolder(f));
-    f = getFolder(1);
-    assert_string_equal("New details",f->details);
-    f->details = c;
-    assert_int_equal(1,modifyFolder(f));
-    free(c);
-    free(f);
-
-}
-
-static void test_addSession(){
-
-    Session *s;
-    int *t;
-    t = getIdFolder(idPatientTest);
-    s = getSession(1);
-    s->sessionName = "New session";
-    s->idFolder = t[0];
-    assert_int_equal(1,addSession(s));
-
-}
-
 static void test_deletePatient(){
-
-    assert_int_equal(1,deletePatient(idPatientTest));
-
+    assert_int_equal(1,deletePatient(5));
 }
 
 static void test_searchPatient(){
@@ -325,37 +237,16 @@ static void test_searchPatient(){
 
 }
 
-static void test_deleteFolder(){
-
-    assert_int_equal(1,deleteFolder(100));
-
-}
-
-static void test_getSessionId(){
-
-    int* t;
-    t = getSessionId(1);
-    assert_int_equal(1,t[0]);
-    free(t);
-
-}
-
-static void test_getNbFolder(){
-
-    assert_int_equal(1,getNbFolder(1));
-
-}
-
-static void test_getPatientIDFromFolder(){
-    assert_int_equal(1, getPatientIDFromFolder(1));
-}
-
 static void test_modifyPatient(){
     Patient *patient = getPatient(1);
     patient->birthdate.day = 2;
     assert_int_equal(1, modifyPatient(patient));
     patient = getPatient(1);
     assert_int_equal(2, patient->birthdate.day);
+}
+
+static void test_getPatientIDFromFolder(){
+    assert_int_equal(1, getPatientIDFromFolder(1));
 }
 
 /*!
@@ -401,15 +292,10 @@ static int teardown_date(void **state) {
     return 0;
 }
 
-/*!
- * \brief main function which runs the tests for BDD
- *
- * \param[out] An int to tell if tests are passed
-*/
-int main_BDD(void)
+int main_patient(void)
 {
 
-    const struct CMUnitTest tests_BDD[]=
+    const struct CMUnitTest tests_patient[]=
             {
                     cmocka_unit_test_setup_teardown(test_setPatient, setup_patient, teardown_patient),
                     cmocka_unit_test_setup_teardown(test_setAddress, setup_address, teardown_address),
@@ -421,17 +307,8 @@ int main_BDD(void)
                     cmocka_unit_test(test_getNameFirstnameIdPatient),
                     cmocka_unit_test(test_getNameFirstnamePatient),
                     cmocka_unit_test(test_searchPatient),
-                    cmocka_unit_test(test_getFolder),
-                    cmocka_unit_test(test_getIdFolder),
-                    cmocka_unit_test(test_addFolder),
-                    cmocka_unit_test(test_addSession),
-                    cmocka_unit_test(test_getNameFolder),
-                    cmocka_unit_test(test_getNbFolder),
-                    cmocka_unit_test(test_modifyFolder),
-                    cmocka_unit_test(test_deleteFolder),
                     cmocka_unit_test(test_deletePatient),
-                    cmocka_unit_test(test_getPatientIDFromFolder),
-                    cmocka_unit_test(test_getSessionId)
+                    cmocka_unit_test(test_getPatientIDFromFolder)
             };
-    return cmocka_run_group_tests_name("Test counter module",tests_BDD,NULL,NULL);
+    return cmocka_run_group_tests_name("Patient test module",tests_patient,NULL,NULL);
 }
