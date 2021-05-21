@@ -74,6 +74,12 @@ int setFolder(Folder *d, char * folderName, char * pathology, char * details, in
     return 0;
 }
 
+/*!
+ * \brief Function used to create empty folder with default values
+ *
+ * \param[in] idPatient Identifier of the patient to which the folder will be attached
+ * \param[out] Empty folder
+*/
 Folder *createEmptyFolder(int idPatient){
     Folder *folder = (Folder*) malloc(sizeof(Folder));
 
@@ -92,6 +98,11 @@ Folder *createEmptyFolder(int idPatient){
 
 }
 
+/*!
+ * \brief Function to predict the next Folder ID
+ *
+ * \param[out] Future Patient ID
+*/
 int getFutureFolderId(){
     sqlite3 *db;
     char *zErrMsg = 0;

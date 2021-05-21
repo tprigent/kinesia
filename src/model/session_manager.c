@@ -218,7 +218,6 @@ int isEmpty(SessionList *l) {
     return 0;
 }
 
-
 /*!
 * This function creates and inserts a NodeList on the first position of the list.
 
@@ -389,6 +388,11 @@ void freeList(SessionList *l) {
     }
 }
 
+/*!
+ * \brief Function to predict the next Session ID
+ *
+ * \param[out] Future Session ID
+*/
 int getFutureSessionId(){
     sqlite3 *db;
     char *zErrMsg = 0;
