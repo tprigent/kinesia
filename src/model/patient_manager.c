@@ -16,7 +16,6 @@
  *
  * \param[in] char ** string the address of the string to allocate
  * \param[in] int lg the length of the string
- *
  * \param[out] int 0 if the allocation went well, -1 otherwise
 */
 int allocateStringPatient(char ** string, int lg) {
@@ -29,7 +28,6 @@ int allocateStringPatient(char ** string, int lg) {
  * \brief This function allocates memory for the attributes of an address
  *
  * \param[in] Address * a the address to allocate
- *
  * \param[out] int, 0 if the allocation went well, -1 otherwise
 */
 int allocateAddress(Address * a) {
@@ -46,14 +44,13 @@ int allocateAddress(Address * a) {
  * \brief This function allocates memory for an instance of Patient, and the attributes of the instance
  *
  * \param[in] Patient **p, the address of the pointer of Patient to allocate
- *
  * \param[out] int, 0 if the allocation went well, -1 otherwise
 */
 int allocatePatient(Patient ** p) {
     *p = (Patient *) malloc(sizeof(Patient));
 
     /*test des allocations de chaque attribut de la structure patient qui ont besoin d'être alloués*/
-    if((p == NULL) || (allocateStringPatient(&((*p)->firstname), LG_MAX_INFO) !=0)
+    if((allocateStringPatient(&((*p)->firstname), LG_MAX_INFO) !=0)
     || (allocateStringPatient(&((*p)->name), LG_MAX_INFO) !=0)
     || (allocateAddress(&((*p)->address)) !=0)
     || (allocateStringPatient(&((*p)->global_pathologies), LG_MAX_OTHERS) !=0)
@@ -294,6 +291,11 @@ int setPatient(Patient * p, char * name, char * fn, Date bd, char * placeBirth, 
     return 0;
 }
 
+/*!
+ * \brief Function to predict the next Patient ID
+ *
+ * \param[out] Future Patient ID
+*/
 int getFuturePatientId(){
     sqlite3 *db;
     char *zErrMsg = 0;
