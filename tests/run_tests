@@ -27,6 +27,7 @@ while true; do
           ../build/UnitTest >> unitreport
           mv unitreport unitreport-${today}.log
           rm -rf ../build
+          git checkout ../src/model/data.db
           echo "*** Unit tests done ***"
           break;;
         [Cc]* )
@@ -37,6 +38,7 @@ while true; do
           make cov_test
           mv covreport covreport-${today}
           make clean
+          git checkout ../src/model/data.db
           echo "*** Coverage tests done ***"
           exit;;
         [Mm]* )
