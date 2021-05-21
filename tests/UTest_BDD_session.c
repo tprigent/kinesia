@@ -22,20 +22,23 @@ static void test_getSessionId(void **state){
 }
 
 static void test_getSessionList(void **state) {
-    SessionList *l = getSessionList(3);
+    SessionList *l = getSessionList(1);
     assert_non_null(l);
 
-    assert_string_equal("TestS1", l->last->session.sessionName);
-    assert_string_equal("NoObs", l->last->session.observations);
-    assert_int_equal(5, l->last->session.nextSessionDate.day);
-    assert_int_equal(3, l->last->session.sessionDate.day);
-    assert_int_equal(8, l->last->session.idSession);
+    assert_string_equal("Séance du 25/3/2021", l->first->session.sessionName);
+    assert_string_equal("Comme d'habitude, bonne progression", l->last->session.observations);
+    assert_int_equal(25, l->first->session.nextSessionDate.day);
+    assert_int_equal(25, l->first->session.sessionDate.day);
+    assert_int_equal(4, l->first->session.idSession);
 
-    assert_string_equal("TestS2", l->first->session.sessionName);
-    assert_string_equal("NoObs2", l->first->session.observations);
-    assert_int_equal(15, l->first->session.nextSessionDate.day);
-    assert_int_equal(5, l->first->session.sessionDate.day);
-    assert_int_equal(9, l->first->session.idSession);
+    setOnFirst(l);
+    setOnNext(l);
+    assert_string_equal("Séance du 22/3/2021", l->current->session.sessionName);
+    assert_string_equal("Comme d'habitude", l->current->session.observations);
+    assert_int_equal(30, l->current->session.nextSessionDate.day);
+    assert_int_equal(22, l->current->session.sessionDate.day);
+    assert_int_equal(2, l->current->session.idSession);
+
     freeList(l);
 }
 
