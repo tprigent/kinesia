@@ -327,7 +327,7 @@ static void test_searchPatient(){
 
 static void test_deleteFolder(){
 
-    assert_int_equal(1,deleteFoler(100));
+    assert_int_equal(1,deleteFolder(100));
 
 }
 

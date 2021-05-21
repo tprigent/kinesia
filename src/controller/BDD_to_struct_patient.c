@@ -226,7 +226,6 @@ int getNbPatient(Archived a){
  *
  * \param[out] int, 0 if an error occurred, 1 otherwise
 */
-
 int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
 
     sqlite3 *db;
@@ -310,7 +309,6 @@ int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
  *
  * \param[out] int, 0 if an error occurred, 1 otherwise
 */
-
 int searchPatient(char* search,char** result, int* ids, int lenRes){
 
     sqlite3 *db;

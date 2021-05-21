@@ -144,8 +144,7 @@ int modifyFolder(Folder *folder){
  *
  * \param[out] int, 1 if an error occurred, 0 otherwise
 */
-
-int deleteFoler(int id){
+int deleteFolder(int id){
 
     sqlite3 *db;
     char *zErrMsg = 0;

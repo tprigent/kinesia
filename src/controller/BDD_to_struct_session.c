@@ -197,7 +197,6 @@ SessionList * getSessionList(int idF) {
         Session * s = getSession(tab_id[i]);
         if(insertFirst(l, s->sessionName, s->observations, s->sessionDate.day, s->sessionDate.month, s->sessionDate.year, s->nextSessionDate.day, s->nextSessionDate.month, s->nextSessionDate.year, s->nextSessionHour, s->isRealSession, (int) s->idSession, (int) s->idFolder) !=0) return NULL;
         freeSession(s);
-        free(s);
         i++;
     }
     free(tab_id);
