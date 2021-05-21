@@ -15,6 +15,7 @@
 
 /*!
  * \brief Test getExtensionFromPath function
+ * Check if the right extension is returned from a given path.
 */
 static void test_getExtensionFromPath(){
     char *testPath = (char*) malloc(sizeof(char)*strlen("../media/graphic-assets/archive_512.png"));

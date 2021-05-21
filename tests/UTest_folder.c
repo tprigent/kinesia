@@ -1,3 +1,7 @@
+/*!
+* \file UTest_folder.c
+* \brief Functions to test folder related functions
+*/
 
 #include <stdarg.h>
 #include <setjmp.h>
@@ -15,8 +19,11 @@
 #include "../src/model/structures.h"
 #include "../src/controller/struct_to_BDD_session.h"
 
-
-
+/*!
+ * \brief Test getFolder function
+ *
+ * Check if all the values are well charged in folder structure.
+*/
 static void test_getFolder(){
 
     Folder *f;
@@ -35,8 +42,12 @@ static void test_getFolder(){
 
 }
 
+/*!
+ * \brief Test getIdFolder function
+ *
+ * Test if the folder ID corresponds to the right patient
+*/
 static void test_getIdFolder(){
-
     int *t;
     t = getIdFolder(1);
     assert_int_equal(1,t[0]);
@@ -44,12 +55,18 @@ static void test_getIdFolder(){
 
 }
 
+/*!
+ * \brief Test getNameFolder function
+*/
 static void test_getNameFolder(){
-
     assert_string_equal("Entorse de la cheville",getNameFolder(1));
-
 }
 
+/*!
+ * \brief Test addFolder function
+ *
+ * Check if a given folder is properly added in DB
+*/
 static void test_addFolder(){
 
     Folder *folder;
@@ -65,6 +82,11 @@ static void test_addFolder(){
 
 }
 
+/*!
+ * \brief Test modifyFolder function
+ *
+ * Check if modifications are taken into account by the DB.
+*/
 static void test_modifyFolder(){
 
     Folder *f;
@@ -81,16 +103,48 @@ static void test_modifyFolder(){
 
 }
 
+/*!
+ * \brief Test deleteFolder function
+ *
+ * Check the wanted folder is properly deleted in DB
+*/
 static void test_deleteFolder(){
     assert_int_equal(1,deleteFolder(100));
 }
 
+/*!
+ * \brief Test getNbFolder function
+ *
+ * Check the number returned corresponds to the number of patient's folder
+*/
 static void test_getNbFolder(){
     assert_int_equal(2,getNbFolder(6));
 }
 
 /*!
- * \brief main function which runs the tests for BDD
+ * \brief Test getFutureFolderID function
+*/
+static void test_getFutureFolderId(){
+    assert_int_equal(getFutureFolderId(), 10);
+}
+
+/*!
+ * \brief Test createEmptyFolder function
+ *
+ * Check if the folder is well created and filled by default infos.
+*/
+static void test_createEmptyFolder(){
+    Folder *folder = createEmptyFolder(1);
+    assert_string_equal("Nouveau dossier", folder->folderName);
+    assert_string_equal("Détails", folder->details);
+    assert_string_equal("Pathologie", folder->pathology);
+    assert_int_equal(0, folder->numberOfFiles);
+    assert_int_equal(1, folder->idPatient);
+    free(folder);
+}
+
+/*!
+ * \brief main function which runs the tests for folder related functions
  *
  * \param[out] An int to tell if tests are passed
 */
@@ -105,7 +159,9 @@ int main_folder(void)
                     cmocka_unit_test(test_getNameFolder),
                     cmocka_unit_test(test_getNbFolder),
                     cmocka_unit_test(test_modifyFolder),
-                    cmocka_unit_test(test_deleteFolder)
+                    cmocka_unit_test(test_deleteFolder),
+                    cmocka_unit_test(test_getFutureFolderId),
+                    cmocka_unit_test(test_createEmptyFolder)
             };
     return cmocka_run_group_tests_name("Folder test module",tests_folder,NULL,NULL);
 }

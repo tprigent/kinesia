@@ -1,6 +1,7 @@
-//
-// Created by salome on 23/03/2021.
-//
+/*!
+* \file UTest_session.h
+* \brief Functions to test session related functions
+*/
 
 #ifndef LOGICIEL_KINE_UTEST_SESSION_H
 #define LOGICIEL_KINE_UTEST_SESSION_H
