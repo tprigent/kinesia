@@ -186,9 +186,6 @@ void savePatientEntries(Patient *patient, int origin, GtkWidget *surname, GtkWid
     info_text_result = gtk_text_buffer_get_text (info_result_buffer, &start, &end, FALSE);
     strcpy(patient->global_pathologies, info_text_result);
 
-    /* Print for debug */
-    //printPatient(patient, "saving data from user entries");
-
     /* Save data in model */
     if(origin == 1){
         modifyPatient(patient);

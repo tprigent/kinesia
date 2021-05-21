@@ -12,54 +12,6 @@
 #include "patient_manager.h"
 
 /*!
- * \brief [Debug] Print a given patient to the terminal
- *
- * \param[in] patient Patient to be displayed
- * \param[in] context Brief text to understand when the function has been called
-*/
-void printPatient(Patient *patient, char *context){
-    printf("******* Displaying patient #%d *******\n", patient->id);
-
-    printf("\033[0;31m");
-    printf("-> Context: %s\n", context);
-    printf("\033[0m");
-
-    printf("Firstname: %s ", patient->firstname);
-    printf("Name: %s\n", patient->name);
-    printf("Gender: ");
-    printGender(patient->gender);
-    printf("\n");
-
-    printf("Birthdate: %d/%d/%d\n", patient->birthdate.day, patient->birthdate.month, patient->birthdate.year);
-    printf("Place of birth: %s\n", patient->place_birth);
-    printf("Address: %s %s, %s (%s)\n", patient->address.street, patient->address.postCode, patient->address.city, patient->address.other_info);
-    printf("Phone: %s\n", patient->phone_number);
-    printf("Mail: %s\n", patient->mail_address);
-    printf("Job: %s\n", patient->job);
-
-    printf("Social security number: %s\n", patient->ssn);
-    printf("Global pathologies: %s\n", patient->global_pathologies);
-    printf("Height: %s\n", patient->height);
-    printf("Weight: %s\n", patient->weight);
-    printf("First consultation: %d/%d/%d\n", patient->first_consultation.day, patient->first_consultation.month, patient->first_consultation.year);
-    printf("Is archived: %d\n", patient->isArchived);
-
-    printf("******* End of the patient display *******\n");
-}
-
-/*!
- * \brief [Debug] Print a Gender enum to the terminal
- *
- * \param[in] gender Gender to be displayed
-*/
-void printGender(Genre gender){
-    if(gender == 1) printf("man");
-    else if(gender == 0) printf("woman");
-    else if(gender == 2) printf("other");
-    else printf("error");
-}
-
-/*!
  * \brief This function allocates memory for a string of length lg
  *
  * \param[in] char ** string the address of the string to allocate
