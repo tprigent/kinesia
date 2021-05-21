@@ -30,7 +30,7 @@ endif
 all: main
 
 
-main: display_helpers.o UTest.o UTest_display_helpers.o UTest_ext_files_manager.o UTest_session.o patient_manager.o folder_manager.o session_manager.o BDD_to_struct_session.o BDD_to_struct_patient.o BDD_to_struct_folder.o struct_to_BDD_patient.o struct_to_BDD_session.o struct_to_BDD_folder.o extern_files_manager.o display_helpers.o UTest_BDD.o UTest_BDD_session.o
+main: display_helpers.o UTest.o UTest_display_helpers.o UTest_ext_files_manager.o UTest_session.o patient_manager.o folder_manager.o session_manager.o BDD_to_struct_session.o BDD_to_struct_patient.o BDD_to_struct_folder.o struct_to_BDD_patient.o struct_to_BDD_session.o struct_to_BDD_folder.o extern_files_manager.o display_helpers.o UTest_BDD.o UTest_BDD_session.o UTest_manager.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
