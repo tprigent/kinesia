@@ -58,6 +58,30 @@ static void test_modifySession(void **state){
 
 }
 
+static void test_getSession0(){
+    assert_int_equal(5, getSession0(2)->idSession);
+}
+
+static void test_deleteSession(){
+    assert_int_equal(1, deleteSession(1));
+}
+
+static void test_getSessionsAtDate(){
+    Date *date = (Date*) malloc(sizeof(Date));
+    int *sessionID = (int*) malloc(sizeof(int));
+    int *folderID = (int*) malloc(sizeof(int));
+    date->day = 22;
+    date->month = 3;
+    date->year = 2021;
+    getSessionsAtDate(date, sessionID, folderID);
+    assert_int_equal(sessionID[0], 1);
+    assert_int_equal(folderID[0], 1);
+
+    free(date);
+    free(sessionID);
+    free(folderID);
+}
+
 int main_BDD_session(void) {
     const struct CMUnitTest tests_BDD_session[]=
             {
@@ -65,7 +89,10 @@ int main_BDD_session(void) {
                     cmocka_unit_test(test_getSessionId),
                     cmocka_unit_test(test_getSessionList),
                     cmocka_unit_test(test_getNbSession),
-                    cmocka_unit_test(test_modifySession)
+                    cmocka_unit_test(test_modifySession),
+                    cmocka_unit_test(test_getSession0),
+                    cmocka_unit_test(test_getSessionsAtDate),
+                    cmocka_unit_test(test_deleteSession)
             };
     return cmocka_run_group_tests_name("Test BDD_session module",tests_BDD_session,NULL,NULL);
 }

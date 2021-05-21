@@ -180,21 +180,6 @@ static void test_addPatient(void **state){
 
 }
 
-static void test_modifyPatient(void **state){
-
-    Patient *p = NULL;
-    p = getPatient(idPatientTest);
-
-    p->phone_number = "Nouveau num";
-
-    assert_int_equal(1,modifyPatient(p));
-
-    p = getPatient(idPatientTest);
-
-    assert_string_equal(p->phone_number,"Nouveau num");
-
-}
-
 static void test_getNameFirstnameIdPatient(void **state){
 
     int i,nbArchivedPatient;
@@ -361,6 +346,18 @@ static void test_getNbFolder(void **state){
 
 }
 
+static void test_getPatientIDFromFolder(){
+    assert_int_equal(1, getPatientIDFromFolder(1));
+}
+
+static void test_modifyPatient(){
+    Patient *patient = getPatient(1);
+    patient->birthdate.day = 2;
+    assert_int_equal(1, modifyPatient(patient));
+    patient = getPatient(1);
+    assert_int_equal(2, patient->birthdate.day);
+}
+
 /*!
  * \brief Teardown function which desallocates the patient
  *
@@ -432,7 +429,8 @@ int main_BDD(void)
                     cmocka_unit_test(test_getNbFolder),
                     cmocka_unit_test(test_modifyFolder),
                     cmocka_unit_test(test_deleteFolder),
-                    cmocka_unit_test(test_deletePatient)
+                    cmocka_unit_test(test_deletePatient),
+                    cmocka_unit_test(test_getPatientIDFromFolder)
             };
     return cmocka_run_group_tests_name("Test counter module",tests_BDD,NULL,NULL);
 }
