@@ -11,11 +11,11 @@
 #include <string.h>
 
 /*!
- * This function makes an SQL request, returns the number of sessions in a folder.
+ * This function makes an SQL request, returns the number of folder for a patient.
  *
- * \param[in] int, the folder's id
+ * \param[in] idPatient ID of the patient concerned
  *
- * \param[out] int, the number of sessions in the folder
+ * \param[out] number of Folder for this Patient
 */
 int getNbFolder(int idPatient) {
     sqlite3 *db;

@@ -74,9 +74,11 @@ set(SOURCE_FILES_TEST
         tests/UTest.c
         tests/UTest_display_helpers.c
         tests/UTest_ext_files_manager.c
-        tests/UTest_BDD.c
+        tests/UTest_patient.c
+        tests/UTest_folder.c
         tests/UTest_session.c
-        tests/UTest_BDD_session.c
+        tests/UTest_session_list.c
+        tests/UTest_manager.c
         src/model/patient_manager.c
         src/model/folder_manager.c
         src/model/session_manager.c
@@ -87,7 +89,7 @@ set(SOURCE_FILES_TEST
         src/controller/struct_to_BDD_session.c
         src/controller/BDD_to_struct_patient.c
         src/controller/BDD_to_struct_session.c
-        src/controller/BDD_to_struct_folder.c tests/UTest_manager.c)
+        src/controller/BDD_to_struct_folder.c)
 
 add_executable(UnitTest tests/UTest.c ${SOURCE_FILES_TEST})
 
