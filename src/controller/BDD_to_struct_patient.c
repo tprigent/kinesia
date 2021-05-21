@@ -13,9 +13,9 @@
  * \brief This function makes an SQL request, returns the name and first name of a patient
  * from a patient's id.
  *
- * \param[in] int, the patient's id
+ * \param[in] id ID of the Patient concerned
  *
- * \param[out] char*, the name and first name of the patient: "<Name> <Firstname>".
+ * \param[out] Name and first name of the patient: "<Name> <Firstname>".
 */
 char* getNameFirstnamePatient(int id){
 
@@ -75,7 +75,7 @@ char* getNameFirstnamePatient(int id){
  * \brief This function makes an SQL request, fills a Patient struct previously allocated
  * with the results of the request and return the addressof the Patient struct allcated.
  *
- * \param[in] int id of the Patient
+ * \param[in] id ID of the Patient
  *
  * \param[out] Patient struct of the corresponding id
 */
@@ -160,7 +160,7 @@ Patient* getPatient(int id){
 /*!
  * \brief This function makes an SQL request, returns the number of patient in the database.
  *
- * \param[out] int, the number of patient.
+ * \param[out] a Status of the Patient
 */
 int getNbPatient(Archived a){
 
@@ -219,14 +219,14 @@ int getNbPatient(Archived a){
  * \brief This function makes an SQL request, returns the patients ids and names
  * sorted by name and archived status
  *
- * \param[in] array where the result ids will be stored
- * \param[in] array of string where the names will be stored
- * \param[in] value of the Enum Archived to sort the result
- * \param[in] value of the Enum Sort to define how to sort the result
+ * \param[in] tabId array where the result ids will be stored
+ * \param[in] nom array of string where the names will be stored
+ * \param[in] a value of the Enum Archived to sort the result
+ * \param[in] s value of the Enum Sort to define how to sort the result
  *
  * \param[out] int, 0 if an error occurred, 1 otherwise
 */
-int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
+int getNameFirstnameIdPatient(int* tabId, char** nom, Archived a, Sort s){
 
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -302,10 +302,10 @@ int getNameFirstnameIdPatient(int* tabId, char** nom,Archived a,Sort s){
  * \brief This function makes an SQL request, returns the patients names and ids
  * if their name contains the stirng search
  *
- * \param[in] string of the string to be searched
- * \param[in] array of string where the names will be stored
- * \param[in] array where the result ids will be stored
- * \param[in] value of the length of ids and result
+ * \param[in] search String of the string to be searched
+ * \param[in] result Array of string where the names will be stored
+ * \param[in] ids Array where the result ids will be stored
+ * \param[in] lenRes Value of the length of ids and result
  *
  * \param[out] int, 0 if an error occurred, 1 otherwise
 */

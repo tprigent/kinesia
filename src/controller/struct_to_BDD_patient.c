@@ -11,8 +11,7 @@
 /*!
  * \brief This function makes an SQL request, modify a Patient entry in patient table from a Patient struct.
  *
- * \param[in] struct Patient to be modified
- *
+ * \param[in] gen Patient to be modified
  * \param[out] int, 0 if an error occurred, 1 otherwise.
 */
 int modifyPatient(Patient *gen){
@@ -93,10 +92,8 @@ int modifyPatient(Patient *gen){
 
 /*!
  * \brief This function makes an SQL request, add a Patient entry in patient table from a Patient struct.
- * \brief Return 0 if an error occurred, 1 otherwise.
  *
- * \param[in] struct Patient to be add
- *
+ * \param[in] gen Patient to be added
  * \param[out] int, 0 if an error occurred, 1 otherwise.
 */
 int addPatient(Patient *gen){
@@ -178,8 +175,7 @@ int addPatient(Patient *gen){
 /*!
  * \brief This function makes an SQL request, removes a patient and its related folders and sessions from the database.
  *
- * \param[in] a Folder struct.
- *
+ * \param[in] id ID of the Patient to be deleted.
  * \param[out] int, 1 if an error occurred, 0 otherwise
 */
 int deletePatient(int id){

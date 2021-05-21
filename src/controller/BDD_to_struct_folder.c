@@ -64,8 +64,8 @@ int getNbFolder(int idPatient) {
 /*!
  * \brief This function makes an SQL request, return a Folder struct from the id of the folder.
  *
- * \param[in] id of the folder
- * \param[out] a struct folder.
+ * \param[in] idFolder ID of the folder
+ * \param[out] Requested folder
 */
 Folder* getFolder(int idFolder){
 
@@ -127,8 +127,8 @@ Folder* getFolder(int idFolder){
 /*!
  * \brief This function makes an SQL request, return the name of a folder from its id.
  *
- * \param[in] int, the id of the folder
- * \param[out] char*, the name of the folder.
+ * \param[in] idFolder ID of the folder concerned
+ * \param[out] Name of the folder.
 */
 char* getNameFolder(int idFolder){
 
@@ -178,8 +178,8 @@ char* getNameFolder(int idFolder){
 /*!
  * \brief This function makes an SQL request, returns every Folder id from a patient's id.
  *
- * \param[in] int, the id of the patient
- * \param[out] int*, an array of every folder id of the patient.
+ * \param[in] idPatient ID of the Patient concerned
+ * \param[out] Array of every folder id of the patient
 */
 int* getIdFolder(int idPatient){
 

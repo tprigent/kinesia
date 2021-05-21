@@ -10,8 +10,7 @@
 /*!
  * \brief This function makes an SQL request, adds a folder in the database from a Folder struct.
  *
- * \param[in] a Folder struct.
- *
+ * \param[in] folder Folder to be added in DB
  * \param[out] int, 1 if an error occurred, 0 otherwise
 */
 int addFolder(Folder *folder){
@@ -77,7 +76,7 @@ int addFolder(Folder *folder){
 /*!
  * \brief This function makes an SQL request, changed the folder's entries in the database.
  *
- * \param[in] a Folder struct.
+ * \param[in] folder Folder to be modified in DB
  *
  * \param[out] int, 1 if an error occurred, 0 otherwise
 */
@@ -140,7 +139,7 @@ int modifyFolder(Folder *folder){
 /*!
  * \brief This function makes an SQL request, delete the folder and its associated session(s).
  *
- * \param[in] the id of the folder.
+ * \param[in] id ID of the folder to be deleted
  *
  * \param[out] int, 1 if an error occurred, 0 otherwise
 */
