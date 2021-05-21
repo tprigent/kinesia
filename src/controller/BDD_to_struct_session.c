@@ -12,11 +12,11 @@
 #include <string.h>
 
 /*!
- * \brief This function makes an SQL request, returns a Session struct from the sesison's id.
+ * \brief This function makes an SQL request, returns a Session struct from the session's id.
  *
- * \param[in] int, the session's id
+ * \param[in] idSession ID of the wanted session
  *
- * \param[out] Session*, a pointer to the session's struct
+ * \param[out] Pointer to the session's struct
 */
 Session * getSession(int idSession){
 
@@ -67,6 +67,13 @@ Session * getSession(int idSession){
 
 }
 
+/*!
+ * \brief Get all the fake sessions used to show first time meetings in planning
+ *
+ * \param[in] idFolder ID of the Folder concerned
+ *
+ * \param[out] Array of virtual sessions
+*/
 Session * getSession0(int idFolder){
     sqlite3 *db;
     char *zErrMsg = 0;
@@ -115,11 +122,11 @@ Session * getSession0(int idFolder){
 }
 
 /*!
- * \brief This function makes an SQL request, returns the session's id of a folder.
+ * \brief This function makes an SQL request, returns the session's ids of a folder.
  *
- * \param[in] int, the folder's id
+ * \param[in] idFolder ID of the folder concerned
  *
- * \param[out] int*, the session's id of the folder
+ * \param[out] array of the session's id of the folder
 */
 int * getSessionId(int idFolder){
 
@@ -179,9 +186,9 @@ int * getSessionId(int idFolder){
 /*!
  * This function makes an SQL request, returns all the sessions associated with a Folder in a list of sessions.
  *
- * \param[in] int, the folder's id
+ * \param[in] idFolder ID of the folder concerned
  *
- * \param[out] SessionList *, the list filled with sessions.
+ * \param[out] List filled with sessions
 */
 SessionList * getSessionList(int idF) {
     SessionList * l = (SessionList *) malloc(sizeof(SessionList));
@@ -206,9 +213,9 @@ SessionList * getSessionList(int idF) {
 /*!
  * \brief This function makes an SQL request, returns the number of sessions in a folder.
  *
- * \param[in] int, the folder's id
+ * \param[in] idFolder ID of the folder concerned
  *
- * \param[out] int, the number of sessions in the folder
+ * \param[out] Number of sessions in the folder
 */
 int getNbSession(int idFolder) {
     sqlite3 *db;
