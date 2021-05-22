@@ -13,8 +13,14 @@ It allows them to easily manage patient information and consultation notes.
 
 ## For users
 
-####macOS
-Download the .dmg located in `/bin` ([here](bin/Kinesia.dmg)) and follow the instructions.
+#### Linux
+Download the .deb file located in `/bin` ([here](bin/Kinesia.deb)). Then type the following command in the download folder:
+```bash
+sudo dpkg -i Kinesia.deb
+```
+
+#### macOS
+Download the .dmg file located in `/bin` ([here](bin/Kinesia.dmg)) and follow the instructions.
 You may need to allow the app in the security settings at first launch.
 
 ## Join the project
