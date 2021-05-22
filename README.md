@@ -23,6 +23,9 @@ sudo dpkg -i Kinesia.deb
 Download the .dmg file located in `/bin` ([here](bin/Kinesia.dmg)) and follow the instructions.
 You may need to allow the app in the security settings at first launch.
 
+#### Windows
+Download the .exe file located in `/bin` ([here](bin/Kinesia.exe)) and run it.
+
 ## Join the project
 
 To build and run the project you will need to install several tools.
