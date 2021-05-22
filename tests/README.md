@@ -48,6 +48,4 @@ HTML coverage report will be created in ```tests/coverage/```.
 #### Memory check
 During the script, chose ```m``` to launch coverage and memory tests.
 
-Elements needed will be compiled by the ```Makefile```.
-
 Memory leaks report will be created in ```tests/memreport-yyyy-mm-dd-hh-mm-ss.log```.
