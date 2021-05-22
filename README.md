@@ -14,7 +14,7 @@ It allows them to easily manage patient information and consultation notes.
 ## For users
 
 #### Linux
-Download the .deb file located in `/bin` ([here](bin/Kinesia.deb)). Then type the following command in the download folder:
+Download the .deb file located in `/bin` ([here](bin/Kinesia.deb)). Make sure that your system is up to date. Then type the following command in the download folder:
 ```bash
 sudo dpkg -i Kinesia.deb
 ```
@@ -44,9 +44,8 @@ sudo apt-get install git git -gui gitk meld pandoc
 
 In order to download the project on your computer go in the folder where you want to install the project and type:
 ```bash
-git clone "url"
+git clone https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine.git 
 ```
-The url can be find on the github page.
 
 Then install the following packages:
 ```bash
@@ -118,4 +117,5 @@ See this specific [```README```](doc/README.md).
 
 ## Credits
 ***
-
+This software has been developed by Paul Bertho, Salomé Guinaudeau, Julien Priam and Théo Prigent during a C language project. 
+INSA Rennes, dept EII.
