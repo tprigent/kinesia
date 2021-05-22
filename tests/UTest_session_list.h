@@ -1,6 +1,7 @@
-//
-// Created by salome on -5/03/2021.
-//
+/*!
+* \file UTest_session_list.h
+* \brief Functions to test session list related functions
+*/
 
 #ifndef LOGICIEL_KINE_UTEST_SESSION_LIST_H
 #define LOGICIEL_KINE_UTEST_SESSION_LIST_H

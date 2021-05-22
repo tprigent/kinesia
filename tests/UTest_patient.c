@@ -1,4 +1,7 @@
-
+/*!
+* \file UTest_patient.c
+* \brief Functions to test patient related functions
+*/
 
 #include <stdarg.h>
 #include <setjmp.h>
@@ -124,6 +127,9 @@ static void test_setDate(void **state) {
     assert_int_equal(2021, date->year);
 }
 
+/*!
+ * \brief test getPatient function
+*/
 static void test_getPatient(){
 
     Patient *patient = getPatient(-1);
@@ -135,6 +141,10 @@ static void test_getPatient(){
 
 }
 
+/*!
+ * \brief test getPatient function
+ * Check if the patient is properly added in database
+*/
 static void test_addPatient(){
 
     Patient *p = NULL;
@@ -170,6 +180,10 @@ static void test_addPatient(){
 
 }
 
+/*!
+ * \brief test getNameFirstnameIdPatient function
+ * Check if all infos are well found in DB
+*/
 static void test_getNameFirstnameIdPatient(){
 
     int i,nbArchivedPatient;
@@ -198,6 +212,9 @@ static void test_getNameFirstnameIdPatient(){
 
 }
 
+/*!
+ * \brief test getNameFirstname function
+*/
 static void test_getNameFirstnamePatient(){
 
     char * c;
@@ -207,6 +224,10 @@ static void test_getNameFirstnamePatient(){
 
 }
 
+/*!
+ * \brief test getNbPatient function
+ * Check if the number of active and archived patients is correct
+*/
 static void test_getNbPatient(){
 
     assert_int_equal(10,getNbPatient(ACTIVE));
@@ -214,10 +235,18 @@ static void test_getNbPatient(){
 
 }
 
+/*!
+ * \brief test deletePatient function
+ * Check if the concerned patient is properly deleted in DB
+*/
 static void test_deletePatient(){
     assert_int_equal(1,deletePatient(5));
 }
 
+/*!
+ * \brief test searchPatient function
+ * Check if a patient in DB is well found by the function
+*/
 static void test_searchPatient(){
 
     int i;
@@ -237,6 +266,10 @@ static void test_searchPatient(){
 
 }
 
+/*!
+ * \brief test modifyPatient function
+ * Check if the property modified is well taken into account by DB
+*/
 static void test_modifyPatient(){
     Patient *patient = getPatient(1);
     patient->birthdate.day = 2;
@@ -245,8 +278,18 @@ static void test_modifyPatient(){
     assert_int_equal(2, patient->birthdate.day);
 }
 
+/*!
+ * \brief test getPatientIDFromFolder function
+*/
 static void test_getPatientIDFromFolder(){
     assert_int_equal(1, getPatientIDFromFolder(1));
+}
+
+/*!
+ * \brief test getFuturePatientId function
+*/
+static void test_getFuturePatientId(){
+    assert_int_equal(getFuturePatientId(), 13);
 }
 
 /*!
@@ -292,6 +335,9 @@ static int teardown_date(void **state) {
     return 0;
 }
 
+/*!
+ * \brief Function to run all tests for patient related functions
+*/
 int main_patient(void)
 {
 
@@ -308,7 +354,8 @@ int main_patient(void)
                     cmocka_unit_test(test_getNameFirstnamePatient),
                     cmocka_unit_test(test_searchPatient),
                     cmocka_unit_test(test_deletePatient),
-                    cmocka_unit_test(test_getPatientIDFromFolder)
+                    cmocka_unit_test(test_getPatientIDFromFolder),
+                    cmocka_unit_test(test_getFuturePatientId)
             };
     return cmocka_run_group_tests_name("Patient test module",tests_patient,NULL,NULL);
 }

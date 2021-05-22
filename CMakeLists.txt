@@ -78,7 +78,6 @@ set(SOURCE_FILES_TEST
         tests/UTest_folder.c
         tests/UTest_session.c
         tests/UTest_session_list.c
-        tests/UTest_manager.c
         src/model/patient_manager.c
         src/model/folder_manager.c
         src/model/session_manager.c

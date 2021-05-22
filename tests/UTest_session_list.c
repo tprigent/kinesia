@@ -1,3 +1,8 @@
+/*!
+* \file UTest_session_list.c
+* \brief Functions to test session list related functions
+*/
+
 #include "../src/model/structures.h"
 #include "../src/controller/display_helpers.h"
 #include "../src/model/patient_manager.h"
@@ -11,6 +16,12 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
+/*!
+ * \brief Allocate an empty sessionList for tests
+ *
+ * \param[in] state Pointer to communicate data
+ * \param[out] -1 if error occured, 0 otherwise
+*/
 static int setup_sessionList_empty(void **state){
     SessionList *l = malloc(sizeof(SessionList));
     if(l == NULL) return -1;
@@ -23,6 +34,12 @@ static int setup_sessionList_empty(void **state){
     return 0;
 }
 
+/*!
+ * \brief Allocate an nonempty sessionList for tests
+ *
+ * \param[in] state Pointer to communicate data
+ * \param[out] -1 if error occured, 0 otherwise
+*/
 static int setup_sessionList_non_empty(void **state){
     SessionList *l = malloc(sizeof(SessionList));
     if(l == NULL) return -1;
@@ -38,6 +55,14 @@ static int setup_sessionList_non_empty(void **state){
     return 0;
 }
 
+/*!
+ * \brief test isEmpty and insertFirst functions
+ *
+ * Check if the functions can detect empty lists,
+ * and if is able to insert data in first position
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_isEmpty_insertFirst(void **state) {
     SessionList *l = *state;
     assert_int_equal(-1, isEmpty(l));
@@ -64,6 +89,12 @@ static void test_isEmpty_insertFirst(void **state) {
     assert_int_equal(0, isEmpty(l));
 }
 
+/*!
+ * \brief test setOnFirst function
+ * Test if the function can rewind the list progression
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_setOnFirst(void **state) {
     SessionList *l = *state;
     l->current = NULL;
@@ -71,6 +102,12 @@ static void test_setOnFirst(void **state) {
     assert_string_equal("nom2", l->current->session.sessionName);
 }
 
+/*!
+ * \brief test setOnLast function
+ * Test if the function can go to the end of the list
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_setOnLast(void **state) {
     SessionList *l = *state;
     l->current = NULL;
@@ -78,6 +115,12 @@ static void test_setOnLast(void **state) {
     assert_string_equal("nom", l->current->session.sessionName);
 }
 
+/*!
+ * \brief test insertLast function
+ * Check if a session can be added at the end of the list
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_insertLast(void **state) {
     SessionList *l = *state;
     insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "8", 0, 0, 1);
@@ -102,6 +145,11 @@ static void test_insertLast(void **state) {
     assert_int_equal(0, isEmpty(l));
 }
 
+/*!
+ * \brief test insertLast and isEmpty functions
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_insertLast_emptyList(void **state) {
     SessionList *l = *state;
     insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1);
@@ -126,6 +174,12 @@ static void test_insertLast_emptyList(void **state) {
     assert_int_equal(0, isEmpty(l));
 }
 
+/*!
+ * \brief test isOutOfList functions
+ * Check if the function can detect that the cursor is out of list
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_setOnNext_isOutOfList(void **state) {
     SessionList *l = *state;
     setOnFirst(l);
@@ -137,6 +191,12 @@ static void test_setOnNext_isOutOfList(void **state) {
     assert_int_equal(-1, isOutOfList(l));
 }
 
+/*!
+ * \brief test deleteFirst function
+ * Check if the first session of a list can be deleted
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_deleteFirst(void **state) {
     SessionList *l = *state;
     deleteFirst(l);
@@ -148,6 +208,12 @@ static void test_deleteFirst(void **state) {
     assert_null(l->last->next);
 }
 
+/*!
+ * \brief test deleteCurrent function
+ * Check if the current session of a list can be deleted
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_deleteCurrent(void **state) {
     SessionList *l = *state;
     insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0, "0", 0, 0, 1);
@@ -162,6 +228,12 @@ static void test_deleteCurrent(void **state) {
     assert_string_equal("nom3", l->current->session.sessionName);
 }
 
+/*!
+ * \brief test pointNthElement function
+ * Check if a random element can be selected
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_pointNthElement(void **state) {
     SessionList *l = *state;
     assert_int_equal(0, pointNthElement(l, 2));
@@ -169,6 +241,12 @@ static void test_pointNthElement(void **state) {
     assert_int_equal(-1, pointNthElement(l, 3));
 }
 
+/*!
+ * \brief test pointNthElement function
+ * Check if a random element can be deleted
+ *
+ * \param[in] state Pointer to communicate data
+*/
 static void test_deleteNthElement(void **state) {
     SessionList *l = *state;
     insertLast(l, "nom3", "obs3", 12, 3, 0, 0, 0, 0,"0", 0, 0, 1);
@@ -177,6 +255,10 @@ static void test_deleteNthElement(void **state) {
     assert_string_equal("nom2", l->first->session.sessionName);
 }
 
+/*!
+ * \brief deallocate function
+ * Deallocate all needed information during tests
+*/
 static int teardown(void **state) {
     SessionList *l = *state;
     freeList(l);
@@ -184,6 +266,9 @@ static int teardown(void **state) {
     return 0;
 }
 
+/*!
+ * \brief Run tests related to session list
+*/
 int main_session_list(void)
 {
 
@@ -200,5 +285,5 @@ int main_session_list(void)
                     cmocka_unit_test_setup_teardown(test_pointNthElement, setup_sessionList_non_empty, teardown),
                     cmocka_unit_test_setup_teardown(test_deleteNthElement, setup_sessionList_non_empty, teardown)
             };
-    return cmocka_run_group_tests_name("Test session module",tests_session_list,NULL,NULL);
+    return cmocka_run_group_tests_name("Test session list module",tests_session_list,NULL,NULL);
 }
