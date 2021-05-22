@@ -21,12 +21,12 @@
 /** ********************************************** PATIENT HELPERS TESTS ***********************************************/
 
 /*!
- * \brief Setup function which allocates and return a patient
+ * \brief Setup function which allocates a patient
  *
  * This function get the patient with id 1 (Claude Francois)
- * and pass its addressin *state for the next tests
+ * and pass its address in *state for the next tests
  *
- * \param[in] A pointer addressto pass the allocated patient
+ * \param[in] state A pointer address to pass the allocated patient
  * \param[out] An int to know if patient is well allocated
 */
 static int setup_patient(void **state){
@@ -42,9 +42,9 @@ static int setup_patient(void **state){
  * \brief Setup function which allocates and fill a patient
  *
  * This function gets the patient with id 1 (Claude Francois)
- * and pass its addressin *state for the next tests
+ * and pass its address in *state for the next tests
  *
- * \param[in] A pointer addressto pass the allocated patient
+ * \param[in] state A pointer address to pass the allocated patient
  * \param[out] An int to know if patient is well allocated
 */
 static void test_get_name_UI(void **state){
@@ -56,10 +56,9 @@ static void test_get_name_UI(void **state){
 
 /*!
  * \brief test get_date_UI function
- *
  * This function tests get_date_UI which returns a char* "xx/xx/xxxx" passing a patient Birthdate
  *
- * \param[in] A pointer addressto pass the allocated patient
+ * \param[in] state A pointer address to pass the allocated patient
 */
 static void test_get_date_UI(void **state){
     Patient * patient = (Patient *) (*state);
@@ -70,10 +69,9 @@ static void test_get_date_UI(void **state){
 
 /*!
  * \brief test get_height_weight_UI function
- *
  * This function tests get_height_weight_UI which returns a char* "xxkg   ;   x.xxm" passing a patient
  *
- * \param[in] A pointer addressto pass the allocated patient
+ * \param[in] state A pointer address to pass the allocated patient
 */
 static void test_get_height_weight_UI(void **state){
     Patient * patient = (Patient *) (*state);
@@ -84,10 +82,9 @@ static void test_get_height_weight_UI(void **state){
 
 /*!
  * \brief test get_first_consultation_UI function
- *
  * This function tests get_first_consultation_UI which returns a char* "Première consultation  : xx/xx/xxxx" passing a patient
  *
- * \param[in] A pointer addressto pass the allocated patient
+ * \param[in] state A pointer address to pass the allocated patient
 */
 static void test_get_first_consultation_UI(void **state){
     Patient * patient = (Patient *) (*state);
@@ -102,7 +99,7 @@ static void test_get_first_consultation_UI(void **state){
  * This function tests get_age_and_birthdate which returns the birthdate of
  * a patient and his age
  *
- * \param[in] A pointer addressto pass the allocated patient
+ * \param[in] state A pointer addressto pass the allocated patient
 */
 static void test_get_age_and_birthdate(void **state){
     Patient * patient = (Patient *) (*state);
@@ -113,10 +110,9 @@ static void test_get_age_and_birthdate(void **state){
 
 /*!
  * \brief test get_current_date function
- *
  * This function tests get_current_date which returns the date of the day
  *
- * \param[in] A pointer addressto pass the allocated patient
+ * \param[in] state A pointer address to pass the allocated patient
 */
 static void test_get_current_date(){
     char * date = get_current_date();
@@ -130,7 +126,7 @@ static void test_get_current_date(){
  * This function tests get_new_session_name which returns a formatted name for
  * a new session (Séance du dd/mm/yyyy)
  *
- * \param[in] A pointer addressto pass the allocated patient
+ * \param[in] state A pointer address to pass the allocated patient
 */
 static void test_get_new_session_name(){
     char * session_name = get_new_session_name();
@@ -144,12 +140,12 @@ static void test_get_new_session_name(){
 
 
 /*!
- * \brief Teardown function which desallocates the patient
+ * \brief Teardown function which deallocates the patient
  *
  * This function desallocates the patient allocated by setup function
  *
- * \param[in] A pointer addressto pass the allocated patient
- * \param[out] An int to tell that desallocation worked
+ * \param[in] state A pointer address to pass the allocated patient
+ * \param[out] An int to tell if deallocation worked
 */
 static int teardown(void **state){
     Patient * patient = (Patient *) (*state);
@@ -181,6 +177,15 @@ int patient_display_helpers_tests(void)
 
 /** ********************************************** FOLDER HELPERS TESTS ************************************************/
 
+/*!
+ * \brief Setup function which allocates a folder
+ *
+ * This function get the folder with id 1
+ * and pass its address in *state for the next tests
+ *
+ * \param[in] state A pointer address to pass the allocated folder
+ * \param[out] An int to know if folder is well allocated
+*/
 static int setup_folder(void **state){
     Folder *folder = getFolder(1);
     if(folder == NULL) return -1;
@@ -190,6 +195,12 @@ static int setup_folder(void **state){
     return 0;
 }
 
+/*!
+ * \brief test get_formatted_folder_title_UI function
+ * Check if the title corresponds to the right format: spaces to be centered and big+bold
+ *
+ * \param[in] state A pointer address to pass the allocated patient
+*/
 static void test_get_formatted_folder_title_UI(void **state){
     Folder * folder = (Folder *) (*state);
     char * temp = get_formatted_folder_title_UI(folder);
@@ -197,6 +208,12 @@ static void test_get_formatted_folder_title_UI(void **state){
     free_info_UI(temp);
 }
 
+/*!
+ * \brief test get_indicator_files_UI function
+ *
+ * Check if the number returned by the function corresponds
+ * to the number of files in the folder.
+*/
 static void test_get_indicator_files_UI(){
     char * temp = get_indicator_files_UI(1, 1);
     assert_string_equal("   (1)", temp);
@@ -204,12 +221,12 @@ static void test_get_indicator_files_UI(){
 }
 
 /*!
- * \brief Teardown function which desallocates the patient
+ * \brief Teardown function which deallocates the folder
  *
- * This function desallocates the patient allocated by setup function
+ * This function deallocates the patient allocated by setup function
  *
- * \param[in] A pointer addressto pass the allocated patient
- * \param[out] An int to tell that desallocation worked
+ * \param[in] state A pointer address to pass the allocated patient
+ * \param[out] An int to tell that deallocation worked
 */
 static int teardown_folder(void **state){
     Folder * folder = (Folder *) (*state);
@@ -236,6 +253,12 @@ int folder_display_helpers_tests(void)
 
 /** ********************************************** OTHER HELPERS TESTS *************************************************/
 
+/*!
+ * \brief test tostring function
+ *
+ * Check if a number passed in the function is welled
+ * converted to string containing this number.
+*/
 static void test_tostring(){
     char *temp = (char*) malloc(3*sizeof(char));
     tostring(temp, 18);
@@ -243,6 +266,11 @@ static void test_tostring(){
     free_info_UI(temp);
 }
 
+/*!
+ * \brief test parseDate function
+ *
+ * Check if a string date is well translated in a date structure.
+*/
 static void test_parseDate(){
     char *temp = (char*) malloc(11*sizeof(char));
     strcpy(temp, "26/04/2021");

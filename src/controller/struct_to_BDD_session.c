@@ -10,8 +10,7 @@
 /*!
  * \brief This function makes an SQL request, adds a session from a Session struct.
  *
- * \param[in] a Session struct.
- *
+ * \param[in] session Session to be added
  * \param[out] int, 1 if an error occurred, 0 otherwise
 */
 int addSession(Session *session){
@@ -78,8 +77,7 @@ int addSession(Session *session){
 /*!
  * \brief This function makes an SQL request, modify a Session entry in patient table from a Session struct.
  *
- * \param[in] struct Session to be modified
- *
+ * \param[in] session Session to be modified
  * \param[out] int, 0 if an error occurred, 1 otherwise.
 */
 int modifySession(Session *session){
@@ -146,8 +144,7 @@ int modifySession(Session *session){
 /*!
  * \brief This function makes an SQL request, delete the session.
  *
- * \param[in] the id of the session.
- *
+ * \param[in] id ID of the session to be deleted
  * \param[out] int, 1 if an error occurred, 0 otherwise
 */
 int deleteSession(int id){
