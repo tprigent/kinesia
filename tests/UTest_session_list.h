@@ -1,5 +1,5 @@
 /*!
-* \file UTest_session_list.c
+* \file UTest_session_list.h
 * \brief Functions to test session list related functions
 */
 
