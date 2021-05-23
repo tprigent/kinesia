@@ -4,7 +4,7 @@
 */
 
 #include "BDD_to_struct_patient.h"
-#include "../model/patient_manager.h"
+#include "patient_manager.h"
 #include <string.h>
 #include <sqlite3.h>
 #include <stdlib.h>

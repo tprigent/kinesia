@@ -6,7 +6,7 @@
 #ifndef LOGICIEL_KINE_BDD_TO_STRUCT_FOLDER_H
 #define LOGICIEL_KINE_BDD_TO_STRUCT_FOLDER_H
 
-#include "../model/structures.h"
+#include "structures.h"
 
 int getNbFolder(int idPatient);
 Folder* getFolder(int idFolder);

@@ -33,11 +33,11 @@ set(SOURCE_FILES
         src/controller/extern_files_manager.c
         src/model/structures.h
         src/controller/struct_to_BDD_patient.c
-        src/controller/BDD_to_struct_patient.c
+        src/model/BDD_to_struct_patient.c
         src/controller/struct_to_BDD_folder.c
         src/controller/struct_to_BDD_session.c
-        src/controller/BDD_to_struct_session.c
-        src/controller/BDD_to_struct_folder.c)
+        src/model/BDD_to_struct_session.c
+        src/model/BDD_to_struct_folder.c)
 
 add_executable(Kinesia ${SOURCE_FILES})
 
@@ -86,9 +86,9 @@ set(SOURCE_FILES_TEST
         src/controller/struct_to_BDD_patient.c
         src/controller/struct_to_BDD_folder.c
         src/controller/struct_to_BDD_session.c
-        src/controller/BDD_to_struct_patient.c
-        src/controller/BDD_to_struct_session.c
-        src/controller/BDD_to_struct_folder.c)
+        src/model/BDD_to_struct_patient.c
+        src/model/BDD_to_struct_session.c
+        src/model/BDD_to_struct_folder.c)
 
 add_executable(UnitTest tests/UTest.c ${SOURCE_FILES_TEST})
 

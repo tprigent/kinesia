@@ -6,7 +6,7 @@
 #ifndef LOGICIEL_KINE_BDD_TO_STRUCT_PATIENT_H
 #define LOGICIEL_KINE_BDD_TO_STRUCT_PATIENT_H
 
-#include "../model/structures.h"
+#include "structures.h"
 
 int getNbPatient(Archived a);
 char* getNameFirstnamePatient(int id);
