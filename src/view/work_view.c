@@ -10,8 +10,8 @@
 #include "editor_views.h"
 #include "../controller/UI_to_struct.h"
 #include "../controller/display_helpers.h"
-#include "../controller/BDD_to_struct_folder.h"
-#include "../controller/BDD_to_struct_session.h"
+#include "../model/BDD_to_struct_folder.h"
+#include "../model/BDD_to_struct_session.h"
 #include "../controller/struct_to_BDD_session.h"
 #include "../model/session_manager.h"
 

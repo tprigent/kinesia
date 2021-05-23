@@ -7,7 +7,7 @@
 #include <sqlite3.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../model/folder_manager.h"
+#include "folder_manager.h"
 #include <string.h>
 
 /*!

@@ -4,8 +4,8 @@
 */
 
 #include "BDD_to_struct_session.h"
-#include "../model/session_manager.h"
-#include "display_helpers.h"
+#include "session_manager.h"
+#include "../controller/display_helpers.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #include <stdlib.h>

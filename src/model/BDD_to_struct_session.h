@@ -6,7 +6,7 @@
 #ifndef LOGICIEL_KINE_BDD_TO_STRUCT_SESSION_H
 #define LOGICIEL_KINE_BDD_TO_STRUCT_SESSION_H
 
-#include "../model/structures.h"
+#include "structures.h"
 
 Session * getSession(int idSession);
 Session * getSession0(int idFolder);
