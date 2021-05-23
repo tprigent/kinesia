@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <cmocka.h>
-#include "../src/controller/BDD_to_struct_session.h"
+#include "../src/model/BDD_to_struct_session.h"
 #include "../src/controller/struct_to_BDD_session.h"
 #include "UTest_session.h"
 #include "../src/model/session_manager.h"
-#include "../src/controller/BDD_to_struct_folder.h"
+#include "../src/model/BDD_to_struct_folder.h"
 #include "../src/controller/display_helpers.h"
 
 /*!
