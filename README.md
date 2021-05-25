@@ -6,9 +6,9 @@ It allows them to easily manage patient information and consultation notes.
 ## Table of Contents
 1. [For users](#for-users)
 2. [Join the project](#join-the-project)
-    1. [Installation](#installation)
-    2. [Testing](#testing)
-    3. [Documentation](#documentation)
+   1. [Installation](#installation)
+   2. [Testing](#testing)
+   3. [Documentation](#documentation)
 3. [Credits](#credits)
 
 ## For users
@@ -47,7 +47,7 @@ sudo apt-get install git git -gui gitk meld pandoc
 
 In order to download the project on your computer go in the folder where you want to install the project and type:
 ```bash
-git clone https://gitlab.insa-rennes.fr/tprigent/projet-logiciel-kine.git 
+git clone https://github.com/tprigent/kinesia.git 
 ```
 
 Then install the following packages:
@@ -81,7 +81,7 @@ A window will prompt on your screen, follow the indications to complete installa
 
 In order to download the project on your computer go in the folder where you want to clone the project and type in terminal:
 ```bash
-git clone "url"
+git clone https://github.com/tprigent/kinesia.git 
 ```
 The url can be find on the gitlab page.
 
@@ -120,5 +120,6 @@ See this specific [```README```](doc/README.md).
 
 ## Credits
 ***
-This software has been developed by Paul Bertho, Salomé Guinaudeau, Julien Priam and Théo Prigent during a C language project. 
-INSA Rennes, dept EII.
+This software has been developed by Paul Bertho, Salomé Guinaudeau, Julien Priam and Théo Prigent during a C language project.
+
+[INSA Rennes](https://www.insa-rennes.fr/), dept EII.
