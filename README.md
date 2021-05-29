@@ -3,6 +3,9 @@
 Kinesia is a free and open-source software for physiotherapists.
 It allows them to easily manage patient information and consultation notes.
 
+[<img width="875" alt="Capture d’écran 2021-05-29 à 09 04 20" src="https://user-images.githubusercontent.com/14911193/120061506-e4ea8b80-c05d-11eb-95fd-1d5e5e6c5393.png">](https://go.tprigent.fr/Kinesia_ad)
+
+
 ## Table of Contents
 1. [For users](#for-users)
 2. [Join the project](#join-the-project)
