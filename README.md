@@ -121,8 +121,11 @@ See this specific [```README```](tests/README.md).
 ***
 See this specific [```README```](doc/README.md).
 
-## Credits
-***
+## Credits & disclaimer
+
 This software has been developed by Paul Bertho, Salomé Guinaudeau, Julien Priam and Théo Prigent during a C language project.
 
 [INSA Rennes](https://www.insa-rennes.fr/), dept EII.
+
+This software does not meet the security criteria for medical data so cannot therefore be used by a professional.
+
